@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<name>Article Edit Form</name>
+	<params addpath="/administrator/components/com_seminarman/elements">
+		<param name="created_by" type="hidden" default="" label="COM_SEMINARMAN_CREATED_BY" />
+		<param name="created_by_alias" type="text" size="20" default="" label="COM_SEMINARMAN_CREATED_BY_ALIAS" />
+		<param name="publish_up" type="calendar" default="" label="COM_SEMINARMAN_PUBLISH_UP_DATE" format="%d.%m.%Y"/> <!-- Attribute "format" bitte auf den Wert von COM_SEMINARMAN_DATE_FORMAT1_ALT einstellen. Ist nicht übersetzbar laut http://docs.joomla.org/Calendar_parameter_type -->
+		<param name="publish_down" type="calendar" default="" label="COM_SEMINARMAN_PUBLISH_DOWN_DATE" format="%d.%m.%Y"/>
+	</params>
+	<params group="basic">
+			<param name="target" type="list" default="" label="COM_SEMINARMAN_TARGET" description="COM_SEMINARMAN_TARGET_DESC">
+			<option value="">COM_SEMINARMAN_USE_GLOBAL</option>
+			<option value="0">COM_SEMINARMAN_PARENT_WINDOW</option>
+			<option value="1">COM_SEMINARMAN_NEW_WINDOW</option>
+			<option value="2">COM_SEMINARMAN_NEW_WINDOW_WO</option>
+		</param>
+		<param name="show_tags" type="list" default="" label="COM_SEMINARMAN_SHOW_TAGS" description="COM_SEMINARMAN_SHOW_TAGS_DESC">
+					<option value="">COM_SEMINARMAN_USE_GLOBAL</option>
+			<option value="0">COM_SEMINARMAN_HIDE</option>
+			<option value="1">COM_SEMINARMAN_SHOW</option>
+		</param>
+		<param name="show_favourites" type="list" default="" label="COM_SEMINARMAN_SHOW_FAVOURITES" description="COM_SEMINARMAN_SHOW_FAVOURITES_DESC">
+				<option value="">COM_SEMINARMAN_USE_GLOBAL</option>
+			<option value="0">COM_SEMINARMAN_HIDE</option>
+			<option value="1">COM_SEMINARMAN_SHOW</option>
+		</param>
+		<param name="show_categories" type="list" default="" label="COM_SEMINARMAN_SHOW_CATEGORIES" description="COM_SEMINARMAN_SHOW_CATEGORIES_DESC">
+				<option value="">COM_SEMINARMAN_USE_GLOBAL</option>
+			<option value="0">COM_SEMINARMAN_HIDE</option>
+			<option value="1">COM_SEMINARMAN_SHOW</option>
+		</param>
+		<param name="show_hyperlink" type="list" default="" label="COM_SEMINARMAN_SHOW_HYPERLINK" description="COM_SEMINARMAN_SHOW_HYPERLINK_DESC">
+			<option value="">COM_SEMINARMAN_USE_GLOBAL</option>
+			<option value="0">COM_SEMINARMAN_HIDE</option>
+			<option value="1">COM_SEMINARMAN_SHOW</option>
+		</param>
+		<param name="show_experience_level" type="list" default="" label="COM_SEMINARMAN_SHOW_EXPERIENCE_LEVEL" description="COM_SEMINARMAN_SHOW_EXPERIENCE_LEVEL_DESC">
+				<option value="">COM_SEMINARMAN_USE_GLOBAL</option>
+			<option value="0">COM_SEMINARMAN_HIDE</option>
+			<option value="1">COM_SEMINARMAN_SHOW</option>
+		</param>
+		<param name="show_location" type="list" default="" label="COM_SEMINARMAN_SHOW_LOCATION" description="COM_SEMINARMAN_SHOW_LOCATION_DESC">
+			<option value="">COM_SEMINARMAN_USE_GLOBAL</option>
+			<option value="0">COM_SEMINARMAN_HIDE</option>
+			<option value="1">COM_SEMINARMAN_SHOW</option>
+		</param>
+		<param name="show_group" type="list" default="" label="COM_SEMINARMAN_SHOW_GROUP" description="COM_SEMINARMAN_SHOW_GROUP_DESC">
+			<option value="">COM_SEMINARMAN_USE_GLOBAL</option>
+			<option value="0">COM_SEMINARMAN_HIDE</option>
+			<option value="1">COM_SEMINARMAN_SHOW</option>
+		</param>
+		<param name="show_pdf_icon" type="list" default="" label="COM_SEMINARMAN_PDF_ICON">
+			<option value="">COM_SEMINARMAN_USE_GLOBAL</option>		
+			<option value="0">COM_SEMINARMAN_HIDE</option>
+			<option value="1">COM_SEMINARMAN_SHOW</option>
+		</param>
+		<param name="show_print_icon" type="list" default="" label="COM_SEMINARMAN_PRINT_ICON">
+			<option value="">COM_SEMINARMAN_USE_GLOBAL</option>		
+			<option value="0">COM_SEMINARMAN_HIDE</option>
+			<option value="1">COM_SEMINARMAN_SHOW</option>
+		</param>
+		<param name="show_email_icon" type="list" default="" label="COM_SEMINARMAN_EMAIL_ICON">
+			<option value="">COM_SEMINARMAN_USE_GLOBAL</option>		
+			<option value="0">COM_SEMINARMAN_HIDE</option>
+			<option value="1">COM_SEMINARMAN_SHOW</option>
+		</param>
+		<param name="show_state_icon" type="list" default="" label="COM_SEMINARMAN_STATE_ICON">
+			<option value="">COM_SEMINARMAN_USE_GLOBAL</option>		
+			<option value="0">COM_SEMINARMAN_HIDE</option>
+			<option value="1">COM_SEMINARMAN_SHOW</option>
+		</param>
+		<param name="show_sale" type="list" default="0" label="COM_SEMINARMAN_SALE_ICON">
+			<option value="0">COM_SEMINARMAN_HIDE</option>
+			<option value="1">COM_SEMINARMAN_SHOW</option>
+		</param>
+		<param name="language" type="languages" client="site" label="COM_SEMINARMAN_CONTENT_LANGUAGE" />
+	</params>
+</form>

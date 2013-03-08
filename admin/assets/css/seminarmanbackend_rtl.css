@@ -1,0 +1,81 @@
+/** header icons **/
+.icon-48-seminarman			{ background-image: url(../images/icon-48-seminarman.png); }
+.icon-48-applications		{ background-image: url(../images/icon-48-applications.png); }
+.icon-48-salesprospects		{ background-image: url(../images/icon-48-inter.png); }
+.icon-48-courses			{ background-image: url(../images/icon-48-courses.png); }
+.icon-48-templates			{ background-image: url(../images/icon-48-templates.png); }
+.icon-48-templateedit		{ background-image: url(../images/icon-48-templateedit.png); }
+.icon-48-tutors				{ background-image: url(../images/icon-48-tutors.png); }
+.icon-48-jobseekers			{ background-image: url(../images/icon-48-jobseekers.png); }
+.icon-48-courseedit			{ background-image: url(../images/icon-48-courseedit.png); }
+.icon-48-tags				{ background-image: url(../images/icon-48-tags.png); }
+.icon-48-tagedit			{ background-image: url(../images/icon-48-tagedit.png); }
+.icon-48-qfcategories		{ background-image: url(../images/icon-48-categories.png); }
+.icon-48-qfcategoryedit		{ background-image: url(../images/icon-48-categoryedit.png); }
+.icon-48-qfarchive			{ background-image: url(../images/icon-48-archive.png); }
+.icon-48-qfeditcss			{ background-image: url(../images/icon-48-editcss.png); }
+.icon-48-qffilemanager		{ background-image: url(../images/icon-48-filemanager.png); }
+.icon-48-qffile				{ background-image: url(../images/icon-48-file.png); }
+.icon-48-stats				{ background-image: url(../images/icon-48-stats.png); }
+.icon-48-sitzung            { background-image: url(../images/icon-48-sitzung.png); }
+.icon-48-smconfig			{ background-image: url(../images/icon-48-config.png); }
+
+/** tag selection */
+.qf_tag {
+	float: right;
+}
+
+.qf_tagidbox {
+	float: right;
+}
+
+/**
+ * Upload Widget CSS
+ */
+.upload-queue li {
+	/*background: url(../images/upload.png) no-repeat 0 5px;*/
+	padding: 5px 22px 5px 0;
+}
+
+.upload-queue .queue-size {
+	/*margin-left: auto;*
+	margin-right: 1em;
+}
+
+.upload-queue .queue-subloader {
+	/*left: auto;*/
+	right: 0;
+}
+
+.upload-queue .input-delete {
+	/*background: url(../images/delete.png) no-repeat 0 0;*/
+	float: left;
+}
+
+/* set the image to use and establish the lower-right position */ 
+.cssbox, .cssbox_body, .cssbox_head, .cssbox_head h2{ 
+	background: transparent url(../images/qfbox.png) no-repeat bottom left
+	}
+/* set the top-right image */ 
+.cssbox_head{
+	background-position:top left;
+	/* pull the right image over on top of border */ 
+	margin-left:-15px;
+	/* right-image-gap + right-inside padding */ 
+	padding-left:40px
+}
+
+/* set the top-left image */ 
+.cssbox_head h2{ 
+	background-position:top right; 
+	/* padding-left = image gap + interior padding ... no padding-right */ 
+	padding:25px 40px 15px 0;
+}/* IE Holly Hack */ 
+
+/* set the lower-left corner image */ 
+.cssbox_body{ 
+	background-position:bottom right; 
+	margin-left:25px;/* interior-padding right */ 
+	padding:15px 40px 15px 0
+}
+/* mirror .cssbox_head right/left */ 

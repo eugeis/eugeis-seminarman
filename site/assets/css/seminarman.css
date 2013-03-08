@@ -1,0 +1,572 @@
+div#seminarman
+{ overflow: hidden; /* clearing in beez */ }
+
+div#seminarman .clear
+{ border: 0; clear: both; float: none; font-size: 1px; height: 0; line-height: 1px; margin: 0; padding: 0; visibility: hidden;}
+
+div#seminarman .floattext:after /* ie fix in coditional comments (html source) */
+{content: "."; display: block; height: 0; clear: both; visibility: hidden;}
+
+div#seminarman .floattext
+{ display:block; /* safari */ }
+
+/**
+ * @section buttons
+ *
+ * print, pdf, ...
+ */
+div#seminarman .buttons
+{ float: right; }
+
+div#seminarman .buttons img
+{ border: none; }
+
+div#seminarman .buttons a
+{ padding: 0 0 0 5px; height: 16px; line-height: 16px; }
+
+
+/**
+ * @section headlines
+ *
+ */
+div#seminarman h2 {
+font-size: 1.2em; font-weight: bold;
+border-bottom: 2px solid #ddd;
+/*padding:0.5em 0.3em; margin: 0.8em 0;*/
+padding-bottom:0.5em;
+}
+
+div#seminarman a h2.booking {
+  background: url(../images/shopcart.png) 0 0 no-repeat;
+  height: 30px;
+  padding: 5px 5px 5px 40px;
+}
+
+div#seminarman h2 img {
+border: none;
+}
+
+/**
+ * @section pagination
+ *
+ */
+div#seminarman .pageslinks,
+div#seminarman .pagescounter {
+text-align: center;
+}
+
+#seminarman .pagination {
+	border-top-width: 0 ! important;
+	margin: 0 ! important;
+	padding: 0 ! important;
+}
+
+#seminarman .pagination ul {
+	text-align:center;
+}
+
+/**
+ * @section Categoryview
+ *
+ */
+div#seminarman .catimg {
+margin: 0 0.5em 0.5em 0;
+float: left;
+position: relative;
+}
+
+div#seminarman .catimg p {
+font-size: 0.9em; line-height: 180%;
+margin: 0 0 0.5em 0;
+}
+
+div#seminarman .catdescription {
+margin: 0 0 0.5em 0;
+}
+
+div#seminarman .subcategorieslist {
+padding:0.5em 0.3em; margin: 0.8em 0;
+}
+
+div#seminarman .subcategories {
+/* font-size: 1.2em; font-weight: bold; */
+border-bottom: 2px solid #ddd;
+padding:0.5em 0.3em; margin: 0.8em 0;
+}
+
+/**
+ * @section Seminarman Course
+ *
+ */
+div#seminarman .taglist {
+margin: 5px 0 10px; padding: 0 5px;
+}
+
+div#seminarman .course_details {
+border: 1px dashed silver;
+padding: 0.8em;
+margin-bottom: 10px;
+}
+
+div#seminarman .course_applicationform {
+border: 1px solid silver;
+background-color: #CCCCCC;
+padding: 0.8em;
+margin-bottom: 10px;
+}
+
+div#seminarman .course_details dl {
+margin: 0;
+float: left;
+width: 48%;
+}
+
+div#seminarman dl.course_info_right {
+float: right;
+}
+
+dl.tabs {
+	margin: 0 ! important;
+	position: relative;
+	bottom: -1px;
+}
+
+dl.tabs dt.closed {
+	bottom: -2px;
+	background: #ccc;
+	color: #666;
+}
+
+dl.tabs dt.open {
+	background: #f9f9f9;
+	color: #000;
+  border-left: 1px solid #CCCCCC;
+  border-right: 1px solid #CCCCCC;
+  border-top: 1px solid #CCCCCC;
+  border-bottom: 1px solid #F9F9F9;
+}
+
+dl.tabs dt {
+	text-align: center ! important;
+	margin-right: 0.3em ! important;
+	border-bottom: 0 none ! important;
+	position: relative;
+	padding: 0.6em 0.5em ! important;
+}
+
+div.current dd {
+	margin: 0 ! important;
+	padding: 0 ! important;
+}
+
+div#seminarman .current {
+	z-index: 60;
+	position: relative;
+  border: 1px solid #CCCCCC;
+  clear: both;
+  padding: 10px;
+  background: url("../images/tbl_bg.gif") repeat-x scroll 0 0 transparent;
+}
+
+div#seminarman dt { /* definition term */
+margin: 0; padding: 0.3em 0;
+float:left;
+text-align: right;
+font-size: 1em; font-weight: bold;
+min-width: 11em;
+}
+
+div#seminarman dd { /* definition description */
+display: block;
+margin: 0 0 5px 12em; padding: 0.3em 0;
+font-size: 1em;
+background: transparent;
+}
+
+div#seminarman div.description {
+margin: 5px 0; padding: 0 5px;
+}
+
+* html .floattext dd /* ie6 fix against the 3px jog bug */
+{ height: 1%; }
+
+/**
+ * @section Seminarman Table
+ *
+ */
+.ccontentTable td, .ccontentTable tr{
+border: none;
+}
+
+.ccontentTable label{
+margin-left: .6em;
+}
+
+div#seminarman table.seminarmancoursetable
+{ margin: 1em 1px; width: 99%; font-size: 1em; border-collapse: collapse; border: 1px solid #E5E5E5; }
+
+div#seminarman table.seminarmancoursetable th
+{ background-color: #EFEFEF; color: #000; font-weight: bold; padding: 0.4em; text-align: left; border-bottom: 1px solid #e5e5e5; border-right: 1px solid #E5E5E5;  }
+
+div#seminarman table.seminarmancoursetable th img
+{ margin: 0 0 5px 5px; vertical-align: middle; border: none; }
+
+div#seminarman table.seminarmancoursetable td
+{ padding: 0.4em; border-bottom: 1px solid #e5e5e5; border-right: 1px solid #E5E5E5; vertical-align: top; }
+
+div#seminarman table.seminarmancoursetable tr.sectiontableentry2 td
+{ background: #F4F4F4; }
+
+div#seminarman table.seminarmancoursetable tr:hover td
+{ background: #F8F8F8 }
+
+div#seminarman table.seminarmancoursetable th td #qf_publish_up
+{ text-align: left; width: 10%;  }
+
+div#seminarman table.seminarmancoursetable th td #qf_title
+{ text-align: left; width: 50%;  }
+
+div#seminarman table.seminarmancoursetable th td #qf_location
+{ text-align: left; width: 10%;  }
+
+div#seminarman table.seminarmancoursetable th td #qf_tutor
+{ text-align: left; width: 10%;  }
+
+div#seminarman table.seminarmancoursetable th td #qf_votes
+{ text-align: center; width: 10%;  }
+
+div#seminarman table.seminarmancoursetable th td #qf_hits
+{ text-align: center; width: 10%;  }
+
+div.seminarman div#course_appform form#login-form {
+    background: none repeat scroll 0 0 #EEEEEE;
+    margin: 0 auto 10px;
+    padding: 5px;
+    width: 300px;
+}
+
+div.seminarman div#course_appform form#login-form ul{
+    display: none;
+}
+
+div.seminarman div#course_appform form#login-form p#form-login-remember {
+    display: none;
+}
+
+/**
+ * @section seminarman Table Filter Form
+ *
+ */
+/*
+div#seminarman #qf_filter {
+margin: 1em 0 0.5em 0; padding: 0.5em;
+border: solid 1px #ddd;
+}
+*/
+div#seminarman #qf_filter {
+margin: 1em 0 0.5em 0;
+}
+
+div#seminarman #qf_filter2 {
+margin: 1em 0 0.5em 0;
+}
+
+div#seminarman .qf_fleft {
+float: left;
+}
+
+div#seminarman .qf_fright {
+float: right;
+}
+
+
+
+/** save buttons */
+div.qf_save_buttons {
+margin: 0 0 1em 0;
+float: right;
+}
+
+    div.qf_save_buttons button {
+    font-size: 1.5em;
+    cursor: pointer;
+    }
+
+div.qf_box_left,
+div.qf_box_right {
+width: 45%;
+float: left;
+}
+
+div.qf_box_right {
+float: right;
+}
+
+
+/** tag selection */
+div#seminarman .qf_tagline {
+	width: auto;
+	height: 30px;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+div#seminarman .qf_tag {
+	width: 150px;
+	display: block;
+	float: left;
+	margin: 2px 2px;
+}
+
+div#seminarman .qf_tagidbox {
+	width: 20px;
+	display: block;
+	float: left;
+}
+
+div#seminarman .qf_centerimg {
+	text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px;
+}
+
+div#seminarman .qf_addtag {
+	margin-top: 10px;
+}
+
+/** state toggler */
+.qf_statetoggler{
+	padding: 0;
+	list-style: none;
+	width: 10px;
+}
+
+.options {
+	position: absolute;
+}
+
+#statetoggler li ul li {
+	border: #ddd 1px solid;
+	background-color: #ffffff;
+	color: #000000;
+	padding: 2px;
+	list-style:none;
+}
+
+.readonly_field {
+	color: #000000;
+	background-color: #ddd;
+}
+
+.tabulka
+{
+	min-width: 1px;
+	_width: 1px; /* IE */
+	width: 100%;
+	background-color: #ddd;
+	background-image: url(../images/row_bg.png);
+}
+.radek
+{
+	clear: left;
+}
+.bunka
+{
+	float: left;
+	border: #FFFFFF 1px solid;
+	padding: .2em .5em;
+	margin: -1px;
+}
+
+.hlavicka
+{
+	font-weight: normal;
+}
+
+.cl
+{
+	clear: both;
+}
+.matrjoska
+{
+	padding: .2em .5em;
+}
+
+/*** VALIDITY MODS ***/
+/*********************/
+
+.seminarmancoursetable, .bookings_default_item, .seminarmancoursetable {
+    border: none;
+    width: 100%;
+    border-spacing: 0px;
+    padding: 0px;
+}
+
+.seminarmancoursetable td, bookings_default_item td, .seminarmancoursetable td {
+    padding: 0px;
+}
+
+.ccontentTable {
+    width: 100%;
+    border-spacing: 1px;
+    padding: 0px;
+}
+
+.ccontentTable td {
+	padding: 0px;
+}
+
+.centered {
+    text-align: center;
+}
+
+.right {
+    text-align: right;
+}
+
+.vtop {
+    vertical-align: top;
+}
+
+.italic {
+    font-style: italic;
+}
+
+
+/* WIDTH ATTRIBUTES*/
+.proc1 {
+    width: 1%;
+}
+
+.proc2 {
+    width: 2%;
+}
+
+.proc12 {
+    width: 12%;
+}
+
+.proc13 {
+    width: 13%;
+}
+
+.proc15 {
+    width: 15%;
+}
+
+.proc20 {
+    width: 20%;
+}
+
+.proc30 {
+    width: 30%;
+}
+
+.proc100 {
+    width: 100%;
+}
+
+.pix2 {
+    width: 2px;
+}
+
+.pix3 {
+    width: 3px;
+}
+
+.pix8 {
+    width: 8px;
+}
+
+.hepix20 {
+    height: 20px;
+}
+
+.heproc15 {
+    height: 15%;
+}
+
+/** CALENDAR **/
+#cmCalMonth, #cmCalWeek {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    margin: 20px 5px;
+    clear: both;
+}
+
+#cmCalMonth thead td, #cmCalWeek thead td {
+    font-weight: bold;
+    text-align: center;
+    width: auto;
+    height: auto;
+}
+
+#cmCalMonth tbody td {
+    width: 90px;
+    height: 90px;
+    border: 1px solid #ccc;
+    font-size: 0.8em;
+    vertical-align: top;
+}
+
+#cmCalWeek tbody td {
+    width: 120px;
+    height: auto;
+    font-size: 0.8em;
+    vertical-align: top;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.cmFormNav {
+    float: right;
+}
+
+.cmCalEmpty {
+    background-color: #eee;
+}
+
+.cmCalBlock {
+    padding: 1px 2px;
+}
+
+.calendarColor1 {
+    background-color: #ccffff;
+}
+
+.calendarColor2 {
+    background-color: #ffcccc;
+}
+
+.calendarColor3 {
+    background-color: #81B466;
+}
+
+.calendarColor4 {
+    background-color: #ffffcc;
+}
+
+.calendarColor5 {
+    background-color: #cc99ff;
+}
+
+.calendarColor6 {
+    background-color: #99ff99;
+}
+
+.calendarColor7 {
+    background-color: #00ff99;
+}
+
+.calendarColor8 {
+    background-color: #99ff00;
+}
+
+.calendarColor9 {
+    background-color: #990099;
+}
+table.seminarman_cart td {
+	padding: 2px 5px;
+}

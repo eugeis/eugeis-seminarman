@@ -1,0 +1,116 @@
+/**
+ * @section buttons
+ *
+ * print, pdf, ...
+ */
+div#seminarman .buttons
+{ float: left; }
+
+div#seminarman .buttons a
+{ padding: 0 5px 0 0; }
+
+/**
+ * @section headlines
+ *
+ */
+div#seminarman h2 {
+/*font-size: 1.3em;*/
+font-size: 125%;
+}
+
+
+/**
+ * @section Categoryview
+ *
+ */
+div#seminarman .catimg {
+margin: 0 0 0.5em 0.5em;
+float: right;
+position: relative;
+}
+
+/**
+ * @section Seminarman Course
+ *
+ */
+div#seminarman .course_details dl {
+float: right;
+font-size: 95%;
+}
+
+div#seminarman dl.course_info_right {
+float: left;
+}
+
+div#seminarman dt { /* definition term */
+float:right;
+}
+
+div#seminarman dd { /* definition description */
+margin: 0 12em 5px 0;
+}
+
+/**
+ * @section Seminarman Table
+ *
+ */
+table.seminarmancoursetable th
+{ font-family:Tahoma; font-size:90% }
+
+div#seminarman table.seminarmancoursetable th
+{text-align: right; border-right: 0px; border-left: 1px solid #E5E5E5; }
+
+div#seminarman table.seminarmancoursetable th img
+{ margin: 0 5px 5px 0; }
+
+div#seminarman table.seminarmancoursetable td
+{ border-right: 0px; border-left: 1px solid #E5E5E5; }
+
+div#seminarman table.seminarmancoursetable th td #qf_title
+{ text-align: right; }
+
+/**
+ * @section seminarman Table Filter Form
+ *
+ */
+div#seminarman .qf_fleft {
+float: right;
+}
+
+div#seminarman .qf_fright {
+float: left;
+}
+
+/**
+ * @section Editevent Form
+ *
+ */
+
+    div.qf_edit form label {
+    float: right;
+    }
+
+/** save buttons */
+div.qf_save_buttons {
+float: left;
+}
+
+div.qf_box_left,
+div.qf_box_right {
+float: right;
+}
+
+div.qf_box_right {
+float: left;
+}
+
+/** tag selection */
+div#seminarman .qf_tag {
+	float: right;
+}
+
+div#seminarman .qf_tagidbox {
+	float: right;
+}
+
+button { font-family: Tahoma; font-size: 12px; }
