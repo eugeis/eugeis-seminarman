@@ -666,13 +666,13 @@ JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users
 				$groupIds = $this->getGroupIdsMappedByCategories($catTitles);
 				if($groupIds){
 					$userIds = $this->getUserIdsByGroups($groupIds);
+					$users = $this->getUsersByIds($userIds);
+					$course = ApplicationHelper::loadCourse($courseId);
 					if($userIds){
 						if($cancel){
-							$this->cancelBookedCourse($courseId, $userIds);
+							$this->cancelCourseForUsers($course, $catTitles, $users, $fillErrors);							
 							$msg = JText::_( 'COM_SEMINARMAN_CANCELED_CATEGORY_TO_USERGROUP' );
 						}else{
-							$users = $this->getUsersByIds($userIds);
-							$course = ApplicationHelper::loadCourse($courseId);
 							$this->bookCourseForUsers($course, $catTitles, $users, $fillErrors);
 							$msg = JText::_( 'COM_SEMINARMAN_BOOKED_CATEGORY_TO_USERGROUP' ) . ' ' . join(', ', $fillErrors);
 						}
@@ -777,7 +777,7 @@ JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users
 		return $groupIds;
 	}
 
-	private function cancelBookedCourse($courseId, $userIds)
+	private function cancelBookedCourseNoEmail($courseId, $userIds)
 	{
 		$model = $this->getModel( 'application' );
 		$appIds = $this->getAppIdsByCourseIdAndUserIdsByIds($courseId, $userIds);
@@ -785,6 +785,26 @@ JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users
 			$model->delete($appIds);
 		}
 	}
+
+	private function cancelCourseForUsers($course, $catTitles, $users, $fillErrors)
+	{
+		CMFactory::load('libraries', 'customfields');
+		$customFields = array();
+		$msgEmailError = JText::_( 'COM_SEMINARMAN_CANCELING_EMAIL_ERROR' );
+		$sendEmail = !ApplicationHelper::isCourseOld($course);
+		$model = $this->getModel( 'application' );
+		foreach($users as $user) {
+			$userId = $user->id;
+			// did this user already book that course?
+			$applicationId = ApplicationHelper::getIdByCourseAndUser($course->id, $userId);
+			if ($applicationId) {
+				if($sendEmail){
+					ApplicationHelper::sendemail($application_id, $user, $course, $catTitles, $fillErrors, 3);
+				}
+				ApplicationHelper::cancel($applicationId);
+			}
+		}
+	}	
 	
 	private function bookCourseForUsers($course, $catTitles, $users, $fillErrors)
 	{
@@ -800,7 +820,7 @@ JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users
 				$application_id = ApplicationHelper::book($user, $course, $fillErrors);
 				if($application_id != null ){
 					if($sendEmail){
-						ApplicationHelper::sendemail($application_id, $user, $course, $catTitles, $fillErrors);
+						ApplicationHelper::sendemail($application_id, $user, $course, $catTitles, $fillErrors, $course->email_template);
 					}
 				}
 			}

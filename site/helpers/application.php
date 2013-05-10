@@ -129,7 +129,7 @@ class ApplicationHelper
 		return $sent;
 	}
 
-	public static function sendemail($application_id, &$user, &$course, &$catTitles, &$fillErrors, &$emailTemplate = 0, &$attachment = '')
+	public static function sendemail($application_id, &$user, &$course, &$catTitles, &$fillErrors, $emailTemplate = 0, $attachment = '')
 	{
 		$mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
@@ -465,6 +465,14 @@ class ApplicationHelper
 			
 		return $next;
 	}
+	
+	public static function cancel($appId)
+	{
+		// Get a database object.
+		$db = JFactory::getDbo();
+		$db->setQuery('DELETE FROM #__seminarman_application WHERE id=' . $appId);
+		return $db->query();
+	}	
 	
 	public static function book(&$user, &$course, &$fillErrors) {
 		$db = JFactory::getDBO();
