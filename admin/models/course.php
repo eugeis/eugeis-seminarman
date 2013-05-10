@@ -22,9 +22,12 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
+require_once JPATH_ROOT.'/components/com_seminarman/helpers/application.php';
+
 class SeminarmanModelCourse extends JModel
 {
     var $_course = null;
+	var $_tutorUser = null;
 
     function __construct()
     {
@@ -40,6 +43,7 @@ class SeminarmanModelCourse extends JModel
 
         $this->_id = $id;
         $this->_course = null;
+		$this->_tutorUser = null;
     }
 
     function get($property, $default = null)
@@ -100,7 +104,11 @@ class SeminarmanModelCourse extends JModel
 
         if (empty($this->_course))
         {
-            $query = 'SELECT * FROM #__seminarman_courses WHERE id ='. $this->_id;
+			$query = 'SELECT c.*, t.user_id as TUTOR_USER_ID, t.title AS `TUTOR`, t.firstname AS `TUTOR_FIRSTNAME`, t.lastname AS `TUTOR_LASTNAME` ' .
+				' FROM #__seminarman_courses AS c' .
+				' INNER JOIN #__seminarman_tutor AS t ON t.id = c.tutor_id' .
+					' WHERE c.id ='. $this->_id;
+
             $this->_db->setQuery($query);
             $this->_course = $this->_db->loadObject();
 
@@ -109,14 +117,29 @@ class SeminarmanModelCourse extends JModel
         return true;
     }
 
+	function getTutorAsUser()
+	{
+		if (empty($this->_tutorUser))
+		{
+			$query = 'SELECT u.* FROM #__users AS u' .
+					' INNER JOIN #__seminarman_tutor AS t ON t.user_id = u.id' .
+					' INNER JOIN #__seminarman_courses AS c ON t.id = c.tutor_id' .
+					' WHERE c.id ='. $this->_id;
+
+			$this->_db->setQuery($query);
+			$this->_tutorUser = $this->_db->loadObject();
+		}
+		return $this->_tutorUser;
+	}
+
     function _initCourse()
     {
 
         if (empty($this->_course))
         {
-        	$user = &JFactory::getUser();
-        	$params =& JComponentHelper::getParams( 'com_seminarman' );
-            $createdate = &JFactory::getDate();
+        	$user = JFactory::getUser();
+        	$params = JComponentHelper::getParams( 'com_seminarman' );
+            $createdate = JFactory::getDate();
             $nullDate = $this->_db->getNullDate();
 
             $course = new stdClass();
@@ -155,7 +178,7 @@ class SeminarmanModelCourse extends JModel
             $course->capacity = null;
             $course->location = null;
             $course->expire_date = null;
-            $createdate = &JFactory::getDate();
+            $createdate = JFactory::getDate();
             $course->publish_up = $createdate->toUnix();
             $course->publish_down = '';
             $course->expire_down = null;
@@ -184,7 +207,7 @@ class SeminarmanModelCourse extends JModel
     function _initFromTmpl($templateId)
     {
     	$this->_initCourse();
-    	$user = &JFactory::getUser();
+    	$user = JFactory::getUser();
     	
     	// get data from template
     	$query = 'SELECT * FROM #__seminarman_templates WHERE id=' . (int) $templateId;
@@ -228,7 +251,7 @@ class SeminarmanModelCourse extends JModel
     {
         if ($this->_id)
         {
-            $course = &JTable::getInstance('seminarman_courses', '');
+            $course = JTable::getInstance('seminarman_courses', '');
             return $course->checkin($this->_id);
         }
         return false;
@@ -241,11 +264,11 @@ class SeminarmanModelCourse extends JModel
 
             if (is_null($uid))
             {
-                $user = &JFactory::getUser();
+                $user = JFactory::getUser();
                 $uid = $user->get('id');
             }
 
-            $course = &JTable::getInstance('seminarman_courses', '');
+            $course = JTable::getInstance('seminarman_courses', '');
             return $course->checkout($uid, $this->_id);
         }
         return false;
@@ -290,8 +313,8 @@ class SeminarmanModelCourse extends JModel
 
         JRequest::checkToken() or jexit('Invalid Token');
 
-        $course = &$this->getTable('seminarman_courses', '');
-        $user = &JFactory::getUser();
+        $course = $this->getTable('seminarman_courses', '');
+        $user = JFactory::getUser();
 
         $details = JRequest::getVar('details', array(), 'post', 'array');
         $tags = JRequest::getVar('tag', array(), 'post', 'array');
@@ -476,7 +499,7 @@ class SeminarmanModelCourse extends JModel
     {
     	JRequest::checkToken() or jexit('Invalid Token');
     	
-    	$user = &JFactory::getUser();
+    	$user = JFactory::getUser();
     	
     	$query = 'UPDATE #__seminarman_courses SET new=' . (int)$value . ' ' .
     				'WHERE id=' . (int) $cid . ' ' .
@@ -490,7 +513,7 @@ class SeminarmanModelCourse extends JModel
     function setCanceled($cid, $value)
     {
     	JRequest::checkToken() or jexit('Invalid Token');
-    	$user = &JFactory::getUser();
+    	$user = JFactory::getUser();
     	 
     	$query = 'UPDATE #__seminarman_courses SET canceled=' . (int)$value . ' ' .
         				'WHERE id=' . (int) $cid . ' ' .
@@ -503,7 +526,7 @@ class SeminarmanModelCourse extends JModel
 
     function resetHits($id)
     {
-        $row = &$this->getTable('seminarman_courses', '');
+        $row = $this->getTable('seminarman_courses', '');
         $row->load($id);
         $row->hits = 0;
         $row->store();
@@ -578,10 +601,10 @@ class SeminarmanModelCourse extends JModel
 		//$this->setRedirect( 'index.php?option=com_seminarman' );
 
 		$cid	= JRequest::getVar( 'cid', null, 'post', 'array' );
-		$db		=& JFactory::getDBO();
-		$table	=& JTable::getInstance('seminarman_courses', '');
-		//$table =& $this->getTable();
-		$user	= &JFactory::getUser();
+		$db		= JFactory::getDBO();
+		$table	= JTable::getInstance('seminarman_courses', '');
+		//$table = $this->getTable();
+		$user	= JFactory::getUser();
 		$n		= count( $cid );
 		if ($n > 0)
 		{
@@ -658,12 +681,15 @@ class SeminarmanModelCourse extends JModel
        	                      ' c.url AS `COURSE_URL`,'.
        	                      ' c.start_date AS `COURSE_START_DATE`,'.
        	                      ' c.finish_date AS `COURSE_FINISH_DATE`,'.
+    			              ' t.id AS `TUTOR_ID`,'.
        	                      ' t.title AS `TUTOR`,'.
        	                      ' t.firstname AS `TUTOR_FIRSTNAME`,'.
-       	                      ' t.lastname AS `TUTOR_LASTNAME`'.
+       	                      ' t.lastname AS `TUTOR_LASTNAME`,'.
+    			              ' t.salutation AS `TUTOR_SALUTATION`,'.
+    			              ' t.other_title AS `TUTOR_OTHER_TITLE`'.
      	                    ' FROM `#__seminarman_courses` AS c'.
       	                    ' LEFT JOIN `#__seminarman_tutor` AS t ON c.tutor_id = t.id'.
-      	                    ' LEFT JOIN `#__seminarman_application` AS a ON a.course_id = c.id AND a.status IN (1,2)'.
+				' LEFT JOIN `#__seminarman_application` AS a ON a.course_id = c.id'.
       	                    ' WHERE c.id = '. (int) $this->_id);
     	$data = $db->loadAssoc();
     	
@@ -671,7 +697,69 @@ class SeminarmanModelCourse extends JModel
     	$data['CURRENT_DATE'] = JFactory::getDate($data['CURRENT_DATE'])->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1'));
     	$data['COURSE_START_DATE'] = JFactory::getDate($data['COURSE_START_DATE'])->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1'));
     	$data['COURSE_FINISH_DATE'] = JFactory::getDate($data['COURSE_FINISH_DATE'])->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1'));
-
+		$data['CATEGORIES'] = join(', ',ApplicationHelper::getCourseCategoryTitles((int) $this->_id));
+    	// custom tutor fields
+    	$db->setQuery('SELECT f.fieldcode, ct.value FROM `#__seminarman_fields_values_tutors` AS ct'.
+    			' LEFT JOIN `#__seminarman_fields` AS f ON ct.field_id = f.id'.
+    			' WHERE ct.tutor_id = '. (int) $data['TUTOR_ID'] . ' AND f.published = ' . $db->Quote('1') . ' AND f.visible = ' . $db->Quote('1'));
+    	foreach ($db->loadRowList() as $row)
+    		$data[$row[0]] = $row[1];    	
+    	
+    	// start weekday
+    	$langs = JComponentHelper::getParams('com_languages');
+    	$selectedLang = $langs->get('site', 'en-GB');
+    	if ($selectedLang == "de-DE") {
+    		$trans = array(
+    				'Monday'    => 'Montag',
+    				'Tuesday'   => 'Dienstag',
+    				'Wednesday' => 'Mittwoch',
+    				'Thursday'  => 'Donnerstag',
+    				'Friday'    => 'Freitag',
+    				'Saturday'  => 'Samstag',
+    				'Sunday'    => 'Sonntag',
+    				'Mon'       => 'Mo',
+    				'Tue'       => 'Di',
+    				'Wed'       => 'Mi',
+    				'Thu'       => 'Do',
+    				'Fri'       => 'Fr',
+    				'Sat'       => 'Sa',
+    				'Sun'       => 'So',
+    				'January'   => 'Januar',
+    				'February'  => 'Februar',
+    				'March'     => 'März',
+    				'May'       => 'Mai',
+    				'June'      => 'Juni',
+    				'July'      => 'Juli',
+    				'October'   => 'Oktober',
+    				'December'  => 'Dezember'
+    		);
+    		$data['COURSE_START_WEEKDAY'] = (!empty($data['COURSE_START_DATE'])) ? strtr(date('l', strtotime($data['COURSE_START_DATE'])), $trans) : '';
+    	} else {
+    		$data['COURSE_START_WEEKDAY'] = (!empty($data['COURSE_START_DATE'])) ? date('l', strtotime($data['COURSE_START_DATE'])) : '';
+    	}
+    	
+    	// first session infos
+    	$sql = 'SELECT * FROM #__seminarman_sessions'
+    	. ' WHERE published = 1'
+    	. ' AND courseid = ' . $this->_id
+    	. ' ORDER BY session_date';
+    	$db->setQuery($sql);
+    	$course_sessions = $db->loadObjectList();
+    	
+    	if(!empty($course_sessions)){
+    		$data['COURSE_FIRST_SESSION_TITLE'] = $course_sessions[0]->title;
+    		$data['COURSE_FIRST_SESSION_CLOCK'] = date('H:i', strtotime($course_sessions[0]->start_time)) . ' - ' . date('H:i', strtotime($course_sessions[0]->finish_time));
+    		$data['COURSE_FIRST_SESSION_DURATION'] = $course_sessions[0]->duration;
+    		$data['COURSE_FIRST_SESSION_ROOM'] = $course_sessions[0]->session_location;
+    		$data['COURSE_FIRST_SESSION_COMMENT'] = $course_sessions[0]->description;
+    	} else {
+    		$data['COURSE_FIRST_SESSION_TITLE'] = '';
+    		$data['COURSE_FIRST_SESSION_CLOCK'] = '';
+    		$data['COURSE_FIRST_SESSION_DURATION'] = '';
+    		$data['COURSE_FIRST_SESSION_ROOM'] = '';
+    		$data['COURSE_FIRST_SESSION_COMMENT'] = '';
+    	}
+    	
     	return $data;
     }
     
@@ -686,28 +774,45 @@ class SeminarmanModelCourse extends JModel
        	                      ' a.last_name AS `LASTNAME`,'.
        	                      ' a.email AS `EMAIL`'.
      	                    ' FROM `#__seminarman_application` AS a'.
-      	                    ' LEFT JOIN `#__seminarman_courses` AS c ON a.course_id = c.id AND a.status IN (1,2)'.
+				' LEFT JOIN `#__seminarman_courses` AS c ON a.course_id = c.id'.
       	                    ' WHERE c.id = '. (int) $this->_id .
       	                    ' ORDER BY a.id');
     	$data = $db->loadAssocList('id');  	
     	
     	foreach ($data as $k => $v) {
+			$data[$k]['STATUS'] = ApplicationHelper::getStatusText($data[$k]['STATUS_ID']);
     		unset($data[$k]['id']);
     	}
     	
+		//add empty values for not set data
+		$db->setQuery('SELECT fieldcode'.
+				' FROM `#__seminarman_fields` AS f'.
+				' WHERE f.purpose = 0');
+		$result = $db->loadResultArray();
+		if(isset($result)){
+			foreach ($result as $fieldcode) {
+				$field = strtoupper($fieldcode);
+				foreach ($data as $name => $applicationData) {
+					$data[$name][$field] = ' ';
+				}
+			}
+		}
+
     	$db->setQuery('SELECT v.applicationid, fieldcode, value'.
     	                   ' FROM `#__seminarman_fields_values` AS v'.
     	                   ' LEFT JOIN `#__seminarman_fields` AS f ON v.field_id = f.id'.
     	                   ' LEFT JOIN `#__seminarman_application` AS a ON a.id = v.applicationid'.
-    	                   ' WHERE a.status IN (1,2) AND a.course_id = '. (int) $this->_id .
+						   ' WHERE a.course_id = '. (int) $this->_id .
     	                   ' ORDER BY v.applicationid');
-    	foreach ($db->loadRowList() as $record) {
-    		$data[$record[0]][$record[1]] = $record[2];
-    	}
-  	
+		$result = $db->loadRowList();
+		if(isset($result)){
+			foreach ($result as $record) {
+				$data[$record[0]][strtoupper($record[1])] = $record[2];
+
+	    	}
+		}
     	return $data;
     }
-    
 }
 
 ?>

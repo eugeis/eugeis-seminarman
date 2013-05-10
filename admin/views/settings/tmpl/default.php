@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.html.pane');
 
 
-$pane = &JPane::getInstance('tabs', array('startOffset' => 0));
+$pane = JPane::getInstance('tabs', array('startOffset' => 0));
 echo $pane->startPane('pane');
 echo $pane->startPanel(JText::_('COM_SEMINARMAN_MAIN_SETTINGS'), 'panel1');
 
@@ -357,93 +357,322 @@ echo $pane->startPanel(JText::_('COM_SEMINARMAN_PRICE_GROUPS'), 'panel6');
 </form>
 <?php
 echo $pane->endPanel();
-echo $pane->startPanel(JText::_('COM_SEMINARMAN_GROUP_MANAGER'), 'panel7');
+echo $pane->startPanel(JText::_('COM_SEMINARMAN_STATUS_TAB'), 'panel7');
 ?>
-<form action="index.php?option=com_seminarman&view=settings" method="post" name="adminForm">
+<script type="text/javascript">
+    function setManagerGrp() {
+    	document.forms["formCreateManagerGrp"].submit();
+    }
+    function setTutorGrp() {
+    	document.forms["formCreateTutorGrp"].submit();
+    }
+    function setDBSchema() {
+    	document.forms["formFixDB"].submit();
+    }
+    function setGrpRights() {
+    	document.forms["formSetRights"].submit();
+    }
+</script>
 <table class="adminlist">
 	<thead>
 		<tr>
-			<th class="pix30"></th>
-			<th class="proc98" style="width: 50%;"><?php echo JText::_('COM_SEMINARMAN_MANAGER_MEMBERS'); ?></th>
-			<th class="proc98" style="width: 20%;"><?php echo JText::_('COM_SEMINARMAN_ACCESS'); ?></th>
-		    <th class="pix30"></th>
+			<th class="pix10" style="width: 3%;"></th>
+			<th class="proc98" style="width: 40%;"><?php echo JText::_('COM_SEMINARMAN_OBJECT'); ?></th>
+			<th class="proc98" style="width: 45%;"><?php echo JText::_('COM_SEMINARMAN_STATUS'); ?></th>
+		    <th class="pix30" style="width: 12%;"></th>
 		</tr>
 	</thead>
 	<tbody>
-	<tr><td></td><td style="text-align: center;"><?php echo $this->managerlist; ?></td><td><?php echo $this->vmpublist; ?></td><td></td></tr>
-	<tr><td colspan="4" align="center"><br><br></td></tr>
-<!-- <tr><td colspan="4" align="center"><font color="red">Funktion in Plan: </font><input type="submit" value="<?php echo JText::_('COM_SEMINARMAN_SEND_TO_VMPUBLISHER');?>" style="float: none;" /></td></tr>  -->
+		<tr>
+			<td>1.</td>
+			<td align="center"><?php echo JText::_('COM_SEMINARMAN_GROUP_MANAGER'); ?></td>
+			<td align="center">
+			<?php 
+			    if (!empty($this->ManagerGrp)) {
+			    	echo '<font color="green">' . JText::_('COM_SEMINARMAN_STATUS_AVAILABLE') . '</font> (' . $this->ManagerGrp . ')';
+			    } else {
+			    	echo '<font color="red">' . JText::_('COM_SEMINARMAN_STATUS_NOT_AVAILABLE') . '</font>';
+			    }
+			?>
+			</td>
+		    <td align="center">
+		    <?php 
+			    if (empty($this->ManagerGrp)) {
+			    	echo '<button onclick="setManagerGrp()">Create Now!</button>';
+			    }
+			?>
+		    </td>
+		</tr>
+		<tr>
+			<td>2.</td>
+			<td align="center"><?php echo JText::_('COM_SEMINARMAN_GROUP_TUTOR'); ?></td>
+			<td align="center">
+			<?php 
+			    if (!empty($this->TutorGrp)) {
+			    	echo '<font color="green">' . JText::_('COM_SEMINARMAN_STATUS_AVAILABLE') . '</font> (' . $this->TutorGrp . ')';
+			    } else {
+			    	echo '<font color="red">' . JText::_('COM_SEMINARMAN_STATUS_NOT_AVAILABLE') . '</font>';
+			    }
+			?>			
+			</td>
+		    <td align="center">
+		    <?php 
+			    if (empty($this->TutorGrp)) {
+			    	echo '<button onclick="setTutorGrp()">Create Now!</button>';
+			    }
+			?>		    
+		    </td>
+		</tr>
+		<tr>
+			<td>3.</td>
+			<td align="center"><?php echo JText::_('COM_SEMINARMAN_DATABASE_SCHEMA'); ?></td>
+			<td align="center">
+			<?php 
+			    if ($this->dbstati == 1) {
+			    	echo '<font color="green">' . JText::_('COM_SEMINARMAN_STATUS_OK') . '</font>';
+			    } else {
+			    	echo '<font color="red">' . JText::_('COM_SEMINARMAN_STATUS_ERROR') . '</font>';
+			    }
+			?>
+			</td>
+			<td align="center">
+			<?php 
+			    if ($this->dbstati == 0) {
+			    	echo '<button onclick="setDBSchema()">Fix Now!</button>';
+			    }
+			?>
+			</td>
+		</tr>
+		<tr>
+			<td>4.</td>
+			<td align="center"><?php echo JText::_('COM_SEMINARMAN_GROUP_RIGHTS'); ?></td>
+			<td align="center">
+			<?php 
+			    if ($this->grprights == 1) {
+			    	echo '<font color="green">' . JText::_('COM_SEMINARMAN_STATUS_OK') . '</font>';
+			    } else {
+			    	echo '<font color="red">' . JText::_('COM_SEMINARMAN_STATUS_MISSING') . '</font>';
+			    }
+			?>
+			</td>
+		    <td align="center">
+		    <?php 
+		        if ($this->grprights == 0) {
+		        	echo '<button onclick="setGrpRights()">Set Now!</button>';
+		        }
+		    ?>
+		    </td>
+		</tr>
 	</tbody>
 </table>
+<br /><br />
+<?php if ($this->params->get('trigger_virtuemart') == 1): ?>
+<script type="text/javascript">
+    function setVMRelDBSchema() {
+    	document.forms["formFixVMRelDB"].submit();
+    }
+    function setVMCat() {
+    	document.forms["formCreateVMCat"].submit();
+    }
+</script>
+<table class="adminlist">
+	<thead>
+		<tr>
+			<th class="pix10" style="width: 3%;"></th>
+			<th class="proc98" style="width: 40%;">VirtueMart Integration <?php echo JText::_('COM_SEMINARMAN_OBJECT'); ?></th>
+			<th class="proc98" style="width: 45%;"><?php echo JText::_('COM_SEMINARMAN_STATUS'); ?></th>
+		    <th class="pix30" style="width: 12%;"></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>1.</td>
+			<td align="center">VirtueMart Component</td>
+			<td align="center"><?php echo $this->vmstati; ?></td>
+		    <td align="center"></td>
+		</tr>
+		<tr>
+			<td>2.</td>
+			<td align="center">OSG Seminar Manager - VirtueMart Engine Plugin</td>
+			<td align="center"><?php echo $this->vmenginestati; ?></td>
+		    <td align="center"></td>
+		</tr>
+		<tr>
+			<td>3.</td>
+			<td align="center">VirtueMart - Seminarman Sync Plugin</td>
+			<td align="center"><?php echo $this->vmsmstati; ?></td>
+		    <td align="center"></td>
+		</tr>
+		<tr>
+			<td>4.</td>
+			<td align="center">VM Integration Related Database Schema</td>
+			<td align="center">
+			<?php 
+			    if ($this->vmreldbstati == 1) {
+			    	echo '<font color="green">' . JText::_('COM_SEMINARMAN_STATUS_OK') . '</font>';
+			    } else {
+			    	echo '<font color="red">Not set yet or error</font>';
+			    }
+			?>
+			</td>
+		    <td align="center">
+			<?php 
+			    if ($this->vmreldbstati == 0) {
+			    	echo '<button onclick="setVMRelDBSchema()">Set/Fix Now!</button>';
+			    }
+			?>
+		    </td>
+		</tr>
+		<tr>
+			<td>5.</td>
+			<td align="center">Seminar Root-Category in VirtueMart</td>
+			<td align="center">
+			<?php 
+			    if (!empty($this->vmrootcat)) {
+			    	echo $this->vmrootcat;
+			    } else {
+			    	echo '<font color="red">Not created yet or invalid</font>';
+			    }
+			?>
+			</td>
+		    <td align="center">
+		    <?php 
+			    if (empty($this->vmrootcat)) {
+			    	echo '<button onclick="setVMCat()">Create Now!</button>';
+			    }
+			?>
+		    </td>
+		</tr>
+		<tr>
+			<td>6.</td>
+			<td align="center">Compatible Currency in VirtueMart</td>
+			<td align="center"><?php echo $this->vmcompacurrency; ?></td>
+		    <td align="center"></td>
+		</tr>
+		<tr>
+			<td>7.</td>
+			<td align="center">Compatible Tax Rule in VirtueMart</td>
+			<td align="center"><?php echo $this->vmcompatax; ?></td>
+		    <td align="center"></td>
+		</tr>
+		<tr>
+			<td>8.</td>
+			<td align="center">Customer Groups in VirtueMart Applied to Seminarman<br />(max supported: 2)</td>
+			<td align="center"><?php echo $this->vmappliedgrps; ?></td>
+		    <td align="center"></td>
+		</tr>
+		<tr>
+			<td>9.</td>
+			<td align="center">Discount Rules in VirtueMart Applied to Seminarman<br />(max supported: 2)</td>
+			<td align="center"><?php echo $this->vmappliedrules; ?></td>
+		    <td align="center"></td>
+		</tr>	
+	</tbody>
+</table>
+<br /><br />
+<form action="index.php" method="post" name="adminForm" id="formFixVMRelDB">
+	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="option" value="com_seminarman" />
+	<input type="hidden" name="controller" value="settings" />
+	<input type="hidden" name="view" value="settings" />
+	<input type="hidden" name="task" value="vmpowerupdate" />
+</form>
+<form action="index.php" method="post" name="adminForm" id="formCreateVMCat">
+	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="option" value="com_seminarman" />
+	<input type="hidden" name="controller" value="settings" />
+	<input type="hidden" name="view" value="settings" />
+	<input type="hidden" name="task" value="createmainvmcategory" />
+</form>
+<?php endif; ?>
+<table class="adminlist">
+	<thead>
+		<tr>
+			<th class="pix10" style="width: 3%;"></th>
+			<th class="proc98" style="width: 40%;"><?php echo JText::_('COM_SEMINARMAN_MANAGER_MEMBERS'); ?></th>
+			<?php 
+			if ((SeminarmanFunctions::isVMEnabled()) && ($this->params->get('trigger_virtuemart') == 1)) {
+				echo '<th class="proc98" style="width: 30%;">' . JText::_('COM_SEMINARMAN_ACCESS_TO_COM') . '</th><th class="proc98" style="width: 15%;">VM Publisher</th>';
+			} else {
+				echo '<th class="proc98" style="width: 45%;">' . JText::_('COM_SEMINARMAN_ACCESS_TO_COM') . '</th>';
+			}
+			?>
+		    <th class="pix30" style="width: 12%;"></th>
+		</tr>
+	</thead>
+	<tbody>
+	<tr><td></td><td style="text-align: center;"><?php echo $this->managerlist; ?></td>
+	<?php 
+	if ((SeminarmanFunctions::isVMEnabled()) && ($this->params->get('trigger_virtuemart') == 1)) {
+		echo '<td style="text-align: center;">' . $this->manageraccesslst . '</td><td style="text-align: center;">' . $this->managervmpublist . '</td>';
+	} else {
+		echo '<td style="text-align: center;">' . $this->manageraccesslst . '</td>';
+	}
+	?>
+	<td></td></tr>
+	</tbody>
+</table>
+<br /><br />
+<table class="adminlist">
+	<thead>
+		<tr>
+			<th class="pix10" style="width: 3%;"></th>
+			<th class="proc98" style="width: 40%;"><?php echo JText::_('COM_SEMINARMAN_TUTOR_MEMBERS'); ?></th>
+			<?php 
+			if ((SeminarmanFunctions::isVMEnabled()) && ($this->params->get('trigger_virtuemart') == 1)) {
+				echo '<th class="proc98" style="width: 30%;">' . JText::_('COM_SEMINARMAN_ACCESS_TO_COM') . '</th><th class="proc98" style="width: 15%;">VM Publisher</th>';
+			} else {
+				echo '<th class="proc98" style="width: 45%;">' . JText::_('COM_SEMINARMAN_ACCESS_TO_COM') . '</th>';
+			}			
+			?>
+		    <th class="pix30" style="width: 12%;"></th>
+		</tr>
+	</thead>
+	<tbody>
+	<tr><td></td><td style="text-align: center;"><?php echo $this->tutorlist; ?></td>
+	<?php 
+	if ((SeminarmanFunctions::isVMEnabled()) && ($this->params->get('trigger_virtuemart') == 1)) {
+		echo '<td style="text-align: center;">' . $this->tutoraccesslst . '</td><td style="text-align: center;">' . $this->tutorvmpublist . '</td>';
+	} else {
+		echo '<td style="text-align: center;">' . $this->tutoraccesslst . '</td>';
+	}
+	?>
+	<td></td></tr>
+	</tbody>
+</table>
+<br /><br />
+<form action="index.php" method="post" name="adminForm" id="formCreateManagerGrp">
+	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="option" value="com_seminarman" />
+	<input type="hidden" name="controller" value="settings" />
+	<input type="hidden" name="view" value="settings" />
+	<input type="hidden" name="task" value="createmanagergroup" />
+</form>
+<form action="index.php" method="post" name="adminForm" id="formCreateTutorGrp">
+	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="option" value="com_seminarman" />
+	<input type="hidden" name="controller" value="settings" />
+	<input type="hidden" name="view" value="settings" />
+	<input type="hidden" name="task" value="createtrainergroup" />
+</form>
+<form action="index.php" method="post" name="adminForm" id="formFixDB">
+	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="option" value="com_seminarman" />
+	<input type="hidden" name="controller" value="settings" />
+	<input type="hidden" name="view" value="settings" />
+	<input type="hidden" name="task" value="fixDB" />
+</form>
+<form action="index.php" method="post" name="adminForm" id="formSetRights">
+	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="option" value="com_seminarman" />
+	<input type="hidden" name="controller" value="settings" />
+	<input type="hidden" name="view" value="settings" />
+	<input type="hidden" name="task" value="setRights" />
 </form>
 <?php
 echo $pane->endPanel();
-echo $pane->startPanel('Upgrade Wizard', 'panel8');
-?>
-
-<table class="adminlist">
-	<thead>
-		<tr>
-			<th class="pix10"></th>
-			<th class="proc98 center"><?php echo 'Upgrade Wizard'; ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td></td>
-			<td align="center"><font color="#f58d0d">one mouse click to finish the necessary system settings in Joomla!</font></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td align="center"><a href="<?php echo JRoute::_('index.php?option=com_seminarman&view=settings&controller=settings&task=upgradewizard'); ?>"><img src="components/com_seminarman/assets/images/upgrade.png"></a></td>
-		</tr>
-<!--  		<tr>
-			<td>1</td>
-			<td><a href="<?php echo JRoute::_('index.php?option=com_seminarman&view=settings&controller=settings&task=powerupdate'); ?>"><?php echo 'Datenbank aktualisieren'; ?></a></td>
-		</tr>
-		<tr>
-			<td>2</td>
-			<td><a href="<?php echo JRoute::_('index.php?option=com_seminarman&view=settings&controller=settings&task=createmanagergroup'); ?>"><?php echo 'Benutzergruppe "Seminar Manager" erstellen'; ?></a></td>
-		</tr>
-		<tr>
-			<td>3</td>
-			<td><a href="<?php echo JRoute::_('index.php?option=com_seminarman&view=settings&controller=settings&task=createtrainergroup'); ?>"><?php echo 'Benutzergruppe "Seminar Trainer" erstellen'; ?></a></td>
-		</tr>
-		<tr>
-			<td>4</td>
-			<td><a href="<?php echo JRoute::_('index.php?option=com_seminarman&view=settings&controller=settings&task=assignloginrights'); ?>"><?php echo 'Enable Login Rights for "Seminar Manager" and "Seminar Trainer"'; ?></a></td>
-		</tr>
-		<tr>
-			<td>5</td>
-			<td><a href="<?php echo JRoute::_('index.php?option=com_seminarman&view=settings&controller=settings&task=setmodulevisibleforgroups'); ?>"><?php echo 'Enable Backend Menu & Toolbar for "Seminar Manager" and "Seminar Trainer"'; ?></a></td>
-		</tr>
-		<tr>
-			<td>6</td>
-			<td><a href="<?php echo JRoute::_('index.php?option=com_seminarman&view=settings&controller=settings&task=assigncomrights'); ?>"><?php echo 'Set Component (limited in Seminarman) Access Rights for "Seminar Manager" and "Seminar Trainer"'; ?></a></td>
-		</tr> -->
-<!-- 		<tr>
-			<td></td>
-			<td align="center">&nbsp;</td>
-		</tr>
- 		<tr>
-			<td></td>
-			<td align="center"><font color="#f58d0d">Integrate VirtueMart Engine in Seminar Manager</font></td>
-		</tr>
-		<tr>
-			<td>1</td>
-			<td align="center"><a href="<?php echo JRoute::_('index.php?option=com_seminarman&view=settings&controller=settings&task=vmpowerupdate'); ?>"><?php echo 'Execute necessary updates in database'; ?></a></td>
-		</tr>
-		<tr>
-			<td>2</td>
-			<td align="center"><a href="<?php echo JRoute::_('index.php?option=com_seminarman&view=settings&controller=settings&task=createmainvmcategory'); ?>"><?php echo 'Hauptkategorie "Seminare" in VirtueMart erstellen'; ?></a></td>
-		</tr>   -->
-	</tbody>
-</table>
-
-<?php
-echo $pane->endPanel();
-echo $pane->startPanel('Info', 'panel9');
-include (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_seminarman' . DS . 'info.html');
+echo $pane->startPanel('Info', 'panel8');
+include (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_seminarman' . DS . 'info.php');
 echo $pane->endPanel();
 echo $pane->endPane();
 ?>

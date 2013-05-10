@@ -29,10 +29,10 @@ class SeminarmanViewCategories extends JView
     {
         $mainframe = JFactory::getApplication();
 
-        $user = &JFactory::getUser();
-        $db = &JFactory::getDBO();
-        $document = &JFactory::getDocument();
-        $lang = &JFactory::getLanguage();
+        $user = JFactory::getUser();
+        $db = JFactory::getDBO();
+        $document = JFactory::getDocument();
+        $lang = JFactory::getLanguage();
 
         JHTML::_('behavior.tooltip');
 
@@ -73,8 +73,8 @@ class SeminarmanViewCategories extends JView
         JToolBarHelper::divider();
         JToolBarHelper::deleteList();
 
-        $rows = &$this->get('Data');
-        $pageNav = &$this->get('Pagination');
+        $rows = $this->get('Data');
+        $pageNav = $this->get('Pagination');
 
         $lists['state'] = JHTML::_('grid.state', $filter_state, JText::_('JPUBLISHED'), JText::_('JUNPUBLISHED'));
 
@@ -96,7 +96,7 @@ class SeminarmanViewCategories extends JView
         
         }else{
         	
-$app =& JFactory::getApplication();
+$app = JFactory::getApplication();
 $app->redirect('index.php?option=com_seminarman', 'Only seminar manager group can access categories.');	
         	
         }

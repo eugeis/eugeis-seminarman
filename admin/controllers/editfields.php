@@ -47,13 +47,13 @@ class SeminarmanControllerEditfields extends JController
 	 **/
 	function removeField()
 	{
-		$mainframe	=& JFactory::getApplication();
+		$mainframe	= JFactory::getApplication();
 
  		$ids	= JRequest::getVar( 'cid', array(), 'post', 'array' );
 
 		foreach( $ids as $id )
 		{
-			$table	=& JTable::getInstance( 'editfield', 'Table' );
+			$table	= JTable::getInstance( 'editfield', 'Table' );
 			$table->load( $id );
 
 			if(!$table->delete( $id ))
@@ -78,21 +78,21 @@ class SeminarmanControllerEditfields extends JController
 	 **/
 	function saveOrder()
 	{
-		$mainframe	=& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		// Determine whether to order it up or down
 		$direction	= ( JRequest::getWord( 'task' , '' ) == 'orderup' ) ? -1 : 1;
 
 		// Get the ID in the correct location
  		$id			= JRequest::getVar( 'cid', array(), 'post', 'array' );
-		$db			=& JFactory::getDBO();
+		$db			= JFactory::getDBO();
 
 		if( isset( $id[0] ) )
 		{
 			$id		= (int) $id[0];
 
 			// Load the JTable Object.
-			$table	=& JTable::getInstance( 'editfield' , 'table' );
+			$table	= JTable::getInstance( 'editfield' , 'table' );
 
 			$table->load( $id );
 
@@ -242,7 +242,7 @@ class SeminarmanControllerEditfields extends JController
 				$table->move( $direction );
 			}
 
-			$cache	=& JFactory::getCache( 'com_content');
+			$cache	= JFactory::getCache( 'com_content');
 			$cache->clean();
 
 			$mainframe->redirect( 'index.php?option=com_seminarman&view=editfields' );
@@ -258,7 +258,7 @@ function newfield()   {
 	JRequest::setVar('hidemainmenu', 1);
 
 	$model = $this->getModel('editfield');
-	$user = &JFactory::getUser();
+	$user = JFactory::getUser();
 
 	if ($model->isCheckedOut($user->get('id')))
 	{
@@ -279,7 +279,7 @@ function newgroup()   {
 	JRequest::setVar('hidemainmenu', 1);
 
 	$model = $this->getModel('editfield');
-	$user = &JFactory::getUser();
+	$user = JFactory::getUser();
 
 	if ($model->isCheckedOut($user->get('id')))
 	{

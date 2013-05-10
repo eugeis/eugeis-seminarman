@@ -49,6 +49,7 @@ defined('_JEXEC') or die('Restricted access');
 				<select name="purpose">
 					<option value="0"<?php if ($this->row->purpose == 0) echo ' selected="selected"'?>><?php echo JText::_('COM_SEMINARMAN_BOOKINGS'); ?></option>
 					<option value="1"<?php if ($this->row->purpose == 1) echo ' selected="selected"'?>><?php echo JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'); ?></option>
+					<option value="2"<?php if ($this->row->purpose == 2) echo ' selected="selected"'?>><?php echo JText::_('COM_SEMINARMAN_TUTOR_PROFILE'); ?></option>
 				</select>
 			</li>
 		</ul>

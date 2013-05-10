@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS
 `#__seminarman_favourites`,
 `#__seminarman_fields`,
 `#__seminarman_fields_values`,
+`#__seminarman_fields_values_tutors`,
 `#__seminarman_fields_values_users`,
 `#__seminarman_fields_values_users_static`,
 `#__seminarman_fields_values_salesprospect`,

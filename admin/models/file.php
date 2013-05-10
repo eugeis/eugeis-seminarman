@@ -82,7 +82,7 @@ class SeminarmanModelFile extends JModel
     {
         if ($this->_id)
         {
-            $tag = &JTable::getInstance('seminarman_files', '');
+            $tag = JTable::getInstance('seminarman_files', '');
             return $tag->checkout($uid, $this->_id);
         }
         return false;
@@ -95,11 +95,11 @@ class SeminarmanModelFile extends JModel
 
             if (is_null($uid))
             {
-                $user = &JFactory::getUser();
+                $user = JFactory::getUser();
                 $uid = $user->get('id');
             }
 
-            $file = &JTable::getInstance('seminarman_files', '');
+            $file = JTable::getInstance('seminarman_files', '');
             return $file->checkout($uid, $this->_id);
         }
         return false;
@@ -128,7 +128,7 @@ class SeminarmanModelFile extends JModel
 
     function store($data)
     {
-        $file = &$this->getTable('seminarman_files', '');
+        $file = $this->getTable('seminarman_files', '');
 
         if (!$file->bind($data))
         {

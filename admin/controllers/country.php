@@ -35,7 +35,7 @@ class seminarmanControllerCountry extends seminarmanController
         $this->parentviewname = 'countries';
     }
 
-    function display()
+    function display($cachable = false, $urlparams = false)
     {
         switch ($this->getTask())
         {

@@ -92,7 +92,7 @@ class seminarmanModelapplications extends JModel
         $where = $this->_buildContentWhere();
         $orderby = $this->_buildContentOrderBy();
 
-        $query = ' SELECT a.*, u.name AS editor, j.reference_number, j.title, j.id AS courseid, j.start_date, j.finish_date' .
+        $query = ' SELECT a.*, u.name AS editor, j.reference_number, j.title, j.id AS courseid, j.start_date, j.finish_date, j.code' .
             ' FROM #__seminarman_' . $this->childviewname . ' AS a ' .
             ' LEFT JOIN #__users AS u ON u.id = a.checked_out ' .
             ' LEFT JOIN #__seminarman_courses AS j ON j.id = a.course_id' . $where . $orderby;
@@ -124,7 +124,7 @@ class seminarmanModelapplications extends JModel
     function _buildContentWhere()
     {
         $mainframe = JFactory::getApplication();
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $filter_state = $mainframe->getUserStateFromRequest('com_seminarman' . $this->
             childviewname . '.filter_state', 'filter_state', '', 'word');
     	$filter_courseid     = $mainframe->getUserStateFromRequest( 'com_seminarman'.'.applications.filter_courseid',    'filter_courseid',      0,          'int' );
@@ -161,6 +161,10 @@ class seminarmanModelapplications extends JModel
     	if ($search && $filter_search == 3) {
     		$where[] = ' LOWER(a.email) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
     	}
+    	
+    	if ($search && $filter_search == 4) {
+    		$where[] = ' LOWER(j.code) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
+    	} 
 
        	switch ($filter_state)
        	{
@@ -193,7 +197,7 @@ class seminarmanModelapplications extends JModel
 	*/
 	function getTitles()
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		if(JHTMLSeminarman::UserIsCourseManager()){
 		$sql = 'SELECT id, title as title'
 		. ' FROM #__seminarman_courses'
@@ -211,4 +215,89 @@ class seminarmanModelapplications extends JModel
 	}
 
 
+
+	/**
+	 * Returns an array of custom editfields which are created from the back end.
+	 *
+	 * @access	public
+	 * @param	string 	User's id.
+	 * @returns array  An objects of custom fields.
+	 */
+	function getEditableCustomfields($applicationId	= null)
+	{
+		$db   = $this->getDBO();
+		$data = array();
+		$user = JFactory::getUser();
+
+		$data['id']		= $user->id;
+		$data['name']	= $user->name;
+		$data['email']	= $user->email;
+
+		if (!$user->guest)
+		{
+				
+			$q = 'SELECT f.*, v.value FROM `#__seminarman_fields` AS f'.
+					' LEFT JOIN `#__seminarman_fields_values` AS v'.
+					' ON f.id = v.field_id AND v.applicationid = '.(int)$applicationId.
+					' WHERE f.published=1 AND f.visible=1 ORDER BY f.ordering';
+			$db->setQuery($q);
+		}
+		else
+		{
+			$q = 'SELECT f.*, v.value FROM `#__seminarman_fields` AS f'.
+					' LEFT JOIN `#__seminarman_fields_values` AS v'.
+					' ON f.id = v.field_id AND v.applicationid = 0'.
+					' WHERE f.published=1 AND f.visible=1 ORDER BY f.ordering';
+			$db->setQuery($q);
+		}
+
+		$result	= $db->loadAssocList();
+
+		if($db->getErrorNum())
+		{
+			JError::raiseError( 500, $db->stderr());
+		}
+
+		$data['fields']	= array();
+		for($i = 0; $i < count($result); $i++)
+		{
+			// We know that the groups will definitely be correct in ordering.
+			if($result[$i]['type'] == 'group' && $result[$i]['purpose'] == 0)
+			{
+				$add = True;
+				$group	= $result[$i]['name'];
+
+				// Group them up
+				if(!isset($data['fields'][$group]))
+				{
+					// Initialize the groups.
+					$data['fields'][$group]	= array();
+				}
+			}
+			if($result[$i]['type'] == 'group' && $result[$i]['purpose'] != 0)
+				$add = False;
+
+			// Re-arrange options to be an array by splitting them into an array
+			if(isset($result[$i]['options']) && $result[$i]['options'] != '')
+			{
+				$options	= $result[$i]['options'];
+				$options	= explode("\n", $options);
+
+				$countOfOptions = count($options);
+				for($x = 0; $x < $countOfOptions; $x++){
+					$options[$x] = trim($options[$x]);
+				}
+
+				$result[$i]['options']	= $options;
+
+			}
+
+
+			if($result[$i]['type'] != 'group' && isset($add)){
+				if($add)
+					$data['fields'][$group][]	= $result[$i];
+			}
+		}
+		return $data;
+	}
 }

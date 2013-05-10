@@ -28,19 +28,21 @@ class SeminarmanViewTemplates extends JView{
     function display($tpl = null)
     {
         $mainframe = JFactory::getApplication();
-        $params = &$mainframe->getParams('com_seminarman');
+        $params = $mainframe->getParams('com_seminarman');
+        
+        $Itemid = JRequest::getInt('Itemid');
         
         if ($params->get('enable_salesprospects', 0) == 0){
         	$mainframe->redirect('index.php', '');
         }
 
-        $document = &JFactory::getDocument();
-        $user = &JFactory::getUser();
-        $menus = &JSite::getMenu();
-        $lang = &JFactory::getLanguage();
+        $document = JFactory::getDocument();
+        $user = JFactory::getUser();
+        $menus = JFactory::getApplication()->getMenu();
+        $lang = JFactory::getLanguage();
         $menu = $menus->getActive();
-        $dispatcher = &JDispatcher::getInstance();
-        $uri = &JFactory::getURI();
+        $dispatcher = JDispatcher::getInstance();
+        $uri = JFactory::getURI();
 
         $limitstart = JRequest::getVar('limitstart', 0, '', 'int');
         $cid = JRequest::getInt('cid', 0);
@@ -63,12 +65,12 @@ class SeminarmanViewTemplates extends JView{
         $document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #seminarman dd { height: 1%; }</style><![endif]-->');
 
         if (!$user->id || $user->id == 0){
-            $document = &JFactory::getDocument();
+            $document = JFactory::getDocument();
         }
 
-        $document = &JFactory::getDocument();
+        $document = JFactory::getDocument();
 
-        $template = &$this->get('Template');
+        $template = $this->get('Template');
         $template->currency_price = $params->get('currency');
         
         // calculate displayed price
@@ -81,7 +83,7 @@ class SeminarmanViewTemplates extends JView{
         setlocale(LC_NUMERIC, $old_locale);
         
         
-        $salesProspectsData = &$this->get('SalesProspects');
+        $salesProspectsData = $this->get('SalesProspects');
 
         if (($template->id == 0)){
             $id = JRequest::getInt('id', 0);
@@ -89,14 +91,14 @@ class SeminarmanViewTemplates extends JView{
         }
 
         if ($params->get('show_tags')){
-            $tags = &$this->get('Tags');
+            $tags = $this->get('Tags');
         }
 
         if ($params->get('show_categories')){
-            $categories = &$this->get('Categories');
+            $categories = $this->get('Categories');
         }
 
-        $files = &$this->get('Files');
+        $files = $this->get('Files');
 
         if ($params->get('trigger_onprepare_content')){
             JPluginHelper::importPlugin('content');
@@ -105,12 +107,12 @@ class SeminarmanViewTemplates extends JView{
 
         $cats = new seminarman_cats($cid);
         $parents = $cats->getParentlist();
-        $pathway = &$mainframe->getPathWay();
+        $pathway = $mainframe->getPathWay();
 
         foreach ($parents as $parent){
-            $pathway->addItem($this->escape($parent->title), JRoute::_('index.php?view=category&cid=' . $parent->categoryslug));
+            $pathway->addItem($this->escape($parent->title), JRoute::_('index.php?view=category&cid=' . $parent->categoryslug . '&Itemid=' . $Itemid));
         }
-        $pathway->addItem($this->escape($template->title), JRoute::_('index.php?view=templates&id=' . $template->slug));
+        $pathway->addItem($this->escape($template->title), JRoute::_('index.php?view=templates&id=' . $template->slug . '&Itemid=' . $Itemid));
 
         if (is_object($menu)){
             $menu_params = new JParameter($menu->params);
@@ -148,19 +150,20 @@ class SeminarmanViewTemplates extends JView{
     
         $params->merge($itemParams);
 
-        $print_link = JRoute::_('index.php?view=templates&cid=' . $template->categoryslug . '&id=' . $template->slug . '&pop=1&tmpl=component');
+        $print_link = JRoute::_('index.php?view=templates&cid=' . $template->categoryslug . '&id=' . $template->slug . '&Itemid=' . $Itemid . '&pop=1&tmpl=component');
         
         $default = isset($salesProspectsData->salutationStr) ? $salesProspectsData->salutationStr : $salesProspectsData->salutation;
         $lists['salutation'] = JHTMLSeminarman::getListFromXML('Salutation', 'salutation', 0, $default);
         $results = $mainframe->triggerEvent( 'onPrepareContent', array( &$template, &$params, 0 ));
 
         $data = new stdClass();
-        $model = &$this->getModel('templates');
+        $model = $this->getModel('templates');
         $data->customfields = $model->getEditableCustomfields($salesProspectsData->id);
         
         CMFactory::load('libraries' , 'customfields');
 
-        $this->assignRef('fields', $data->customfields ['fields']);
+        $fields = $data->customfields ['fields'];
+        $this->assignRef('fields', $fields);
         $this->assignRef('attendeedata', $salesProspectsData);
         $this->assignRef('template', $template);
         $this->assignRef('tags', $tags);
@@ -180,13 +183,13 @@ class SeminarmanViewTemplates extends JView{
     {
         $mainframe = JFactory::getApplication();
 
-        $document = &JFactory::getDocument();
-        $user = &JFactory::getUser();
-        $uri = &JFactory::getURI();
-        $template = &$this->get('Template');
-        $tags = &$this->get('Alltags');
-        $used = &$this->get('Usedtags');
-        $params = &$mainframe->getParams('com_seminarman');
+        $document = JFactory::getDocument();
+        $user = JFactory::getUser();
+        $uri = JFactory::getURI();
+        $template = $this->get('Template');
+        $tags = $this->get('Alltags');
+        $used = $this->get('Usedtags');
+        $params = $mainframe->getParams('com_seminarman');
 
         JHTML::_('behavior.formvalidation');
         JHTML::_('behavior.tooltip');
@@ -205,13 +208,13 @@ class SeminarmanViewTemplates extends JView{
 
         $lists = $this->_buildEditLists();
 
-        $editor = &JFactory::getEditor();
+        $editor = JFactory::getEditor();
 
         $title = $template->id ? JText::_('Edit') : JText::_('New');
 
         $document->setTitle($title);
 
-        $pathway = &$mainframe->getPathWay();
+        $pathway = $mainframe->getPathWay();
         $pathway->addItem($title, '');
         
 
@@ -228,7 +231,7 @@ class SeminarmanViewTemplates extends JView{
         // $data['name']	= $user->name;
         // /  $data['email']	= $user->email;
         // Check if user is really allowed to edit
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
         $data = new stdClass();
         $data->customfields = $model->getEditableCustomfields($user->id);
 
@@ -236,8 +239,10 @@ class SeminarmanViewTemplates extends JView{
         // $tmpl	= new CMTemplate();
         // $tmpl->set( 'fields' , $data->customfields ['fields'] );
         // echo $tmpl->fetch( 'customfields.edit' );
-        $this->assign('action', $uri->toString());
-        $this->assignRef('fields', $data->customfields ['fields']);
+        $fields = $data->customfields ['fields'];
+        $action = $uri->toString();
+        $this->assignRef('fields', $fields);
+        $this->assign('action', $action);
         $this->assignRef('template', $template);
         $this->assignRef('params', $params);
         $this->assignRef('lists', $lists);

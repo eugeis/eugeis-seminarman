@@ -30,9 +30,9 @@ class SeminarmanViewEditcss extends JView
 
         $mainframe = JFactory::getApplication();
 
-        $document = &JFactory::getDocument();
-        $user = &JFactory::getUser();
-        $lang = &JFactory::getLanguage();
+        $document = JFactory::getDocument();
+        $user = JFactory::getUser();
+        $lang = JFactory::getLanguage();
 
         $option = JRequest::getVar('option');
         $filename = 'seminarman.css';
@@ -57,7 +57,7 @@ class SeminarmanViewEditcss extends JView
         $content = JFile::read($css_path);
 
         jimport('joomla.client.helper');
-        $ftp = &JClientHelper::setCredentialsFromRequest('ftp');
+        $ftp = JClientHelper::setCredentialsFromRequest('ftp');
 
         if ($content !== false)
         {

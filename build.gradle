@@ -1,0 +1,102 @@
+group = 'eugeis-seminarman'
+version = '1.0-SNAPSHOT'
+defaultTasks 'joomla'
+
+ext.joomlaHome = 'D:/OpenServer/domains/localhost/j25de'
+
+def joomlaExists = { project.file(joomlaHome).exists() }
+
+//admin
+task syncAdminLangDE(type: Copy) {
+	onlyIf joomlaExists
+	from 'languages/admin/de-DE.com_seminarman.ini'
+	from 'languages/admin/de-DE.com_seminarman.sys.ini'
+	into "$joomlaHome/administrator/language/de-DE"
+}
+
+task syncAdminLangEN(type: Copy) {
+    onlyIf joomlaExists
+    from 'languages/admin/en-GB.com_seminarman.ini'
+    from 'languages/admin/en-GB.com_seminarman.sys.ini'
+    into "$joomlaHome/administrator/language/en-GB"
+}
+
+task syncAdmin(dependsOn: ['syncAdminLangDE', 'syncAdminLangEN'], type: Sync) {
+    onlyIf joomlaExists
+    from 'admin'
+    from 'script.php'
+	from 'seminarman.xml'
+    into "$joomlaHome/administrator/components/com_seminarman"
+}
+
+//site
+task syncSiteDE(type: Copy) {
+    onlyIf joomlaExists
+    from 'languages/site/de-DE.com_seminarman.ini'
+    from 'languages/site/de-DE.com_seminarman.sys.ini'
+    into "$joomlaHome/language/de-DE"
+}
+
+task syncSiteEN(type: Copy) {
+	onlyIf joomlaExists
+	from 'languages/site/en-GB.com_seminarman.ini'
+    from 'languages/site/en-GB.com_seminarman.sys.ini'
+    into "$joomlaHome/language/en-GB"
+}
+
+task syncSite(dependsOn: ['syncSiteDE', 'syncSiteEN'], type: Sync) {
+	onlyIf joomlaExists
+    from 'site'
+	into "$joomlaHome/components/com_seminarman"
+}
+
+task joomla(dependsOn: ['syncAdmin', 'syncSite']) {
+	onlyIf joomlaExists
+}
+
+
+task joomlaOld {
+	onlyIf joomlaExists
+	
+	doLast {
+		//copy admin
+		copy {
+		    from 'admin'
+		    into "$joomlaHome/administrator/components/com_seminarman"
+		}
+		copy {
+		    from 'script.php'
+		    //from 'seminarman.xml'
+		    into "$joomlaHome/administrator/components/com_seminarman"
+		}
+		copy {
+		    from 'languages/admin/de-DE.com_seminarman.ini'
+		    from 'languages/admin/de-DE.com_seminarman.sys.ini'
+		    into "$joomlaHome/administrator/language/de-DE"
+		}
+		copy {
+		    from 'languages/admin/en-GB.com_seminarman.ini'
+		    from 'languages/admin/en-GB.com_seminarman.sys.ini'
+		    into "$joomlaHome/administrator/language/en-GB"
+		}
+		
+		//copy site
+		copy {
+		    from 'site'
+		    into "$joomlaHome/components/com_seminarman"
+		}
+		copy {
+		    from 'languages/site/de-DE.com_seminarman.ini'
+		    from 'languages/site/de-DE.com_seminarman.sys.ini'
+		    into "$joomlaHome/language/de-DE"
+		}
+		copy {
+		    from 'languages/site/en-GB.com_seminarman.ini'
+		    from 'languages/site/en-GB.com_seminarman.sys.ini'
+		    into "$joomlaHome/language/en-GB"
+		}
+	}
+}
+
+
+

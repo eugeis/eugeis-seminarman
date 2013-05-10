@@ -101,8 +101,7 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 	/**
 	 *images directory
 	 */
-// 	define ('K_PATH_IMAGES', K_PATH_MAIN.'images/');
-	define ('K_PATH_IMAGES', JPATH_ROOT);
+	define ('K_PATH_IMAGES', K_PATH_MAIN.'images/');
 
 	/**
 	 * blank image
@@ -220,7 +219,7 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 	define('HEAD_MAGNIFICATION', 1.1);
 
 	/**
-	 * height of cell repect font height
+	 * height of cell respect font height
 	 */
 	define('K_CELL_HEIGHT_RATIO', 1.25);
 

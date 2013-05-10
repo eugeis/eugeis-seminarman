@@ -58,7 +58,7 @@ class seminarmanModelSalesProspect extends JModel
 	{
 		JTable::addIncludePath(JPATH_ADMINISTRATOR . DS .'components'. DS .'com_seminarman'. DS .'tables');
 
-		$row = &JTable::getInstance('SalesProspect', 'Table');
+		$row = JTable::getInstance('SalesProspect', 'Table');
 		$db = $this->getDBO();
 
 		if (!$row->bind($data)) {
@@ -83,7 +83,7 @@ class seminarmanModelSalesProspect extends JModel
 			return false;
 		}
 		
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		if ($user->guest)
 			$uid = $data['user_id'];
 		else
@@ -100,7 +100,7 @@ class seminarmanModelSalesProspect extends JModel
 
 	function saveCustomfields($requestid, $userId, $fields)
 	{
-		$db = &$this->getDBO();
+		$db = $this->getDBO();
 	
 		foreach ($fields as $id => $value) {
 			
@@ -110,7 +110,7 @@ class seminarmanModelSalesProspect extends JModel
 			$db->setQuery($q);
 			$db->query();
 			
-			$user = &JFactory::getUser();
+			$user = JFactory::getUser();
 			$q = 'REPLACE INTO `#__seminarman_fields_values_users`'.
 			     ' (user_id, fieldcode, value)'.
 			     ' VALUES ('.(int)$userId.',(SELECT fieldcode FROM `#__seminarman_fields` WHERE id='.(int)$id.'),'.$db->quote($value).')';

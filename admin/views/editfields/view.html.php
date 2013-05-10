@@ -37,14 +37,14 @@ class SeminarmanViewEditfields extends JView
 	 **/
 	function display( $tpl = null )
 	{
-		$customfields	=& $this->getModel( 'Editfields' );
+		$customfields	= $this->getModel( 'Editfields' );
 
-		$fields		=& $customfields->getFields();
-		$pagination	=& $customfields->getPagination();
+		$fields		= $customfields->getFields();
+		$pagination	= $customfields->getPagination();
 
 		// Load tooltips
 		JHTML::_('behavior.tooltip', '.hasTip');
-		$document = &JFactory::getDocument();
+		$document = JFactory::getDocument();
 
 
 		JToolBarHelper::title( JText::_('COM_SEMINARMAN_CUSTOM_FIELDS'), 'config' );
@@ -76,7 +76,7 @@ class SeminarmanViewEditfields extends JView
 	 **/
 	function getFieldText( $type )
 	{
-		$model	=& $this->getModel( 'Editfields' );
+		$model	= $this->getModel( 'Editfields' );
 		$types	= $model->getCustomfieldsTypes();
 		$value	= isset( $types[ $type ] ) ? $types[ $type ] : '';
 

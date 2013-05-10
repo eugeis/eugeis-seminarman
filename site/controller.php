@@ -29,12 +29,12 @@ class SeminarmanController extends JController
         parent::__construct();
     }
 
-    function display()
+    function display($cachable = false, $urlparams = false)
     {
 
 
 
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
         if ($user->get('id') || JRequest::getVar('view') == 'category')
         {
             parent::display(false);
@@ -47,16 +47,16 @@ class SeminarmanController extends JController
 
     function add()
     {
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
 
-        $view = &$this->getView('Courses', 'html');
+        $view = $this->getView('Courses', 'html');
 
         if (!$user->authorize('com_seminarman', 'add'))
         {
             JError::raiseError(403, JText::_("ALERTNOTAUTH"));
         }
 
-        $model = &$this->getModel('Courses');
+        $model = $this->getModel('Courses');
 
         $view->setModel($model, true);
 
@@ -70,8 +70,8 @@ class SeminarmanController extends JController
 
         JRequest::checkToken() or jexit('Invalid Token');
 
-        $db = &JFactory::getDBO();
-        $user = &JFactory::getUser();
+        $db = JFactory::getDBO();
+        $user = JFactory::getUser();
 
         $model = $this->getModel('Courses');
 
@@ -156,7 +156,7 @@ class SeminarmanController extends JController
         } else
         {
 
-            $cache = &JFactory::getCache('com_seminarman');
+            $cache = JFactory::getCache('com_seminarman');
             $cache->clean();
         }
 
@@ -175,9 +175,9 @@ class SeminarmanController extends JController
     function cancel()
     {
 
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
 
-        $course = &JTable::getInstance('seminarman_courses', '');
+        $course = JTable::getInstance('seminarman_courses', '');
         $course->bind(JRequest::get('post'));
 
         if ($user->authorize('com_seminarman', 'edit') || $user->authorize('com_seminarman',
@@ -221,7 +221,7 @@ class SeminarmanController extends JController
             $msg = JText::_('COM_SEMINARMAN_FAVOURITE_NOT_ADDED');
         }
 
-        $cache = &JFactory::getCache('com_seminarman');
+        $cache = JFactory::getCache('com_seminarman');
         $cache->clean();
 
         $this->setRedirect(JRoute::_('index.php?view=courses&cid=' . $cid . '&id=' . $id, false),
@@ -245,7 +245,7 @@ class SeminarmanController extends JController
             $msg = JText::_('COM_SEMINARMAN_FAVOURITE_NOT_REMOVED');
         }
 
-        $cache = &JFactory::getCache('com_seminarman');
+        $cache = JFactory::getCache('com_seminarman');
         $cache->clean();
 
         if ($cid)
@@ -268,7 +268,7 @@ class SeminarmanController extends JController
         jimport('joomla.filesystem.file');
 
         $id = JRequest::getInt('fileid', 0);
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
 
         $query = 'SELECT filename' . ' FROM #__seminarman_files' . ' WHERE id = ' . (int)$id;
         $db->setQuery($query);
@@ -285,7 +285,7 @@ class SeminarmanController extends JController
         $size = filesize($abspath);
         $ext = strtolower(JFile::getExt($file));
 
-        $filetable = &JTable::getInstance('seminarman_files', '');
+        $filetable = JTable::getInstance('seminarman_files', '');
         $filetable->hit($id);
 
         if (ini_get('zlib.output_compression'))

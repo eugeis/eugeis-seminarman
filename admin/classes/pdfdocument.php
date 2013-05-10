@@ -43,7 +43,7 @@ class PdfDocument extends FPDI
 		$this->setPageOrientation($template->orientation, true, $template->margin_bottom);
 		$this->setImageScale(PDF_IMAGE_SCALE_RATIO);
 		$this->setLanguageArray($l);
-		$this->SetFont('helvetica', '', 10);
+		$this->SetFont('FreeSans', '', 10);
 		$this->AddPage();
 		$this->lastPage();
 		
@@ -81,6 +81,7 @@ class PdfInvoice extends PdfDocument
 	public function __construct($template, $data)
 	{
 		parent::__construct($template);
+		
 		$text = $this->replace($template->html, $data);
 		$this->addHTMLBox($text);
 	}
@@ -123,7 +124,7 @@ class PdfAttList extends PdfDocument
 			$html = $template->html;
 		}
 		
-		$html = $this->replace($html, $data);		
+		$html = $this->replace($html, $data);	
 		
 		$this->addHTMLBox($html);
 	}

@@ -8,7 +8,7 @@
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.html.pane');
 
-$editor = &JFactory::getEditor();
+$editor = JFactory::getEditor();
 JHTML::_('behavior.calendar');
 JHTMLBehavior::formvalidation();
 
@@ -78,7 +78,7 @@ if(!isset($this->emailtemplate->bcc))
 		<label for="html"><?php echo JText::_('COM_SEMINARMAN_BODY');?></label>
 		<div class="clr"></div>
 <?php
-$editor = &JFactory::getEditor();
+$editor = JFactory::getEditor();
 echo $editor->display('body', $this->emailtemplate->body, '100%', '500', '60', '20', false);
 ?>
 	</fieldset>	
@@ -109,6 +109,12 @@ foreach ($this->fields as $field)
 			<li>{COURSE_URL}: <? echo JText::_('COM_SEMINARMAN_HYPERLINK'); ?></li>
 			<li>{COURSE_START_DATE}: <? echo JText::_('COM_SEMINARMAN_START_DATE'); ?></li>
 			<li>{COURSE_FINISH_DATE}: <? echo JText::_('COM_SEMINARMAN_FINISH_DATE'); ?></li>
+			<li>{COURSE_START_WEEKDAY}: <? echo JText::_('COM_SEMINARMAN_START_WEEKDAY'); ?></li>
+			<li>{COURSE_FIRST_SESSION_TITLE}: <? echo JText::_('COM_SEMINARMAN_COURSE_FIRST_SESSION_TITLE'); ?></li>
+			<li>{COURSE_FIRST_SESSION_CLOCK}: <? echo JText::_('COM_SEMINARMAN_COURSE_FIRST_SESSION_CLOCK'); ?></li>
+			<li>{COURSE_FIRST_SESSION_DURATION}: <? echo JText::_('COM_SEMINARMAN_COURSE_FIRST_SESSION_DURATION'); ?></li>
+			<li>{COURSE_FIRST_SESSION_ROOM}: <? echo JText::_('COM_SEMINARMAN_COURSE_FIRST_SESSION_ROOM'); ?></li>
+			<li>{COURSE_FIRST_SESSION_COMMENT}: <? echo JText::_('COM_SEMINARMAN_COURSE_FIRST_SESSION_COMMENT'); ?></li>
 			<li>{PRICE_PER_ATTENDEE}: <? echo JText::_('COM_SEMINARMAN_PRICE_PER_ATTENDEE'); ?></li>
 			<li>{PRICE_PER_ATTENDEE_VAT}: <? echo JText::_('COM_SEMINARMAN_PRICE_PER_ATTENDEE_VAT'); ?></li>
 			<li>{PRICE_TOTAL}: <? echo JText::_('COM_SEMINARMAN_TOTAL_PRICE'); ?></li>
@@ -117,9 +123,11 @@ foreach ($this->fields as $field)
 			<li>{PRICE_VAT}: <? echo JText::_('COM_SEMINARMAN_VAT_ABS'); ?></li>
 			<li>{PRICE_TOTAL_DISCOUNT}: <? echo JText::_('COM_SEMINARMAN_TOTAL_DISCOUNT'); ?></li>
 			<li>{PRICE_TOTAL_ORIG_VAT}: <? echo JText::_('COM_SEMINARMAN_TOTAL_ORIG_VAT'); ?></li>
-			<li>{TUTOR}: <? echo JText::_('COM_SEMINARMAN_TUTOR'); ?></li>
+			<li>{TUTOR}: <? echo JText::_('COM_SEMINARMAN_DISPLAY_NAME'); ?></li>
 			<li>{TUTOR_FIRSTNAME}: <? echo JText::_('COM_SEMINARMAN_FIRST_NAME'); ?></li>
 			<li>{TUTOR_LASTNAME}: <? echo JText::_('COM_SEMINARMAN_LAST_NAME'); ?></li>
+			<li>{TUTOR_SALUTATION}: <? echo JText::_('COM_SEMINARMAN_SALUTATION'); ?></li>
+			<li>{TUTOR_OTHER_TITLE}: <? echo JText::_('COM_SEMINARMAN_OTHER_TITLE'); ?></li>
 			<li>{GROUP}: <? echo JText::_('COM_SEMINARMAN_GROUP'); ?></li>
 			<li>{GROUP_DESC}: <? echo JText::_('COM_SEMINARMAN_GROUP').' '.JText::_('COM_SEMINARMAN_DESCRIPTION'); ?></li>
 			<li>{EXPERIENCE_LEVEL}: <? echo JText::_('COM_SEMINARMAN_EXPERIENCE_LEVEL'); ?></li>

@@ -32,11 +32,11 @@ class SeminarmanViewCategory extends JView
 
         jimport('joomla.html.pane');
 
-        $editor = &JFactory::getEditor();
-        $document = &JFactory::getDocument();
-        $user = &JFactory::getUser();
-        $lang = &JFactory::getLanguage();
-        $pane = &JPane::getInstance('sliders');
+        $editor = JFactory::getEditor();
+        $document = JFactory::getDocument();
+        $user = JFactory::getUser();
+        $lang = JFactory::getLanguage();
+        $pane = JPane::getInstance('sliders');
 
         $cid = JRequest::getVar('cid');
 
@@ -67,8 +67,8 @@ class SeminarmanViewCategory extends JView
         JToolBarHelper::save();
          JToolBarHelper::cancel();
 
-        $model = &$this->getModel();
-        $row = &$this->get('Category');
+        $model = $this->getModel();
+        $row = $this->get('Category');
         $categories = seminarman_cats::getCategoriesTree(0);
 
         foreach ($categories as $category)

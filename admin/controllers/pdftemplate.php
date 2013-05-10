@@ -39,7 +39,7 @@ class seminarmanControllerPdftemplate extends seminarmanController
     function save()
     {
 
-        $model = &$this->getModel('pdftemplate', 'seminarmanModel');
+        $model = $this->getModel('pdftemplate', 'seminarmanModel');
         $data = JRequest::get('post');
         
         if ($id = $model->storeTemplate()) {

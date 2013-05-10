@@ -111,7 +111,7 @@ class SeminarmanModelEditfield extends JModel
     {
         if ($this->_id)
         {
-            $tag = &JTable::getInstance('seminarman_tags', '');
+            $tag = JTable::getInstance('seminarman_tags', '');
             return $tag->checkout($uid, $this->_id);
         }
         return false;
@@ -124,11 +124,11 @@ class SeminarmanModelEditfield extends JModel
 
             if (is_null($uid))
             {
-                $user = &JFactory::getUser();
+                $user = JFactory::getUser();
                 $uid = $user->get('id');
             }
 
-            $tag = &JTable::getInstance('seminarman_tags', '');
+            $tag = JTable::getInstance('seminarman_tags', '');
             return $tag->checkout($uid, $this->_id);
         }
         return false;
@@ -157,8 +157,8 @@ class SeminarmanModelEditfield extends JModel
 
     function store($data)
     {
-        //$tag = &$this->getTable('editfield', '');
-    	$tag = &$this->getTable();
+        //$tag = $this->getTable('editfield', '');
+    	$tag = $this->getTable();
 
         if (!$tag->bind($data))
         {
@@ -203,7 +203,7 @@ class SeminarmanModelEditfield extends JModel
 	 **/
 	function &getFields()
 	{
-		$mainframe	=& JFactory::getApplication();
+		$mainframe	= JFactory::getApplication();
 
 		static $fields;
 
@@ -213,7 +213,7 @@ class SeminarmanModelEditfield extends JModel
 		}
 
 		// Initialize variables
-		$db			=& JFactory::getDBO();
+		$db			= JFactory::getDBO();
 
 		// Get the limit / limitstart
 		$limit		= $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
@@ -251,7 +251,7 @@ class SeminarmanModelEditfield extends JModel
 			return $fieldGroups;
 		}
 
-		$db		=& JFactory::getDBO();
+		$db		= JFactory::getDBO();
 
 		$query	= 'SELECT * '
 				. 'FROM ' . $db->nameQuote( '#__seminarman_fields' )
@@ -273,7 +273,7 @@ class SeminarmanModelEditfield extends JModel
 			return $fieldGroup;
 		}
 
-		$db		=& JFactory::getDBO();
+		$db		= JFactory::getDBO();
 
 		$query	= 'SELECT * FROM ' . $db->nameQuote( '#__seminarman_fields' )
 				. 'WHERE ' . $db->nameQuote( 'ordering' ) . '<' . $db->Quote( $fieldId ) . ' '
@@ -296,7 +296,7 @@ class SeminarmanModelEditfield extends JModel
 		{
 			$path	= JPATH_ROOT . DS . 'components' . DS . 'com_seminarman' . DS . 'libraries' . DS . 'fields' . DS . 'customfields.xml';
 
-			$parser	=& JFactory::getXMLParser( 'Simple' );
+			$parser	= JFactory::getXMLParser( 'Simple' );
 			$parser->loadFile( $path );
 			$fields	= $parser->document->getElementByPath( 'fields' );
 			$data	= array();
@@ -315,7 +315,7 @@ class SeminarmanModelEditfield extends JModel
 	function getGroupFields( $groupOrderingId )
 	{
 		$fieldArray	= array();
-		$db			=& JFactory::getDBO();
+		$db			= JFactory::getDBO();
 
 		$query	= 'SELECT * FROM ' . $db->nameQuote( '#__seminarman_fields' )
 				. ' WHERE ' . $db->nameQuote( 'ordering' ) . '>' . $db->Quote( $groupOrderingId )

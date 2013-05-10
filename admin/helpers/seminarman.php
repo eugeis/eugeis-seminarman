@@ -22,8 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 
 class JHTMLSeminarman
 {
-    function getUserGroups($var, $default, $disabled) {
-    	$db = &JFactory::getDBO();
+    static function getUserGroups($var, $default, $disabled) {
+    	$db = JFactory::getDBO();
     	$query = $db->getQuery(true);
     	$query->select('grp.id, grp.title')
               ->from('`#__usergroups` AS grp');
@@ -47,9 +47,9 @@ class JHTMLSeminarman
         return JHtml::_('select.genericlist', $types, $var, 'class="inputbox" size="1" ' . $disabled . '', 'value', 'text', $default);
     }
 	
-	function getSelectUser($var, $default, $disabled)
+	static function getSelectUser($var, $default, $disabled)
     {
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
 
         $option = '';
         if ($disabled == 1)
@@ -75,9 +75,9 @@ class JHTMLSeminarman
         return JHtml::_('select.genericlist', $types, $var, 'class="inputbox" size="1" ' . $disabled . '', 'value', 'text', $default);
     }
     
-	function getSelectUserForTrainer($var, $default, $disabled)
+	static function getSelectUserForTrainer($var, $default, $disabled)
     {
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
 
         $option = '';
         if ($disabled == 1)
@@ -106,7 +106,7 @@ class JHTMLSeminarman
         return JHtml::_('select.genericlist', $types, $var, 'class="inputbox" size="1" ' . $disabled . '', 'value', 'text', $default);
     }
     
-    function getJUserState($uid, $var)
+    static function getJUserState($uid, $var)
     {
         $value = array();
     	// if create trainer, creating juser is ready to go.
@@ -120,7 +120,7 @@ class JHTMLSeminarman
         	$juserid = 0;
         	$value['invm'] = '<span class="readonly">'.JText::_('COM_SEMINARMAN_SAVE_JOOMLA_ACC_FIRST').'</span>'; 
         } else {   	
-    	    $db = &JFactory::getDBO();
+    	    $db = JFactory::getDBO();
 
             $query = 'SELECT u.id AS juid, u.username AS jlogin, u.email AS jemail FROM #__users AS u LEFT JOIN #__seminarman_tutor AS t ON (u.id = t.user_id) WHERE t.id = '.$uid;
             $db->setQuery($query);
@@ -180,9 +180,9 @@ class JHTMLSeminarman
     }
     
 
-    function getSelectCountry($var, $default, $disabled)
+    static function getSelectCountry($var, $default, $disabled)
     {
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
 
         $option = '';
         if ($disabled == 1)
@@ -204,9 +204,9 @@ class JHTMLSeminarman
     }
     
 
-	function getSelectExperienceLevel($var, $default, $disabled = '')
+	static function getSelectExperienceLevel($var, $default, $disabled = '')
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$query = 'SELECT id AS value, title AS text FROM #__seminarman_experience_level';
 		$db->setQuery($query);
@@ -221,9 +221,9 @@ class JHTMLSeminarman
 	}
 	
 
-	function getSelectATGroup($var, $default, $disabled)
+	static function getSelectATGroup($var, $default, $disabled)
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$option = '';
 		if ($disabled == 1)
@@ -242,9 +242,9 @@ class JHTMLSeminarman
 	}
 	
 
-    function getSelectCompType($var, $default, $disabled)
+    static function getSelectCompType($var, $default, $disabled)
     {
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
 
         $option = '';
         if ($disabled == 1)
@@ -263,9 +263,9 @@ class JHTMLSeminarman
     }
 
    
-    function getSelectTutor($var, $default = 0, $templateId = 0)
+    static function getSelectTutor($var, $default = 0, $templateId = 0)
     {
-    	$db = &JFactory::getDBO();
+    	$db = JFactory::getDBO();
     	  	
     	if (empty($templateId))
     	{
@@ -324,9 +324,9 @@ class JHTMLSeminarman
     }
     
     
-    function getSelectTemplate($var, $maxlength = 80)
+    static function getSelectTemplate($var, $maxlength = 80)
     {
-    	$db = &JFactory::getDBO();
+    	$db = JFactory::getDBO();
     	
    		$query = 'SELECT id, CONCAT(IF(LENGTH(`name`) > '.$maxlength.', CONCAT(LEFT(`name`, '.($maxlength - 3).'), "..."), `name`), \' (\', id, \')\') AS text FROM #__seminarman_templates ORDER BY name';
     	$db->setQuery($query);
@@ -340,9 +340,9 @@ class JHTMLSeminarman
     }
     
     
-    function getVirtualTable()
+    static function getVirtualTable()
     {
-        $parser = &JFactory::getXMLParser('Simple');
+        $parser = JFactory::getXMLParser('Simple');
 
         $pathToXML_File = JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'virtual_tables.xml';
         $parser->loadFile($pathToXML_File);
@@ -353,17 +353,17 @@ class JHTMLSeminarman
     }
 
     
-    function getTableFromXML($tableTitle)
+    static function getTableFromXML($tableTitle)
     {
-        $this->tables = JHTMLSeminarman::getVirtualTable();
+        $tables = JHTMLSeminarman::getVirtualTable();
 
-        for ($i = 0, $c = count($this->tables); $i < $c; $i++)
+        for ($i = 0, $c = count($tables); $i < $c; $i++)
         {
-            $album = &$this->tables[$i];
-            $name = &$album->getElementByPath('title');
+            $album = $tables[$i];
+            $name = $album->getElementByPath('title');
             if ($name->data() == $tableTitle) {
-                if ($values = &$album->getElementByPath('values')) {
-                    $listing = &$values->value;
+                if ($values = $album->getElementByPath('values')) {
+                    $listing = $values->value;
                     for ($ti = 0, $tc = count($listing); $ti < $tc; $ti++) {
                         $value = &$listing[$ti];
                         $XMLvalue[$ti] = $value->data();
@@ -375,7 +375,7 @@ class JHTMLSeminarman
     }
 
     
-    function getListFromXML($tableTitle, $db_field, $disabled, $default)
+    static function getListFromXML($tableTitle, $db_field, $disabled, $default)
     {
         $values = JHTMLSeminarman::getTableFromXML($tableTitle);
 
@@ -392,7 +392,7 @@ class JHTMLSeminarman
     }
 
     
-    function getSelectEmailTemplate($var, $default = '', $disabled = '')
+    static function getSelectEmailTemplate($var, $default = '', $disabled = '')
     {
         $db = JFactory::getDBO();
 
@@ -409,7 +409,7 @@ class JHTMLSeminarman
     }
     
     
-    function getSelectPdfTemplate($var, $default = '', $templatefor=0, $disabled = '')
+    static function getSelectPdfTemplate($var, $default = '', $templatefor=0, $disabled = '')
     {
     	$db = JFactory::getDBO();
     
@@ -426,7 +426,7 @@ class JHTMLSeminarman
     }
     
 
-	function localDate2DbDate($str) {
+	static function localDate2DbDate($str) {
 		
  		if (empty($str))
  			return "0000-00-00";
@@ -438,7 +438,7 @@ class JHTMLSeminarman
  		return $db->loadResult();
 	}
 	
-	function UserIsCourseManager($uid = null){
+	static function UserIsCourseManager($uid = null){
 		
 		if (empty($uid)) {
 			$user = JFactory::getUser();
@@ -475,7 +475,7 @@ class JHTMLSeminarman
 		
 	}
 	
-	function getUserTutorID($uid = null){
+	static function getUserTutorID($uid = null){
 		if (empty($uid)) {
 			$user = JFactory::getUser();
 		} else {
@@ -499,7 +499,7 @@ class JHTMLSeminarman
         return $tutor_id;
 	}
 	
-    function user_is_admin($uid) {
+    static function user_is_admin($uid) {
         jimport( 'joomla.user.helper' );
         $groups = JUserHelper::getUserGroups($uid);
         //8 is for Super User and 7 is for Administrator
@@ -514,7 +514,7 @@ class JHTMLSeminarman
 }
 
 class SeminarmanFunctions {
-    function isVMEnabled(){
+    static function isVMEnabled(){
         $db = JFactory::getDbo();
         $db->setQuery("SELECT enabled FROM #__extensions WHERE name = 'virtuemart'");
         $vm_enabled = ($db->loadResult() == 1);
@@ -523,5 +523,27 @@ class SeminarmanFunctions {
         } else {
             return true;	
         } 	
+    }
+    
+    static function isVMEngineEnabled() {
+    	$db = JFactory::getDbo();
+    	$db->setQuery("SELECT enabled FROM #__extensions WHERE name = 'plg_seminarman_vmengine'");
+    	$vmengine_enabled = ($db->loadResult() == 1);
+    	if(!$vmengine_enabled){
+    		return false;
+    	} else {
+    		return true;
+    	}    	
+    }
+    
+    static function isVMSMPlgEnabled() {
+    	$db = JFactory::getDbo();
+    	$db->setQuery("SELECT enabled FROM #__extensions WHERE name = 'plg_vmcustom_smansync'");
+    	$vmsmplg_enabled = ($db->loadResult() == 1);
+    	if(!$vmsmplg_enabled){
+    		return false;
+    	} else {
+    		return true;
+    	}
     }
 }

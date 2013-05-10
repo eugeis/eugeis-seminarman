@@ -29,10 +29,10 @@ class seminarmanControllerSalesProspect extends seminarmanController
     {
     	JRequest::checkToken() or jexit('Invalid Token');
     
-    	$db = &JFactory::getDBO();
-    	$user = &JFactory::getUser();
+    	$db = JFactory::getDBO();
+    	$user = JFactory::getUser();
     	$mainframe = JFactory::getApplication();
-    	$params = &$mainframe->getParams();
+    	$params = $mainframe->getParams();
     	
     	if ($params->get('enable_salesprospects', 0) == 0){
     		$mainframe->redirect('index.php', '');
@@ -43,6 +43,9 @@ class seminarmanControllerSalesProspect extends seminarmanController
     	$post['published'] = 1;
     
     	switch ($params->get('enable_bookings')) {
+    		case 3:
+    			// ok, everyone is allowed to book
+    			break;
     		case 2:
     			// ok, everyone is allowed to book
     			break;
@@ -69,7 +72,7 @@ class seminarmanControllerSalesProspect extends seminarmanController
     	$model = $this->getModel('templates');
     	$editfields = $model->getEditableCustomfields($post['user_id']);
     	$model = $this->getModel('salesprospect');
-    	$mainframe = &JFactory::getApplication();
+    	$mainframe = JFactory::getApplication();
     	CMFactory::load('libraries', 'customfields');
     
     	foreach ($editfields['fields'] as $group => $fields) {
@@ -107,13 +110,13 @@ class seminarmanControllerSalesProspect extends seminarmanController
     	$post['price_vat'] = $templateRows->vat;
     	$post['code'] = $templateRows->code;
     	
-    	$usersConfig = &JComponentHelper::getParams('com_users');
+    	$usersConfig = JComponentHelper::getParams('com_users');
     	
     	// register user
-    	if ($post['user_id'] == 0 && $usersConfig->get('allowUserRegistration') != '0')
+    	if ($post['user_id'] == 0 && $usersConfig->get('allowUserRegistration') != '0' && ($params->get('enable_bookings') != '3'))
     	{
     		// is there alread a joomla user with the same email address?
-    		$db = &JFactory::getDBO();
+    		$db = JFactory::getDBO();
     		$db->setQuery('SELECT id FROM #__users WHERE email =' . $db->Quote($post['email']));
     		if (!$db->query()) {
     			JError::raiseError(500, $db->stderr(true));

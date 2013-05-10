@@ -42,7 +42,7 @@ class SeminarmanModelCategory extends JModel
 
         $mainframe = JFactory::getApplication();
 
-        $params = &$mainframe->getParams('com_seminarman');
+        $params = $mainframe->getParams('com_seminarman');
         
         $orderingDef = $params->get('list_ordering');
         switch ($orderingDef)
@@ -148,16 +148,16 @@ class SeminarmanModelCategory extends JModel
     {
         $mainframe = JFactory::getApplication();
 
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
         $gid = (int)$user->get('aid');
 
-        $jnow = &JFactory::getDate();
+        $jnow = JFactory::getDate();
         $now = $jnow->toMySQL();
         $nullDate = $this->_db->getNullDate();
 
         $state = 1;
 
-        $params = &$mainframe->getParams('com_seminarman');
+        $params = $mainframe->getParams('com_seminarman');
 
         $where = ' WHERE rel.catid = ' . $this->_id;
 
@@ -219,9 +219,9 @@ class SeminarmanModelCategory extends JModel
 
     function _buildChildsquery()
     {
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
         $gid = (int)$user->get('aid');
-        $jnow = &JFactory::getDate();
+        $jnow = JFactory::getDate();
         $now = $jnow->toMySQL();
         $nullDate = $this->_db->getNullDate();
 
@@ -289,7 +289,7 @@ class SeminarmanModelCategory extends JModel
 
     function _getsubs($id)
     {
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
         $gid = (int)$user->get('aid');
 
         $query = 'SELECT *,' . ' CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug' .
@@ -306,7 +306,7 @@ class SeminarmanModelCategory extends JModel
     function getCategory()
     {
 
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
         $gid = (int)$user->get('aid');
 
         $query = 'SELECT c.*,' . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug' .
@@ -347,7 +347,7 @@ class SeminarmanModelCategory extends JModel
 
     function gettitles()
     {
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
         $gid = (int)$user->get('aid');
 
         $query = 'SELECT id, title' . ' FROM #__seminarman_experience_level' .
@@ -369,7 +369,7 @@ class SeminarmanModelCategory extends JModel
    		              ' WHERE i.state=1 AND rel.catid='. $this->_id;
    		
    		$mainframe = JFactory::getApplication();
-   		$params = &$mainframe->getParams('com_seminarman');
+   		$params = $mainframe->getParams('com_seminarman');
    		
    		if ($params->get('filter'))
    		{
@@ -414,14 +414,14 @@ class SeminarmanModelCategory extends JModel
     	return in_array($course_id, $this->_bookings);
     }
     
-	function _loadBookings()
+    function _loadBookings()
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$user = JFactory::getUser();
 		
 		$q = 'SELECT course_id FROM `#__seminarman_application`'.
         	          ' WHERE user_id = '. $user->id. 
-        	          ' AND published = 1 AND status < 3';
+        	          ' AND published = 1';// AND status < 3';
 		$db->setQuery($q);
 		$this->_bookings = $db->loadResultArray();
 	}

@@ -34,11 +34,11 @@ class SeminarmanViewTemplates extends JView
     	
         $mainframe = JFactory::getApplication();
 
-        $user = &JFactory::getUser();
-        $db = &JFactory::getDBO();
-        $document = &JFactory::getDocument();
-        $lang = &JFactory::getLanguage();
-    	$params = &JComponentHelper::getParams( 'com_seminarman' );
+        $user = JFactory::getUser();
+        $db = JFactory::getDBO();
+        $document = JFactory::getDocument();
+        $lang = JFactory::getLanguage();
+    	$params = JComponentHelper::getParams( 'com_seminarman' );
 
 
         JHTML::_('behavior.tooltip');
@@ -74,8 +74,8 @@ class SeminarmanViewTemplates extends JView
         JToolBarHelper::unpublishList();
         JToolBarHelper::divider();
         JToolBarHelper::deleteList();
-        $rows = &$this->get('Data');
-        $pageNav = &$this->get('Pagination');
+        $rows = $this->get('Data');
+        $pageNav = $this->get('Pagination');
 
 
         $lists['state'] = JHTML::_('grid.state', $filter_state, JText::_('JPUBLISHED'), JText::_('JUNPUBLISHED'));
@@ -100,7 +100,7 @@ class SeminarmanViewTemplates extends JView
         
         }else{
         	
-$app =& JFactory::getApplication();
+$app = JFactory::getApplication();
 $app->redirect('index.php?option=com_seminarman', 'Only seminar manager group can access templates.');	
         	
         }

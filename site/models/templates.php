@@ -66,7 +66,7 @@ class SeminarmanModelTemplates extends JModel
     function &getTemplate()
     {
     	$this->_loadTemplate();
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 
 		if (!$this->_template->catpublished && $this->_template->catid)
 			JError::raiseError(404, JText::_("CATEGORY NOT PUBLISHED"));
@@ -80,7 +80,7 @@ class SeminarmanModelTemplates extends JModel
 			$this->_template->creator = $this->_db->loadResult();
 		}
 		
-		$session = &JFactory::getSession();
+		$session = JFactory::getSession();
 		$this->_template->text = $this->_template->introtext . chr(13) . chr(13) . $this->_template->fulltext;
 		
 		return $this->_template;
@@ -150,7 +150,7 @@ class SeminarmanModelTemplates extends JModel
     function getSalesProspects()
     {
     	$mainframe = JFactory::getApplication();
-    	$user = &JFactory::getUser();
+    	$user = JFactory::getUser();
     	if ($user->id != 0)
     	{
     		$query = 'SELECT * FROM `#__seminarman_salesprospect`' .
@@ -250,7 +250,7 @@ class SeminarmanModelTemplates extends JModel
     {
         if ($this->_id)
         {
-            $template = &JTable::getInstance('seminarman_templates', '');
+            $template = JTable::getInstance('seminarman_templates', '');
             return $template->checkin($this->_id);
         }
         return false;
@@ -263,11 +263,11 @@ class SeminarmanModelTemplates extends JModel
 
             if (is_null($uid))
             {
-                $user = &JFactory::getUser();
+                $user = JFactory::getUser();
                 $uid = $user->get('id');
             }
 
-            $template = &JTable::getInstance('seminarman_templates', '');
+            $template = JTable::getInstance('seminarman_templates', '');
             return $template->checkout($uid, $this->_id);
         }
         return false;

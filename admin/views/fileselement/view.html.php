@@ -28,9 +28,9 @@ class SeminarmanViewFileselement extends JView
     {
         $mainframe = JFactory::getApplication();
 
-        $document = &JFactory::getDocument();
-        $db = &JFactory::getDBO();
-        $lang = &JFactory::getLanguage();
+        $document = JFactory::getDocument();
+        $db = JFactory::getDBO();
+        $lang = JFactory::getLanguage();
 
         $filter_order = $mainframe->getUserStateFromRequest('com_seminarman' .
             '.fileselement.filter_order', 'filter_order', 'f.filename', 'cmd');
@@ -51,8 +51,8 @@ class SeminarmanViewFileselement extends JView
             $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend_rtl.css');
         }
 
-        $rows = &$this->get('Data');
-        $pageNav = &$this->get('Pagination');
+        $rows = $this->get('Data');
+        $pageNav = $this->get('Pagination');
 
         $filters = array();
         $filters[] = JHTML::_('select.option', '1', JText::_('COM_SEMINARMAN_FILENAME'));

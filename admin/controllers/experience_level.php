@@ -35,7 +35,7 @@ class seminarmanControllerExperience_level extends seminarmanController
         $this->parentviewname = 'experience_levels';
     }
 
-    function display()
+    function display($cachable = false, $urlparams = false)
     {
         switch ($this->getTask())
         {

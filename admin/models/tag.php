@@ -99,7 +99,7 @@ class SeminarmanModelTag extends JModel
     {
         if ($this->_id)
         {
-            $tag = &JTable::getInstance('seminarman_tags', '');
+            $tag = JTable::getInstance('seminarman_tags', '');
             return $tag->checkout($uid, $this->_id);
         }
         return false;
@@ -112,11 +112,11 @@ class SeminarmanModelTag extends JModel
 
             if (is_null($uid))
             {
-                $user = &JFactory::getUser();
+                $user = JFactory::getUser();
                 $uid = $user->get('id');
             }
 
-            $tag = &JTable::getInstance('seminarman_tags', '');
+            $tag = JTable::getInstance('seminarman_tags', '');
             return $tag->checkout($uid, $this->_id);
         }
         return false;
@@ -145,7 +145,7 @@ class SeminarmanModelTag extends JModel
 
     function store($data)
     {
-        $tag = &$this->getTable('seminarman_tags', '');
+        $tag = $this->getTable('seminarman_tags', '');
 
         if (!$tag->bind($data))
         {

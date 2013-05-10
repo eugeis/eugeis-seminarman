@@ -29,9 +29,9 @@ class SeminarmanViewEditfield extends JView
     {
         $mainframe = JFactory::getApplication();
 
-        $document = &JFactory::getDocument();
-        $user = &JFactory::getUser();
-        $lang = &JFactory::getLanguage();
+        $document = JFactory::getDocument();
+        $user = JFactory::getUser();
+        $lang = JFactory::getLanguage();
     	JHTML::_('behavior.tooltip');
 
         $cid = JRequest::getVar('cid');
@@ -44,11 +44,19 @@ class SeminarmanViewEditfield extends JView
 
         if ($cid)
         {
-            JToolBarHelper::title(JText::_('COM_SEMINARMAN_EDIT_CUSTOM_FIELD'), 'config');
+            if (JRequest::setVar('layout')=='editgroup') {
+            	JToolBarHelper::title(JText::_('COM_SEMINARMAN_EDIT_GROUP'), 'config');
+            } else {
+            	JToolBarHelper::title(JText::_('COM_SEMINARMAN_EDIT_CUSTOM_FIELD'), 'config');
+            }
 
         } else
         {
-        JToolBarHelper::title(JText::_('COM_SEMINARMAN_ADD_CUSTOM_FIELD'), 'config');
+        	if (JRequest::setVar('layout')=='editgroup') {
+        		JToolBarHelper::title(JText::_('COM_SEMINARMAN_ADD_GROUP'), 'config');
+        	} else {
+        		JToolBarHelper::title(JText::_('COM_SEMINARMAN_ADD_CUSTOM_FIELD'), 'config');        		
+        	}
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'),'index.php?option=com_seminarman&view=applications');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'),'index.php?option=com_seminarman&view=courses');
@@ -60,8 +68,8 @@ class SeminarmanViewEditfield extends JView
         JToolBarHelper::save();
         JToolBarHelper::cancel();
 
-        $model = &$this->getModel();
-        $row = &$this->get('Tag');
+        $model = $this->getModel();
+        $row = $this->get('Tag');
 
         if ($row->id)
         {
@@ -75,10 +83,11 @@ class SeminarmanViewEditfield extends JView
     	$fieldGroups	= $model->getGroups();
     	$group			= $model->getFieldGroup( $row->ordering );
 
+    	$cft = $model->getCustomfieldsTypes();
         $this->assignRef('row', $row);
     	$this->assignRef('fieldGroups', $fieldGroups);
     	$this->assignRef('group', $group);
-    	$this->assignRef('customFieldTypes', $model->getCustomfieldsTypes());
+    	$this->assignRef('customFieldTypes', $cft );
 
         parent::display($tpl);
     }

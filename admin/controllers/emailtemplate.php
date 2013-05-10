@@ -35,7 +35,7 @@ class seminarmanControllerEmailtemplate extends seminarmanController
     }
 
 
-    function display()
+    function display($cachable = false, $urlparams = false)
     {
     	JRequest::setVar('hidemainmenu', 1);
     	JRequest::setVar('layout', 'form');
@@ -49,7 +49,7 @@ class seminarmanControllerEmailtemplate extends seminarmanController
     
     function save()
     {
-        $model = &$this->getModel('emailtemplate', 'seminarmanModel');
+        $model = $this->getModel('emailtemplate', 'seminarmanModel');
         $data = JRequest::get('post');
         
     	if ($id = $model->storeEmailTemplate()) {

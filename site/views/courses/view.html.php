@@ -29,14 +29,16 @@ class SeminarmanViewCourses extends JView{
     {
         $mainframe = JFactory::getApplication();
 
-        $document = &JFactory::getDocument();
-        $user = &JFactory::getUser();
-        $menus = &JSite::getMenu();
-        $lang = &JFactory::getLanguage();
+        $Itemid = JRequest::getInt('Itemid');
+        
+        $document = JFactory::getDocument();
+        $user = JFactory::getUser();
+        $menus = JFactory::getApplication()->getMenu();
+        $lang = JFactory::getLanguage();
         $menu = $menus->getActive();
-        $dispatcher = &JDispatcher::getInstance();
-        $params = &$mainframe->getParams('com_seminarman');
-        $uri = &JFactory::getURI();
+        $dispatcher = JDispatcher::getInstance();
+        $params = $mainframe->getParams('com_seminarman');
+        $uri = JFactory::getURI();
 
         $limitstart = JRequest::getVar('limitstart', 0, '', 'int');
         $cid = JRequest::getInt('cid', 0);
@@ -59,12 +61,12 @@ class SeminarmanViewCourses extends JView{
         $document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #seminarman dd { height: 1%; }</style><![endif]-->');
 
         if (!$user->id || $user->id == 0){
-            $document = &JFactory::getDocument();
+            $document = JFactory::getDocument();
         }
 
-        $document = &JFactory::getDocument();
+        $document = JFactory::getDocument();
 
-        $course = &$this->get('Course');
+        $course = $this->get('Course');
         $course->currency_price = $params->get('currency');
         
         $price_before_vat = $course->price;
@@ -79,7 +81,7 @@ class SeminarmanViewCourses extends JView{
         $course->price = JText::sprintf('%.2f', round($course->price, 2));
         setlocale(LC_NUMERIC, $old_locale);
                 
-        $attendeedata = &$this->get('attendee');
+        $attendeedata = $this->get('attendee');
 
         if (($course->id == 0)){
             $id = JRequest::getInt('id', 0);
@@ -87,19 +89,19 @@ class SeminarmanViewCourses extends JView{
         }
 
         if ($params->get('show_tags')){
-            $tags = &$this->get('Tags');
+            $tags = $this->get('Tags');
         }
 
         if ($params->get('show_categories')){
-            $categories = &$this->get('Categories');
+            $categories = $this->get('Categories');
         }
 
         if ($params->get('show_favourites')){
-            $favourites = &$this->get('Favourites');
-            $favoured = &$this->get('Favoured');
+            $favourites = $this->get('Favourites');
+            $favoured = $this->get('Favoured');
         }
 
-        $files = &$this->get('Files');
+        $files = $this->get('Files');
 
         if ($params->get('trigger_onprepare_content')){
             JPluginHelper::importPlugin('content');
@@ -108,14 +110,14 @@ class SeminarmanViewCourses extends JView{
 
         $cats = new seminarman_cats($cid);
         $parents = $cats->getParentlist();
-        $pathway = &$mainframe->getPathWay();
+        $pathway = $mainframe->getPathWay();
 
         foreach ($parents as $parent){
             $pathway->addItem($this->escape($parent->title), JRoute::_('index.php?view=category&cid=' .
-                    $parent->categoryslug));
+                    $parent->categoryslug . '&Itemid=' . $Itemid));
         }
         $pathway->addItem($this->escape($course->title), JRoute::_('index.php?view=courses&id=' .
-                $course->slug));
+                $course->slug . '&Itemid=' . $Itemid));
 
         if (is_object($menu)){
             $menu_params = new JParameter($menu->params);
@@ -150,7 +152,7 @@ class SeminarmanViewCourses extends JView{
                 $document->setMetadata($k, $v);
             }
         }
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
 
         if ($course->start_date != '0000-00-00'){
           $course->start_date = JFactory::getDate($course->start_date)->format("j. F Y");
@@ -184,7 +186,7 @@ class SeminarmanViewCourses extends JView{
         $params->merge($itemParams);
 
         $print_link = JRoute::_('index.php?view=courses&cid=' . $course->categoryslug .
-            '&id=' . $course->slug . '&pop=1&tmpl=component');
+            '&id=' . $course->slug . '&Itemid=' . $Itemid . '&pop=1&tmpl=component');
 
         $default = isset($attendeedata->salutationStr) ? $attendeedata->salutationStr : $attendeedata->salutation;
         $lists['salutation'] = JHTMLSeminarman::getListFromXML('Salutation', 'salutation', 0,  $default);
@@ -204,7 +206,7 @@ class SeminarmanViewCourses extends JView{
                 break;
         }
         // add currentbookings information
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $sql = 'SELECT SUM(b.attendees)'
          . ' FROM #__seminarman_application AS b'
          . ' WHERE b.published = 1'
@@ -227,7 +229,7 @@ class SeminarmanViewCourses extends JView{
         $results = $mainframe->triggerEvent( 'onPrepareContent', array( &$course, &$params, 0 ));
 
         $data = new stdClass();
-        $model = &$this->getModel('courses');
+        $model = $this->getModel('courses');
         $data->customfields = $model->getEditableCustomfields($attendeedata->id);
         CMFactory::load('libraries' , 'customfields');
         
@@ -241,7 +243,9 @@ class SeminarmanViewCourses extends JView{
         	$vmlink = null;
         }
         
-        $this->assignRef('fields', $data->customfields ['fields']);
+        $fields = $data->customfields ['fields'];
+        $action = $uri->toString();
+        $this->assignRef('fields', $fields);
         $this->assignRef('course', $course);
         $this->assignRef('tags', $tags);
         $this->assignRef('categories', $categories);
@@ -255,7 +259,7 @@ class SeminarmanViewCourses extends JView{
         $this->assignRef('parentcat', $parentcat);
         $this->assignRef('course_sessions', $course_sessions);
         $this->assignRef('lists', $lists);
-        $this->assign('action', $uri->toString());
+        $this->assign('action', $action);
         $this->assignRef('vmlink', $vmlink);
         $this->assignRef('price_before_vat', $price_before_vat);
         $this->assignRef('show_application_form', $show_application_form);

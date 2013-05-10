@@ -36,7 +36,7 @@ class SeminarmanModelTags extends JModel
 
         $mainframe = JFactory::getApplication();
 
-        $params = &$mainframe->getParams('com_seminarman');
+        $params = $mainframe->getParams('com_seminarman');
         
         $orderingDef = $params->get('list_ordering');
         switch ($orderingDef)
@@ -115,7 +115,7 @@ class SeminarmanModelTags extends JModel
         $orderby = $this->_buildCourseOrderBy();
 
     	$query = 'SELECT DISTINCT i.*, (i.plus / (i.plus + i.minus) ) * 100 AS votes,' .
-            ' CONCAT_WS(" ", emp.firstname, emp.lastname) as tutor,' .
+            ' emp.title as tutor,' .
     	    ' CASE WHEN CHAR_LENGTH(i.alias) THEN CONCAT_WS(\':\', i.id, i.alias) ELSE i.id END as slug,' .
     	    ' gr.title AS cgroup, lev.title AS level' .
     	    ' FROM #__seminarman_courses AS i' .
@@ -145,11 +145,11 @@ class SeminarmanModelTags extends JModel
     {
         $mainframe = JFactory::getApplication();
 
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
         $gid = (int)$user->get('aid');
-        $params = &$mainframe->getParams('com_seminarman');
+        $params = $mainframe->getParams('com_seminarman');
 
-        $jnow = &JFactory::getDate();
+        $jnow = JFactory::getDate();
         $now = $jnow->toMySQL();
         $nullDate = $this->_db->getNullDate();
 
@@ -228,7 +228,7 @@ class SeminarmanModelTags extends JModel
 
 	function gettitles()
 	{
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		$gid = (int)$user->get('aid');
 		$ordering = 'ordering ASC';
 
@@ -244,7 +244,7 @@ class SeminarmanModelTags extends JModel
 	function getCategory($courseid)
 	{
 
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		$gid = (int)$user->get('aid');
 
 		$query = 'SELECT c.*,' . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug' .
@@ -268,7 +268,7 @@ class SeminarmanModelTags extends JModel
 	function getCategoryOfTemplate($templateid)
 	{
 	
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		$gid = (int)$user->get('aid');
 	
 		$query = 'SELECT c.*,' . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug' .
@@ -299,7 +299,7 @@ class SeminarmanModelTags extends JModel
 		   		      ' WHERE i.state=1 AND rel.tid='. $this->_id;
 		
 		$mainframe = JFactory::getApplication();
-		$params = &$mainframe->getParams('com_seminarman');
+		$params = $mainframe->getParams('com_seminarman');
 			
 		if ($params->get('filter'))
 		{
@@ -346,7 +346,7 @@ class SeminarmanModelTags extends JModel
 	
 	function _loadBookings()
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$user = JFactory::getUser();
 	
 		$q = 'SELECT course_id FROM `#__seminarman_application`'.

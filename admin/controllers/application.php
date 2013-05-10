@@ -35,7 +35,7 @@ class seminarmanControllerapplication extends seminarmanController
         $this->parentviewname = 'applications';
     }
 
-    function display()
+    function display( $cachable = false, $urlparams = false )
     {
         switch ($this->getTask())
         {
@@ -88,7 +88,7 @@ class seminarmanControllerapplication extends seminarmanController
         }
 
     	// Process and save custom fields
-    	$model =& $this->getModel( 'application' );
+    	$model = $this->getModel( 'application' );
     	$values	= array();
     	$customfields	= $model->getEditableCustomfields( $applicationid );
 

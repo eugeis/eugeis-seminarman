@@ -106,7 +106,7 @@ class SeminarmanModelCategory extends JModel
     {
         if ($this->_id)
         {
-            $category = &JTable::getInstance('seminarman_categories', '');
+            $category = JTable::getInstance('seminarman_categories', '');
             return $category->checkin($this->_id);
         }
         return false;
@@ -119,11 +119,11 @@ class SeminarmanModelCategory extends JModel
 
             if (is_null($uid))
             {
-                $user = &JFactory::getUser();
+                $user = JFactory::getUser();
                 $uid = $user->get('id');
             }
 
-            $category = &JTable::getInstance('seminarman_categories', '');
+            $category = JTable::getInstance('seminarman_categories', '');
             if (!$category->checkout($uid, $this->_id))
             {
                 $this->setError($this->_db->getErrorMsg());
@@ -158,7 +158,7 @@ class SeminarmanModelCategory extends JModel
 
     function store($data)
     {
-        $category = &$this->getTable('seminarman_categories', '');
+        $category = $this->getTable('seminarman_categories', '');
        
         if (!$category->bind($data))
         {

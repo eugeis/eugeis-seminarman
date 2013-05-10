@@ -26,13 +26,13 @@ class seminarmanViewPdfTemplate extends JView
 {
     function display($tpl = null)
     {
-        $document = &JFactory::getDocument();
+        $document = JFactory::getDocument();
         $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
         
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
 
-        $template = &$this->get('data');
-    	$fields = &$this->get('fields');
+        $template = $this->get('data');
+    	$fields = $this->get('fields');
 
     	JToolBarHelper::title(JText::_('COM_SEMINARMAN_PDF_TEMPLATE'), 'config');
     	

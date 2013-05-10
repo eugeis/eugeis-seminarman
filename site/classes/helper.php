@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 
 class seminarman_html
 {
-    function printbutton($print_link, &$params)
+    static function printbutton($print_link, $params)
     {
         if ($params->get('show_print_icon'))
         {
@@ -63,13 +63,13 @@ class seminarman_html
         return;
     }
 
-    function mailbutton($view, &$params, $slug = null, $courseslug = null)
+    static function mailbutton($view, $params, $slug = null, $courseslug = null)
     {
         if ($params->get('show_email_icon'))
         {
 
             JHTML::_('behavior.tooltip');
-            $uri = &JURI::getInstance();
+            $uri = JURI::getInstance();
             $base = $uri->toString(array('scheme', 'host', 'port'));
 
             if ($view == 'category')
@@ -112,8 +112,6 @@ class seminarman_html
     }
 
 
-
-
     function saveContentPrep(&$row)
     {
 
@@ -137,7 +135,7 @@ class seminarman_html
 
         jimport('joomla.application.component.helper');
         $config = JComponentHelper::getParams('com_content');
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
         $gid = $user->get('gid');
 
         $filterGroups = $config->get('filter_groups');
@@ -175,9 +173,9 @@ class seminarman_html
         return true;
     }
 
-     function favoure($course, &$params, $favoured)
+    static function favoure($course, $params, $favoured)
     {
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
 
         JHTML::_('behavior.tooltip');
 
@@ -243,7 +241,7 @@ class seminarman_html
         return $output;
     }
 
-    function favouritesbutton(&$params)
+    static function favouritesbutton($params)
     {
         if ($params->get('show_favourites'))
         {
@@ -273,7 +271,7 @@ class seminarman_html
 
     function removefavbutton(&$params, $course)
     {
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
         JHTML::_('behavior.tooltip');
 
         if ($user->id)
@@ -310,7 +308,7 @@ class seminarman_upload
 {
     function check($file, &$err)
     {
-        $params = &JComponentHelper::getParams('com_seminarman');
+        $params = JComponentHelper::getParams('com_seminarman');
 
         if (empty($file['name']))
         {
@@ -453,7 +451,7 @@ class seminarman_upload
 
 class seminarman_images
 {
-    function BuildIcons($rows)
+    static function BuildIcons($rows)
     {
         jimport('joomla.filesystem.file');
 
@@ -530,7 +528,7 @@ class CMFactory
  * @param	string		type	libraries/helper
  * @param	string		name 	class prefix
  */
-function load( $type, $name )
+static function load( $type, $name )
 {
 	//include_once(JPATH_ROOT.DS.'components'.DS.'com_seminarman'.DS.'libraries'.DS.'error.php');
 
@@ -596,13 +594,13 @@ class CMTemplate {
 	 */
 	function _getTemplateFullpath($file)
 	{
-		$cfg	=& CMFactory::getConfig();
+		$cfg	= CMFactory::getConfig();
 		if(!JString::strpos($file, '.php'))
 		{
 			$filename	= $file;
 
 			// Test if template override exists in joomla's template folder
-			$mainframe		=& JFactory::getApplication();
+			$mainframe		= JFactory::getApplication();
 
 			$overridePath	= JPATH_ROOT . DS . 'templates' . DS . $mainframe->getTemplate() . DS . 'html';
 			$overrideExists	= JFolder::exists( $overridePath . DS . 'com_seminarman' );
@@ -645,8 +643,8 @@ class CMTemplate {
 
 	function addStylesheet( $file )
 	{
-		$mainframe	=& JFactory::getApplication();
-		$cfg		=& CMFactory::getConfig();
+		$mainframe	= JFactory::getApplication();
+		$cfg		= CMFactory::getConfig();
 
 		if(!JString::strpos($file, '.css'))
 		{
@@ -811,7 +809,7 @@ class CMTemplate {
 //      */
 //     function fetch_cache($file, $processFunc = null) {
 //     	// Get the configuration object.
-// 		$config	=& CMFactory::getConfig();
+// 		$config	= CMFactory::getConfig();
 //
 //     	$contents	= "";
 // 		$file = SEMINARMAN_COM_PATH .DS. 'templates'.DS.$config->get('template').DS.$file . '.php';

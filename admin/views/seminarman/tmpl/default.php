@@ -19,7 +19,6 @@ defined('_JEXEC') or die('Restricted access');
 						<?php
 
 global $option;
-
 if(JHTMLSeminarman::UserIsCourseManager()){
 
 $link = 'index.php?option=com_seminarman&amp;view=applications';
@@ -52,6 +51,8 @@ SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-tutors.png', JText::_(
 $link = 'index.php?option=com_seminarman&amp;view=settings';
 SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-config.png', JText::_('COM_SEMINARMAN_SETTINGS'));
 
+echo LiveUpdate::getIcon();
+
 } else {
 	
 $link = 'index.php?option=com_seminarman&amp;view=applications';
@@ -70,6 +71,14 @@ $link = 'index.php?option=com_seminarman&amp;view=tags';
 SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-tags.png', JText::_('COM_SEMINARMAN_TAGS'));
 }
 ?>
+						</div>
+						<div id="cpanel-left-bottom" style="clear: both;">
+<a href="http://sman.osg-gmbh.de/en/help-and-support" target=_blank class="osg_support_button osg_support_white">Support</a><br /><br />
+<a href="http://joomlacode.org/gf/project/com_seminarman/forum/" target=_blank class="osg_support_button osg_support_white">Forum</a><br /><br />	
+<div class="info_panel">
+The OSG Seminar Manager is a free software licensed under the GNU General Public License (GPL) version 2 or later.<br /><br />
+Der OSG Seminar Manager ist eine freie Software, die unter der GNU General Public License (GPL) Version 2 oder später lizenziert wurde.
+</div>					
 						</div>
                         </div>
                     <div class="cpanel-right">
@@ -157,17 +166,27 @@ for ($i = 0, $n; $i < $n; $i++)
 ?>
 				</table>
 				<?php
-
+echo $this->pane->endPane();
 echo $this->pane->endPane();
 ?>
-                    
                     </div>
-
+                    
+<div style="text-align:center; margin-top: 100px;">
+ <a href="http://www.osg-gmbh.de" target="_blank"><img src="components/com_seminarman/assets/images/logo.png" width=90 alt="Open Source Group Logo" title="Open Source Group Gmbh"></a>
+<br><br><a href="http://www.osg-gmbh.de" target="_blank" title="Open Source Group Gmbh">Open Source Group GmbH</a><br><br><br>
+<div align="center">Joomla! extension <b>OSG Seminar Manager</b> at Joomlacode:<br>
+<a href="http://joomlacode.org/gf/project/com_seminarman/frs" target="_blank">http://joomlacode.org/gf/project/com_seminarman/frs</a>
+<br><br>Vote the OSG Seminar Manager in the <a href="http://extensions.joomla.org/extensions/living/education-a-culture/courses/18600" target="_blank">Joomla! Extensions Directory</a>.
+<br><br>Bewerten Sie den OSG Seminar Manager im <a href="http://extensions.joomla.org/extensions/living/education-a-culture/courses/18600" target="_blank">Joomla! Extensions Directory</a>.</div>
+<br><br></div>
                     </div>                        
-
-			</div>
-
 			</td>
 		</tr>
-		<tr><td colspan="2"><center>OSG Seminar Manager 2.1.0</center></td></tr>
+		<tr><td colspan="2"><div style="text-align: center;">OSG Seminar Manager <?php 
+		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'classes'.DS.'xmlslurp.php';
+		$xmlslurp = new LiveUpdateXMLSlurp();
+		$data = $xmlslurp->getInfo('com_seminarman', 'seminarman.xml');
+		$version = $data['version'];
+		echo $version;
+		?></div></td></tr>
 	</table>

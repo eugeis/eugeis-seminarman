@@ -148,6 +148,7 @@ class SeminarmanModelCourses extends JModel
             '.courses.filter_state', 'filter_state', '', 'word');
 	$filter_category = $mainframe->getUserStateFromRequest('com_seminarman' .
             '.courses.filter_category', 'filter_category', '');
+	$filter_search = $mainframe->getUserStateFromRequest( 'com_seminarman'.'.application.filter_search',    'filter_search',      '',            'int' );
         $search = $mainframe->getUserStateFromRequest('com_seminarman' . '.courses.search',
             'search', '', 'string');
         $search = $this->_db->getEscaped(trim(JString::strtolower($search)));
@@ -190,9 +191,14 @@ class SeminarmanModelCourses extends JModel
         
 	if ($filter_category) { $where[] = 'rel.catid = '.$filter_category; }
 
-        if ($search)
+        if ($search && $filter_search == 1)
         {
             $where[] = ' LOWER(i.title) LIKE ' . $this->_db->Quote('%' . $this->_db->
+                getEscaped($search, true) . '%', false);
+        }
+        
+        if ($search && $filter_search == 2) {
+        	$where[] = ' LOWER(i.code) LIKE '.$this->_db->Quote('%' . $this->_db->
                 getEscaped($search, true) . '%', false);
         }
 
@@ -203,7 +209,7 @@ class SeminarmanModelCourses extends JModel
 
     function setcoursestate($id, $state = 1)
     {
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
 
         if ($id)
         {
@@ -223,7 +229,7 @@ class SeminarmanModelCourses extends JModel
 
     function move($direction)
     {
-        $row = &JTable::getInstance('seminarman_courses', '');
+        $row = JTable::getInstance('seminarman_courses', '');
 
         if (!$row->load($this->_id))
         {
@@ -242,7 +248,7 @@ class SeminarmanModelCourses extends JModel
 
     function saveorder($cid = array(), $order)
     {
-        $row = &JTable::getInstance('seminarman_courses', '');
+        $row = JTable::getInstance('seminarman_courses', '');
 
         for ($i = 0; $i < count($cid); $i++)
         {
@@ -329,7 +335,7 @@ class SeminarmanModelCourses extends JModel
     {
         if ($this->_id)
         {
-            $group = &$this->getTable();
+            $group = $this->getTable();
             if (!$group->checkin($this->_id))
             {
                 $this->setError($this->_db->getErrorMsg());
@@ -346,11 +352,11 @@ class SeminarmanModelCourses extends JModel
 
             if (is_null($uid))
             {
-                $user = &JFactory::getUser();
+                $user = JFactory::getUser();
                 $uid = $user->get('id');
             }
 
-            $group = &$this->getTable();
+            $group = $this->getTable();
             if (!$group->checkout($uid, $this->_id))
             {
                 $this->setError($this->_db->getErrorMsg());

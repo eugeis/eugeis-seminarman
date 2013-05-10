@@ -10,8 +10,8 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.tooltip');
 
 jimport('joomla.html.pane');
-$params = &JComponentHelper::getParams('com_seminarman');
-$pane	=& JPane::getInstance('Tabs');
+$params = JComponentHelper::getParams('com_seminarman');
+$pane	= JPane::getInstance('Tabs');
 ?>
 
 
@@ -23,7 +23,7 @@ $text = !$edit ? JText::_('New') : JText::_('COM_SEMINARMAN_EDIT');
 JToolBarHelper::title(JText::_('COM_SEMINARMAN_APPLICATION') . ': <span class="small">[ ' . $text .
     ' ]</span>', 'applications');
         $alt = JText::_('COM_SEMINARMAN_NOTIFY');
-        $bar=& JToolBar::getInstance( 'toolbar' );
+        $bar = JToolBar::getInstance( 'toolbar' );
         $bar->appendButton( 'Standard', 'send', $alt, 'notify_booking', false );
 JToolBarHelper::apply();
 JToolBarHelper::save();

@@ -124,7 +124,7 @@ class seminarmanModeltutors extends JModel
     function _buildContentWhere()
     {
         $mainframe = JFactory::getApplication();
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $filter_state = $mainframe->getUserStateFromRequest('com_seminarman' .
             '.tutors.filter_state', 'filter_state', '', 'word');
         $filter_order = $mainframe->getUserStateFromRequest('com_seminarman' .

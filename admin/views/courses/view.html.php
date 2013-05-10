@@ -29,11 +29,11 @@ class SeminarmanViewCourses extends JView
     {
         $mainframe = JFactory::getApplication();
 
-        $user = &JFactory::getUser();
-        $db = &JFactory::getDBO();
-        $document = &JFactory::getDocument();
-        $lang = &JFactory::getLanguage();
-    	$params = &JComponentHelper::getParams( 'com_seminarman' );
+        $user = JFactory::getUser();
+        $db = JFactory::getDBO();
+        $document = JFactory::getDocument();
+        $lang = JFactory::getLanguage();
+    	$params = JComponentHelper::getParams( 'com_seminarman' );
 
 
         JHTML::_('behavior.tooltip');
@@ -42,6 +42,7 @@ class SeminarmanViewCourses extends JView
         $filter_order_Dir = $mainframe->getUserStateFromRequest('com_seminarman.courses.filter_order_Dir', 'filter_order_Dir', '', 'word');
         $filter_state = $mainframe->getUserStateFromRequest('com_seminarman.courses.filter_state', 'filter_state', '*', 'word');
 		$filter_category = $mainframe->getUserStateFromRequest('com_seminarman.courses.filter_category', 'filter_category', '*');
+		$filter_search = $mainframe->getUserStateFromRequest('com_seminarman'.'.applications.filter_search', 'filter_search', '', 'int' );
     	$search = $mainframe->getUserStateFromRequest('com_seminarman.courses.search', 'search', '', 'string');
         $search = $db->getEscaped(trim(JString::strtolower($search)));
 
@@ -78,12 +79,20 @@ class SeminarmanViewCourses extends JView
         JToolBarHelper::divider();
         JToolBarHelper::deleteList();
         JToolBarHelper::divider();
+        JToolBarHelper::custom('bookcategorytousergroup','apply','apply', JText::_('COM_SEMINARMAN_BOOK_CATEGORY_TO_USERGROUP'));
         JToolBarHelper::custom('attendancelist','stats','stats', JText::_('COM_SEMINARMAN_ATTENDANCE_LIST').' (PDF)');
-        $rows = &$this->get('Data');
-        $pageNav = &$this->get('Pagination');
+        JToolBarHelper::custom('sendattendancelist','send','send', JText::_('COM_SEMINARMAN_SEND_ATTENDANCE_LIST'));
+        $rows = $this->get('Data');
+        $pageNav = $this->get('Pagination');
+        
+        //search filter - what field to use for search
+        $filters = array();
+        $filters[] = JHTML::_('select.option', '1', JText::_( 'COM_SEMINARMAN_COURSE_TITLE' ) );
+        $filters[] = JHTML::_('select.option', '2', JText::_( 'COM_SEMINARMAN_COURSE_CODE' ) );
+        $lists['filter_search'] = JHTML::_('select.genericlist', $filters, 'filter_search', 'size="1" class="inputbox"', 'value', 'text', $filter_search );
 
     	foreach ($rows as $row):
-    	$db =& JFactory::getDBO();
+    	$db = JFactory::getDBO();
 
     	$sql = 'SELECT * FROM #__seminarman_sessions'
     			. ' WHERE published = 1'
@@ -123,7 +132,7 @@ class SeminarmanViewCourses extends JView
     				break;
     		}
     		//add currentbookings information
-    		$db =& JFactory::getDBO();
+    		$db = JFactory::getDBO();
     		$sql = 'SELECT SUM(b.attendees)'
     			. ' FROM #__seminarman_application AS b'
     			. ' WHERE b.published = 1'

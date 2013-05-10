@@ -29,9 +29,9 @@ class SeminarmanViewTagelement extends JView
     {
         $mainframe = JFactory::getApplication();
 
-        $db       = &JFactory::getDBO();
-        $document = &JFactory::getDocument();
-        $lang     = &JFactory::getLanguage();
+        $db       = JFactory::getDBO();
+        $document = JFactory::getDocument();
+        $lang     = JFactory::getLanguage();
         $template = $mainframe->getTemplate();
 
         JHTML::_('behavior.tooltip');
@@ -42,8 +42,8 @@ class SeminarmanViewTagelement extends JView
         $search           = $mainframe->getUserStateFromRequest('com_seminarman.tags.search', 'search', '', 'string');
         $search           = $db->getEscaped(trim(JString::strtolower($search)));
 
-        $rows = &$this->get('Data');
-        $pageNav = &$this->get('Pagination');
+        $rows = $this->get('Data');
+        $pageNav = $this->get('Pagination');
 
         $lists['search']    = $search;
         $lists['order_Dir'] = $filter_order_Dir;

@@ -52,7 +52,7 @@ div.current label, div.current {
 
 jimport('joomla.html.pane');
 
-$pane = &JPane::getInstance('tabs', array('startOffset' => 0));
+$pane = JPane::getInstance('tabs', array('startOffset' => 0));
 echo $pane->startPane('pane');
 ?>
 

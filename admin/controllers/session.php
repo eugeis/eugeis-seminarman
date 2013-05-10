@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.controller' );
 		}
 
 
-		function display( )   {
+		function display($cachable = false, $urlparams = false)   {
 			switch($this->getTask())      {
 				case 'add'     :
 					{

@@ -30,8 +30,8 @@ class SeminarmanControllerImportexport extends SeminarmanController
 
 	function exportcsv()
 	{
-		$config = &JFactory::getConfig();
-		$db =& JFactory::getDBO();
+		$config = JFactory::getConfig();
+		$db = JFactory::getDBO();
 		
 		$from_date = JRequest::getVar('from_date');
 		$to_date = JRequest::getVar('to_date');
@@ -56,8 +56,8 @@ class SeminarmanControllerImportexport extends SeminarmanController
 				break;
 			case 'applications':
 				$query = 'SELECT t.*,'.
-				             'GROUP_CONCAT(f.fieldcode ORDER BY f.id SEPARATOR ",") AS custom_fieldcodes,'.
-				             'GROUP_CONCAT(v.value ORDER BY v.field_id SEPARATOR ",") AS custom_values '.
+				             'GROUP_CONCAT(f.fieldcode ORDER BY f.id SEPARATOR "|0$g|") AS custom_fieldcodes,'.
+				             'GROUP_CONCAT(v.value ORDER BY v.field_id SEPARATOR "|0$g|") AS custom_values '.
 				             'FROM #__seminarman_application AS t '.
 				             	'LEFT JOIN #__seminarman_courses AS c ON t.course_id = c.id '.
 				             	'LEFT JOIN #__seminarman_fields_values AS v ON t.id = v.applicationid '.
@@ -68,8 +68,8 @@ class SeminarmanControllerImportexport extends SeminarmanController
 				break;
 			case 'salesprospects':
 				$query = 'SELECT t.*,'.
-				             'GROUP_CONCAT(f.fieldcode ORDER BY f.id SEPARATOR ",") AS custom_fieldcodes,'.
-				             'GROUP_CONCAT(v.value ORDER BY v.field_id SEPARATOR ",") AS custom_values '.
+				             'GROUP_CONCAT(f.fieldcode ORDER BY f.id SEPARATOR "|0$g|") AS custom_fieldcodes,'.
+				             'GROUP_CONCAT(v.value ORDER BY v.field_id SEPARATOR "|0$g|") AS custom_values '.
 				             'FROM #__seminarman_salesprospect AS t '.
 				             	'LEFT JOIN #__seminarman_fields_values_salesprospect AS v ON t.id = v.requestid '.
 				             	'LEFT JOIN #__seminarman_fields AS f ON f.id = v.field_id';
@@ -132,7 +132,12 @@ class SeminarmanControllerImportexport extends SeminarmanController
 		if ($type == 'applications' || $type == 'salesprospects') {
 			foreach ($data as &$record) {
 				if (!empty($record['custom_values'])) {
-					$record += array_combine(explode(',', $record['custom_fieldcodes']), explode(',', $record['custom_values']));
+					// $record += array_combine(explode('|0$g|', $record['custom_fieldcodes']), explode('|0$g|', $record['custom_values']));
+					$custom_array_keys = explode('|0$g|', $record['custom_fieldcodes']);
+					$custom_array_values = explode('|0$g|', $record['custom_values']);
+					$min_count = min(count($custom_array_keys), count($custom_array_values));
+					$custom_array = array_combine(array_slice($custom_array_keys, 0, $min_count), array_slice($custom_array_values, 0, $min_count));
+					$record = $record + $custom_array;
 				}
 				unset($record['custom_fieldcodes']);
 				unset($record['custom_values']);

@@ -7,7 +7,7 @@
 **/
 
 defined('_JEXEC') or die('Restricted access');
-
+$Itemid = JRequest::getInt('Itemid');
 ?>
 <script type="text/javascript">
 
@@ -23,26 +23,13 @@ defined('_JEXEC') or die('Restricted access');
 
 <div id="seminarman" class="seminarman">
 
-
-
-<?php
-
-if ($this->params->def('show_page_title', 1)):
-
-?>
-
-    <h1 class="componentheading">
-		<?php
-
-    echo $this->params->get('page_title');
-
-?>
-	</h1>
-
-<?php
-
-endif;
-
+<?php 
+    if ($this->params->get('show_page_heading', 1)) {
+    	$page_heading = trim($this->params->get('page_heading'));
+        if (!empty($page_heading)) {
+            echo '<h1 class="componentheading">' . $page_heading . '</h1>';
+        }
+    }
 ?>
 
 <h2 class="seminarman favourites">
@@ -223,7 +210,7 @@ echo JHTML::_('grid.sort', 'COM_SEMINARMAN_PRICE', 'i.price', $this->lists['filt
     				<strong><a href="<?php
 
     				echo JRoute::_('index.php?view=courses&cid=' . $this->category->slug . '&id=' . $course->
-    				    slug);
+    				    slug . '&Itemid=' . $Itemid);
 
     				?>"><?php
 

@@ -166,6 +166,8 @@ CREATE TABLE IF NOT EXISTS `#__seminarman_courses` (
   `price` double DEFAULT NULL,
   `price2` double DEFAULT NULL,
   `price3` double DEFAULT NULL,
+  `price4` double DEFAULT NULL,
+  `price5` double DEFAULT NULL,
   `vat` DOUBLE NOT NULL DEFAULT '0',
   `currency_price` char(10) DEFAULT NULL,
   `min_attend` INT( 11 ) NOT NULL DEFAULT '0',
@@ -456,6 +458,8 @@ CREATE TABLE IF NOT EXISTS `#__seminarman_templates` (
   `price` double DEFAULT NULL,
   `price2` double DEFAULT NULL,
   `price3` double DEFAULT NULL,
+  `price4` double DEFAULT NULL,
+  `price5` double DEFAULT NULL,
   `vat` DOUBLE NOT NULL DEFAULT '0',
   `introtext` mediumtext NOT NULL,
   `fulltext` mediumtext NOT NULL,
@@ -554,6 +558,12 @@ CREATE TABLE IF NOT EXISTS `#__seminarman_usergroups` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `#__seminarman_fields_values_tutors` (
+  `tutor_id` int(11) NOT NULL,
+  `field_id` int(10) NOT NULL,
+  `value` text NOT NULL,
+  PRIMARY KEY (`tutor_id`,`field_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 INSERT IGNORE INTO `#__seminarman_categories` (`id`, `parent_id`, `title`, `alias`, `text`, `meta_keywords`, `meta_description`, `image`, `icon`, `published`, `checked_out`, `checked_out_time`, `access`, `ordering`) VALUES
 (1, 0, 'Default category', 'default-category', '', '', '', '', '', 1, 0, '0000-00-00 00:00:00', 1, 1);
@@ -809,6 +819,6 @@ INSERT IGNORE INTO `#__seminarman_atgroup` (`id`, `title`, `alias`, `code`, `col
 (2, 'Administratoren', 'administratoren', '', '', '', '0000-00-00 00:00:00', 0, 1, 0, '0000-00-00 00:00:00', 2, 0, 0, ''),
 (3, 'Entwickler', 'entwickler', '', '', '', '0000-00-00 00:00:00', 0, 1, 0, '0000-00-00 00:00:00', 3, 0, 0, '');
 
-INSERT IGNORE INTO `#__seminarman_pricegroups` (`id`, `gid`, `jm_groups`, `reg_group`, `title`, `calc_mathop`, `calc_value`) VALUES  (1, 2, '', 0, 'Price 2', '-%', 0),  (2, 3, '', 0, 'Price 3', '-%', 0);
+INSERT IGNORE INTO `#__seminarman_pricegroups` (`id`, `gid`, `jm_groups`, `reg_group`, `title`, `calc_mathop`, `calc_value`) VALUES  (1, 2, '', 0, 'Price 2', '-%', 0), (2, 3, '', 0, 'Price 3', '-%', 0), (3, 4, '', 0, 'Price 4', '-%', 0),  (4, 5, '', 0, 'Price 5', '-%', 0);
 
 INSERT IGNORE INTO `#__seminarman_usergroups` (`id`, `jm_id`, `sm_id`, `title`) VALUES  (1, 0, 1, 'Seminar Manager'),  (2, 0, 2, 'Seminar Trainer');

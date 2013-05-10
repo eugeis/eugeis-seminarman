@@ -27,15 +27,17 @@ class SeminarmanViewCategory extends JView
     function display()
     {
         $mainframe = JFactory::getApplication();
-
-        $doc = &JFactory::getDocument();
-        $params = &$mainframe->getParams();
+        
+        $Itemid = JRequest::getInt('Itemid');
+        
+        $doc = JFactory::getDocument();
+        $params = $mainframe->getParams();
         $doc->link = JRoute::_('index.php?option=com_seminarman&view=category&cid=' .
-            JRequest::getVar('cid', null, '', 'int'));
+            JRequest::getVar('cid', null, '', 'int') . '&Itemid=' . $Itemid);
 
         JRequest::setVar('limit', $mainframe->getCfg('feed_limit'));
-        $category = &$this->get('Category');
-        $rows = &$this->get('Data');
+        $category = $this->get('Category');
+        $rows = $this->get('Data');
 
         foreach ($rows as $row)
         {
@@ -45,7 +47,7 @@ class SeminarmanViewCategory extends JView
 
 
             $link = JRoute::_('index.php?option=com_seminarman&view=courses&cid=' . $category->
-                slug . '&id=' . $row->slug);
+                slug . '&id=' . $row->slug . '&Itemid=' . $Itemid);
 
             $description = ($params->get('feed_summary', 0) ? $row->introtext . $row->
                 fulltext : $row->introtext);

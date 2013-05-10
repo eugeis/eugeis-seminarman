@@ -41,7 +41,7 @@ class seminarmanViewapplication extends JView
         	return;
         }        
 
-        $application = &$this->get('data');
+        $application = $this->get('data');
 
         if ($application->url)
         {
@@ -54,7 +54,7 @@ class seminarmanViewapplication extends JView
     function _invoicepdf()
     {   
     	$mainframe = JFactory::getApplication();
-    	$application = &$this->get('data');
+    	$application = $this->get('data');
     	$params = JComponentHelper::getParams( 'com_seminarman' );
     	
     	$filename = $application->invoice_filename_prefix.$application->invoice_number.'.pdf';
@@ -76,12 +76,12 @@ class seminarmanViewapplication extends JView
     {
         $mainframe = JFactory::getApplication();
 
-        $db = &JFactory::getDBO();
-        $uri = &JFactory::getURI();
-        $user = &JFactory::getUser();
-        $model = &$this->getModel();
-        $document = &JFactory::getDocument();
-        $lang = &JFactory::getLanguage();
+        $db = JFactory::getDBO();
+        $uri = JFactory::getURI();
+        $user = JFactory::getUser();
+        $model = $this->getModel();
+        $document = JFactory::getDocument();
+        $lang = JFactory::getLanguage();
 
         $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
         if ($lang->isRTL())
@@ -94,7 +94,7 @@ class seminarmanViewapplication extends JView
 
         $lists = array();
 
-        $application = &$this->get('data');
+        $application = $this->get('data');
         $isNew = ($application->id < 1);
 
         if ($model->isCheckedOut($user->get('id')))
@@ -116,7 +116,7 @@ class seminarmanViewapplication extends JView
             $application->approved = 1;
             $application->order = 0;
         }
-    	$params =& JComponentHelper::getParams( 'com_seminarman' );
+    	$params = JComponentHelper::getParams( 'com_seminarman' );
     	$application->currency_price = $params->get( 'currency' );
 
         $query = 'SELECT ordering AS value, CONCAT_WS(\' \', first_name, last_name) AS text' .

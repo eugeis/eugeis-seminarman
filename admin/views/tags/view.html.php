@@ -29,10 +29,10 @@ class SeminarmanViewTags extends JView
     {
         $mainframe = JFactory::getApplication();
 
-        $db = &JFactory::getDBO();
-        $document = &JFactory::getDocument();
-        $user = &JFactory::getUser();
-        $lang = &JFactory::getLanguage();
+        $db = JFactory::getDBO();
+        $document = JFactory::getDocument();
+        $user = JFactory::getUser();
+        $lang = JFactory::getLanguage();
 
         JHTML::_('behavior.tooltip');
 
@@ -83,8 +83,8 @@ class SeminarmanViewTags extends JView
         JToolBarHelper::divider();
         JToolBarHelper::deleteList();
 
-        $rows = &$this->get('Data');
-        $pageNav = &$this->get('Pagination');
+        $rows = $this->get('Data');
+        $pageNav = $this->get('Pagination');
 
         $lists = array();
 

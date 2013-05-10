@@ -29,9 +29,9 @@ class SeminarmanViewTemplateelement extends JView
     {
         $mainframe = JFactory::getApplication();
 
-        $db = &JFactory::getDBO();
-        $document = &JFactory::getDocument();
-        $lang = &JFactory::getLanguage();
+        $db = JFactory::getDBO();
+        $document = JFactory::getDocument();
+        $lang = JFactory::getLanguage();
         $template = $mainframe->getTemplate();
 
         JHTML::_('behavior.tooltip');
@@ -47,8 +47,8 @@ class SeminarmanViewTemplateelement extends JView
 
         $document->setTitle(JText::_('COM_SEMINARMAN_SELECT_TEMPLATE'));
 
-        $rows = &$this->get('Data');
-        $pageNav = &$this->get('Pagination');
+        $rows = $this->get('Data');
+        $pageNav = $this->get('Pagination');
 
         $lists['order_Dir'] = $filter_order_Dir;
         $lists['order'] = $filter_order;

@@ -27,8 +27,8 @@ class seminarmanViewsession extends JView
    {
       $mainframe = JFactory::getApplication();
       
-        $document = &JFactory::getDocument();
-        $lang = &JFactory::getLanguage();
+        $document = JFactory::getDocument();
+        $lang = JFactory::getLanguage();
         
         $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
         if ($lang->isRTL())
@@ -43,7 +43,7 @@ class seminarmanViewsession extends JView
       }
 
       //get the session
-      $session =& $this->get('data');
+      $session = $this->get('data');
 
       if ($session->url) {
          // redirects to url if matching id found
@@ -57,18 +57,18 @@ class seminarmanViewsession extends JView
    {
       $mainframe = JFactory::getApplication();
 
-      $db      =& JFactory::getDBO();
-      $uri  =& JFactory::getURI();
-      $user    =& JFactory::getUser();
-      $model   =& $this->getModel();
-   	    $document = &JFactory::getDocument();
+      $db      = JFactory::getDBO();
+      $uri  = JFactory::getURI();
+      $user    = JFactory::getUser();
+      $model   = $this->getModel();
+   	  $document = JFactory::getDocument();
    	$document->addScript(JURI::base() .
    	       'components/com_seminarman/assets/js/fieldsmanipulation.js');
 
       $lists = array();
 
       //get the session
-      $session  =& $this->get('data');
+      $session  = $this->get('data');
       $isNew      = ($session->id < 1);
 
 
@@ -103,11 +103,11 @@ class seminarmanViewsession extends JView
       $lists['ordering']         = JHTML::_('list.specificordering',  $session, $session->id, $query );
 
       //Get data from Model (list of published courses)
-      $titles = & $this->get( 'titles' );
+      $titles = $this->get( 'titles' );
       // build list of courses
       $catlist[]         = JHTML::_('select.option',  '0', '- ' . JText::_( 'COM_SEMINARMAN_SELECT_COURSE' ) . ' -', 'id', 'title' );
       $catlist         = array_merge( $catlist, $titles );
-   	$filter_courseid = JRequest::getVar( 'filter_courseid', 0, 'post', 'int' );
+	 $filter_courseid = JRequest::getVar( 'filter_courseid', 0, 'post', 'int' );
    	if (!$session->courseid>0 && $filter_courseid>0) {
    		$session->courseid = $filter_courseid;
    	}

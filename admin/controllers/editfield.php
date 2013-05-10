@@ -52,7 +52,7 @@ class SeminarmanControllerEditfield extends SeminarmanController
         }
         else if ($fieldid = $model->store($post))
         {
-        	$row	=& JTable::getInstance( 'editfield' , 'table' );
+        	$row	= JTable::getInstance( 'editfield' , 'table' );
         	$row->load( $fieldid);
         	$groupOrdering	= isset($post['group']) ? $post['group'] : '';
         	$row->store( $groupOrdering );
@@ -71,7 +71,7 @@ class SeminarmanControllerEditfield extends SeminarmanController
             }
             $msg = JText::_('COM_SEMINARMAN_FIELD_SAVED');
 
-            $cache = &JFactory::getCache('com_seminarman');
+            $cache = JFactory::getCache('com_seminarman');
             $cache->clean();
 
         } else
@@ -130,7 +130,7 @@ class SeminarmanControllerEditfield extends SeminarmanController
 
             $total = count($cid);
             $msg = $total . ' ' . JText::_('COM_SEMINARMAN_OPERATION_SUCCESSFULL');
-            $cache = &JFactory::getCache('com_seminarman');
+            $cache = JFactory::getCache('com_seminarman');
             $cache->clean();
         }
 
@@ -155,7 +155,7 @@ class SeminarmanControllerEditfield extends SeminarmanController
             }
 
             $msg = JText::_('COM_SEMINARMAN_OPERATION_SUCCESSFULL');
-            $cache = &JFactory::getCache('com_seminarman');
+            $cache = JFactory::getCache('com_seminarman');
             $cache->clean();
         }
 
@@ -168,7 +168,7 @@ class SeminarmanControllerEditfield extends SeminarmanController
 
 		JRequest::checkToken() or jexit('Invalid Token');
 
-		$tag = &JTable::getInstance('editfield', 'table');
+		$tag = JTable::getInstance('editfield', 'table');
 		$tag->bind(JRequest::get('post'));
 		$tag->checkin();
 
@@ -181,7 +181,7 @@ class SeminarmanControllerEditfield extends SeminarmanController
         JRequest::setVar('hidemainmenu', 1);
 
         $model = $this->getModel('editfield');
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
 
         if ($model->isCheckedOut($user->get('id')))
         {

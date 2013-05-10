@@ -114,18 +114,22 @@ class SeminarmanModelMail extends JModelAdmin
 		$message_body = array_key_exists('message',$data) ? $data['message'] : '';
 		
 		$cc = array_key_exists('cc',$data) ? trim($data['cc']) : '';
+		
 		$attach	= array_key_exists('attach',$data) ? intval($data['attach']) : 0;
 		
 		$attach_file = $data['bill_file'];
 		
 		if ($cc <> '') {
+			$cc = str_replace(';', ',', $cc);
+			$cc_arr = array_filter(explode(',', $cc));
+			$hasCC = true;
 			jimport('joomla.mail.helper');
- 			if(!JMailHelper::isEmailAddress($cc)) {
- 				$app->enqueueMessage(JText::_('Invalid Email Address (CC)'),'warning');
-                $hasCC = false;
- 			} else{
- 				$hasCC = true;
- 			}
+			foreach ($cc_arr as $cc_add) {
+ 			    if(!JMailHelper::isEmailAddress($cc_add)) {
+ 				    $app->enqueueMessage(JText::_('Invalid Email Address (CC)'),'warning');
+                    $hasCC = false;
+ 			    }
+			}
 		}else {
 			$hasCC = false;
 		}
@@ -170,7 +174,7 @@ class SeminarmanModelMail extends JModelAdmin
 		}
 		
 		if($hasCC){
-			$mailer->addCC($cc);
+			$mailer->addCC($cc_arr);
 		}
 		
 		if($attach){

@@ -36,7 +36,7 @@ class seminarmanControllersalesprospect extends seminarmanController
 		$this->_errmsg = "";
 	}
 
-	function display()
+	function display($cachable = false, $urlparams = false)
 	{
 		switch ($this->getTask())
 		{
@@ -86,7 +86,7 @@ class seminarmanControllersalesprospect extends seminarmanController
 			$msg = JText::_('ECOM_SEMINARMAN_ERROR_SAVING');
 
 		// Process and save custom fields
-		$model =& $this->getModel( 'salesprospect' );
+		$model = $this->getModel( 'salesprospect' );
 		$values	= array();
 		$customfields = $model->getEditableCustomfields( $requestid );
 
@@ -229,7 +229,7 @@ class seminarmanControllersalesprospect extends seminarmanController
 		
 		$link = 'index.php?option=com_seminarman&view=' . $this->parentviewname;
 
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		 
 		$id = JRequest::getVar('id', 0, 'post', 'int');
 		if ($id == 0)
@@ -281,7 +281,7 @@ class seminarmanControllersalesprospect extends seminarmanController
 
 	function _notifyByEmail($id)
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		 
 		$db->setQuery('SELECT * FROM #__seminarman_emailtemplate WHERE templatefor=1 AND isdefault=1 LIMIT 1');
 		$template = $db->loadObject();
@@ -295,11 +295,11 @@ class seminarmanControllersalesprospect extends seminarmanController
 		$msgBody = $template->body;
 		$msgRecipient = $template->recipient;
 		 
-		$message = &JFactory::getMailer();
-		$config = &JFactory::getConfig();
+		$message = JFactory::getMailer();
+		$config = JFactory::getConfig();
 		$params = JComponentHelper::getParams('com_seminarman');
 		
-		$query = 'SELECT sp.*, c.reference_number, c.title AS course, c.code, c.introtext, c.fulltext, c. capacity, c.location, c.url, c.start_date, c.finish_date, sp.price_per_attendee, sp.price_total, sp.price_vat, tut.title AS tutor, tut.salutation AS tutor_salutation, tut.firstname AS tutor_first_name, tut.lastname AS tutor_last_name, gr.title AS atgroup, gr.description AS atgroup_desc, ex.title AS experience_level, ex.description AS experience_level_desc'.
+		$query = 'SELECT sp.*, c.reference_number, c.title AS course, c.code, c.introtext, c.fulltext, c. capacity, c.location, c.url, c.start_date, c.finish_date, c.id AS course_id, sp.price_per_attendee, sp.price_total, sp.price_vat, tut.id AS tutor_id, tut.title AS tutor, tut.salutation AS tutor_salutation, tut.firstname AS tutor_first_name, tut.lastname AS tutor_last_name, tut.other_title AS tutor_other_title, gr.title AS atgroup, gr.description AS atgroup_desc, ex.title AS experience_level, ex.description AS experience_level_desc'.
     	            ' FROM #__seminarman_salesprospect AS sp' .
     	            ' LEFT JOIN #__seminarman_courses AS c ON c.id = sp.notified_course' .
     	            ' LEFT JOIN #__seminarman_tutor AS tut ON tut.id = c.tutor_id' .
@@ -313,7 +313,22 @@ class seminarmanControllersalesprospect extends seminarmanController
 		{
 			return false;
 		}
-
+		
+		// tutor custom fields
+		$query_tutor_custom = 'SELECT f.fieldcode, ct.value FROM `#__seminarman_fields_values_tutors` AS ct'.
+				' LEFT JOIN `#__seminarman_fields` AS f ON ct.field_id = f.id'.
+				' WHERE ct.tutor_id = '. $queryResult->tutor_id . ' AND f.published = ' . $db->Quote('1') . ' AND f.visible = ' . $db->Quote('1');
+		$db->setQuery($query_tutor_custom);
+		$tutor_customs = $db->loadAssocList();
+		
+		for ($i = 0; $i < count($tutor_customs); $i++) {
+			$msgSubject = str_replace('{' . strtoupper($tutor_customs[$i]['fieldcode']) . '}', $tutor_customs[$i]['value'],
+					$msgSubject);
+			$msgBody = str_replace('{' . strtoupper($tutor_customs[$i]['fieldcode']) . '}', $tutor_customs[$i]['value'],
+					$msgBody);
+		}
+		
+		// app custom fields (it MUST be here after tutor customs, otherwise you get problems; i don't think the below codes are well done, but it works. they are not my codes.)
 		$query = 'SELECT field.*, value.value FROM #__seminarman_fields AS field'.
     	                ' LEFT JOIN #__seminarman_fields_values_salesprospect AS value'.
     	                ' ON field.id = value.field_id AND value.requestid='. (int)$id .
@@ -326,17 +341,75 @@ class seminarmanControllersalesprospect extends seminarmanController
 			$msgBody = str_replace('{' . strtoupper($fields[$i]['fieldcode']) . '}', $fields[$i]['value'], $msgBody);
 		}
 		
+		$course_price_orig = $queryResult->price_per_attendee;
+		$course_price_total_orig = $queryResult->price_total;
+		
 		// calculate and format price
 		$lang = JFactory::getLanguage();
 		$old_locale = setlocale(LC_NUMERIC, NULL);
 		setlocale(LC_NUMERIC, $lang->getLocale());
-		$queryResult->price_per_attendee = JText::sprintf('%.2f', round($queryResult->price_per_attendee, 2));
-		$queryResult->price_total = JText::sprintf('%.2f', round($queryResult->price_total, 2));
-		$queryResult->price_per_attendee_vat = JText::sprintf('%.2f', round((($queryResult->price_per_attendee / 100.0) * $queryResult->price_vat) + $queryResult->price_per_attendee, 2));
-		$queryResult->price_total_vat = JText::sprintf('%.2f', round((($queryResult->price_total / 100.0) * $queryResult->price_vat) + $queryResult->price_total, 2));
+		$queryResult->price_per_attendee = JText::sprintf('%.2f', round($course_price_orig, 2));
+		$queryResult->price_total = JText::sprintf('%.2f', round($course_price_total_orig, 2));
+		$queryResult->price_per_attendee_vat = JText::sprintf('%.2f', round((($course_price_orig / 100.0) * $queryResult->price_vat) + $course_price_orig, 2));
+		$queryResult->price_total_vat = JText::sprintf('%.2f', round((($course_price_total_orig / 100.0) * $queryResult->price_vat) + $course_price_total_orig, 2));
 		$queryResult->price_vat_percent = $queryResult->price_vat;
 		$queryResult->price_vat = JText::sprintf('%.2f', round(($queryResult->price_total / 100.0) * $queryResult->price_vat_percent, 2));
 		setlocale(LC_NUMERIC, $old_locale);
+		
+		// start weekday
+		$langs = JComponentHelper::getParams('com_languages');
+		$selectedLang = $langs->get('site', 'en-GB');
+		if ($selectedLang == "de-DE") {
+			$trans = array(
+					'Monday'    => 'Montag',
+					'Tuesday'   => 'Dienstag',
+					'Wednesday' => 'Mittwoch',
+					'Thursday'  => 'Donnerstag',
+					'Friday'    => 'Freitag',
+					'Saturday'  => 'Samstag',
+					'Sunday'    => 'Sonntag',
+					'Mon'       => 'Mo',
+					'Tue'       => 'Di',
+					'Wed'       => 'Mi',
+					'Thu'       => 'Do',
+					'Fri'       => 'Fr',
+					'Sat'       => 'Sa',
+					'Sun'       => 'So',
+					'January'   => 'Januar',
+					'February'  => 'Februar',
+					'March'     => 'März',
+					'May'       => 'Mai',
+					'June'      => 'Juni',
+					'July'      => 'Juli',
+					'October'   => 'Oktober',
+					'December'  => 'Dezember'
+			);
+			$COURSE_START_WEEKDAY = (!empty($queryResult->start_date)) ? strtr(date('l', strtotime($queryResult->start_date)), $trans) : '';
+		} else {
+			$COURSE_START_WEEKDAY = (!empty($queryResult->start_date)) ? date('l', strtotime($queryResult->start_date)) : '';
+		}
+		
+		// first session infos
+		$sql = 'SELECT * FROM #__seminarman_sessions'
+		. ' WHERE published = 1'
+		. ' AND courseid = ' . $queryResult->course_id
+		. ' ORDER BY session_date';
+		$db->setQuery($sql);
+		$course_sessions = $db->loadObjectList();
+		
+		if(!empty($course_sessions)){
+			$COURSE_FIRST_SESSION_TITLE = $course_sessions[0]->title;
+			$COURSE_FIRST_SESSION_CLOCK = date('H:i', strtotime($course_sessions[0]->start_time)) . ' - ' . date('H:i', strtotime($course_sessions[0]->finish_time));
+			$COURSE_FIRST_SESSION_DURATION = $course_sessions[0]->duration;
+			$COURSE_FIRST_SESSION_ROOM = $course_sessions[0]->session_location;
+			$COURSE_FIRST_SESSION_COMMENT = $course_sessions[0]->description;
+		} else {
+			$COURSE_FIRST_SESSION_TITLE = '';
+			$COURSE_FIRST_SESSION_CLOCK = '';
+			$COURSE_FIRST_SESSION_DURATION = '';
+			$COURSE_FIRST_SESSION_ROOM = '';
+			$COURSE_FIRST_SESSION_COMMENT = '';
+		}
 		
 		if (!empty( $queryResult->title )) $queryResult->title .= ' ';
 
@@ -368,10 +441,18 @@ class seminarmanControllersalesprospect extends seminarmanController
 		$msgSubject = str_replace('{TUTOR}', $queryResult->tutor, $msgSubject);
 		$msgSubject = str_replace('{TUTOR_FIRSTNAME}', $queryResult->tutor_first_name, $msgSubject);
 		$msgSubject = str_replace('{TUTOR_LASTNAME}', $queryResult->tutor_last_name, $msgSubject);
+		$msgSubject = str_replace('{TUTOR_SALUTATION}', $queryResult->tutor_salutation, $msgSubject);
+		$msgSubject = str_replace('{TUTOR_OTHER_TITLE}', $queryResult->tutor_other_title, $msgSubject);
 		$msgSubject = str_replace('{GROUP}', $queryResult->atgroup, $msgSubject);
 		$msgSubject = str_replace('{GROUP_DESC}', $queryResult->atgroup_desc, $msgSubject);
 		$msgSubject = str_replace('{EXPERIENCE_LEVEL}', $queryResult->experience_level, $msgSubject);
 		$msgSubject = str_replace('{EXPERIENCE_LEVEL_DESC}', $queryResult->experience_level_desc, $msgSubject);
+		$msgSubject = str_replace('{COURSE_START_WEEKDAY}', $COURSE_START_WEEKDAY, $msgSubject);
+		$msgSubject = str_replace('{COURSE_FIRST_SESSION_TITLE}', $COURSE_FIRST_SESSION_TITLE, $msgSubject);
+		$msgSubject = str_replace('{COURSE_FIRST_SESSION_CLOCK}', $COURSE_FIRST_SESSION_CLOCK, $msgSubject);
+		$msgSubject = str_replace('{COURSE_FIRST_SESSION_DURATION}', $COURSE_FIRST_SESSION_DURATION, $msgSubject);
+		$msgSubject = str_replace('{COURSE_FIRST_SESSION_ROOM}', $COURSE_FIRST_SESSION_ROOM, $msgSubject);
+		$msgSubject = str_replace('{COURSE_FIRST_SESSION_COMMENT}', $COURSE_FIRST_SESSION_COMMENT, $msgSubject);
 
 		$msgBody = str_replace('{ADMIN_CUSTOM_RECIPIENT}', $params->get('component_email'), $msgBody);
 		$msgBody = str_replace('{ATTENDEES}', $queryResult->attendees, $msgBody);
@@ -400,10 +481,18 @@ class seminarmanControllersalesprospect extends seminarmanController
 		$msgBody = str_replace('{TUTOR}', $queryResult->tutor, $msgBody);
 		$msgBody = str_replace('{TUTOR_FIRSTNAME}', $queryResult->tutor_first_name, $msgBody);
 		$msgBody = str_replace('{TUTOR_LASTNAME}', $queryResult->tutor_last_name, $msgBody);
+		$msgBody = str_replace('{TUTOR_SALUTATION}', $queryResult->tutor_salutation, $msgBody);
+		$msgBody = str_replace('{TUTOR_OTHER_TITLE}', $queryResult->tutor_other_title, $msgBody);
 		$msgBody = str_replace('{GROUP}', $queryResult->atgroup, $msgBody);
 		$msgBody = str_replace('{GROUP_DESC}', $queryResult->atgroup_desc, $msgBody);
 		$msgBody = str_replace('{EXPERIENCE_LEVEL}', $queryResult->experience_level, $msgBody);
 		$msgBody = str_replace('{EXPERIENCE_LEVEL_DESC}', $queryResult->experience_level_desc, $msgBody);
+		$msgBody = str_replace('{COURSE_START_WEEKDAY}', $COURSE_START_WEEKDAY, $msgBody);
+		$msgBody = str_replace('{COURSE_FIRST_SESSION_TITLE}', $COURSE_FIRST_SESSION_TITLE, $msgBody);
+		$msgBody = str_replace('{COURSE_FIRST_SESSION_CLOCK}', $COURSE_FIRST_SESSION_CLOCK, $msgBody);
+		$msgBody = str_replace('{COURSE_FIRST_SESSION_DURATION}', $COURSE_FIRST_SESSION_DURATION, $msgBody);
+		$msgBody = str_replace('{COURSE_FIRST_SESSION_ROOM}', $COURSE_FIRST_SESSION_ROOM, $msgBody);
+		$msgBody = str_replace('{COURSE_FIRST_SESSION_COMMENT}', $COURSE_FIRST_SESSION_COMMENT, $msgBody);
 			
 		$msgRecipient = str_replace('{EMAIL}', $queryResult->email, $msgRecipient);
 		$msgRecipient = str_replace('{ADMIN_CUSTOM_RECIPIENT}', $params->get('component_email'), $msgRecipient);

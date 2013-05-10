@@ -76,7 +76,7 @@ class SeminarmanControllerCategories extends SeminarmanController
 //                $categoriesmodel->publish($pubid, 0);
 //            }
 
-            $cache = &JFactory::getCache('com_seminarman');
+            $cache = JFactory::getCache('com_seminarman');
             $cache->clean();
 
         } else
@@ -115,7 +115,7 @@ class SeminarmanControllerCategories extends SeminarmanController
 
             $msg = JText::_('COM_SEMINARMAN_OPERATION_SUCCESSFULL');
 
-            $cache = &JFactory::getCache('com_seminarman');
+            $cache = JFactory::getCache('com_seminarman');
             $cache->clean();
         }
 
@@ -145,7 +145,7 @@ class SeminarmanControllerCategories extends SeminarmanController
 
             $msg = JText::_('COM_SEMINARMAN_OPERATION_SUCCESSFULL');
 
-            $cache = &JFactory::getCache('com_seminarman');
+            $cache = JFactory::getCache('com_seminarman');
             $cache->clean();
         }
 
@@ -160,7 +160,7 @@ class SeminarmanControllerCategories extends SeminarmanController
         $model = $this->getModel('categories');
         $model->move(-1);
 
-        $cache = &JFactory::getCache('com_seminarman');
+        $cache = JFactory::getCache('com_seminarman');
         $cache->clean();
 
         $this->setRedirect('index.php?option=com_seminarman&view=categories');
@@ -174,7 +174,7 @@ class SeminarmanControllerCategories extends SeminarmanController
         $model = $this->getModel('categories');
         $model->move(1);
 
-        $cache = &JFactory::getCache('com_seminarman');
+        $cache = JFactory::getCache('com_seminarman');
         $cache->clean();
 
         $this->setRedirect('index.php?option=com_seminarman&view=categories');
@@ -195,7 +195,7 @@ class SeminarmanControllerCategories extends SeminarmanController
             JError::raiseWarning(500, $model->getError());
         }
 
-        $cache = &JFactory::getCache('com_seminarman');
+        $cache = JFactory::getCache('com_seminarman');
         $cache->clean();
 
         $msg = JText::_('COM_SEMINARMAN_OPERATION_SUCCESSFULL');
@@ -220,7 +220,7 @@ class SeminarmanControllerCategories extends SeminarmanController
 
             $msg = $model->delete($cid);
 
-            $cache = &JFactory::getCache('com_seminarman');
+            $cache = JFactory::getCache('com_seminarman');
             $cache->clean();
         }
 
@@ -232,7 +232,7 @@ class SeminarmanControllerCategories extends SeminarmanController
 
         JRequest::checkToken() or jexit('Invalid Token');
 
-        $category = &JTable::getInstance('seminarman_categories', '');
+        $category = JTable::getInstance('seminarman_categories', '');
         $category->bind(JRequest::get('post'));
         $category->checkin();
 
@@ -266,7 +266,7 @@ class SeminarmanControllerCategories extends SeminarmanController
             JError::raiseError(500, $model->getError());
         } else
         {
-            $cache = &JFactory::getCache('com_seminarman');
+            $cache = JFactory::getCache('com_seminarman');
             $cache->clean();
         }
 
@@ -282,7 +282,7 @@ class SeminarmanControllerCategories extends SeminarmanController
         JRequest::setVar('hidemainmenu', 1);
 
         $model = $this->getModel('category');
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
 
         if ($model->isCheckedOut($user->get('id')))
         {

@@ -35,7 +35,7 @@ class seminarmanControlleratgroup extends seminarmanController
         $this->parentviewname = 'atgroups';
     }
 
-    function display()
+    function display($cachable = false, $urlparams = false)
     {
         switch ($this->getTask())
         {

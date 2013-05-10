@@ -79,11 +79,11 @@ class SeminarmanHelperRoute
 
     function _findCourse($needles)
     {
-        $component = &JComponentHelper::getComponent('com_seminarman');
+        $component = JComponentHelper::getComponent('com_seminarman');
 
-        $menus = &JApplication::getMenu('site', array());
+        $menus = JApplication::getMenu('site', array());
         $courses = $menus->getItems('componentid', $component->id);
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
         $access = (int)$user->get('aid');
 
         $match = null;

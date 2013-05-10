@@ -34,7 +34,7 @@ class SeminarmanModelBookings extends JModel
 
         $mainframe = JFactory::getApplication();
 
-        $params = &$mainframe->getParams('com_seminarman');
+        $params = $mainframe->getParams('com_seminarman');
 
         $limit = $mainframe->getUserStateFromRequest('com_seminarman.bookings.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
         $limitstart = JRequest::getVar('limitstart', 0, '', 'int');
@@ -112,10 +112,10 @@ class SeminarmanModelBookings extends JModel
     {
         $mainframe = JFactory::getApplication();
 
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
         //$gid = (int)$user->get('aid');
-        $params = &$mainframe->getParams('com_seminarman');
-        $jnow = &JFactory::getDate();
+        $params = $mainframe->getParams('com_seminarman');
+        $jnow = JFactory::getDate();
         $now = $jnow->toMySQL();
         $nullDate = $this->_db->getNullDate();
 
@@ -180,7 +180,7 @@ class SeminarmanModelBookings extends JModel
 
 	function gettitles()
 	{
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		$gid = (int)$user->get('aid');
 		$ordering = 'ordering ASC';
 
@@ -196,7 +196,7 @@ class SeminarmanModelBookings extends JModel
 	function getCategory($courseid)
 	{
 
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		$gid = (int)$user->get('aid');
 
 		$query = 'SELECT c.*,' . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug' .
@@ -223,6 +223,107 @@ class SeminarmanModelBookings extends JModel
 //		}
 //
 		return $this->_category;
+	}
+
+
+	/**
+	 * Returns an array of custom editfields which are created from the back end.
+	 *
+	 * @access	public
+	 * @param	string 	User's id.
+	 * @returns array  An objects of custom fields.
+	 */
+	function getEditableCustomfields($applicationId	= null)
+	{
+		$db   = $this->getDBO();
+		$data = array();
+		$user = JFactory::getUser();
+
+		$data['id']		= $user->id;
+		$data['name']	= $user->name;
+		$data['email']	= $user->email;
+
+		if (!$user->guest)
+		{
+			$q = 'SELECT COUNT(*) FROM `#__seminarman_fields_values`'.
+					' WHERE applicationid='.(int)$applicationId.' AND user_id='.(int)$user->id;
+			$db->setQuery($q);
+			if ($db->loadResult() == 0)
+			{
+				// Es gibt noch keine Anmeldung auf den Kurs. Werte für Felder aus #__seminarman_fields_values_users holen
+				// (kann aber auch leer sein)
+				$q = 'SELECT f.*, v.value FROM `#__seminarman_fields` AS f'.
+						' LEFT JOIN `#__seminarman_fields_values_users` AS v'.
+						' ON f.fieldcode = v.fieldcode AND v.user_id = '.(int)$user->id.
+						' WHERE f.published=1 AND f.visible=1 ORDER BY f.ordering';
+				$db->setQuery($q);
+			}
+			else
+			{
+				$q = 'SELECT f.*, v.value FROM `#__seminarman_fields` AS f'.
+						' LEFT JOIN `#__seminarman_fields_values` AS v'.
+						' ON f.id = v.field_id AND v.applicationid = '.(int)$applicationId.
+						' WHERE f.published=1 AND f.visible=1 ORDER BY f.ordering';
+				$db->setQuery($q);
+			}
+		}
+		else
+		{
+			$q = 'SELECT f.*, v.value FROM `#__seminarman_fields` AS f'.
+					' LEFT JOIN `#__seminarman_fields_values` AS v'.
+					' ON f.id = v.field_id AND v.applicationid = 0'.
+					' WHERE f.published=1 AND f.visible=1 ORDER BY f.ordering';
+			$db->setQuery($q);
+		}
+
+		$result	= $db->loadAssocList();
+
+		if($db->getErrorNum())
+		{
+			JError::raiseError( 500, $db->stderr());
+		}
+
+		$data['fields']	= array();
+		for($i = 0; $i < count($result); $i++)
+		{
+			// We know that the groups will definitely be correct in ordering.
+			if($result[$i]['type'] == 'group' && $result[$i]['purpose'] == 0)
+			{
+				$add = True;
+				$group	= $result[$i]['name'];
+
+				// Group them up
+				if(!isset($data['fields'][$group]))
+				{
+					// Initialize the groups.
+					$data['fields'][$group]	= array();
+				}
+			}
+			if($result[$i]['type'] == 'group' && $result[$i]['purpose'] != 0)
+				$add = False;
+
+			// Re-arrange options to be an array by splitting them into an array
+			if(isset($result[$i]['options']) && $result[$i]['options'] != '')
+			{
+				$options	= $result[$i]['options'];
+				$options	= explode("\n", $options);
+
+				$countOfOptions = count($options);
+				for($x = 0; $x < $countOfOptions; $x++){
+					$options[$x] = trim($options[$x]);
+				}
+
+				$result[$i]['options']	= $options;
+
+			}
+
+
+			if($result[$i]['type'] != 'group' && isset($add)){
+				if($add)
+					$data['fields'][$group][]	= $result[$i];
+			}
+		}
+		return $data;
 	}
 }
 

@@ -36,7 +36,7 @@ class seminarmanViewsalesprospect extends JView
             return;
         }
 
-        $application = &$this->get('data');
+        $application = $this->get('data');
 
         if ($application->url)
         {
@@ -51,12 +51,12 @@ class seminarmanViewsalesprospect extends JView
     {
         $mainframe = JFactory::getApplication();
 
-        $db = &JFactory::getDBO();
-        $uri = &JFactory::getURI();
-        $user = &JFactory::getUser();
-        $model = &$this->getModel();
-        $document = &JFactory::getDocument();
-        $lang = &JFactory::getLanguage();
+        $db = JFactory::getDBO();
+        $uri = JFactory::getURI();
+        $user = JFactory::getUser();
+        $model = $this->getModel();
+        $document = JFactory::getDocument();
+        $lang = JFactory::getLanguage();
 
         $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
         if ($lang->isRTL())
@@ -70,7 +70,7 @@ require_once( JPATH_ROOT . DS . 'components' . DS . 'com_seminarman' . DS . 'lib
 
         $lists = array();
 
-        $application = &$this->get('data');
+        $application = $this->get('data');
         $isNew = ($application->id < 1);
 
         if ($model->isCheckedOut($user->get('id')))
@@ -91,7 +91,7 @@ require_once( JPATH_ROOT . DS . 'components' . DS . 'com_seminarman' . DS . 'lib
             $application->approved = 1;
             $application->order = 0;
         }
-    	$params =& JComponentHelper::getParams( 'com_seminarman' );
+    	$params = JComponentHelper::getParams( 'com_seminarman' );
     	$application->currency_price = $params->get( 'currency' );
 
         $query = 'SELECT ordering AS value, CONCAT_WS(\' \', first_name, last_name) AS text FROM #__seminarman_salesprospect ORDER BY ordering';
@@ -102,11 +102,12 @@ require_once( JPATH_ROOT . DS . 'components' . DS . 'com_seminarman' . DS . 'lib
 
         JFilterOutput::objectHTMLSafe($group, ENT_QUOTES, 'description');
 
+        $nulldate = $db->getNullDate();
     	$customfields	= $model->getEditableCustomfields( $application->id );
     	$user->customfields	=& $customfields;
     	$this->assignRef( 'user' , $user );
         $this->assignRef('lists', $lists);
-        $this->assignRef('nullDate', $db->getNullDate());
+        $this->assignRef('nullDate', $nulldate);
         $this->assignRef('application', $application);
 
         parent::display($tpl);

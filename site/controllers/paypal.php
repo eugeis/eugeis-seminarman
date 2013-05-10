@@ -46,7 +46,7 @@ class seminarmanControllerPaypal extends seminarmanController{
         // setup a variable for this script (ie: 'http://www.micahcarrick.com/paypal.php')
         $this_script = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
 
-        $model = &$this->getModel('paypal');
+        $model = $this->getModel('paypal');
         if (isset($_POST)) {
         	$mainframe->enqueueMessage(JText::_('COM_SEMINARMAN_THANKS_FOR_PAYMENT'));
         } else {
@@ -73,12 +73,12 @@ class seminarmanControllerPaypal extends seminarmanController{
 
         if ($p->validate_ipn()){
             $mainframe = JFactory::getApplication();
-            $params = &$mainframe->getParams();
-            $config = &JFactory::getConfig();
+            $params = $mainframe->getParams();
+            $config = JFactory::getConfig();
 
-            $model = &$this->getModel('paypal');
+            $model = $this->getModel('paypal');
             if ($model->updatestatusIPN($p->ipn_data['item_number'], $p->ipn_data['txn_id'])){
-                $mailSender = &JFactory::getMailer();
+                $mailSender = JFactory::getMailer();
                 $mailSender->addRecipient($config->getValue('mailfrom'));
                 $mailSender->addBCC($params->get('component_email'));
                 $mailSender->setSender(array($config->getValue('mailfrom') , $config->getValue('mailfrom')));

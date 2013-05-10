@@ -124,7 +124,7 @@ class seminarmanModelSessions extends JModel
     function _buildContentWhere()
     {
         $mainframe = JFactory::getApplication();
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $filter_state = $mainframe->getUserStateFromRequest('com_seminarman' . $this->
             childviewname . '.filter_state', 'filter_state', '', 'word');
         $filter_order = $mainframe->getUserStateFromRequest('com_seminarman' . $this->
@@ -173,7 +173,7 @@ $filter_courseid		= $mainframe->getUserStateFromRequest( 'com_seminarman'.'filte
 	*/
 	function getCourseTitles()
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		if(JHTMLSeminarman::UserIsCourseManager()) {
 		    $sql = 'SELECT id, title'
 		    . ' FROM #__seminarman_courses'

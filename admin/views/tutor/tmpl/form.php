@@ -148,7 +148,7 @@ else
 		<legend><?php echo JText::_('COM_SEMINARMAN_IMAGE'); ?></legend>
 		<?php
 		if ($this->tutor->logofilename != '') { ?>
-			<img src="<?php $params =& JComponentHelper::getParams( 'com_seminarman' ); echo JURI::root().$params->get('image_path', 'images'). DS. $this->tutor->logofilename; ?>">
+			<img src="<?php $params = JComponentHelper::getParams( 'com_seminarman' ); echo JURI::root().$params->get('image_path', 'images'). '/' . $this->tutor->logofilename; ?>">
 		<?php } ?>
 		
 		<input class="text_area" type="file" name="logofilename" id="logofilename" size="32" maxlength="250" value=""/>
@@ -302,9 +302,37 @@ else
 	
 	<div class="width-40 fltrt">
 		<fieldset class="adminform">
-		    <legend><?php echo "Advanced Options"; ?></legend>
+		    <legend><?php echo JText::_('COM_SEMINARMAN_CUSTOM_FIELDS'); ?></legend>
 		    <table class="admintable">
-                 <?php echo $this->lists['invm'];?>
+    <?php
+    // custom fields
+    foreach ($this->fields as $name => $this->fieldGroup){
+    if ($name != 'ungrouped'){?>
+
+    <?php
+    }
+
+    ?>
+
+            <?php
+
+            foreach ($this->fieldGroup as $f){
+            $f = JArrayHelper::toObject ($f);
+            $f->value = $this->escape($f->value);
+
+            ?>
+            <tr>
+                <td class="paramlist_key vtop" id="lblfield<?php echo $f->id;?>"><label for="lblfield<?php echo $f->id;?>"><?php if ($f->type != "checkboxtos") { if ($f->required == 1) echo '* '; echo JText::_($f->name) . ':'; } ?></label></td>
+                <td class="paramlist_value vtop"><?php echo SeminarmanCustomfieldsLibrary::getFieldHTML($f , ''); ?></td>
+            </tr>
+            <?php
+            }
+
+            ?>
+    <?php
+    }
+
+    ?>
 		    </table>		
 	    </fieldset>
 	</div>
@@ -344,13 +372,22 @@ else
 		    </table>
 		</fieldset>
 	</div>
+	
+	<div class="width-40 fltrt">
+		<fieldset class="adminform">
+		    <legend><?php echo "Advanced Options"; ?></legend>
+		    <table class="admintable">
+                 <?php echo $this->lists['invm'];?>
+		    </table>		
+	    </fieldset>
+	</div>
 
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SEMINARMAN_COMPANY_DESC'); ?></legend>
 			<table class="admintable">
 				<tr>
-					<td><?php $editor = &JFactory::getEditor(); echo $editor->display('description', $this->tutor->description, '840', '200', '90', '15', false); ?></td>
+					<td><?php $editor = JFactory::getEditor(); echo $editor->display('description', $this->tutor->description, '840', '200', '90', '15', false); ?></td>
 				</tr>
 			</table>
 		</fieldset>

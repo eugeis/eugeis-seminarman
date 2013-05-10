@@ -119,7 +119,7 @@ class seminarmanModelsalesprospects extends JModel
     function _buildContentWhere()
     {
         $mainframe = JFactory::getApplication();
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
     	$filter_templateid = $mainframe->getUserStateFromRequest( 'com_seminarman'.'.salesprospects.filter_templateid', 'filter_templateid', 0, 'int' );
     	$filter_courseid = $mainframe->getUserStateFromRequest( 'com_seminarman'.'.salesprospects.filter_courseid', 'filter_courseid', 0, 'int' );
         $filter_order = $mainframe->getUserStateFromRequest('com_seminarman' . $this->childviewname . '.filter_order', 'filter_order', 'a.ordering', 'cmd');
@@ -164,7 +164,7 @@ class seminarmanModelsalesprospects extends JModel
 	*/
 	function getTitles()
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		if(JHTMLSeminarman::UserIsCourseManager()){
 		$sql = 'SELECT id, title as title'
 		. ' FROM #__seminarman_templates'
@@ -184,7 +184,7 @@ class seminarmanModelsalesprospects extends JModel
 
 	function getCourses()
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		if(JHTMLSeminarman::UserIsCourseManager()){
 		$query = ' SELECT id, CONCAT(code, \' (\', id, \')\') AS text FROM #__seminarman_courses ORDER BY id';
 		}else{

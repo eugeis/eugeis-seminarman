@@ -35,7 +35,7 @@ class seminarmanViewatgroup extends JView
             return;
         }
 
-        $atgroup = &$this->get('data');
+        $atgroup = $this->get('data');
 
         if ($atgroup->url)
         {
@@ -50,15 +50,15 @@ class seminarmanViewatgroup extends JView
     {
         $mainframe = JFactory::getApplication();
 
-        $db = &JFactory::getDBO();
-        $uri = &JFactory::getURI();
-        $user = &JFactory::getUser();
-        $model = &$this->getModel();
+        $db = JFactory::getDBO();
+        $uri = JFactory::getURI();
+        $user = JFactory::getUser();
+        $model = $this->getModel();
 
 
         $lists = array();
 
-        $atgroup = &$this->get('data');
+        $atgroup = $this->get('data');
         $isNew = ($atgroup->id < 1);
 
         if ($model->isCheckedOut($user->get('id')))

@@ -50,6 +50,17 @@ defined('_JEXEC') or die('Restricted access');
 
 		if($field->type == 'group')
 		{
+			switch ($field->purpose) {
+				case 0:
+					$purpose_title = JText::_('COM_SEMINARMAN_BOOKINGS');
+					break;
+				case 1:
+					$purpose_title = JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS');
+					break;
+				case 2:
+					$purpose_title = JText::_('COM_SEMINARMAN_TUTOR_PROFILE');
+					break;
+			}
 ?>
 		<tr>
 			<td  style="background-color: #EEEEEE;">&nbsp;</td>
@@ -64,7 +75,7 @@ defined('_JEXEC') or die('Restricted access');
 				</strong>
 				<div style="clear: both;"></div>
 			</td>
-			<td style="background-color: #EEEEEE;"><?php echo $field->purpose == 1 ? JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS') : JText::_('COM_SEMINARMAN_BOOKINGS'); ?></td>
+			<td style="background-color: #EEEEEE;"><?php echo $purpose_title; ?></td>
 			<td colspan="3" style="background-color: #EEEEEE;"></td>
 			<td align="center" id="published<?php echo $field->id;?>" style="background-color: #EEEEEE;">
 				<?php echo $published = JHTML::_('grid.published', $field, $i); ?>

@@ -70,7 +70,7 @@ class SeminarmanControllerSettings extends SeminarmanController
 		JRequest::setVar( 'hidemainmenu', 1 );
 
 		$model 	= $this->getModel('tag');
-		$user	=& JFactory::getUser();
+		$user	= JFactory::getUser();
 
 		// Error if checkedout by another administrator
 		if ($model->isCheckedOut( $user->get('id') )) {
@@ -98,10 +98,10 @@ function editconfig(){
 	JHTML::_('behavior.tooltip');
 
 		//initialise variables
-		$user 		= & JFactory::getUser();
-		$db  		= & JFactory::getDBO();
-		$document	= & JFactory::getDocument();
-		$lang 		= & JFactory::getLanguage();
+		$user 		= JFactory::getUser();
+		$db  		= JFactory::getDBO();
+		$document	= JFactory::getDocument();
+		$lang 		= JFactory::getLanguage();
 
 
 			//add css and submenu to document
@@ -123,7 +123,7 @@ function editconfig(){
 	$params = new JParameter( $jobsparams, $file, 'component' );
 
 	jimport('joomla.html.pane');
-	$pane = &JPane::getInstance('sliders', array('allowAllClose' => true));
+	$pane = JPane::getInstance('sliders', array('allowAllClose' => true));
 ?>
 		<form action="index.php" method="post" name="adminForm">
 <?php
@@ -174,7 +174,7 @@ function save()
 		}
 		$params = implode( "\n", $txt );
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$params = $db->Quote($params);
 		$query = "UPDATE #__components SET params=".$params." WHERE link='option=com_seminarman' AND parent=0";
 		$db->setQuery($query);
@@ -310,7 +310,7 @@ function save()
         $db->setQuery($query_manager);
         $foundManager = $db->loadResult();
 	    if (is_null($foundManager)) {
-        	JError::raiseWarning('SOME_ERROR_CODE', 'failed! It seems that your database was not updated properly, are you sure that you have excuted the previous database updates?');
+        	JError::raiseWarning('SOME_ERROR_CODE', 'Failed! It seems that your database was not updated properly, please reinstall the component!');
         	$this->setRedirect('index.php?option=com_seminarman&view=settings'); 
         	return;        	    	
         }
@@ -324,7 +324,7 @@ function save()
             $db->setQuery($query_jm);
             $result_jm = $db->loadAssoc();
             if (!is_null($result_jm)) {
-        	    $this->setRedirect('index.php?option=com_seminarman&view=settings', 'A seminar manager group with ID ' . $foundManager . ' exists already in Joomla Usergroup!');
+        	    $this->setRedirect('index.php?option=com_seminarman&view=settings', 'A seminar manager group with ID ' . $foundManager . ' exists already in Joomla user group tree!');
         	    return;                 
             }
         }
@@ -334,7 +334,7 @@ function save()
     	
         $model = JModel::getInstance( 'group', 'UsersModel' );
         $data = array ( 'id' => 0,
-                 'title' => 'OSG Seminar Manager',
+                 'title' => 'OSG SeminarManager',
                  'parent_id' => '1' );
         	
         if($model->save($data)){
@@ -352,9 +352,9 @@ function save()
             $db->setQuery($query_update);
             $result = $db->query();
             
-        	$this->setRedirect('index.php?option=com_seminarman&view=settings','The course manager group with id "' . $group_id . '" was successfully created in Joomla user group tree!');
+        	$this->setRedirect('index.php?option=com_seminarman&view=settings','The seminar manager group with id "' . $group_id . '" was successfully created in Joomla user group tree!');
         } else {
-        	JError::raiseNotice('SOME_ERROR_CODE', 'failed! Maybe a group with the same name was already created?');
+        	JError::raiseNotice('SOME_ERROR_CODE', 'Failed! Maybe a group named "OSG SeminarManager" exists in the Joomla user group tree? If yes, rename it first!');
         	$this->setRedirect('index.php?option=com_seminarman&view=settings');
         }    	
 	}
@@ -369,7 +369,7 @@ function save()
         $db->setQuery($query_trainer);
         $foundTrainer = $db->loadResult();
 	    if (is_null($foundTrainer)) {
-        	JError::raiseWarning('SOME_ERROR_CODE', 'failed! It seems that your database was not updated properly, are you sure that you have excuted the previous database updates?');
+        	JError::raiseWarning('SOME_ERROR_CODE', 'Failed! It seems that your database was not updated properly, please reinstall the component!');
         	$this->setRedirect('index.php?option=com_seminarman&view=settings'); 
         	return;        	    	
         }
@@ -383,7 +383,7 @@ function save()
             $db->setQuery($query_jm);
             $result_jm = $db->loadAssoc();
             if (!is_null($result_jm)) {
-        	    $this->setRedirect('index.php?option=com_seminarman&view=settings', 'A seminar trainer group with ID ' . $foundTrainer . ' exists already in Joomla Usergroup!');
+        	    $this->setRedirect('index.php?option=com_seminarman&view=settings', 'A seminar trainer group with ID ' . $foundTrainer . ' exists already in Joomla user group tree!');
         	    return;                 
             }
         }
@@ -393,7 +393,7 @@ function save()
     	
         $model = JModel::getInstance( 'group', 'UsersModel' );
         $data = array ( 'id' => 0,
-                 'title' => 'OSG Seminar Trainer',
+                 'title' => 'OSG SeminarTrainer',
                  'parent_id' => '1' );	
         if($model->save($data)){
             $group_name = $data["title"];
@@ -412,7 +412,7 @@ function save()
             
             $this->setRedirect('index.php?option=com_seminarman&view=settings','The course trainer group with id "' . $group_id . '" was successfully created in Joomla user group tree!');
         }else{
-        	JError::raiseNotice('SOME_ERROR_CODE', 'failed! Maybe a group with the same name was already created?');
+        	JError::raiseNotice('SOME_ERROR_CODE', 'Failed! Maybe a group named "OSG SeminarTrainer" exists in the Joomla user group tree? If yes, rename it first!');
         	$this->setRedirect('index.php?option=com_seminarman&view=settings');   	
         }
 	}
@@ -539,18 +539,21 @@ function save()
 				if (!$asset->check() || !$asset->store()) {
 					JError::raiseNotice('SOME_ERROR_CODE', $asset->getError());
 					$this->setRedirect('index.php?option=com_seminarman&view=settings');
-					exit;
+					return false;
 				}
-				$this->setRedirect('index.php?option=com_seminarman&view=settings','The both groups can login in site and backend now!');
+				$this->setRedirect('index.php?option=com_seminarman&view=settings','The both groups of seminar manager and trainer can login in site and backend now!');
+				return true;
 			}
 			else
 			{
 				$this->setError(JText::_('COM_CONFIG_ERROR_ROOT_ASSET_NOT_FOUND'));
 				$this->setRedirect('index.php?option=com_seminarman&view=settings');
+				return false;
 			}
 		}else{
-        	JError::raiseNotice('SOME_ERROR_CODE', 'failed! Have you already created the both groups?');
-        	$this->setRedirect('index.php?option=com_seminarman&view=settings');            
+        	JError::raiseNotice('SOME_ERROR_CODE', 'Failed! Have you already created the both groups of seminar manager and trainer?');
+        	$this->setRedirect('index.php?option=com_seminarman&view=settings');
+        	return false;            
 		}
 	}
 	
@@ -573,18 +576,21 @@ function save()
 				if (!$level->check() || !$level->store()) {
 					JError::raiseNotice('SOME_ERROR_CODE', $level->getError());
 					$this->setRedirect('index.php?option=com_seminarman&view=settings');
-					exit;
+					return false; 
 				}
-				$this->setRedirect('index.php?option=com_seminarman&view=settings','The backend menu and toolbar are visible for both groups!');                
+				$this->setRedirect('index.php?option=com_seminarman&view=settings','The backend menu and toolbar are visible for both groups of seminar manager and trainer!');                
+				return true;
 			}
 			else
 			{
 				$this->setError('Zugriffseben nicht gefunden!');
 				$this->setRedirect('index.php?option=com_seminarman&view=settings');
+				return false;
 			}
 	    }else{
-        	JError::raiseNotice('SOME_ERROR_CODE', 'failed! Have you already created the both groups?');
-        	$this->setRedirect('index.php?option=com_seminarman&view=settings');            
+        	JError::raiseNotice('SOME_ERROR_CODE', 'failed! Have you already created the both groups of seminar manager and trainer?');
+        	$this->setRedirect('index.php?option=com_seminarman&view=settings');  
+        	return false;
 		}			
 	}
 	
@@ -608,18 +614,21 @@ function save()
 				if (!$asset->check() || !$asset->store()) {
 					JError::raiseNotice('SOME_ERROR_CODE', $asset->getError());
 					$this->setRedirect('index.php?option=com_seminarman&view=settings');
-					exit;
+					return false; 
 				}
 				$this->setRedirect('index.php?option=com_seminarman&view=settings','Upgrade successfully!');
+				return true;
 			}
 			else
 			{
 				$this->setError(JText::_('COM_CONFIG_ERROR_ROOT_ASSET_NOT_FOUND'));
 				$this->setRedirect('index.php?option=com_seminarman&view=settings');
+				return false;
 			}
 		}else{
-        	JError::raiseNotice('SOME_ERROR_CODE', 'failed! Have you already created the both groups?');
-        	$this->setRedirect('index.php?option=com_seminarman&view=settings');            
+        	JError::raiseNotice('SOME_ERROR_CODE', 'Failed! Have you already created the both groups of seminar manager and trainer?');
+        	$this->setRedirect('index.php?option=com_seminarman&view=settings'); 
+        	return false;
 		}
 	}
 	
@@ -650,7 +659,7 @@ function save()
         	$db->setQuery($query_base);
         	$foundBaseID = $db->loadResult();
         	if (is_null($foundBaseID)) {
-        	    JError::raiseWarning('SOME_ERROR_CODE', 'failed! It seems that your database for vm engine was not updated properly, are you sure that you have excuted the previous database updates?');
+        	    JError::raiseWarning('SOME_ERROR_CODE', 'Failed! It seems that your database for vm engine was not updated properly, are you sure that you have excuted the previous database updates?');
         	    $this->setRedirect('index.php?option=com_seminarman&view=settings'); 
         	    return;        	    	
         	}
@@ -677,7 +686,7 @@ function save()
             $model = JModel::getInstance( 'category', 'VirtueMartModel' );
             
 		    $params = JComponentHelper::getParams('com_languages');
-		    //$config =& JFactory::getConfig();$config->getValue('language');
+		    //$config = JFactory::getConfig();$config->getValue('language');
 		    $selectedLangue = $params->get('site', 'en-GB'); 
 		
 		    $token = JUtility::getToken();
@@ -706,11 +715,11 @@ function save()
             }
 
         } else {
-        	JError::raiseNotice('SOME_ERROR_CODE', 'failed! The VirtueMart is not connected to the Seminar Manager yet, please set the connection through the option button on top right first!');
+        	JError::raiseNotice('SOME_ERROR_CODE', 'Failed! The VirtueMart is not connected to the Seminar Manager yet, please set the connection through the option button on top right first!');
         	$this->setRedirect('index.php?option=com_seminarman&view=settings');        	
         }
       } else {
-          JError::raiseNotice('SOME_ERROR_CODE', 'failed! Component VirtueMart was not found!');
+          JError::raiseNotice('SOME_ERROR_CODE', 'Failed! Component VirtueMart was not found!');
           $this->setRedirect('index.php?option=com_seminarman&view=settings');      	
       }	
 	}
@@ -724,7 +733,19 @@ function save()
         $db->setQuery($query);
         $result= $db->loadAssoc();
         if (!is_null($result)){
-            return $result['jm_id'];
+        	// is it valid?
+        	$query_jm = $db->getQuery(true);
+        	$query_jm->select('*')
+        	         ->from('#__usergroups')
+        	         ->where('id = ' . $result['jm_id']);
+        	$db->setQuery($query_jm);
+        	$result_jm = $db->loadAssoc();
+        	if (!is_null($result_jm)) {
+        		// valid joomla group
+                return $result['jm_id'];
+        	} else {
+        		return 0;
+        	}
         }else{
         	return 0;
         }
@@ -739,7 +760,19 @@ function save()
         $db->setQuery($query);
         $result= $db->loadAssoc();
         if (!is_null($result)){
-            return $result['jm_id'];
+        	// is it valid?
+        	$query_jm = $db->getQuery(true);
+        	$query_jm->select('*')
+        	         ->from('#__usergroups')
+        	         ->where('id = ' . $result['jm_id']);
+        	$db->setQuery($query_jm);
+        	$result_jm = $db->loadAssoc();
+        	if (!is_null($result_jm)) {
+        		// valid joomla group
+                return $result['jm_id'];
+        	}else{
+        		return 0;
+        	}
         }else{
         	return 0;
         }
@@ -875,5 +908,49 @@ function save()
         	$this->setRedirect('index.php?option=com_seminarman&view=settings');            	
         }        
         
+	}
+	
+	function setRights() {
+		if(($this->assignloginrights())&&($this->setmodulevisibleforgroups())&&($this->assigncomrights())) {
+			$this->setRedirect('index.php?option=com_seminarman&view=settings','Upgrade successfully!');
+		} else {
+			$this->setError('Upgrade unsuccessfully!');
+			$this->setRedirect('index.php?option=com_seminarman&view=settings');			
+		}
+	}
+	
+	function fixDB() {
+		$db = JFactory::getDBO();
+		$query1 = "ALTER IGNORE TABLE `#__seminarman_courses` ADD `price4` DOUBLE AFTER `price3`;";
+		$query2 = "ALTER IGNORE TABLE `#__seminarman_courses` ADD `price5` DOUBLE AFTER `price4`;";
+		$query3 = "ALTER IGNORE TABLE `#__seminarman_templates` ADD `price4` DOUBLE AFTER `price3`;";
+		$query4 = "ALTER IGNORE TABLE `#__seminarman_templates` ADD `price5` DOUBLE AFTER `price4`;";
+		$query5 = "INSERT IGNORE INTO `#__seminarman_pricegroups` (`id`, `gid`, `jm_groups`, `reg_group`, `title`, `calc_mathop`, `calc_value`) VALUES  (3, 4, '', 0, 'Price 4', '-%', 0),  (4, 5, '', 0, 'Price 5', '-%', 0);";
+		$query6 = "CREATE TABLE IF NOT EXISTS `#__seminarman_fields_values_tutors` (
+                  `tutor_id` int(11) NOT NULL,
+                  `field_id` int(10) NOT NULL,
+                  `value` text NOT NULL,
+                  PRIMARY KEY (`tutor_id`,`field_id`)
+                  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
+		$db->setQuery($query1);
+		$result = $db->query();
+		$db->setQuery($query2);
+		$result = $db->query();
+		$db->setQuery($query3);
+		$result = $db->query();
+		$db->setQuery($query4);
+		$result = $db->query();
+		$db->setQuery($query5);
+		$result = $db->query();
+		$db->setQuery($query6);
+		$result = $db->query();
+		$this->setRedirect('index.php?option=com_seminarman&view=settings','The database has been fixed successfully!');
+	}
+	
+	function test()
+	{
+		$app = JFactory::getApplication();
+		$app->enqueueMessage('Hola Claudy, repair now!', 'message');
+		$this->setRedirect('index.php?option=com_seminarman&view=settings'); 
 	}
 }

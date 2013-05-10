@@ -11,7 +11,7 @@ JHTML::_('behavior.tooltip');
 
 jimport('joomla.html.pane');
 
-$pane	=& JPane::getInstance('Tabs');
+$pane	= JPane::getInstance('Tabs');
 ?>
 
 

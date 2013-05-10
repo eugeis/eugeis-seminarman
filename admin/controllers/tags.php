@@ -58,7 +58,7 @@ class SeminarmanControllerTags extends SeminarmanController
             }
             $msg = JText::_('COM_SEMINARMAN_RECORD_SAVED');
 
-            $cache = &JFactory::getCache('com_seminarman');
+            $cache = JFactory::getCache('com_seminarman');
             $cache->clean();
 
         } else
@@ -117,7 +117,7 @@ class SeminarmanControllerTags extends SeminarmanController
 
             $total = count($cid);
             $msg = $total . ' ' . JText::_('COM_SEMINARMAN_OPERATION_SUCCESSFULL');
-            $cache = &JFactory::getCache('com_seminarman');
+            $cache = JFactory::getCache('com_seminarman');
             $cache->clean();
         }
 
@@ -142,7 +142,7 @@ class SeminarmanControllerTags extends SeminarmanController
             }
 
             $msg = JText::_('COM_SEMINARMAN_OPERATION_SUCCESSFULL');
-            $cache = &JFactory::getCache('com_seminarman');
+            $cache = JFactory::getCache('com_seminarman');
             $cache->clean();
         }
 
@@ -153,7 +153,7 @@ class SeminarmanControllerTags extends SeminarmanController
     {
         JRequest::checkToken() or jexit('Invalid Token');
 
-        $tag = &JTable::getInstance('seminarman_tags', '');
+        $tag = JTable::getInstance('seminarman_tags', '');
         $tag->bind(JRequest::get('post'));
         $tag->checkin();
 
@@ -166,7 +166,7 @@ class SeminarmanControllerTags extends SeminarmanController
         JRequest::setVar('hidemainmenu', 1);
 
         $model = $this->getModel('tag');
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
 
         if ($model->isCheckedOut($user->get('id')))
         {

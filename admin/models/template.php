@@ -108,8 +108,8 @@ class SeminarmanModelTemplate extends JModel
 
         if (empty($this->_template))
         {
-        	$params =& JComponentHelper::getParams( 'com_seminarman' );
-            $createdate = &JFactory::getDate();
+        	$params = JComponentHelper::getParams( 'com_seminarman' );
+            $createdate = JFactory::getDate();
             $nullDate = $this->_db->getNullDate();
 
             $template = new stdClass();
@@ -142,7 +142,7 @@ class SeminarmanModelTemplate extends JModel
             $template->currency_price = null;
             $template->capacity = null;
             $template->location = null;
-            $createdate = &JFactory::getDate();
+            $createdate = JFactory::getDate();
         	$template->capacity = null;
             $this->_template = $template;
             $template->email_template = 0;
@@ -166,7 +166,7 @@ class SeminarmanModelTemplate extends JModel
     {
         if ($this->_id)
         {
-            $template = &JTable::getInstance('seminarman_templates', '');
+            $template = JTable::getInstance('seminarman_templates', '');
             return $template->checkin($this->_id);
         }
         return false;
@@ -179,11 +179,11 @@ class SeminarmanModelTemplate extends JModel
 
             if (is_null($uid))
             {
-                $user = &JFactory::getUser();
+                $user = JFactory::getUser();
                 $uid = $user->get('id');
             }
 
-            $template = &JTable::getInstance('seminarman_templates', '');
+            $template = JTable::getInstance('seminarman_templates', '');
             return $template->checkout($uid, $this->_id);
         }
         return false;
@@ -222,8 +222,8 @@ class SeminarmanModelTemplate extends JModel
 
         JRequest::checkToken() or jexit('Invalid Token');
 
-        $template = &$this->getTable('seminarman_templates', '');
-        $user = &JFactory::getUser();
+        $template = $this->getTable('seminarman_templates', '');
+        $user = JFactory::getUser();
 
         $details = JRequest::getVar('details', array(), 'post', 'array');
         $tags = JRequest::getVar('tag', array(), 'post', 'array');

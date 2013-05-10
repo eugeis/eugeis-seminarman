@@ -33,14 +33,16 @@ class SeminarmanViewBookings extends JView{
 
         $mainframe = JFactory::getApplication();
 
-        $document = &JFactory::getDocument();
-        $menus = &JSite::getMenu();
+        $Itemid = JRequest::getInt('Itemid');
+        
+        $document = JFactory::getDocument();
+        $menus = JFactory::getApplication()->getMenu();
         $menu = $menus->getActive();
-        $params = &$mainframe->getParams('com_seminarman');
-        $uri = &JFactory::getURI();
-        $lang = &JFactory::getLanguage();
-        $model = & $this->getModel('bookings');
-		$user		=& JFactory::getUser();
+        $params = $mainframe->getParams('com_seminarman');
+        $uri = JFactory::getURI();
+        $lang = JFactory::getLanguage();
+        $model = $this->getModel('bookings');
+		$user = JFactory::getUser();
         jimport( 'joomla.html.parameter' );
 
         $limitstart = JRequest::getInt('limitstart');
@@ -66,14 +68,14 @@ class SeminarmanViewBookings extends JView{
             $params->set('page_title', JText::_('COM_SEMINARMAN_MY_BOOKINGS'));
         }
 
-        $pathway = &$mainframe->getPathWay();
-        $pathway->addItem($params->get('page_title'), JRoute::_('index.php?view=bookings'));
+        $pathway = $mainframe->getPathWay();
+        $pathway->addItem($params->get('page_title'), JRoute::_('index.php?view=bookings' . '&Itemid=' . $Itemid));
 
         $document->setTitle($params->get('page_title'));
         $document->setMetadata('keywords', $params->get('page_title'));
 
             if ($user->get('guest')){
-                $redirectUrl = JRoute::_('index.php?option=com_seminarman&view=bookings', false);
+                $redirectUrl = JRoute::_('index.php?option=com_seminarman&view=bookings' . '&Itemid=' . $Itemid, false);
                 $redirectUrl = base64_encode($redirectUrl);
                 $redirectUrl = '&return=' . $redirectUrl;
                 $joomlaLoginUrl = 'index.php?option=com_users&view=login';
@@ -81,14 +83,16 @@ class SeminarmanViewBookings extends JView{
                 $mainframe->redirect($finalUrl, JText::_('COM_SEMINARMAN_PLEASE_LOGIN_FIRST'));
             }
 
-        $courses = &$this->get('Data');
-        $total = &$this->get('Total');
+        $courses = $this->get('Data');
+        $total = $this->get('Total');
 
 
         $count = count($courses);
         for($i = 0; $i < $count; $i++){
             $item = &$courses[$i];
         	$item->count=$i;
+        	$item->startDateAsDate = $item->start_date;
+        	$item->finishDateAsDate = $item->finish_date;
         	$category = $model->getCategory($item->id);
             // $link = JRoute::_('index.php?view=courses&cid=' . $category->slug . '&id=' . $item->slug);
             $link = JRoute::_($item->url);
@@ -135,7 +139,7 @@ class SeminarmanViewBookings extends JView{
                 // cases for a parameter - show new
                 case 1:
                     // display new icon
-                    $item->show_new_icon = '&nbsp;&nbsp;' . JHTML::_('image', 'administrator/components/com_seminarman/assets/images/new_item.png', JText::_('COM_SEMINARMAN_NEW'));
+                    $item->show_new_icon = '&nbsp;&nbsp;' . JHTML::_('image', 'components/com_seminarman/assets/images/new_item.png', JText::_('COM_SEMINARMAN_NEW'));
                     break;
                 default:
                     // nothing to display
@@ -148,7 +152,7 @@ class SeminarmanViewBookings extends JView{
                 case 1:
                     // display new icon
                     // $item->show_sale_icon = '&nbsp;&nbsp;<img src="'.JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'images'.DS.'sale_item.png"/>';
-                    $item->show_sale_icon = '&nbsp;&nbsp;' . JHTML::_('image', 'administrator/components/com_seminarman/assets/images/sale_item.png', JText::_('COM_SEMINARMAN_SALE'));
+                    $item->show_sale_icon = '&nbsp;&nbsp;' . JHTML::_('image', 'components/com_seminarman/assets/images/sale_item.png', JText::_('COM_SEMINARMAN_SALE'));
                     break;
                 default:
                     // nothing to display
@@ -171,7 +175,7 @@ class SeminarmanViewBookings extends JView{
                         break;
                 }
                 // add currentbookings information
-                $db = &JFactory::getDBO();
+                $db = JFactory::getDBO();
                 $sql = 'SELECT SUM(b.attendees)'
                  . ' FROM #__seminarman_application AS b'
                  . ' WHERE b.published = 1'
@@ -183,7 +187,7 @@ class SeminarmanViewBookings extends JView{
 
                 if ($item->status < 2){
                     // create booking button
-                    $item->book_link = '<div class="button2-left"><div class="blank"><a href="' . JRoute::_('index.php?view=paypal&bookingid=' . $item->applicationid) . '">' . JText::_('COM_SEMINARMAN_PAY_NOW') . '</a></div></div>';
+                    $item->book_link = '<div class="button2-left"><div class="blank"><a href="' . JRoute::_('index.php?view=paypal&bookingid=' . $item->applicationid . '&Itemid=' . $Itemid) . '">' . JText::_('COM_SEMINARMAN_PAY_NOW') . '</a></div></div>';
                 }elseif ($item->status == 3){
                     $item->book_link = '<span class="centered italic">' . JText::_('COM_SEMINARMAN_CANCELLED') . '</span>';
                 }else{
@@ -191,10 +195,10 @@ class SeminarmanViewBookings extends JView{
                 }
             }else{
                 // create booking button
-                $item->book_link = '<div class="button2-left"><div class="blank"><a href="' . JRoute::_('index.php?view=paypal&bookingid=' . $item->applicationid) . '">' . JText::_('COM_SEMINARMAN_PAY_NOW') . '</a></div></div>';
+                $item->book_link = '<div class="button2-left"><div class="blank"><a href="' . JRoute::_('index.php?view=paypal&bookingid=' . $item->applicationid . '&Itemid=' . $Itemid) . '">' . JText::_('COM_SEMINARMAN_PAY_NOW') . '</a></div></div>';
             }
             // show sessions
-            $db = &JFactory::getDBO();
+            $db = JFactory::getDBO();
             /*$sql = 'SELECT min(session_date) AS start_date, max(session_date) AS finish_date FROM #__seminarman_sessions'
              . ' WHERE published = 1'
              . ' AND courseid = ' . $item->id
@@ -233,7 +237,7 @@ class SeminarmanViewBookings extends JView{
         $filter_positiontype = JRequest::getString('filter_positiontype');
 
         $experience_level[] = JHTML::_('select.option', '0', JText::_('All'), 'id', 'title');
-        $titles = &$this->get('titles');
+        $titles = $this->get('titles');
         $experience_level = array_merge($experience_level, $titles);
         $lists['filter_experience_level'] = JHTML::_('select.genericlist', $experience_level,
             'filter_experience_level', 'class="inputbox" size="1" ', 'id', 'title', $filter_experience_level);
@@ -259,7 +263,7 @@ class SeminarmanViewBookings extends JView{
     function _invoicepdf()
     {
 		$mainframe = JFactory::getApplication();
-		$applications = &$this->get('Data');
+		$applications = $this->get('Data');
 		
 		$appid = JRequest::GetInt('appid','0');
 		

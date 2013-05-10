@@ -33,8 +33,8 @@ class SeminarmanViewImportexport extends JView
 		JToolBarHelper::title(JText::_('COM_SEMINARMAN_CSV_EXPORT'), 'generic.png');
 		JToolBarHelper::cancel();
 
-		$document = &JFactory::getDocument();
-		$uri = &JFactory::getURI();
+		$document = JFactory::getDocument();
+		$uri = JFactory::getURI();
 
 		$document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
 
@@ -51,21 +51,24 @@ class SeminarmanViewImportexport extends JView
 		$expselect = JHTML::_('select.genericlist', $expoptions, 'datatype', 'onchange="javascript:showOptions();" onkeyup="javascript:showOptions();"', 'value', 'text', 'courses');
 		$expfromdate = JHTML::calendar('', 'from_date', 'from_date', '%Y-%m-%d');
 		$exptodate = JHTML::calendar('', 'to_date', 'to_date', '%Y-%m-%d');
+		$expcourse = $this->_getSelectCourse();
+		$exptemplate = $this->_getSelectTemplate();
+		$path = $uri->toString();
 		
 		$this->assignRef('expselect', $expselect);
 		$this->assignRef('expfromdate', $expfromdate);
 		$this->assignRef('exptodate', $exptodate);
-		$this->assignRef('expcourse',  $this->_getSelectCourse());
-		$this->assignRef('exptemplate', $this->_getSelectTemplate());
+		$this->assignRef('expcourse', $expcourse);
+		$this->assignRef('exptemplate', $exptemplate);
 
-		$this->assignRef('path', $uri->toString());
+		$this->assignRef('path', $path);
 
 		parent::display($tpl);
 	}
 
 	function _getSelectCourse()
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = 'SELECT id AS value, CONCAT(id, ": ", title) AS text FROM #__seminarman_courses ORDER BY title';
 		$db->setQuery($query);
 		$courses = $db->loadObjectList();
@@ -80,7 +83,7 @@ class SeminarmanViewImportexport extends JView
 	
 	function _getSelectTemplate()
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = 'SELECT id AS value, CONCAT(id, ": ", title) AS text FROM #__seminarman_templates ORDER BY title';
 		$db->setQuery($query);
 		$templates = $db->loadObjectList();

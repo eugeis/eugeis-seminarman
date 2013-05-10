@@ -15,6 +15,7 @@ if (!$this->params->get('show_location'))
 	$colspan--;
 if (!$this->params->get('enable_bookings'))
 	$colspan--;
+$Itemid = JRequest::getInt('Itemid');
 ?>
 
 <form action="<?php echo $this->action;?>" method="post" id="adminForm">
@@ -62,7 +63,7 @@ foreach ($this->courses as $course):
 ?>
 <tr class="sectiontableentry" >
 	<td headers="qf_code" nowrap="nowrap"><?php echo $this->escape($course->code); ?></td>
-	<td headers="qf_title"><strong><a href="<?php echo JRoute::_('index.php?view=courses&cid=' . $course->category->slug . '&id=' . $course->slug); ?>"><?php echo $this->escape($course->title); ?></a></strong><?php echo $course->show_new_icon; echo $course->show_sale_icon; ?></td>
+	<td headers="qf_title"><strong><a href="<?php echo JRoute::_('index.php?view=courses&cid=' . $course->category->slug . '&id=' . $course->slug . '&Itemid=' . $Itemid); ?>"><?php echo $this->escape($course->title); ?></a></strong><?php echo $course->show_new_icon; echo $course->show_sale_icon; ?></td>
 	<td headers="qf_start_date" nowrap="nowrap"><?php echo $course->start_date; ?></td>
 	<td headers="qf_finish_date" nowrap="nowrap"><?php echo $course->finish_date; ?></td>
 <?php if ($this->params->get('show_location')): ?>

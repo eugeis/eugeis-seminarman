@@ -25,7 +25,7 @@ function cIsPlural($num){
 }
 
 function cIsSingular($num){
-	$config =& CMFactory::getConfig();
+	$config = CMFactory::getConfig();
 	$singularnumbers = $config->get('singularnumber');
 	$singularnumbers = explode(',', $singularnumbers);
 	

@@ -35,7 +35,7 @@ class seminarmanControllercompany_type extends seminarmanController
         $this->parentviewname = 'company_types';
     }
 
-    function display()
+    function display( $cachable = false, $urlparams = false )
     {
         switch ($this->getTask())
         {

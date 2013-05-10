@@ -8,10 +8,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$config = &JFactory::getConfig();
-$now = &JFactory::getDate();
-$db = &JFactory::getDBO();
-$user = &JFactory::getUser();
+$config = JFactory::getConfig();
+$now = JFactory::getDate();
+$db = JFactory::getDBO();
+$user = JFactory::getUser();
 
 ?>
 

@@ -11,10 +11,10 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <?php
 
-$config = &JFactory::getConfig();
-$now = &JFactory::getDate();
-$db = &JFactory::getDBO();
-$user = &JFactory::getUser();
+$config = JFactory::getConfig();
+$now = JFactory::getDate();
+$db = JFactory::getDBO();
+$user = JFactory::getUser();
 
 
 ?>
@@ -26,6 +26,7 @@ $user = &JFactory::getUser();
 <tr>
    <td class="proc100 left">
       <?php echo JText::_('Filter'); ?>:
+      <?php echo $this->lists['filter_search']; ?>
       <input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
       <input type="button" onclick="this.form.submit();" value="<?php echo JText::_('COM_SEMINARMAN_GO');?>" />
       <input type="button" onclick="document.getElementById('search').value='';this.form.getElementById('filter_state').value='';this.form.getElementById('filter_category').value='0';this.form.submit();" value="<?php echo JText::_('COM_SEMINARMAN_RESET'); ?>" />
@@ -122,8 +123,8 @@ for ($i = 0, $n = count($this->rows); $i < $n; $i++)
         $row->id;
     $checked = JHTML::_('grid.checkedout', $row, $i);
 
-    $publish_up = &JFactory::getDate($row->publish_up);
-    $publish_down = &JFactory::getDate($row->publish_down);
+    $publish_up = JFactory::getDate($row->publish_up);
+    $publish_down = JFactory::getDate($row->publish_down);
     $publish_up->setOffset($config->getValue('config.offset'));
     $publish_down->setOffset($config->getValue('config.offset'));
 

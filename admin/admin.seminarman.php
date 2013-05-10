@@ -41,6 +41,10 @@ define('COM_SEMINARMAN_UPLOADEDCVFILEPATH',    JPATH_ROOT.DS.$params->get('uploa
 // Require the base controller
 require_once (JPATH_COMPONENT.DS.'controller.php');
 
+require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php'; if(JRequest::getCmd('view','') == 'liveupdate') {
+	LiveUpdate::handleRequest(); return;
+}
+
 // Require specific controller if requested
 if( $controller = JRequest::getWord('controller') ) {
 	$path = JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php';

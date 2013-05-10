@@ -35,7 +35,7 @@ class seminarmanViewExperience_level extends JView
             return;
         }
 
-        $experience_level = &$this->get('data');
+        $experience_level = $this->get('data');
 
         if ($experience_level->url)
         {
@@ -50,14 +50,14 @@ class seminarmanViewExperience_level extends JView
     {
         $mainframe = JFactory::getApplication();
 
-        $db = &JFactory::getDBO();
-    	       $document = &JFactory::getDocument();
-        $uri = &JFactory::getURI();
-        $user = &JFactory::getUser();
-        $model = &$this->getModel();
+        $db = JFactory::getDBO();
+    	$document = JFactory::getDocument();
+        $uri = JFactory::getURI();
+        $user = JFactory::getUser();
+        $model = $this->getModel();
     	$lists = array();
 
-        $experience_level = &$this->get('data');
+        $experience_level = $this->get('data');
         $isNew = ($experience_level->id < 1);
 
         if ($model->isCheckedOut($user->get('id')))

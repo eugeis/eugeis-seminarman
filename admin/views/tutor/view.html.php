@@ -33,7 +33,7 @@ class seminarmanViewtutor extends JView
 			return;
 		}
 
-		$tutor = &$this->get('data');
+		$tutor = $this->get('data');
 		
 		if ($tutor->url)
 		$mainframe->redirect($tutor->url);
@@ -45,12 +45,12 @@ class seminarmanViewtutor extends JView
 	{
 		$mainframe = JFactory::getApplication();
 
-		$db = &JFactory::getDBO();
-		$uri = &JFactory::getURI();
-		$user = &JFactory::getUser();
-		$model = &$this->getModel();
-		$document = &JFactory::getDocument();
-		$lang = &JFactory::getLanguage();
+		$db = JFactory::getDBO();
+		$uri = JFactory::getURI();
+		$user = JFactory::getUser();
+		$model = $this->getModel();
+		$document = JFactory::getDocument();
+		$lang = JFactory::getLanguage();
 
 		$document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
 		if ($lang->isRTL())
@@ -58,7 +58,7 @@ class seminarmanViewtutor extends JView
 
 		$lists = array();
 
-		$tutor = &$this->get('data');
+		$tutor = $this->get('data');
 		$isNew = ($tutor->id < 1);
 
 		require_once (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_seminarman' . DS . 'helpers' . DS . 'seminarman.php');
@@ -87,7 +87,7 @@ class seminarmanViewtutor extends JView
 		$query = 'SELECT ordering AS value, title AS text' . ' FROM #__seminarman_tutor' . ' ORDER BY ordering';
 		
 		$lists['templates_add'] = JHTMLSeminarman::getSelectTemplate('template_id');
-		$lists['qualified_templates'] = &$this->get('Templates');
+		$lists['qualified_templates'] = $this->get('Templates');
 		
 		$lists['ordering'] = JHTML::_('list.specificordering', $tutor, $tutor->id, $query);
 		$lists['published'] = JHTML::_('select.booleanlist', 'published', 'class="inputbox"', $tutor->published);
@@ -122,7 +122,13 @@ class seminarmanViewtutor extends JView
 
 		$file = JPATH_COMPONENT . DS . 'models' . DS . 'tutor.xml';
 		$params = new JParameter($tutor->params, $file);
-
+		
+		$data = new stdClass();
+		$data->customfields = $model->getEditableCustomfields($tutor->id);
+		CMFactory::load('libraries' , 'customfields');
+		
+		$fields = $data->customfields ['fields'];
+		$this->assignRef('fields', $fields);
 		$this->assignRef('lists', $lists);
 		$this->assignRef('tutor', $tutor);
 		$this->assignRef('params', $params);

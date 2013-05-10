@@ -116,10 +116,17 @@ class com_seminarmanInstallerScript
 	{
 		// default values for component parameters
 		$params['enable_bookings'] = '2';
+		$params['enable_loginform'] = '1';
 		$params['enable_multiple_bookings_per_user'] = '0';
 		$params['enable_bookings_deletable'] = '0';
 		$params['enable_num_of_attendees'] = '1';
+		$params['show_price_1'] = '0';
+		$params['show_price_2'] = '1';
+		$params['show_price_3'] = '1';
+		$params['show_price_4'] = '1';
+		$params['show_price_5'] = '1';
 		$params['enable_salesprospects'] = '1';
+		$params['enable_payment_overview'] = '0';
 		$params['show_modify_date'] = '1';
 		$params['show_hits'] = '1';
 		$params['show_sessions'] = '1';
@@ -143,6 +150,8 @@ class com_seminarmanInstallerScript
 		$params['show_email_icon'] = '1';
 		$params['show_state_icon'] = '1';
 		$params['currency'] = 'EUR';
+		$params['second_currency'] = 'NONE';
+		$params['factor'] = '0';
 		$params['component_email'] = '';
 		$params['vat'] = '19';
 		$params['invoice_generate'] = '1';
@@ -166,6 +175,8 @@ class com_seminarmanInstallerScript
 		$params['enable_paypal'] = '0';
 		$params['paypal_email'] = '';
 		$params['trigger_onprepare_content'] = '0';
+		$params['trigger_virtuemart'] = '0';
+		$params['trigger_points'] = '0';
 		$params['application_landingpage'] = 'index.php';
 		$this->setParams( $params );
 	}

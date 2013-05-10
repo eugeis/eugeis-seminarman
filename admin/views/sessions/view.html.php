@@ -28,13 +28,13 @@ class seminarmanViewSessions extends JView
     {
         $mainframe = JFactory::getApplication();
 
-        $db = &JFactory::getDBO();
-        $uri = &JFactory::getURI();
+        $db = JFactory::getDBO();
+        $uri = JFactory::getURI();
 
         $childviewname = 'session';
 
-        $document = &JFactory::getDocument();
-        $lang = &JFactory::getLanguage();
+        $document = JFactory::getDocument();
+        $lang = JFactory::getLanguage();
         
         $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
         if ($lang->isRTL())
@@ -56,10 +56,10 @@ class seminarmanViewSessions extends JView
             '.search', 'search', '', 'string');
         $search = JString::strtolower($search);
 
-        $courses = &$this->get('Data');
-        $total = &$this->get('Total');
-        $pagination = &$this->get('Pagination');
-    	$coursetitles = & $this->get( 'coursetitles' );
+        $courses = $this->get('Data');
+        $total = $this->get('Total');
+        $pagination = $this->get('Pagination');
+    	$coursetitles = $this->get( 'coursetitles' );
 
     	// build list of groups
     	$courselist[]         = JHTML::_('select.option',  '0', '- '.JText::_( 'COM_SEMINARMAN_SELECT_COURSE' ).' -', 'id', 'title' );
@@ -69,7 +69,7 @@ class seminarmanViewSessions extends JView
 
 
 
-        $requestURL = &$uri->toString();
+        $requestURL = $uri->toString();
 
         $lists['state'] = JHTML::_('grid.state', $filter_state);
 
@@ -77,8 +77,9 @@ class seminarmanViewSessions extends JView
         $lists['order'] = $filter_order;
 
         $lists['search'] = $search;
-
-        $this->assignRef('user', JFactory::getUser());
+        
+        $user = JFactory::getUser();
+        $this->assignRef('user', $user);
         $this->assignRef('lists', $lists);
         $this->assignRef('courses', $courses);
         $this->assignRef('pagination', $pagination);

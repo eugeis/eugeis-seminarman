@@ -62,7 +62,7 @@ class SeminarmanControllerFilemanager extends SeminarmanController
                 if ($format == 'json')
                 {
                     jimport('joomla.error.log');
-                    $log = &JLog::getInstance('com_seminarman.error.php');
+                    $log = JLog::getInstance('com_seminarman.error.php');
                     $log->addEntry(array('comment' => 'Invalid: ' . $filepath . ': ' . $err));
                     header('HTTP/1.0 415 Unsupported Media Type');
                     die('COM_SEMINARMAN_UNSUPPORTED_MEDIA_FILE');
@@ -83,7 +83,7 @@ class SeminarmanControllerFilemanager extends SeminarmanController
                 if ($format == 'json')
                 {
                     jimport('joomla.error.log');
-                    $log = &JLog::getInstance('com_seminarman.error.php');
+                    $log = JLog::getInstance('com_seminarman.error.php');
                     $log->addEntry(array('comment' => 'Cannot upload: ' . $filepath));
                     header('HTTP/1.0 409 Conflict');
                     jexit('COM_SEMINARMAN_FILE_EXISTS');
@@ -102,15 +102,15 @@ class SeminarmanControllerFilemanager extends SeminarmanController
                 if ($format == 'json')
                 {
                     jimport('joomla.error.log');
-                    $log = &JLog::getInstance();
+                    $log = JLog::getInstance();
                     $log->addEntry(array('comment' => $filepath));
 
-                    $db = &JFactory::getDBO();
-                    $user = &JFactory::getUser();
-                    $config = &JFactory::getConfig();
+                    $db = JFactory::getDBO();
+                    $user = JFactory::getUser();
+                    $config = JFactory::getConfig();
 
                     $tzoffset = $config->getValue('config.offset');
-                    $date = &JFactory::getDate('now', -$tzoffset);
+                    $date = JFactory::getDate('now', -$tzoffset);
 
                     $obj = new stdClass();
                     $obj->filename = $filename;
@@ -125,12 +125,12 @@ class SeminarmanControllerFilemanager extends SeminarmanController
                 } else
                 {
 
-                    $db = &JFactory::getDBO();
-                    $user = &JFactory::getUser();
-                    $config = &JFactory::getConfig();
+                    $db = JFactory::getDBO();
+                    $user = JFactory::getUser();
+                    $config = JFactory::getConfig();
 
                     $tzoffset = $config->getValue('config.offset');
-                    $date = &JFactory::getDate('now', -$tzoffset);
+                    $date = JFactory::getDate('now', -$tzoffset);
 
                     $obj = new stdClass();
                     $obj->filename = $filename;
@@ -167,7 +167,7 @@ class SeminarmanControllerFilemanager extends SeminarmanController
         JRequest::setVar('hidemainmenu', 1);
 
         $model = $this->getModel('file');
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
 
         if ($model->isCheckedOut($user->get('id')))
         {
@@ -201,7 +201,7 @@ class SeminarmanControllerFilemanager extends SeminarmanController
         } else
         {
             $msg = JText::_('COM_SEMINARMAN_OPERATION_SUCCESSFULL');
-            $cache = &JFactory::getCache('com_seminarman');
+            $cache = JFactory::getCache('com_seminarman');
             $cache->clean();
         }
 
@@ -237,7 +237,7 @@ class SeminarmanControllerFilemanager extends SeminarmanController
 
             $model->checkin();
 
-            $cache = &JFactory::getCache('com_seminarman');
+            $cache = JFactory::getCache('com_seminarman');
             $cache->clean();
 
         } else
@@ -256,7 +256,7 @@ class SeminarmanControllerFilemanager extends SeminarmanController
 
         JRequest::checkToken() or jexit('Invalid Token');
 
-        $file = &JTable::getInstance('seminarman_files', '');
+        $file = JTable::getInstance('seminarman_files', '');
         $file->bind(JRequest::get('post'));
         $file->checkin();
 

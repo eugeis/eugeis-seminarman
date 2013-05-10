@@ -26,15 +26,15 @@ class seminarmanViewCategory extends JView
 	{
 		$mainframe = JFactory::getApplication();
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 
 		$document->link = JRoute::_('index.php?option=com_seminarman&view=category&id='.JRequest::getVar('id',null, '', 'int'));
 
 		JRequest::setVar('limit', $mainframe->getCfg('feed_limit'));
 
 		// Get data from the model
-		$items		=& $this->get( 'data' );
-		$category	=& $this->get( 'category' );
+		$items		= $this->get( 'data' );
+		$category	= $this->get( 'category' );
 
 		foreach ( $items as $item )
 		{

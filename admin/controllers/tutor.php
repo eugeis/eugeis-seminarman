@@ -35,7 +35,7 @@ class seminarmanControllertutor extends seminarmanController
         $this->parentviewname = 'tutors';
     }
 
-    function display()
+    function display($cachable = false, $urlparams = false)
     {
     	
     	JRequest::setVar('layout', 'form');
@@ -174,6 +174,29 @@ class seminarmanControllertutor extends seminarmanController
     		$template_prio = JRequest::getInt('template_prio', 0, 'post');
     		$model->addTemplate($tmpl_id, $template_prio, (int)$row->id);
     	}
+    	
+    	// save custom fields value for tutor
+    	$editfields = $model->getEditableCustomfields((int)$row->id);
+    	
+    	CMFactory::load('libraries', 'customfields');
+    	
+    	$customFields = array();
+    	foreach ($editfields['fields'] as $group => $fields) {
+    		foreach ($fields as $data) {
+    			$postData = JRequest::getVar('field' . $data['id'], '', 'POST');
+    			$customFields[$data['id']] = SeminarmanCustomfieldsLibrary::formatData($data['type'], $postData);
+    			if (!SeminarmanCustomfieldsLibrary::validateField($data['type'], $customFields[$data['id']], $data['required'])) {
+    				if ($data['type'] == 'checkboxtos')
+    					$message =  JText::sprintf('COM_SEMINARMAN_ACCEPT_TOS', $data['name']);
+    				else
+    					$message = JText::sprintf('COM_SEMINARMAN_FIELD_N_CONTAINS_IMPROPER_VALUES', $data['name']);
+    				$mainframe->enqueueMessage($message, 'error');
+    				return $this->redirect();
+    			}
+    		}
+    	}
+    	
+    	$model->saveCustomfields((int)$row->id, $customFields);
     
     	$model->checkin();
     	

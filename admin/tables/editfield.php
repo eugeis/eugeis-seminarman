@@ -70,7 +70,7 @@ class TableEditfield extends JTable
 
 	function store( $groupOrdering = '' )
 	{
-		$db		=& $this->getDBO();
+		$db		= $this->getDBO();
 
 		// For new groups, we need to get the max ordering
 		if( $this->type == 'group' )
@@ -106,7 +106,7 @@ class TableEditfield extends JTable
 
 	function getCurrentParent()
 	{
-		$db		=& $this->getDBO();
+		$db		= $this->getDBO();
 
 		$query	= 'SELECT ' . $db->nameQuote( 'ordering' ) . ' '
 				. 'FROM ' . $db->nameQuote( '#__seminarman_fields' ) . ' '

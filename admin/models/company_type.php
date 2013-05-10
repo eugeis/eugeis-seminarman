@@ -52,7 +52,7 @@ class seminarmanModelcompany_type extends JModel
         if ($this->_loadData())
         {
 
-            $user = &JFactory::getUser();
+            $user = JFactory::getUser();
 
         } else
             $this->_initData();
@@ -78,7 +78,7 @@ class seminarmanModelcompany_type extends JModel
     {
         if ($this->_id)
         {
-            $group = &$this->getTable();
+            $group = $this->getTable();
             if (!$group->checkin($this->_id))
             {
                 $this->setError($this->_db->getErrorMsg());
@@ -95,11 +95,11 @@ class seminarmanModelcompany_type extends JModel
 
             if (is_null($uid))
             {
-                $user = &JFactory::getUser();
+                $user = JFactory::getUser();
                 $uid = $user->get('id');
             }
 
-            $group = &$this->getTable();
+            $group = $this->getTable();
             if (!$group->checkout($uid, $this->_id))
             {
                 $this->setError($this->_db->getErrorMsg());
@@ -113,7 +113,7 @@ class seminarmanModelcompany_type extends JModel
 
     function store($data)
     {
-        $row = &$this->getTable();
+        $row = $this->getTable();
 
         if (!$row->bind($data))
         {
@@ -179,7 +179,7 @@ class seminarmanModelcompany_type extends JModel
 
     function approve($cid = array(), $approve = 1)
     {
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
 
         if (count($cid))
         {
@@ -202,7 +202,7 @@ class seminarmanModelcompany_type extends JModel
 
     function publish($cid = array(), $publish = 1)
     {
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
 
         if (count($cid))
         {
@@ -226,7 +226,7 @@ class seminarmanModelcompany_type extends JModel
 
     function move($direction)
     {
-        $row = &$this->getTable();
+        $row = $this->getTable();
         if (!$row->load($this->_id))
         {
             $this->setError($this->_db->getErrorMsg());
@@ -244,7 +244,7 @@ class seminarmanModelcompany_type extends JModel
 
     function saveorder($cid = array(), $order)
     {
-        $row = &$this->getTable();
+        $row = $this->getTable();
         $groupings = array();
 
         for ($i = 0; $i < count($cid); $i++)

@@ -162,7 +162,7 @@ class SeminarmanModelCategories extends JModel
 
     function publish($cid = array(), $publish = 1)
     {
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
 
         if (count($cid))
         {
@@ -199,7 +199,7 @@ class SeminarmanModelCategories extends JModel
 
     function move($direction)
     {
-        $row = &JTable::getInstance('seminarman_categories', '');
+        $row = JTable::getInstance('seminarman_categories', '');
 
         if (!$row->load($this->_id))
         {
@@ -218,7 +218,7 @@ class SeminarmanModelCategories extends JModel
 
     function saveorder($cid = array(), $order)
     {
-        $row = &JTable::getInstance('seminarman_categories', '');
+        $row = JTable::getInstance('seminarman_categories', '');
 
         $groupings = array();
 
@@ -313,7 +313,7 @@ class SeminarmanModelCategories extends JModel
 
     function access($id, $access)
     {
-        $category = &$this->getTable('seminarman_categories', '');
+        $category = $this->getTable('seminarman_categories', '');
 
         $cids = array();
         $cids[] = $id;

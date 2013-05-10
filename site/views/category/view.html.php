@@ -25,18 +25,22 @@ jimport('joomla.application.component.view');
 jimport('joomla.html.parameter');
 jimport('joomla.html.pagination');
 
+require_once JPATH_ROOT.'/components/com_seminarman/helpers/application.php';
+
 class SeminarmanViewCategory extends JView{
     function display($tpl = null)
     {
         $mainframe = JFactory::getApplication();
 
-        $document = &JFactory::getDocument();
-        $menus = &JSite::getMenu();
+        $Itemid = JRequest::getInt('Itemid');
+
+        $document = JFactory::getDocument();
+        $menus = JFactory::getApplication()->getMenu();
         $menu = $menus->getActive();
-        $model = &$this->getModel();
-        $params = &$mainframe->getParams('com_seminarman');
-        $uri = &JFactory::getURI();
-        $lang = &JFactory::getLanguage();
+        $model = $this->getModel();
+        $params = $mainframe->getParams('com_seminarman');
+        $uri = JFactory::getURI();
+        $lang = JFactory::getLanguage();
 
         $document->addStyleSheet($this->baseurl .
             '/components/com_seminarman/assets/css/seminarman.css');
@@ -47,22 +51,22 @@ class SeminarmanViewCategory extends JView{
 
         $document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #seminarman dd { height: 1%; }</style><![endif]-->');
 
-        $pathway = &$mainframe->getPathWay();
+        $pathway = $mainframe->getPathWay();
 
-        $category = &$this->get('Category');
-        $courses = &$this->get('Data');
-        $templates = &$this->get('LstOfProspects');
+        $category = $this->get('Category');
+        $courses = $this->get('Data');
+        $templates = $this->get('LstOfProspects');
         
         $limit = $mainframe->getUserStateFromRequest('com_seminarman.' . $this->getLayout() .'.limit', 'limit', $params->def('limit', 0), 'int');
         $tmpl_limit = $mainframe->getUserStateFromRequest('com_seminarman.' . $this->getLayout() .'.tmpl_limit', 'tmpl_limit', $params->def('tmpl_limit', 0), 'int');
         
         $cats = new seminarman_cats((int)$category->id);
         $parents = $cats->getParentlist();
-        $categories = &$this->get('Childs');
+        $categories = $this->get('Childs');
 
         foreach ($parents as $parent){
             $pathway->addItem($this->escape($parent->title), JRoute::_('index.php?view=category&cid=' .
-                    $parent->categoryslug));
+                    $parent->categoryslug . '&Itemid=' . $Itemid));
         }
 
         $document->setTitle($params->get('page_title'));
@@ -120,7 +124,7 @@ class SeminarmanViewCategory extends JView{
 
             switch ($item->new) {
                 case 1:
-                    $item->show_new_icon = '&nbsp;&nbsp;' . JHTML::_('image', 'administrator/components/com_seminarman/assets/images/new_item.png', JText::_('COM_SEMINARMAN_NEW'));
+                    $item->show_new_icon = '&nbsp;&nbsp;' . JHTML::_('image', 'components/com_seminarman/assets/images/new_item.png', JText::_('COM_SEMINARMAN_NEW'));
                     break;
                 default:
                     $item->show_new_icon = '';
@@ -129,7 +133,7 @@ class SeminarmanViewCategory extends JView{
 
             switch ($itemParams->get('show_sale', $params->get('show_sale'))){
                 case 1:
-                    $item->show_sale_icon = '&nbsp;&nbsp;' . JHTML::_('image', 'administrator/components/com_seminarman/assets/images/sale_item.png', JText::_('COM_SEMINARMAN_SALE'));
+                    $item->show_sale_icon = '&nbsp;&nbsp;' . JHTML::_('image', 'components/com_seminarman/assets/images/sale_item.png', JText::_('COM_SEMINARMAN_SALE'));
                     break;
                 default:
                     $item->show_sale_icon = '';
@@ -149,7 +153,7 @@ class SeminarmanViewCategory extends JView{
                         break;
                 }
                 // add currentbookings information
-                $db = &JFactory::getDBO();
+                $db = JFactory::getDBO();
                 $sql = 'SELECT SUM(b.attendees)'
                  . ' FROM #__seminarman_application AS b'
                  . ' WHERE b.published = 1'
@@ -167,17 +171,24 @@ class SeminarmanViewCategory extends JView{
             
             $user = JFactory::getUser();
             
-            if ($booking_ok)
-            	if (!$params->get('enable_multiple_bookings_per_user') && $user->id && $model->hasUserBooked($item->id))
-           			$item->book_link = '<span class="centered italic">' . JText::_('COM_SEMINARMAN_ALREADY_BOOKED_SHORT') . '</span>';
-                elseif ($item->canceled == 1)
-                  $item->book_link = '<span class="centered italic">' . JText::_('COM_SEMINARMAN_COURSE_CANCELED') . '</span>';              
-            	else
-            		$item->book_link = '<div class="button2-left"><div class="blank"><a href="' . JRoute::_('index.php?view=courses&cid=' . $category->slug . '&id=' . $item->slug . '&buchung=1#appform') . '">' . JText::_('COM_SEMINARMAN_BOOK_NOW') . '</a></div></div>';
-            else
-            	$item->book_link = '<span class="centered italic">' . JText::_('COM_SEMINARMAN_FULL') . '</span>';
+        	if ($booking_ok){
+				if (!$params->get('enable_multiple_bookings_per_user') && $user->id && $model->hasUserBooked($item->id)){
+					$item->book_link = '<span class="centered italic">' . JText::_('COM_SEMINARMAN_ALREADY_BOOKED_SHORT') . '</span>';
+				}else if(ApplicationHelper::isCourseOld($item)){
+					$item->book_link = '';
+				}else {
+					$back = substr(JURI::current(), strlen(JURI::base()));
+					$item->book_link = '<a href="' . JRoute::_('index.php?option=com_seminarman&controller=application&task=save&course_id='. $item->id.'&'.JUtility::getToken() .'=1&back='.$back) . '">' . JText::_('COM_SEMINARMAN_BOOK_NOW') . '</a>';
+				}
+			}else{
+				$item->book_link = '<span class="centered italic">' . JText::_('COM_SEMINARMAN_FULL') . '</span>';
+			}
             		 
-            $db = &JFactory::getDBO();
+            $db = JFactory::getDBO();
+            
+            // just save the date object for possible usage in future
+            $item->start_date_obj = JFactory::getDate($item->start_date);
+            $item->finish_date_obj = JFactory::getDate($item->finish_date);
 
             if ($item->start_date != '0000-00-00'){
                 $item->start_date = JFactory::getDate($item->start_date)->format("j. M Y");
@@ -240,7 +251,7 @@ class SeminarmanViewCategory extends JView{
         
         	switch ($itemParams->get('show_sale', $params->get('show_sale'))){
         		case 1:
-        			$item->show_sale_icon = '&nbsp;&nbsp;' . JHTML::_('image', 'administrator/components/com_seminarman/assets/images/sale_item.png', JText::_('COM_SEMINARMAN_SALE'));
+        			$item->show_sale_icon = '&nbsp;&nbsp;' . JHTML::_('image', 'components/com_seminarman/assets/images/sale_item.png', JText::_('COM_SEMINARMAN_SALE'));
         			break;
         		default:
         			$item->show_sale_icon = '';
@@ -260,7 +271,7 @@ class SeminarmanViewCategory extends JView{
         $lists['filter2'] = JRequest::getString('filter2');
         
         $experience_level[] = JHTML::_('select.option', '0', JText::_('COM_SEMINARMAN_ALL'), 'id', 'title');
-        $titles = &$this->get('titles');
+        $titles = $this->get('titles');
         $experience_level = array_merge($experience_level, $titles);
         $lists['filter_experience_level'] = JHTML::_('select.genericlist', $experience_level, 'filter_experience_level', 'class="inputbox" size="1" ', 'id', 'title', JRequest::getString('filter_experience_level'));
         $lists['filter_experience_level2'] = JHTML::_('select.genericlist', $experience_level, 'filter_experience_level2', 'class="inputbox" size="1" ', 'id', 'title', JRequest::getString('filter_experience_level2'));

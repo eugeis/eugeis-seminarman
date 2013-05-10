@@ -31,12 +31,12 @@ class SeminarmanViewCourse extends JView
 
         jimport('joomla.html.pane');
 
-        $editor = &JFactory::getEditor();
-        $document = &JFactory::getDocument();
-        $user = &JFactory::getUser();
-        $db = &JFactory::getDBO();
-        $lang = &JFactory::getLanguage();
-        $pane = &JPane::getInstance('sliders');
+        $editor = JFactory::getEditor();
+        $document = JFactory::getDocument();
+        $user = JFactory::getUser();
+        $db = JFactory::getDBO();
+        $lang = JFactory::getLanguage();
+        $pane = JPane::getInstance('sliders');
 
 
         JHTML::_('behavior.tooltip');
@@ -63,13 +63,13 @@ class SeminarmanViewCourse extends JView
         JToolBarHelper::save();
         JToolBarHelper::cancel();
 
-        $model = &$this->getModel();
-        $row = &$this->get('Course');
-        $files = &$this->get('Files');
-        $tags = &$this->get('Tags');
+        $model = $this->getModel();
+        $row = $this->get('Course');
+        $files = $this->get('Files');
+        $tags = $this->get('Tags');
         $usedtags = $model->getusedtags($row->id);
         $categories = seminarman_cats::getCategoriesTree(1);
-        $selectedcats = &$this->get('Catsselected');
+        $selectedcats = $this->get('Catsselected');
         $disabled = 0;
 
         if ($row->id)

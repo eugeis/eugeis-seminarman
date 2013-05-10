@@ -28,19 +28,19 @@ class SeminarmanViewSeminarman extends JView
     {
         jimport('joomla.html.pane');
 
-        $document = &JFactory::getDocument();
-        $pane = &JPane::getInstance('sliders');
-        $lang = &JFactory::getLanguage();
-        $params = &JComponentHelper::getParams('com_seminarman');
+        $document = JFactory::getDocument();
+        $pane = JPane::getInstance('sliders');
+        $lang = JFactory::getLanguage();
+        $params = JComponentHelper::getParams('com_seminarman');
 
-        $latestJobs = &$this->get('LatestJobs');
-        $latestApplications = &$this->get('LatestApplications');
+        $latestJobs = $this->get('LatestJobs');
+        $latestApplications = $this->get('LatestApplications');
 
         JToolBarHelper::title(JText::_('COM_SEMINARMAN'), 'seminarman');
         
-    if (JFactory::getUser()->authorise('core.admin', 'com_seminarman')) {
-  JToolBarHelper::preferences('com_seminarman');
-}
+   		 if (JFactory::getUser()->authorise('core.admin', 'com_seminarman')) {
+  			JToolBarHelper::preferences('com_seminarman');
+		}
 
         $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
         if ($lang->isRTL())
@@ -51,27 +51,27 @@ class SeminarmanViewSeminarman extends JView
         require_once (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_seminarman' . DS .
             'helpers' . DS . 'seminarman.php');
 
-        if(JHTMLSeminarman::UserIsCourseManager()){
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman', true);
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'),'index.php?option=com_seminarman&view=applications');
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 'index.php?option=com_seminarman&view=salesprospects');
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'),'index.php?option=com_seminarman&view=courses');
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TEMPLATES'),'index.php?option=com_seminarman&view=templates');
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_CATEGORIES'),'index.php?option=com_seminarman&view=categories');
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TAGS'),'index.php?option=com_seminarman&view=tags');
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TUTORS'),'index.php?option=com_seminarman&view=tutors');
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_SETTINGS'),'index.php?option=com_seminarman&view=settings');
+        if( JHTMLSeminarman::UserIsCourseManager() ){
+    		JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman', true);
+ 		   	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'),'index.php?option=com_seminarman&view=applications');
+    		JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 'index.php?option=com_seminarman&view=salesprospects');
+    		JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'),'index.php?option=com_seminarman&view=courses');
+    		JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TEMPLATES'),'index.php?option=com_seminarman&view=templates');
+    		JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_CATEGORIES'),'index.php?option=com_seminarman&view=categories');
+    		JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TAGS'),'index.php?option=com_seminarman&view=tags');
+    		JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TUTORS'),'index.php?option=com_seminarman&view=tutors');
+    		JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_SETTINGS'),'index.php?option=com_seminarman&view=settings');
         } else {
-  	    JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman', true);
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'),'index.php?option=com_seminarman&view=applications');
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 'index.php?option=com_seminarman&view=salesprospects');
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'),'index.php?option=com_seminarman&view=courses');        	
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TAGS'),'index.php?option=com_seminarman&view=tags');
+  	    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman', true);
+    		JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'),'index.php?option=com_seminarman&view=applications');
+    		JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 'index.php?option=com_seminarman&view=salesprospects');
+    		JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'),'index.php?option=com_seminarman&view=courses');        	
+    		JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TAGS'),'index.php?option=com_seminarman&view=tags');
         }
         
         if ($params->get('show_updatecheck'))
         {
-            $check = &$this->get('Update');
+            $check = $this->get('Update');
 
         } else
         {
@@ -93,7 +93,7 @@ class SeminarmanViewSeminarman extends JView
     function quickiconButton($link, $image, $text, $modal = 0)
     {
 
-        $lang = &JFactory::getLanguage();
+        $lang = JFactory::getLanguage();
 
 ?>
 

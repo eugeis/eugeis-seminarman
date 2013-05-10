@@ -10,6 +10,10 @@ div#seminarman .floattext:after /* ie fix in coditional comments (html source) *
 div#seminarman .floattext
 { display:block; /* safari */ }
 
+div#seminarman p {
+	overflow: hidden;
+}
+
 /**
  * @section buttons
  *
@@ -569,4 +573,33 @@ div#seminarman .qf_addtag {
 }
 table.seminarman_cart td {
 	padding: 2px 5px;
+}
+
+table.seminarmantutortable td {
+	padding: 0.4em;
+}
+
+.tutor_block_left {
+	float: left;
+	margin-right: 20px;
+	/* width: 30%; */
+}
+
+.tutor_block_right {
+	/* float: left;
+	   width: 70%; */
+	display: table-cell;
+}
+
+.tutor_block {
+	clear: both;
+	margin-bottom: 10px;
+	padding: 10px;
+	border-bottom: 1px #cccccc solid;
+	overflow: hidden;
+}
+
+span.tutor_label {
+	font-weight: bold;
+	font-size: 1.1em;
 }

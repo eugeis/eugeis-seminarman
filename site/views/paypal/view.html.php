@@ -40,12 +40,12 @@ class seminarmanViewpaypal extends JView
       $mainframe = JFactory::getApplication();
       jimport( 'joomla.html.parameter' );
 
-      $pathway =& $mainframe->getPathway();
-      $document =& JFactory::getDocument();
-      $model =& $this->getModel();
-      $user =& JFactory::getUser();
-      $uri =& JFactory::getURI();
-      $params = &$mainframe->getParams();
+      $pathway = $mainframe->getPathway();
+      $document = JFactory::getDocument();
+      $model = $this->getModel();
+      $user = JFactory::getUser();
+      $uri = JFactory::getURI();
+      $params = $mainframe->getParams();
 
       JHTML::_('behavior.tooltip');
       JHTML::_('behavior.formvalidation');
@@ -54,7 +54,7 @@ class seminarmanViewpaypal extends JView
       $bookingid = (int) JRequest::getVar('bookingid');
       
       //Get data from Model - course details
-      $db =& JFactory::getDBO();
+      $db = JFactory::getDBO();
       $sql = 'SELECT b.*, cr.title' .
              ' FROM #__seminarman_application AS b' .
              ' LEFT JOIN #__seminarman_courses AS cr ON cr.id = b.course_id' .
@@ -81,7 +81,7 @@ class seminarmanViewpaypal extends JView
    	  $fields = $db->loadAssocList();
    	  
    	  // Set page title
-   	  $menus   = &JSite::getMenu();
+   	  $menus = JFactory::getApplication()->getMenu();
    	  $menu = $menus->getActive();
    	  
    	  // because the application sets a default page title, we need to get it
@@ -100,11 +100,16 @@ class seminarmanViewpaypal extends JView
 
  	  // calculate displayed price
    	  $amount = $bookingDetails->price_per_attendee;
-   	  $amount += ($amount / 100) * $bookingDetails->price_vat;
+   	  $amount += ($amount / 100) * $bookingDetails->price_vat;   	  
+   	  // paypal wont round the amount by itself :/
+   	  $amount = round($amount, 2);
    	  
-   	  $this->assignRef('username', $user->get('username'));
-   	  $this->assignRef('email', $user->get('email'));
-   	  $this->assignRef('userid', $user->get('id'));
+   	  $username = $user->get('username');
+   	  $useremail = $user->get('email');
+   	  $userid = $user->get('id');
+   	  $this->assignRef('username', $username);
+   	  $this->assignRef('email', $useremail);
+   	  $this->assignRef('userid', $userid);
    	  $this->assign('action', $uri->toString());
    	  $this->assignRef('lists', $lists);
    	  $this->assignRef('amount', $amount);

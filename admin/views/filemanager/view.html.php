@@ -28,10 +28,10 @@ class SeminarmanViewFilemanager extends JView
     {
         $mainframe = JFactory::getApplication();
 
-        $document = &JFactory::getDocument();
-        $db = &JFactory::getDBO();
-        $params = &JComponentHelper::getParams('com_seminarman');
-        $lang = &JFactory::getLanguage();
+        $document = JFactory::getDocument();
+        $db = JFactory::getDBO();
+        $params = JComponentHelper::getParams('com_seminarman');
+        $lang = JFactory::getLanguage();
         $option = JRequest::getVar('option');
         
         $filter_order = $mainframe->getUserStateFromRequest($option .
@@ -56,8 +56,8 @@ class SeminarmanViewFilemanager extends JView
         JToolBarHelper::customX('goback', 'back.png', 'back_f2.png', 'COM_SEMINARMAN_GO_BACK', false, true);
         JToolBarHelper::deleteList();
 
-        $rows = &$this->get('Data');
-        $pageNav = &$this->get('Pagination');
+        $rows = $this->get('Data');
+        $pageNav = $this->get('Pagination');
 
         $lists = array();
         $lists['search'] = $search;
@@ -90,7 +90,8 @@ class SeminarmanViewFilemanager extends JView
 
         $this->assign('require_ftp', $ftp);
 
-        $this->assignRef('session', JFactory::getSession());
+        $session = JFactory::getSession();
+        $this->assignRef('session', $session );
         $this->assignRef('params', $params);
         $this->assignRef('lists', $lists);
         $this->assignRef('rows', $rows);

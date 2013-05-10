@@ -75,7 +75,7 @@ class seminarmanModelsession extends JModel
       if ($this->_loadData())
       {
          // Initialize some variables
-         $user = &JFactory::getUser();
+         $user = JFactory::getUser();
 
          // Check to see if the course is published
          if (!$this->_data->course_pub) {
@@ -120,7 +120,7 @@ class seminarmanModelsession extends JModel
    {
       if ($this->_id)
       {
-         $session = & $this->getTable();
+         $session = $this->getTable();
          if(! $session->checkin($this->_id)) {
             $this->setError($this->_db->getErrorMsg());
             return false;
@@ -143,11 +143,11 @@ class seminarmanModelsession extends JModel
       {
          // Make sure we have a user id to checkout the article with
          if (is_null($uid)) {
-            $user =& JFactory::getUser();
+            $user = JFactory::getUser();
             $uid  = $user->get('id');
          }
          // Lets get to it and checkout the thing...
-         $session = & $this->getTable();
+         $session = $this->getTable();
          if(!$session->checkout($uid, $this->_id)) {
             $this->setError($this->_db->getErrorMsg());
             return false;
@@ -167,7 +167,7 @@ class seminarmanModelsession extends JModel
     */
    function store($data)
    {
-      $row =& $this->getTable();
+      $row = $this->getTable();
 
       // Bind the form fields to the web link table
       if (!$row->bind($data)) {
@@ -266,7 +266,7 @@ class seminarmanModelsession extends JModel
     */
    function approve($cid = array(), $approve = 1)
    {
-      $user    =& JFactory::getUser();
+      $user    = JFactory::getUser();
 
       if (count( $cid ))
       {
@@ -290,7 +290,7 @@ class seminarmanModelsession extends JModel
 
    function publish($cid = array(), $publish = 1)
    {
-      $user    =& JFactory::getUser();
+      $user    = JFactory::getUser();
 
       if (count( $cid ))
       {
@@ -322,7 +322,7 @@ class seminarmanModelsession extends JModel
     */
    function move($direction)
    {
-      $row =& $this->getTable();
+      $row = $this->getTable();
       if (!$row->load($this->_id)) {
          $this->setError($this->_db->getErrorMsg());
          return false;
@@ -345,7 +345,7 @@ class seminarmanModelsession extends JModel
     */
    function saveorder($cid = array(), $order)
    {
-      $row =& $this->getTable();
+      $row = $this->getTable();
       $groupings = array();
 
       // update ordering values
@@ -405,7 +405,7 @@ class seminarmanModelsession extends JModel
    */
    function getTitles()
    {
-	$db =& JFactory::getDBO();
+	$db = JFactory::getDBO();
 	if(JHTMLSeminarman::UserIsCourseManager()) {
  	    $sql = 'SELECT id, title'
 	    . ' FROM #__seminarman_courses'

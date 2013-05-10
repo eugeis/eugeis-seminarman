@@ -90,7 +90,7 @@ class seminarmanModelPaypal extends JModel{
 
     function updatestatus()
     {
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         if ($this->_id){
             $db->setQuery('UPDATE #__seminarman_application'
                  . ' SET status = 1'
@@ -107,7 +107,7 @@ class seminarmanModelPaypal extends JModel{
 
     function updatestatusIPN($item_number, $txn_id)
     {
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         // Set booking ID
         $this->_item_number = $item_number;
         $this->_txn_id = $txn_id;
@@ -137,9 +137,9 @@ class seminarmanModelPaypal extends JModel{
 
     function getAdmins()
     {
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
 
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = 'SELECT name, email, sendEmail' .
         ' FROM #__users' .
         ' WHERE LOWER( usertype ) = "super administrator"';

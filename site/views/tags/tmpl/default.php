@@ -13,9 +13,14 @@ defined('_JEXEC') or die('Restricted access');
 
 <p class="buttons"><?php echo seminarman_html::favouritesbutton($this->params) . seminarman_html::mailbutton('tags', $this->params, $this->tag->slug); ?></p>
 
-<?php if ($this->params->get('show_page_title', 1)): ?>
-    <h1 class="componentheading"><?php echo $this->params->get('page_title'); ?></h1>
-<?php endif; ?>
+<?php 
+    if ($this->params->get('show_page_heading', 1)) {
+    	$page_heading = trim($this->params->get('page_heading'));
+        if (!empty($page_heading)) {
+            echo '<h1 class="componentheading">' . $page_heading . '</h1>';
+        }
+    }
+?>
 
 <h2 class="seminarman tagcourses<?php echo $this->tag->id; ?>"><?php echo JText::_('COM_SEMINARMAN_COURSES_WITH_TAG') .': '. $this->escape($this->tag->name); ?></h2>
 
@@ -41,7 +46,7 @@ function tableOrdering( order, dir, task ) {
 <?php
 jimport('joomla.html.pane');
 
-$tabs = &JPane::getInstance('tabs', array('startOffset'=>0));
+$tabs = JPane::getInstance('tabs', array('startOffset'=>0));
 echo $tabs->startPane('mytabs');
 echo $tabs->startPanel(JText::_('COM_SEMINARMAN_DATES'), 0);
 echo '<div>' . $this->loadTemplate('courses') . '</div>';

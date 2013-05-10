@@ -13,7 +13,7 @@ jimport( 'joomla.html.parameter' );
 $colspan = 4;
 if (!$this->params->get('show_location'))
 	$colspan--;
-
+$Itemid = JRequest::getInt('Itemid');
 ?>
 
 <form action="<?php echo $this->action;?>" method="post" id="adminForm2">
@@ -56,7 +56,7 @@ foreach ($this->templates as $template):
 ?>
 <tr class="sectiontableentry" >
 	<td headers="qf_code" nowrap="nowrap"><?php echo $this->escape($template->code); ?></td>
-	<td headers="qf_title"><strong><a href="<?php echo JRoute::_('index.php?view=templates&cid=' . $template->category->slug . '&id=' . $template->slug); ?>"><?php echo $this->escape($template->title); ?></a></strong></td>
+	<td headers="qf_title"><strong><a href="<?php echo JRoute::_('index.php?view=templates&cid=' . $template->category->slug . '&id=' . $template->slug . '&Itemid=' . $Itemid); ?>"><?php echo $this->escape($template->title); ?></a></strong></td>
 <?php if ($this->params->get('show_location')): ?>
 	<td headers="qf_location"><?php echo $template->location; ?></td>
 <?php endif; ?>	

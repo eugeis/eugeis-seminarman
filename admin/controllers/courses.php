@@ -85,7 +85,7 @@ class SeminarmanControllerCourses extends SeminarmanController
             }
             $msg = JText::_('COM_SEMINARMAN_RECORD_SAVED');
 
-            $cache = &JFactory::getCache('com_seminarman');
+            $cache = JFactory::getCache('com_seminarman');
             $cache->clean();
 
         } else
@@ -115,7 +115,7 @@ class SeminarmanControllerCourses extends SeminarmanController
     	}
 
     	$model = $this->getModel('course');
-    	$user = &JFactory::getUser();
+    	$user = JFactory::getUser();
     	
     	parent::display();
     }
@@ -131,7 +131,7 @@ class SeminarmanControllerCourses extends SeminarmanController
     	if ($this->task == 'setNew') $model->setNew($cid, 1);
     	else $model->setNew($cid, 0);
     	
-    	$cache = &JFactory::getCache('com_seminarman');
+    	$cache = JFactory::getCache('com_seminarman');
     	$cache->clean();
         
         $this->setRedirect('index.php?option=com_seminarman&view=courses');
@@ -148,7 +148,7 @@ class SeminarmanControllerCourses extends SeminarmanController
     	if ($this->task == 'setCanceled') $model->setCanceled($cid, 1);
     	else $model->setCanceled($cid, 0);
     	 
-    	$cache = &JFactory::getCache('com_seminarman');
+    	$cache = JFactory::getCache('com_seminarman');
     	$cache->clean();
     
     	$this->setRedirect('index.php?option=com_seminarman&view=courses');
@@ -240,7 +240,7 @@ class SeminarmanControllerCourses extends SeminarmanController
                                 $alt = JText::_('IN PROGRESS');
                             }
 
-        $cache = &JFactory::getCache('com_seminarman');
+        $cache = JFactory::getCache('com_seminarman');
         $cache->clean();
 
         echo '<img src="images/' . $img . '" width="16" height="16" border="0" alt="' .
@@ -269,7 +269,7 @@ class SeminarmanControllerCourses extends SeminarmanController
         {
             $msg = JText::_('COM_SEMINARMAN_OPERATION_SUCCESSFULL');
 
-            $cache = &JFactory::getCache('com_seminarman');
+            $cache = JFactory::getCache('com_seminarman');
             $cache->clean();
         }
 
@@ -281,7 +281,7 @@ class SeminarmanControllerCourses extends SeminarmanController
 
         JRequest::checkToken() or jexit('Invalid Token');
 
-        $course = &JTable::getInstance('seminarman_courses', '');
+        $course = JTable::getInstance('seminarman_courses', '');
         $course->bind(JRequest::get('post'));
         $course->checkin();
 
@@ -294,7 +294,7 @@ class SeminarmanControllerCourses extends SeminarmanController
         JRequest::setVar('hidemainmenu', 1);
 
         $model = $this->getModel('course');
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
         
 	    $course_owner = intval($model->get('created_by'));
 	    $current_uid = intval($user->id);
@@ -327,7 +327,7 @@ JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users
         // $this->test();
 
         $model = $this->getModel('course');
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
         
 	    $course_owner = intval($model->get('created_by'));
 	    $current_uid = intval($user->id);
@@ -353,7 +353,7 @@ JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users
 		JRequest::setVar('view', 'sessions');
 
 		$model = $this->getModel('course');
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		$cid = JRequest::getVar('cid');
 		//I want just the first item
 		$cid = $cid [0];
@@ -369,7 +369,7 @@ JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users
 
         $model->resetHits($id);
 
-        $cache = &JFactory::getCache('com_seminarman');
+        $cache = JFactory::getCache('com_seminarman');
         $cache->clean();
 
         echo 0;
@@ -382,7 +382,7 @@ JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users
 
         $model->resetVotes($id);
 
-        $cache = &JFactory::getCache('com_seminarman');
+        $cache = JFactory::getCache('com_seminarman');
         $cache->clean();
 
         echo '+ 0 | - 0';
@@ -472,8 +472,8 @@ JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users
 
         JRequest::checkToken() or jexit('Invalid Token');
 
-        $db = &JFactory::getDBO();
-        $user = &JFactory::getUser();
+        $db = JFactory::getDBO();
+        $user = JFactory::getUser();
 
         $cid = JRequest::getVar('cid', array(), 'post', 'array');
         JArrayHelper::toInteger($cid);
@@ -509,7 +509,7 @@ JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users
 
         if (count($cid) == 1)
         {
-            $row = &JTable::getInstance('seminarman_courses', '');
+            $row = JTable::getInstance('seminarman_courses', '');
 
         }
 
@@ -535,7 +535,7 @@ JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users
                 break;
         }
 
-        $cache = &JFactory::getCache('com_seminarman');
+        $cache = JFactory::getCache('com_seminarman');
         $cache->clean();
 
 
@@ -607,7 +607,7 @@ JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users
 	
 	function test()
 	{
-        $app =& JFactory::getApplication();
+        $app = JFactory::getApplication();
     	$app->enqueueMessage('Hola Claudy!', 'message');
     	// return true;	
 	}

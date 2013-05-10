@@ -51,6 +51,16 @@ function SeminarmanBuildRoute(&$query)
     	{
     		$segments[] = $query['view'];
     	}
+    	
+    	if ($query['view'] == 'tutor')
+    	{
+    		$segments[] = $query['view'];
+    	}
+    	
+    	if ($query['view'] == 'tutors')
+    	{
+    		$segments[] = $query['view'];
+    	}
 
         unset($query['view']);
     }
@@ -99,6 +109,12 @@ function SeminarmanParseRoute($segments)
         $vars['view'] = 'favourites';
         return $vars;
     }
+    
+    if ($segments[0] == 'tutors')
+    {
+    	$vars['view'] = 'tutors';
+    	return $vars;
+    }
 
     if ($count == 1)
     {
@@ -111,12 +127,19 @@ function SeminarmanParseRoute($segments)
         $vars['view'] = 'seminarman';
     }
 
-    if ($count == 2)
-    {
-        $vars['cid'] = $segments[$count - 2];
+    if (($count == 2))
+    {	
+    	$vars['cid'] = $segments[$count - 2];
         $vars['view'] = 'courses';
         $vars['id'] = $segments[$count - 1];
     }
+    
+    if (($count == 2) && ($segments[0] == 'tutor'))
+    {
+    	// $vars['cid'] = $segments[$count - 2];
+    	$vars['view'] = 'tutor';
+    	$vars['id'] = $segments[$count - 1];
+    }    
     
     if ($count == 3)
     {

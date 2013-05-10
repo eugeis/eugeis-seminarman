@@ -7,7 +7,7 @@
 **/
 
 defined('_JEXEC') or die('Restricted access');
-
+$Itemid = JRequest::getInt('Itemid');
 ?>
 
 <div class="subcategories"><?php echo JText::_('COM_SEMINARMAN_SUBCATEGORIES'); ?></div>
@@ -23,7 +23,7 @@ $i = 0;
 <?php
 foreach ($this->categories as $sub):
 ?>
-		<strong><a href="<?php echo JRoute::_('index.php?view=category&cid=' . $sub->slug); ?>"><?php echo $this->escape($sub->title); ?></a></strong>
+		<strong><a href="<?php echo JRoute::_('index.php?view=category&cid=' . $sub->slug . '&Itemid=' . $Itemid); ?>"><?php echo $this->escape($sub->title); ?></a></strong>
 		(<?php echo $sub->assignedseminarmans != null ? $sub->assignedseminarmans : 0; ?>)
 
 <?php

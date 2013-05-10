@@ -191,7 +191,9 @@ if(!(JHTMLSeminarman::UserIsCourseManager())){
 } else {
 	$disabled = '';
 	if ($params->get('trigger_virtuemart') == 1) {
-        $readonly_price = 'readonly="readonly" style="background: #ddd;"';
+        // $readonly_price = 'readonly="readonly" style="background: #ddd;"';
+        // due to the changes of multiple price model from vm 2.0.16, all prices can now be edited freely
+		$readonly_price = '';
 	} else {
 	    $readonly_price = '';
 	}
@@ -202,6 +204,111 @@ if(!(JHTMLSeminarman::UserIsCourseManager())){
 	$apply_5_discount = '<input type="button" value="' . JText::_('COM_SEMINARMAN_USE_CALC_RULE_5') . '" onclick="apply_discount_5()" />';	
 }
 ?>
+
+<script language="javascript" type="text/javascript">
+function isEmpty(str) {
+    return (!str || 0 === str.length);
+}
+function trim(str) {
+	str = String(str);
+    return str.replace(/^\s+|\s+$/g,"");
+}
+function show_calculator(idc) {
+	switch(idc)
+	{
+	case 1:
+	    document.getElementById("netto_rechner1").style.display="block";
+	    break;
+	case 2:
+	    document.getElementById("netto_rechner2").style.display="block";
+	    break;
+	case 3:
+	    document.getElementById("netto_rechner3").style.display="block";
+	    break;
+	case 4:
+	    document.getElementById("netto_rechner4").style.display="block";
+	    break;
+	case 5:
+	    document.getElementById("netto_rechner5").style.display="block";
+	    break;		
+	}
+}
+function calc_netto(idc) {
+	switch(idc)
+	{
+	case 1:
+	    var bruttopreis = document.adminForm.elements["bruttopreis1"].value;
+	    break;
+	case 2:
+	    var bruttopreis = document.adminForm.elements["bruttopreis2"].value;
+	    break;
+	case 3:
+	    var bruttopreis = document.adminForm.elements["bruttopreis3"].value;
+	    break;
+	case 4:
+	    var bruttopreis = document.adminForm.elements["bruttopreis4"].value;
+	    break;
+	case 5:
+	    var bruttopreis = document.adminForm.elements["bruttopreis5"].value;
+	    break;
+	}
+	if ((isNaN(trim(bruttopreis)))||(isEmpty(trim(bruttopreis)))) {
+        alert(unescape("Der von Ihnen gegebene Bruttopreis ist ungültig, bitte korrigieren!"));
+	} else {
+		// alert(document.item_form.elements["tax_percents[][0]"].value);
+		// var vat=document.getElementById("tax_percent_name_1").value;
+		var vat=<?php echo $this->row->vat; ?>;
+		if ((isNaN(trim(vat)))||(isEmpty(trim(vat)))) {
+			alert(unescape("Das von Ihnen gegebene Steuerregel ist ungültig, bitte korrigieren!"));
+		}else{
+			var nettopreis = bruttopreis / (1 + vat/100);
+			switch(idc)
+			{
+			case 1:
+			    document.adminForm.elements["price"].value = nettopreis;
+	            document.getElementById("netto_rechner1").style.display="none";
+	            break;
+			case 2:
+			    document.adminForm.elements["price2"].value = nettopreis;
+	            document.getElementById("netto_rechner2").style.display="none";
+	            break;
+			case 3:
+			    document.adminForm.elements["price3"].value = nettopreis;
+	            document.getElementById("netto_rechner3").style.display="none";
+	            break;
+			case 4:
+			    document.adminForm.elements["price4"].value = nettopreis;
+	            document.getElementById("netto_rechner4").style.display="none";
+	            break;
+			case 5:
+			    document.adminForm.elements["price5"].value = nettopreis;
+	            document.getElementById("netto_rechner5").style.display="none";
+	            break;
+			}
+		}
+	}
+}
+function hide_calc(idc) {
+	switch(idc)
+	{
+	case 1:
+	    document.getElementById("netto_rechner1").style.display="none";
+	    break;
+	case 2:
+	    document.getElementById("netto_rechner2").style.display="none";
+	    break;
+	case 3:
+	    document.getElementById("netto_rechner3").style.display="none";
+	    break;
+	case 4:
+	    document.getElementById("netto_rechner4").style.display="none";
+	    break;
+	case 5:
+	    document.getElementById("netto_rechner5").style.display="none";
+	    break;
+	}
+}
+</script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
@@ -300,29 +407,64 @@ if(!(JHTMLSeminarman::UserIsCourseManager())){
 			<input class="inputbox" <?php echo $readonly; ?> type="text" name="theme_points" id="theme_points" size="10" maxlength="20" value="<?php echo $this->row->theme_points; ?>" />
 		</li>
 		<li>
-			<label for="price"><?php echo JText::_('COM_SEMINARMAN_PRICE') ?> (<?php $params =& JComponentHelper::getParams( 'com_seminarman' ); echo $params->get( 'currency' ); ?>)</label>
+			<label for="price"><?php echo JText::_('COM_SEMINARMAN_PRICE') ?> (<?php $params = JComponentHelper::getParams( 'com_seminarman' ); echo $params->get( 'currency' ); ?>)</label>
 			<input class="inputbox" <?php echo $readonly; ?> type="text" name="price" id="price" size="10" maxlength="20" value="<?php echo $this->row->price; ?>" />
+			<input class="calculator" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_BUTTON') ?>" onclick="show_calculator(1);" />
 		</li>
+<li id="netto_rechner1" style="clear: left; background: #ddd; margin-left: 110px; padding: 10px; overflow: hidden; display: none;">
+  <?php echo JText::sprintf('COM_SEMINARMAN_CALC_DESC', $this->row->vat); ?><br>
+  <input class="calc_input"  type="text" name="bruttopreis1" id="bruttopreis1" size="10" maxlength="20" value="" />
+  <input class="calc_input" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_NET_BUTTON') ?>" onclick="calc_netto(1);" />
+  <input class="calc_input" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_CLOSE') ?>" onclick="hide_calc(1);" />
+</li>
 		<li>
-			<label for="price2"><?php echo '2. ' . JText::_('COM_SEMINARMAN_PRICE') ?> (<?php $params =& JComponentHelper::getParams( 'com_seminarman' ); echo $params->get( 'currency' ); ?>)</label>
+			<label for="price2"><?php echo '2. ' . JText::_('COM_SEMINARMAN_PRICE') ?> (<?php $params = JComponentHelper::getParams( 'com_seminarman' ); echo $params->get( 'currency' ); ?>)</label>
 			<input class="inputbox" <?php echo $readonly_price; ?> type="text" name="price2" id="price2" size="10" maxlength="20" value="<?php echo $this->row->price2; ?>" />
 			<?php echo $apply_2_discount; ?>
+			<input class="calculator" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_BUTTON') ?>" onclick="show_calculator(2);" />
 		</li>
+<li id="netto_rechner2" style="clear: left; background: #ddd; margin-left: 110px; padding: 10px; overflow: hidden; display: none;">
+  <?php echo JText::sprintf('COM_SEMINARMAN_CALC_DESC', $this->row->vat); ?><br>
+  <input class="calc_input"  type="text" name="bruttopreis2" id="bruttopreis2" size="10" maxlength="20" value="" />
+  <input class="calc_input" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_NET_BUTTON') ?>" onclick="calc_netto(2);" />
+  <input class="calc_input" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_CLOSE') ?>" onclick="hide_calc(2);" />
+</li>
 		<li>
-			<label for="price3"><?php echo '3. ' . JText::_('COM_SEMINARMAN_PRICE') ?> (<?php $params =& JComponentHelper::getParams( 'com_seminarman' ); echo $params->get( 'currency' ); ?>)</label>
+			<label for="price3"><?php echo '3. ' . JText::_('COM_SEMINARMAN_PRICE') ?> (<?php $params = JComponentHelper::getParams( 'com_seminarman' ); echo $params->get( 'currency' ); ?>)</label>
 			<input class="inputbox" <?php echo $readonly_price; ?> type="text" name="price3" id="price3" size="10" maxlength="20" value="<?php echo $this->row->price3; ?>" />
 		    <?php echo $apply_3_discount; ?>
+		    <input class="calculator" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_BUTTON') ?>" onclick="show_calculator(3);" />
 		</li>
+<li id="netto_rechner3" style="clear: left; background: #ddd; margin-left: 110px; padding: 10px; overflow: hidden; display: none;">
+  <?php echo JText::sprintf('COM_SEMINARMAN_CALC_DESC', $this->row->vat); ?><br>
+  <input class="calc_input"  type="text" name="bruttopreis3" id="bruttopreis3" size="10" maxlength="20" value="" />
+  <input class="calc_input" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_NET_BUTTON') ?>" onclick="calc_netto(3);" />
+  <input class="calc_input" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_CLOSE') ?>" onclick="hide_calc(3);" />
+</li>
 		<li>
-			<label for="price4"><?php echo '4. ' . JText::_('COM_SEMINARMAN_PRICE') ?> (<?php $params =& JComponentHelper::getParams( 'com_seminarman' ); echo $params->get( 'currency' ); ?>)</label>
+			<label for="price4"><?php echo '4. ' . JText::_('COM_SEMINARMAN_PRICE') ?> (<?php $params = JComponentHelper::getParams( 'com_seminarman' ); echo $params->get( 'currency' ); ?>)</label>
 			<input class="inputbox" <?php echo $readonly_price; ?> type="text" name="price4" id="price4" size="10" maxlength="20" value="<?php echo $this->row->price4; ?>" />
 		    <?php echo $apply_4_discount; ?>
+		    <input class="calculator" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_BUTTON') ?>" onclick="show_calculator(4);" />
 		</li>
+<li id="netto_rechner4" style="clear: left; background: #ddd; margin-left: 110px; padding: 10px; overflow: hidden; display: none;">
+  <?php echo JText::sprintf('COM_SEMINARMAN_CALC_DESC', $this->row->vat); ?><br>
+  <input class="calc_input"  type="text" name="bruttopreis4" id="bruttopreis4" size="10" maxlength="20" value="" />
+  <input class="calc_input" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_NET_BUTTON') ?>" onclick="calc_netto(4);" />
+  <input class="calc_input" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_CLOSE') ?>" onclick="hide_calc(4);" />
+</li>
 		<li>
-			<label for="price5"><?php echo '5. ' . JText::_('COM_SEMINARMAN_PRICE') ?> (<?php $params =& JComponentHelper::getParams( 'com_seminarman' ); echo $params->get( 'currency' ); ?>)</label>
+			<label for="price5"><?php echo '5. ' . JText::_('COM_SEMINARMAN_PRICE') ?> (<?php $params = JComponentHelper::getParams( 'com_seminarman' ); echo $params->get( 'currency' ); ?>)</label>
 			<input class="inputbox" <?php echo $readonly_price; ?> type="text" name="price5" id="price5" size="10" maxlength="20" value="<?php echo $this->row->price5; ?>" />
 		    <?php echo $apply_5_discount; ?>
+		    <input class="calculator" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_BUTTON') ?>" onclick="show_calculator(5);" />
 		</li>
+<li id="netto_rechner5" style="clear: left; background: #ddd; margin-left: 110px; padding: 10px; overflow: hidden; display: none;">
+  <?php echo JText::sprintf('COM_SEMINARMAN_CALC_DESC', $this->row->vat); ?><br>
+  <input class="calc_input"  type="text" name="bruttopreis5" id="bruttopreis5" size="10" maxlength="20" value="" />
+  <input class="calc_input" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_NET_BUTTON') ?>" onclick="calc_netto(5);" />
+  <input class="calc_input" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_CLOSE') ?>" onclick="hide_calc(5);" />
+</li>
 		<li>
 			<label for="vat"><?php echo JText::_('COM_SEMINARMAN_VAT') ?></label>
 			<input class="inputbox" <?php echo $readonly; ?> type="text" name="vat" id="vat" size="10" maxlength="20" value="<?php echo $this->row->vat; ?>%" />

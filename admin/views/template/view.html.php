@@ -31,12 +31,12 @@ class SeminarmanViewTemplate extends JView
 
         jimport('joomla.html.pane');
 
-        $editor = &JFactory::getEditor();
-        $document = &JFactory::getDocument();
-        $user = &JFactory::getUser();
-        $db = &JFactory::getDBO();
-        $lang = &JFactory::getLanguage();
-        $pane = &JPane::getInstance('sliders');
+        $editor = JFactory::getEditor();
+        $document = JFactory::getDocument();
+        $user = JFactory::getUser();
+        $db = JFactory::getDBO();
+        $lang = JFactory::getLanguage();
+        $pane = JPane::getInstance('sliders');
 
 
         JHTML::_('behavior.tooltip');
@@ -63,13 +63,13 @@ class SeminarmanViewTemplate extends JView
         JToolBarHelper::save();
         JToolBarHelper::cancel();
 
-        $model = &$this->getModel();
-        $row = &$this->get('Template');
-        $files = &$this->get('Files');
-        $tags = &$this->get('Tags');
+        $model = $this->getModel();
+        $row = $this->get('Template');
+        $files = $this->get('Files');
+        $tags = $this->get('Tags');
         $usedtags = $model->getusedtags($row->id);
         $categories = seminarman_cats::getCategoriesTree(1);
-        $selectedcats = &$this->get('Catsselected');
+        $selectedcats = $this->get('Catsselected');
         $disabled = 0;
 
         if ($row->id)
@@ -190,7 +190,7 @@ class SeminarmanViewTemplate extends JView
         
         
         $lists['tutors_add'] = JHTMLSeminarman::getSelectTutor('tutor_id', 0, 0);
-        $lists['qualified_tutors'] = &$this->get('Tutors');
+        $lists['qualified_tutors'] = $this->get('Tutors');
         
         (count($tags) > 9) ? ($tags_size = 10) : ($tags_size = count($tags) + 1);
         $lists['tagsselect'] = '<select size="'. $tags_size .'" multiple="multiple" name="tag[]" id="tag">';

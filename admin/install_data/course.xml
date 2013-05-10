@@ -66,6 +66,34 @@
 			<option value="0">COM_SEMINARMAN_HIDE</option>
 			<option value="1">COM_SEMINARMAN_SHOW</option>
 		</param>
+		<param name="show_price_2" type="list" default="" label="COM_SEMINARMAN_SHOW_PRICE_2" description="COM_SEMINARMAN_SHOW_PRICE_2_DESC">
+			<option value="">COM_SEMINARMAN_USE_GLOBAL</option>
+			<option value="0">COM_SEMINARMAN_NO_USER</option>
+			<option value="1">COM_SEMINARMAN_ALLOWED_USERS</option>
+			<option value="2">COM_SEMINARMAN_ALL_USERS</option>
+			<option value="3">COM_SEMINARMAN_ONLY_PRICE_GROUP_NAME</option>
+		</param>
+		<param name="show_price_3" type="list" default="" label="COM_SEMINARMAN_SHOW_PRICE_3" description="COM_SEMINARMAN_SHOW_PRICE_3_DESC">
+			<option value="">COM_SEMINARMAN_USE_GLOBAL</option>
+			<option value="0">COM_SEMINARMAN_NO_USER</option>
+			<option value="1">COM_SEMINARMAN_ALLOWED_USERS</option>
+			<option value="2">COM_SEMINARMAN_ALL_USERS</option>
+			<option value="3">COM_SEMINARMAN_ONLY_PRICE_GROUP_NAME</option>
+		</param>
+		<param name="show_price_4" type="list" default="" label="COM_SEMINARMAN_SHOW_PRICE_4" description="COM_SEMINARMAN_SHOW_PRICE_4_DESC">
+			<option value="">COM_SEMINARMAN_USE_GLOBAL</option>
+			<option value="0">COM_SEMINARMAN_NO_USER</option>
+			<option value="1">COM_SEMINARMAN_ALLOWED_USERS</option>
+			<option value="2">COM_SEMINARMAN_ALL_USERS</option>
+			<option value="3">COM_SEMINARMAN_ONLY_PRICE_GROUP_NAME</option>
+		</param>
+		<param name="show_price_5" type="list" default="" label="COM_SEMINARMAN_SHOW_PRICE_5" description="COM_SEMINARMAN_SHOW_PRICE_5_DESC">
+			<option value="">COM_SEMINARMAN_USE_GLOBAL</option>
+			<option value="0">COM_SEMINARMAN_NO_USER</option>
+			<option value="1">COM_SEMINARMAN_ALLOWED_USERS</option>
+			<option value="2">COM_SEMINARMAN_ALL_USERS</option>
+			<option value="3">COM_SEMINARMAN_ONLY_PRICE_GROUP_NAME</option>
+		</param>
 		<param name="show_location" type="list" default="" label="COM_SEMINARMAN_SHOW_LOCATION" description="COM_SEMINARMAN_SHOW_LOCATION_DESC">
 			<option value="">COM_SEMINARMAN_USE_GLOBAL</option>
 			<option value="0">COM_SEMINARMAN_HIDE</option>

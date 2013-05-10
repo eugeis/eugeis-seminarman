@@ -34,7 +34,7 @@ class seminarmanViewCountry extends JView
             return;
         }
 
-        $country = &$this->get('data');
+        $country = $this->get('data');
 
         if ($country->url)
         {
@@ -49,15 +49,15 @@ class seminarmanViewCountry extends JView
     {
         $mainframe = JFactory::getApplication();
 
-        $db = &JFactory::getDBO();
-        $uri = &JFactory::getURI();
-        $user = &JFactory::getUser();
-        $model = &$this->getModel();
+        $db = JFactory::getDBO();
+        $uri = JFactory::getURI();
+        $user = JFactory::getUser();
+        $model = $this->getModel();
 
 
         $lists = array();
 
-        $country = &$this->get('data');
+        $country = $this->get('data');
         $isNew = ($country->id < 1);
 
         if ($model->isCheckedOut($user->get('id')))

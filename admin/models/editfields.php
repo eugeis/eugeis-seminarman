@@ -37,7 +37,7 @@ class SeminarmanModelEditfields extends JModel
 	 */
 	function __construct()
 	{
-		$mainframe	=& JFactory::getApplication();
+		$mainframe	= JFactory::getApplication();
 
 		// Call the parents constructor
 		parent::__construct();
@@ -74,7 +74,7 @@ class SeminarmanModelEditfields extends JModel
 	 **/
 	function &getFields()
 	{
-		$mainframe	=& JFactory::getApplication();
+		$mainframe	= JFactory::getApplication();
 
 		static $fields;
 
@@ -84,7 +84,7 @@ class SeminarmanModelEditfields extends JModel
 		}
 
 		// Initialize variables
-		$db			=& JFactory::getDBO();
+		$db			= JFactory::getDBO();
 
 		// Get the limit / limitstart
 		$limit		= $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
@@ -122,7 +122,7 @@ class SeminarmanModelEditfields extends JModel
 			return $fieldGroups;
 		}
 
-		$db		=& JFactory::getDBO();
+		$db		= JFactory::getDBO();
 
 		$query	= 'SELECT * '
 				. 'FROM ' . $db->nameQuote( '#__seminarman_fields' )
@@ -144,7 +144,7 @@ class SeminarmanModelEditfields extends JModel
 			return $fieldGroup;
 		}
 
-		$db		=& JFactory::getDBO();
+		$db		= JFactory::getDBO();
 
 		$query	= 'SELECT * FROM ' . $db->nameQuote( '#__seminarman_fields' )
 				. 'WHERE ' . $db->nameQuote( 'ordering' ) . '<' . $db->Quote( $fieldId ) . ' '
@@ -164,7 +164,7 @@ class SeminarmanModelEditfields extends JModel
 	function getGroupFields( $groupOrderingId )
 	{
 		$fieldArray	= array();
-		$db			=& JFactory::getDBO();
+		$db			= JFactory::getDBO();
 
 		$query	= 'SELECT * FROM ' . $db->nameQuote( '#__seminarman_fields' )
 				. ' WHERE ' . $db->nameQuote( 'ordering' ) . '>' . $db->Quote( $groupOrderingId )
@@ -197,7 +197,7 @@ class SeminarmanModelEditfields extends JModel
 		{
 			$path	= JPATH_ROOT . DS . 'components' . DS . 'com_seminarman' . DS . 'libraries' . DS . 'fields' . DS . 'customfields.xml';
 
-			$parser	=& JFactory::getXMLParser( 'Simple' );
+			$parser	= JFactory::getXMLParser( 'Simple' );
 			$parser->loadFile( $path );
 			$fields	= $parser->document->getElementByPath( 'fields' );
 			$data	= array();
@@ -215,7 +215,7 @@ class SeminarmanModelEditfields extends JModel
 
 	function publish($cid = array(), $publish = 1)
 	{
-		$user    =& JFactory::getUser();
+		$user    = JFactory::getUser();
 
 		if (count( $cid ))
 		{

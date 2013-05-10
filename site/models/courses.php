@@ -33,7 +33,7 @@ class SeminarmanModelCourses extends JModel
     {
         parent::__construct();
 
-        $id = JRequest::getVar('id', 0, '', 'int');
+        $id = JRequest::getVar('id', 0, '', 'int');       
         $this->setId((int)$id);
     }
 
@@ -73,7 +73,7 @@ class SeminarmanModelCourses extends JModel
     {
         if ($this->_loadCourse())
         {
-            $user = &JFactory::getUser();
+            $user = JFactory::getUser();
 
             if (!$this->_course->catpublished && $this->_course->catid)
             {
@@ -107,7 +107,7 @@ class SeminarmanModelCourses extends JModel
                 $this->_course->modified = null;
             }
 
-            $session = &JFactory::getSession();
+            $session = JFactory::getSession();
             $hitcheck = false;
             if ($session->has('hit', 'seminarman'))
             {
@@ -128,8 +128,8 @@ class SeminarmanModelCourses extends JModel
                 fulltext;
         } else
         {
-            $user = &JFactory::getUser();
-            $course = &JTable::getInstance('seminarman_courses', '');
+            $user = JFactory::getUser();
+            $course = JTable::getInstance('seminarman_courses', '');
             if ($user->authorize('com_seminarman', 'state'))
             {
                 $course->state = 1;
@@ -151,7 +151,7 @@ class SeminarmanModelCourses extends JModel
     function _loadCourse()
     {
         $mainframe = JFactory::getApplication();
-        $jnow = &JFactory::getDate();
+        $jnow = JFactory::getDate();
         $now = $jnow->toMySQL();
         $nullDate = $this->_db->getNullDate();
 
@@ -164,7 +164,8 @@ class SeminarmanModelCourses extends JModel
         {
             $query = 'SELECT i.*, (i.plus / (i.plus + i.minus) ) * 100 AS votes, c.access AS cataccess, c.id AS catid, c.published AS catpublished, c.title AS categorytitle,' .
                 ' u.name AS author, u.usertype,' .
-                ' CONCAT_WS(\' \', emp.salutation, emp.other_title, emp.firstname, emp.lastname) AS tutor,' .
+                ' emp.title AS tutor,' .
+				' emp.published AS tutor_published,' .
                 ' gr.title AS cgroup,' .
                 ' lev.title AS level,' .
                 ' CASE WHEN CHAR_LENGTH(i.alias) THEN CONCAT_WS(\':\', i.id, i.alias) ELSE i.id END as slug,' .
@@ -222,14 +223,14 @@ class SeminarmanModelCourses extends JModel
     function getAttendee()
     {
         $mainframe = JFactory::getApplication();
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
         if ($user->id != 0)
         {
         	$query = 'SELECT * FROM `#__seminarman_application`' .
         			 ' WHERE user_id = '. (int)$user->get('id').
         			 ' AND course_id = ' . $this->_id .
         			 ' AND course_id = ' . $this->_id .
-        			 ' AND published <> -2 AND status < 3';
+        			 ' AND published <> -2';
         	
         	$this->_db->setQuery($query);
         	$this->_attendeedata = $this->_db->loadObject();
@@ -293,7 +294,7 @@ class SeminarmanModelCourses extends JModel
     {
         if ($this->_id)
         {
-            $course = &JTable::getInstance('seminarman_courses', '');
+            $course = JTable::getInstance('seminarman_courses', '');
             $course->hit($this->_id);
             return true;
         }
@@ -342,7 +343,7 @@ class SeminarmanModelCourses extends JModel
     {
         if ($this->_id)
         {
-            $course = &JTable::getInstance('seminarman_courses', '');
+            $course = JTable::getInstance('seminarman_courses', '');
             return $course->checkin($this->_id);
         }
         return false;
@@ -355,11 +356,11 @@ class SeminarmanModelCourses extends JModel
 
             if (is_null($uid))
             {
-                $user = &JFactory::getUser();
+                $user = JFactory::getUser();
                 $uid = $user->get('id');
             }
 
-            $course = &JTable::getInstance('seminarman_courses', '');
+            $course = JTable::getInstance('seminarman_courses', '');
             return $course->checkout($uid, $this->_id);
         }
         return false;
@@ -367,8 +368,8 @@ class SeminarmanModelCourses extends JModel
 
     function store($data)
     {
-        $course = &JTable::getInstance('seminarman_courses', '');
-        $user = &JFactory::getUser();
+        $course = JTable::getInstance('seminarman_courses', '');
+        $user = JFactory::getUser();
 
         if (!$course->bind($data))
         {
@@ -517,7 +518,7 @@ class SeminarmanModelCourses extends JModel
 
     function storetag($data)
     {
-        $row = &$this->getTable('seminarman_tags', '');
+        $row = $this->getTable('seminarman_tags', '');
 
         if (!$row->bind($data))
         {
@@ -611,7 +612,7 @@ class SeminarmanModelCourses extends JModel
 
     function setcoursestate($id, $state = 1)
     {
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
 
         if ($id)
         {

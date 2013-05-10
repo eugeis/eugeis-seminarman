@@ -47,7 +47,7 @@ class seminarmanModelapplication extends JModel
     function &getData()
     {
         if ($this->_loadData()) {
-            $user = &JFactory::getUser();
+            $user = JFactory::getUser();
 
             if (!$this->_data->published) {
                 JError::raiseError(404, JText::_("Resource Not Found"));
@@ -74,7 +74,7 @@ class seminarmanModelapplication extends JModel
         $mainframe = JFactory::getApplication();
 
         if ($this->_id) {
-            $booking = &$this->getTable();
+            $booking = $this->getTable();
             $booking->hit($this->_id);
             return true;
         }
@@ -95,7 +95,7 @@ class seminarmanModelapplication extends JModel
     function checkin()
     {
         if ($this->_id) {
-            $booking = &$this->getTable();
+            $booking = $this->getTable();
             if (!$booking->checkin($this->_id)) {
                 $this->setError($this->_db->getErrorMsg());
                 return false;
@@ -109,11 +109,11 @@ class seminarmanModelapplication extends JModel
     {
         if ($this->_id) {
             if (is_null($uid)) {
-                $user = &JFactory::getUser();
+                $user = JFactory::getUser();
                 $uid = $user->get('id');
             }
 
-            $booking = &$this->getTable();
+            $booking = $this->getTable();
             if (!$booking->checkout($uid, $this->_id)) {
                 $this->setError($this->_db->getErrorMsg());
                 return false;
@@ -126,10 +126,10 @@ class seminarmanModelapplication extends JModel
 
     function store($data)
     {
-    	$db = &$this->getDBO();
+    	$db = $this->getDBO();
     	 
         JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_seminarman'.DS.'tables');
-        $row = &JTable::getInstance('application', 'Table');
+        $row = JTable::getInstance('application', 'Table');
         
         if (!$row->bind($data)) {
             $this->setError($this->_db->getErrorMsg());
@@ -156,7 +156,7 @@ class seminarmanModelapplication extends JModel
             return false;
         }
         
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
         if ($user->guest)
         	$uid = $data['user_id'];
         else
@@ -173,7 +173,7 @@ class seminarmanModelapplication extends JModel
     function uploadfile()
     {
         $mainframe = JFactory::getApplication();
-        $params = &JComponentHelper::getParams('com_seminarman');
+        $params = JComponentHelper::getParams('com_seminarman');
 
         $file = JRequest::getVar('cv', null, 'files', 'array');
 
@@ -193,7 +193,7 @@ class seminarmanModelapplication extends JModel
             if (!seminarman_upload::check($file, $err)) {
                 if ($format == 'json') {
                     jimport('joomla.error.log');
-                    $log = &JLog::getInstance('com_seminarman.error.php');
+                    $log = JLog::getInstance('com_seminarman.error.php');
                     $log->addEntry(array('comment' => 'Invalid: ' . $filepath . ': ' . $err));
                     header('HTTP/1.0 415 Unsupported Media Type');
                     die('Error. Unsupported Media Type!');
@@ -259,7 +259,7 @@ class seminarmanModelapplication extends JModel
     function sendemail($emaildata, $emailTemplate = 0, $attachment = '')
     {
         $mainframe = JFactory::getApplication();
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
 
         if ($emailTemplate != 0) {
             $emailCond = " AND id=" . $emailTemplate;
@@ -289,12 +289,12 @@ class seminarmanModelapplication extends JModel
     		return False;
     	
         $mainframe = JFactory::getApplication();
-        $db = &JFactory::getDBO();
-        $message = &JFactory::getMailer();
-        $config = &JFactory::getConfig();
+        $db = JFactory::getDBO();
+        $message = JFactory::getMailer();
+        $config = JFactory::getConfig();
         $params = JComponentHelper::getParams('com_seminarman');
 
-        $query = 'SELECT app.*, c.reference_number, c.title AS course, c.price AS course_price_orig, c.code, c.introtext, c.fulltext, c.capacity, c.location, c.url, app.price_per_attendee, app.price_total, app.price_vat, tut.title AS tutor, tut.salutation AS tutor_salutation, tut.firstname AS tutor_first_name, tut.lastname AS tutor_last_name, gr.title AS atgroup, gr.description AS atgroup_desc, ex.title AS experience_level, ex.description AS experience_level_desc' .
+        $query = 'SELECT app.*, c.reference_number, c.title AS course, c.price AS course_price_orig, c.code, c.introtext, c.fulltext, c.capacity, c.location, c.url, c.id AS course_id, app.price_per_attendee, app.price_total, app.price_vat, tut.id AS tutor_id, tut.title AS tutor, tut.salutation AS tutor_salutation, tut.firstname AS tutor_first_name, tut.lastname AS tutor_last_name, tut.other_title AS tutor_other_title, gr.title AS atgroup, gr.description AS atgroup_desc, ex.title AS experience_level, ex.description AS experience_level_desc' .
             ' FROM #__seminarman_application AS app' .
             ' LEFT JOIN #__seminarman_courses AS c ON c.id = app.course_id' .
             ' LEFT JOIN #__seminarman_tutor AS tut ON tut.id = c.tutor_id' .
@@ -304,19 +304,37 @@ class seminarmanModelapplication extends JModel
 
         $db->setQuery($query);
         $queryResult = $db->loadObject();
-        if ($queryResult) {
+        if ($queryResult) {        	
+        	// what is the below for? not my codes
             $userQuery = "SELECT name, email FROM " . $db->nameQuote('#__users') . "
 			WHERE id = " . $emaildata['user_id'];
 
             $db->setQuery($userQuery);
             $user = $db->loadObject();
 
+            // what is this (below)? not my codes
             $tutorQuery = "SELECT name, email FROM " . $db->nameQuote('#__users') . "
 			WHERE id = " . $queryResult->user_id;
 
             $db->setQuery($tutorQuery);
             $tutor = $db->loadObject();
+            // what is above?
 
+            // tutor custom fields
+            $query_tutor_custom = 'SELECT f.fieldcode, ct.value FROM `#__seminarman_fields_values_tutors` AS ct'.
+            		' LEFT JOIN `#__seminarman_fields` AS f ON ct.field_id = f.id'.
+            		' WHERE ct.tutor_id = '. $queryResult->tutor_id . ' AND f.published = ' . $db->Quote('1') . ' AND f.visible = ' . $db->Quote('1');
+            $db->setQuery($query_tutor_custom);
+            $tutor_customs = $db->loadAssocList();
+            
+            for ($i = 0; $i < count($tutor_customs); $i++) {
+            	$msgSubject = str_replace('{' . strtoupper($tutor_customs[$i]['fieldcode']) . '}', $tutor_customs[$i]['value'],
+            			$msgSubject);
+            	$msgBody = str_replace('{' . strtoupper($tutor_customs[$i]['fieldcode']) . '}', $tutor_customs[$i]['value'],
+            			$msgBody);
+            }
+            
+            // app custom fields (it MUST be here after tutor customs, otherwise you have problems; i don't think the below codes are well done, but it works. they are not my codes.)
             $query = 'SELECT field.*, value.value ' . 'FROM ' . $db->nameQuote('#__seminarman_fields') .
                 ' AS field ' . 'LEFT JOIN ' . $db->nameQuote('#__seminarman_fields_values') .
                 ' AS value ' . 'ON field.id=value.field_id AND value.applicationid=' . $emaildata['applicationid'] .
@@ -382,6 +400,61 @@ class seminarmanModelapplication extends JModel
             $queryResult->price_total_orig_vat = JText::sprintf('%.2f', round($price_total_orig_with_tax, 2));
             
             setlocale(LC_NUMERIC, $old_locale);
+            
+            // start weekday
+            $langs = JComponentHelper::getParams('com_languages');
+            $selectedLang = $langs->get('site', 'en-GB');
+            if ($selectedLang == "de-DE") {
+            	$trans = array(
+            			'Monday'    => 'Montag',
+            			'Tuesday'   => 'Dienstag',
+            			'Wednesday' => 'Mittwoch',
+            			'Thursday'  => 'Donnerstag',
+            			'Friday'    => 'Freitag',
+            			'Saturday'  => 'Samstag',
+            			'Sunday'    => 'Sonntag',
+            			'Mon'       => 'Mo',
+            			'Tue'       => 'Di',
+            			'Wed'       => 'Mi',
+            			'Thu'       => 'Do',
+            			'Fri'       => 'Fr',
+            			'Sat'       => 'Sa',
+            			'Sun'       => 'So',
+            			'January'   => 'Januar',
+            			'February'  => 'Februar',
+            			'March'     => 'März',
+            			'May'       => 'Mai',
+            			'June'      => 'Juni',
+            			'July'      => 'Juli',
+            			'October'   => 'Oktober',
+            			'December'  => 'Dezember'
+            	);
+            	$COURSE_START_WEEKDAY = (!empty($emaildata['start_date'])) ? strtr(date('l', strtotime($emaildata['start_date'])), $trans) : '';
+            } else {
+            	$COURSE_START_WEEKDAY = (!empty($emaildata['start_date'])) ? date('l', strtotime($emaildata['start_date'])) : '';
+            }
+            
+            // first session infos
+            $sql = 'SELECT * FROM #__seminarman_sessions'
+            . ' WHERE published = 1'
+            . ' AND courseid = ' . $queryResult->course_id
+            . ' ORDER BY session_date';
+            $db->setQuery($sql);
+            $course_sessions = $db->loadObjectList();
+            
+            if(!empty($course_sessions)){
+            	$COURSE_FIRST_SESSION_TITLE = $course_sessions[0]->title;
+            	$COURSE_FIRST_SESSION_CLOCK = date('H:i', strtotime($course_sessions[0]->start_time)) . ' - ' . date('H:i', strtotime($course_sessions[0]->finish_time));
+            	$COURSE_FIRST_SESSION_DURATION = $course_sessions[0]->duration;
+            	$COURSE_FIRST_SESSION_ROOM = $course_sessions[0]->session_location;
+            	$COURSE_FIRST_SESSION_COMMENT = $course_sessions[0]->description;
+            } else {
+            	$COURSE_FIRST_SESSION_TITLE = '';
+            	$COURSE_FIRST_SESSION_CLOCK = '';
+            	$COURSE_FIRST_SESSION_DURATION = '';
+            	$COURSE_FIRST_SESSION_ROOM = '';
+            	$COURSE_FIRST_SESSION_COMMENT = '';
+            }
 
             if (!empty( $queryResult->title )) $queryResult->title .= ' ';
 
@@ -392,7 +465,7 @@ class seminarmanModelapplication extends JModel
             $msgSubject = str_replace('{FIRSTNAME}', $queryResult->first_name, $msgSubject);
             $msgSubject = str_replace('{LASTNAME}', $queryResult->last_name, $msgSubject);
             $msgSubject = str_replace('{EMAIL}', $queryResult->email, $msgSubject);
-            $msgSubject = str_replace('{ATTENDEES}', $queryResult->attendees, $msgSubject);
+            // $msgSubject = str_replace('{ATTENDEES}', $queryResult->attendees, $msgSubject);
             $msgSubject = str_replace('{COURSE_TITLE}', $queryResult->course, $msgSubject);
             $msgSubject = str_replace('{COURSE_CODE}', $queryResult->code, $msgSubject);
             $msgSubject = str_replace('{COURSE_INTROTEXT}', $queryResult->introtext, $msgSubject);
@@ -406,15 +479,25 @@ class seminarmanModelapplication extends JModel
             $msgSubject = str_replace('{PRICE_TOTAL_VAT}', $queryResult->price_total_vat, $msgSubject);
             $msgSubject = str_replace('{PRICE_VAT_PERCENT}', $queryResult->price_vat_percent, $msgSubject);
             $msgSubject = str_replace('{PRICE_VAT}', $queryResult->price_vat, $msgSubject);
+            $msgSubject = str_replace('{PRICE_TOTAL_DISCOUNT}', $queryResult->price_total_discount, $msgSubject);
+            $msgSubject = str_replace('{PRICE_TOTAL_ORIG_VAT}', $queryResult->price_total_orig_vat, $msgSubject);
             $msgSubject = str_replace('{COURSE_START_DATE}', JFactory::getDate($emaildata['start_date'])->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1')), $msgSubject);
             $msgSubject = str_replace('{COURSE_FINISH_DATE}', JFactory::getDate($emaildata['finish_date'])->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1')), $msgSubject);
             $msgSubject = str_replace('{TUTOR}', $queryResult->tutor, $msgSubject);
             $msgSubject = str_replace('{TUTOR_FIRSTNAME}', $queryResult->tutor_first_name, $msgSubject);
             $msgSubject = str_replace('{TUTOR_LASTNAME}', $queryResult->tutor_last_name, $msgSubject);
+            $msgSubject = str_replace('{TUTOR_SALUTATION}', $queryResult->tutor_salutation, $msgSubject);
+            $msgSubject = str_replace('{TUTOR_OTHER_TITLE}', $queryResult->tutor_other_title, $msgSubject);
             $msgSubject = str_replace('{GROUP}', $queryResult->atgroup, $msgSubject);
             $msgSubject = str_replace('{GROUP_DESC}', $queryResult->atgroup_desc, $msgSubject);
             $msgSubject = str_replace('{EXPERIENCE_LEVEL}', $queryResult->experience_level, $msgSubject);
             $msgSubject = str_replace('{EXPERIENCE_LEVEL_DESC}', $queryResult->experience_level_desc, $msgSubject);
+            $msgSubject = str_replace('{COURSE_START_WEEKDAY}', $COURSE_START_WEEKDAY, $msgSubject);
+            $msgSubject = str_replace('{COURSE_FIRST_SESSION_TITLE}', $COURSE_FIRST_SESSION_TITLE, $msgSubject);
+            $msgSubject = str_replace('{COURSE_FIRST_SESSION_CLOCK}', $COURSE_FIRST_SESSION_CLOCK, $msgSubject);
+            $msgSubject = str_replace('{COURSE_FIRST_SESSION_DURATION}', $COURSE_FIRST_SESSION_DURATION, $msgSubject);
+            $msgSubject = str_replace('{COURSE_FIRST_SESSION_ROOM}', $COURSE_FIRST_SESSION_ROOM, $msgSubject);
+            $msgSubject = str_replace('{COURSE_FIRST_SESSION_COMMENT}', $COURSE_FIRST_SESSION_COMMENT, $msgSubject);
 
             $msgBody = str_replace('{ADMIN_CUSTOM_RECIPIENT}', $params->get('component_email'), $msgBody);
             $msgBody = str_replace('{ATTENDEES}', $queryResult->attendees, $msgBody);
@@ -445,10 +528,18 @@ class seminarmanModelapplication extends JModel
             $msgBody = str_replace('{TUTOR}', $queryResult->tutor, $msgBody);
             $msgBody = str_replace('{TUTOR_FIRSTNAME}', $queryResult->tutor_first_name, $msgBody);
             $msgBody = str_replace('{TUTOR_LASTNAME}', $queryResult->tutor_last_name, $msgBody);
+            $msgBody = str_replace('{TUTOR_SALUTATION}', $queryResult->tutor_salutation, $msgBody);
+            $msgBody = str_replace('{TUTOR_OTHER_TITLE}', $queryResult->tutor_other_title, $msgBody);
             $msgBody = str_replace('{GROUP}', $queryResult->atgroup, $msgBody);
             $msgBody = str_replace('{GROUP_DESC}', $queryResult->atgroup_desc, $msgBody);
             $msgBody = str_replace('{EXPERIENCE_LEVEL}', $queryResult->experience_level, $msgBody);
             $msgBody = str_replace('{EXPERIENCE_LEVEL_DESC}', $queryResult->experience_level_desc, $msgBody);
+            $msgBody = str_replace('{COURSE_START_WEEKDAY}', $COURSE_START_WEEKDAY, $msgBody);
+            $msgBody = str_replace('{COURSE_FIRST_SESSION_TITLE}', $COURSE_FIRST_SESSION_TITLE, $msgBody);
+            $msgBody = str_replace('{COURSE_FIRST_SESSION_CLOCK}', $COURSE_FIRST_SESSION_CLOCK, $msgBody);
+            $msgBody = str_replace('{COURSE_FIRST_SESSION_DURATION}', $COURSE_FIRST_SESSION_DURATION, $msgBody);
+            $msgBody = str_replace('{COURSE_FIRST_SESSION_ROOM}', $COURSE_FIRST_SESSION_ROOM, $msgBody);
+            $msgBody = str_replace('{COURSE_FIRST_SESSION_COMMENT}', $COURSE_FIRST_SESSION_COMMENT, $msgBody);
 
             $msgRecipient = str_replace('{EMAIL}', $queryResult->email, $msgRecipient);
             $msgRecipient = str_replace('{ADMIN_CUSTOM_RECIPIENT}', $params->get('component_email'), $msgRecipient);
@@ -482,7 +573,7 @@ class seminarmanModelapplication extends JModel
 
     function saveCustomfields($applicationId, $userId, $fields)
     {
-        $db = &$this->getDBO();
+        $db = $this->getDBO();
 
         foreach ($fields as $id => $value) {
         	
@@ -492,7 +583,7 @@ class seminarmanModelapplication extends JModel
         	$db->setQuery($q);
         	$db->query();
         	
-        	$user = &JFactory::getUser();
+        	$user = JFactory::getUser();
         	$q = 'REPLACE INTO `#__seminarman_fields_values_users`'.
         	     ' (user_id, fieldcode, value)'.
         	     ' VALUES ('.(int)$userId.',(SELECT fieldcode FROM `#__seminarman_fields` WHERE id='.(int)$id.'),'.$db->quote($value).')';
@@ -505,7 +596,7 @@ class seminarmanModelapplication extends JModel
     function getAdminEmails()
     {
         $emails = '';
-        $db = &$this->getDBO();
+        $db = $this->getDBO();
 
         $query = 'SELECT ' . $db->nameQuote('email') . ' FROM ' . $db->nameQuote('#__users') .
             ' WHERE ' . $db->nameQuote('gid') . '=' . $db->quote(24) . ' OR ' . $db->
@@ -520,7 +611,7 @@ class seminarmanModelapplication extends JModel
     function getCurrentBookings()
     {
         $mainframe = JFactory::getApplication();
-        $params = &$mainframe->getParams();
+        $params = $mainframe->getParams();
         if ($params->get('current_capacity') == 1) {
             $statusTopLimit = 3;
             $statusBottomLimit = -1;
@@ -530,7 +621,7 @@ class seminarmanModelapplication extends JModel
             $statusBottomLimit = 0;
         }
 
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $sql = 'SELECT SUM(b.attendees)' . ' FROM #__seminarman_application AS b' .
             ' WHERE b.published = 1' . ' AND b.course_id = ' . $this->_course_id .
             ' AND b.status <' . $statusTopLimit = 3 . ' AND b.status >' . $statusBottomLimit;
@@ -544,7 +635,7 @@ class seminarmanModelapplication extends JModel
     	if ($user_id == 0)
     		return 0;
     	
-    	$db = &JFactory::getDBO();
+    	$db = JFactory::getDBO();
     	$q = 'SELECT COUNT(id) FROM `#__seminarman_application`'.
     	          ' WHERE user_id = '. (int)$user_id.
     	          ' AND course_id = ' . $this->_course_id .
@@ -608,7 +699,7 @@ class seminarmanModelapplication extends JModel
     */
     function getFieldValuesForTemplate($applicationid)
     {
-    	$db = &JFactory::getDBO();
+    	$db = JFactory::getDBO();
     	$data = array();
     	
     	// application data
@@ -632,9 +723,13 @@ class seminarmanModelapplication extends JModel
    	                      ' c.start_date AS `COURSE_START_DATE`,'.
    	                      ' c.finish_date AS `COURSE_FINISH_DATE`,'.
     	                  ' c.price AS `COURSE_PRICE_ORIG`,'.
+    					  ' c.id AS `COURSE_ID`,'.
+    			          ' t.id AS `TUTOR_ID`,'.
    	                      ' t.title AS `TUTOR`,'.
    	                      ' t.firstname AS `TUTOR_FIRSTNAME`,'.
    	                      ' t.lastname AS `TUTOR_LASTNAME`,'.
+    			          ' t.salutation AS `TUTOR_SALUTATION`,'.
+    			          ' t.other_title AS `TUTOR_OTHER_TITLE`,'.
    	                      ' g.title AS `GROUP`,'.
    	                      ' l.title AS `EXPERIENCE_LEVEL`'.
  	                    ' FROM `#__seminarman_application` AS a'.
@@ -651,6 +746,13 @@ class seminarmanModelapplication extends JModel
         	              ' WHERE applicationid = '. (int) $applicationid );
     	foreach ($db->loadRowList() as $row)
     		$data[$row[0]] = $row[1];
+    	
+    	// custom tutor fields
+    	$db->setQuery('SELECT f.fieldcode, ct.value FROM `#__seminarman_fields_values_tutors` AS ct'.
+    			       ' LEFT JOIN `#__seminarman_fields` AS f ON ct.field_id = f.id'.
+    			       ' WHERE ct.tutor_id = '. (int) $data['TUTOR_ID'] . ' AND f.published = ' . $db->Quote('1') . ' AND f.visible = ' . $db->Quote('1'));
+    	foreach ($db->loadRowList() as $row)
+    		$data[$row[0]] = $row[1]; 
     	
 		// calculate and format prices
 		$lang = JFactory::getLanguage();
@@ -702,6 +804,61 @@ class seminarmanModelapplication extends JModel
     	$data['INVOICE_DATE'] = JFactory::getDate($data['INVOICE_DATE'])->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1'));
     	$data['COURSE_START_DATE'] = JFactory::getDate($data['COURSE_START_DATE'])->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1'));
     	$data['COURSE_FINISH_DATE'] = JFactory::getDate($data['COURSE_FINISH_DATE'])->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1'));
+
+    	// start weekday
+    	$langs = JComponentHelper::getParams('com_languages');
+    	$selectedLang = $langs->get('site', 'en-GB');
+    	if ($selectedLang == "de-DE") {
+    		$trans = array(
+    				'Monday'    => 'Montag',
+    				'Tuesday'   => 'Dienstag',
+    				'Wednesday' => 'Mittwoch',
+    				'Thursday'  => 'Donnerstag',
+    				'Friday'    => 'Freitag',
+    				'Saturday'  => 'Samstag',
+    				'Sunday'    => 'Sonntag',
+    				'Mon'       => 'Mo',
+    				'Tue'       => 'Di',
+    				'Wed'       => 'Mi',
+    				'Thu'       => 'Do',
+    				'Fri'       => 'Fr',
+    				'Sat'       => 'Sa',
+    				'Sun'       => 'So',
+    				'January'   => 'Januar',
+    				'February'  => 'Februar',
+    				'March'     => 'März',
+    				'May'       => 'Mai',
+    				'June'      => 'Juni',
+    				'July'      => 'Juli',
+    				'October'   => 'Oktober',
+    				'December'  => 'Dezember'
+    		);
+    		$data['COURSE_START_WEEKDAY'] = (!empty($data['COURSE_START_DATE'])) ? strtr(date('l', strtotime($data['COURSE_START_DATE'])), $trans) : '';
+    	} else {
+    		$data['COURSE_START_WEEKDAY'] = (!empty($data['COURSE_START_DATE'])) ? date('l', strtotime($data['COURSE_START_DATE'])) : '';
+    	}
+    	
+    	// first session infos
+        $sql = 'SELECT * FROM #__seminarman_sessions'
+         . ' WHERE published = 1'
+         . ' AND courseid = ' . $data['COURSE_ID']
+         . ' ORDER BY session_date';
+        $db->setQuery($sql);
+        $course_sessions = $db->loadObjectList();
+        
+        if(!empty($course_sessions)){
+             $data['COURSE_FIRST_SESSION_TITLE'] = $course_sessions[0]->title;
+             $data['COURSE_FIRST_SESSION_CLOCK'] = date('H:i', strtotime($course_sessions[0]->start_time)) . ' - ' . date('H:i', strtotime($course_sessions[0]->finish_time));
+             $data['COURSE_FIRST_SESSION_DURATION'] = $course_sessions[0]->duration;
+             $data['COURSE_FIRST_SESSION_ROOM'] = $course_sessions[0]->session_location;
+             $data['COURSE_FIRST_SESSION_COMMENT'] = $course_sessions[0]->description;
+        } else {
+        	$data['COURSE_FIRST_SESSION_TITLE'] = '';
+        	$data['COURSE_FIRST_SESSION_CLOCK'] = '';
+        	$data['COURSE_FIRST_SESSION_DURATION'] = '';
+        	$data['COURSE_FIRST_SESSION_ROOM'] = '';
+        	$data['COURSE_FIRST_SESSION_COMMENT'] = '';        	
+        }
     	
     	return $data;  
     }

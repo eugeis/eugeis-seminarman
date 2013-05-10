@@ -175,11 +175,17 @@ for ($i = 0, $n = count($this->courses); $i < $n; $i++)
          </td>
          <td>
             <?php
-
-    if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out))
+	$result = 0;
+	if ($row instanceof JTable)
+	{
+		$result = $row->isCheckedOut( $this->user->get( 'id' ) );
+	}
+            
+	if ( $result )
     {
         echo $this->escape($row->title);
-    } else
+    } 
+    else
     {
 
 ?>

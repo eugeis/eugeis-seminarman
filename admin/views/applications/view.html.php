@@ -28,12 +28,12 @@ class seminarmanViewapplications extends JView
     {
         $mainframe = JFactory::getApplication();
 
-        $db = &JFactory::getDBO();
-        $uri = &JFactory::getURI();
+        $db = JFactory::getDBO();
+        $uri = JFactory::getURI();
         $childviewname = 'application';
-        $document = &JFactory::getDocument();
+        $document = JFactory::getDocument();
         $params = JComponentHelper::getParams('com_seminarman');
-        $lang = &JFactory::getLanguage();
+        $lang = JFactory::getLanguage();
 
         $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
         if ($lang->isRTL())
@@ -65,7 +65,7 @@ class seminarmanViewapplications extends JView
         JToolBarHelper::title(JText::_('COM_SEMINARMAN_APPLICATIONS'), 'applications');
 
         $alt = JText::_('COM_SEMINARMAN_SEND_EMAIL');
-        $bar=& JToolBar::getInstance( 'toolbar' );
+        $bar = JToolBar::getInstance( 'toolbar' );
         $bar->appendButton( 'Standard', 'send', $alt, 'notify', true );        
         // JToolBarHelper::custom('Popup', 'send', 'send', $alt, true);
         JToolBarHelper::divider();
@@ -88,13 +88,13 @@ class seminarmanViewapplications extends JView
         $search = $mainframe->getUserStateFromRequest('com_seminarman' . $childviewname . '.search', 'search', '', 'string');
         $search = JString::strtolower($search);
 
-        $applications = &$this->get('Data');
-        $total = &$this->get('Total');
-        $pagination = &$this->get('Pagination');
+        $applications = $this->get('Data');
+        $total = $this->get('Total');
+        $pagination = $this->get('Pagination');
 
-        $requestURL = &$uri->toString();
+        $requestURL = $uri->toString();
 
-    	$titles = & $this->get( 'titles' );
+    	$titles = $this->get( 'titles' );
 
     	// build list of courses
     	$javascript = 'onchange="document.adminForm.submit();"';
@@ -107,6 +107,7 @@ class seminarmanViewapplications extends JView
     	$filters[] = JHTML::_('select.option', '1', JText::_( 'COM_SEMINARMAN_LAST_NAME' ) );
     	$filters[] = JHTML::_('select.option', '2', JText::_( 'COM_SEMINARMAN_FIRST_NAME' ) );
     	$filters[] = JHTML::_('select.option', '3', JText::_( 'COM_SEMINARMAN_EMAIL' ) );
+    	$filters[] = JHTML::_('select.option', '4', JText::_( 'COM_SEMINARMAN_COURSE_CODE' ) );
     	$lists['filter_search'] = JHTML::_('select.genericlist', $filters, 'filter_search', 'size="1" class="inputbox"', 'value', 'text', $filter_search );
 
 
@@ -135,8 +136,9 @@ class seminarmanViewapplications extends JView
 	        else
 	        	$row->finish_date = JText::_('COM_SEMINARMAN_NOT_SPECIFIED');
        	}
-
-        $this->assignRef('user', JFactory::getUser());
+		
+       	$user = JFactory::getUser();
+        $this->assignRef('user', $user);
         $this->assignRef('lists', $lists);
         $this->assignRef('applications', $applications);
         $this->assignRef('pagination', $pagination);

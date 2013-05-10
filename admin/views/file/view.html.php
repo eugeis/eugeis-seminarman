@@ -29,9 +29,9 @@ class SeminarmanViewFile extends JView
     {
         $mainframe = JFactory::getApplication();
 
-        $document = &JFactory::getDocument();
-        $user = &JFactory::getUser();
-        $lang = &JFactory::getLanguage();
+        $document = JFactory::getDocument();
+        $user = JFactory::getUser();
+        $lang = JFactory::getLanguage();
 
         $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
         if ($lang->isRTL())
@@ -56,8 +56,8 @@ class SeminarmanViewFile extends JView
         JToolBarHelper::spacer();
         JToolBarHelper::cancel();
 
-        $model = &$this->getModel();
-        $row = &$this->get('File');
+        $model = $this->getModel();
+        $row = $this->get('File');
 
         if ($row->id)
         {

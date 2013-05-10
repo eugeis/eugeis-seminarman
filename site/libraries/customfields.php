@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 class SeminarmanCustomfieldsLibrary
 {
-	function getFieldData( $fieldType , $value )
+	static function getFieldData( $fieldType , $value )
 	{
 		$fieldType	= strtolower( $fieldType );
 
@@ -56,11 +56,11 @@ class SeminarmanCustomfieldsLibrary
 	/**
 	 * Method to get the HTML output for specific fields
 	 **/
-	function getFieldHTML( $field , $showRequired = '&nbsp; *' )
+	static function getFieldHTML( $field, $showRequired = '&nbsp; *', $readonly = false )
 	{
 		$fieldType	= strtolower( $field->type);
 
-		if(is_array($field))
+		if (is_array($field))
 		{
 			jimport( 'joomla.utilities.arrayhelper');
 			$field = JArrayHelper::toObject($field);
@@ -70,7 +70,7 @@ class SeminarmanCustomfieldsLibrary
 
 		$class	= 'CFields' . ucfirst( $fieldType );
 
-		if(is_object($field->options))
+		if (is_object($field->options))
 		{
 			$field->options = JArrayHelper::fromObject($field->options);
 		}
@@ -105,7 +105,7 @@ class SeminarmanCustomfieldsLibrary
 	 * We also need to validate fields in PHP since if the user knows how to send POST data, then they
 	 * will bypass javascript validations.
 	 **/
-	function validateField( $fieldType , $value , $required )
+	static function validateField( $fieldType , $value , $required )
 	{
 		$fieldType	= strtolower( $fieldType );
 
@@ -126,7 +126,7 @@ class SeminarmanCustomfieldsLibrary
 		return true;
 	}
 
-	function formatData( $fieldType , $value )
+	static function formatData( $fieldType , $value )
 	{
 		$fieldType	= strtolower( $fieldType );
 

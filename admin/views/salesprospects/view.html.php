@@ -28,11 +28,11 @@ class seminarmanViewsalesprospects extends JView
     {
         $mainframe = JFactory::getApplication();
 
-        $db = &JFactory::getDBO();
-        $uri = &JFactory::getURI();
+        $db = JFactory::getDBO();
+        $uri = JFactory::getURI();
         $childviewname = 'salesprospect';
-        $document = &JFactory::getDocument();
-        $lang = &JFactory::getLanguage();
+        $document = JFactory::getDocument();
+        $lang = JFactory::getLanguage();
 
         $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
         if ($lang->isRTL())
@@ -77,8 +77,8 @@ class seminarmanViewsalesprospects extends JView
         $search = $mainframe->getUserStateFromRequest('com_seminarman'. $childviewname .'.search', 'search', '', 'string');
         $search = JString::strtolower($search);
 
-        $model = &$this->getModel();
-        $salesprospects = &$this->get('Data');
+        $model = $this->getModel();
+        $salesprospects = $this->get('Data');
         foreach ($salesprospects as $row)
         {
         	$select = array();
@@ -102,20 +102,20 @@ class seminarmanViewsalesprospects extends JView
         	$row->select_course_notify = JHTML::_('select.genericlist', $select, 'select_course_notify'.$row->id, 'size="1" class="inputbox"', 'value', 'text', $selected);
         }
         
-        $total = &$this->get('Total');
-        $pagination = &$this->get('Pagination');
+        $total = $this->get('Total');
+        $pagination = $this->get('Pagination');
 
-        $requestURL = &$uri->toString();
+        $requestURL = $uri->toString();
 
         // build list of courses
-        $titles = & $this->get('Courses');
+        $titles = $this->get('Courses');
         $catlist[] = JHTML::_('select.option',  '0', '- '. JText::_( 'COM_SEMINARMAN_SELECT_COURSE' ). ' -', 'id');
         $catlist = array_merge( $catlist, $titles );
         $lists['courseid'] = JHTML::_('select.genericlist', $catlist, 'filter_courseid', 'class="inputbox" size="1" onchange="submitform( );"','id', 'text', $filter_courseid );
 
         $catlist = array();
     	// build list of templates
-        $titles = & $this->get( 'titles' );
+        $titles = $this->get( 'titles' );
     	$catlist[] = JHTML::_('select.option',  '0', '- '. JText::_( 'COM_SEMINARMAN_SELECT_TEMPLATE' ). ' -', 'id', 'title' );
     	$catlist = array_merge( $catlist, $titles );
     	$lists['templateid'] = JHTML::_('select.genericlist', $catlist, 'filter_templateid', 'class="inputbox" size="1" onchange="submitform( );"','id', 'title', $filter_templateid );
@@ -132,12 +132,14 @@ class seminarmanViewsalesprospects extends JView
 
         $lists['search'] = $search;
         
-        $this->assignRef('user', JFactory::getUser());
+        $user = JFactory::getUser();
+        $nulldate = $db->getNullDate();
+        $this->assignRef('user', $user);
         $this->assignRef('lists', $lists);
         $this->assignRef('salesprospects', $salesprospects);
         $this->assignRef('pagination', $pagination);
         $this->assignRef('requestURL', $requestURL);
-        $this->assignRef('nullDate', $db->getNullDate());
+        $this->assignRef('nullDate', $nulldate);
 
         parent::display($tpl);
     }

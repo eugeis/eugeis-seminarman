@@ -29,7 +29,7 @@ $this_script = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
 
 // Get the page/component configuration
 $mainframe = JFactory::getApplication();
-$params = &$mainframe->getParams('com_seminarman');
+$params = $mainframe->getParams('com_seminarman');
 
 for($i = 0; $i < count($this->fields); $i++)
 	$p->add_field($this->fields[$i]['paypalcode'], $this->fields[$i]['value']);

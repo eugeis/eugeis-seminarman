@@ -28,11 +28,11 @@ class seminarmanViewexperience_levels extends JView
     {
         $mainframe = JFactory::getApplication();
 
-        $db = &JFactory::getDBO();
-        $uri = &JFactory::getURI();
+        $db = JFactory::getDBO();
+        $uri = JFactory::getURI();
         $childviewname = 'experience_level';
-        $document = &JFactory::getDocument();
-        $lang = &JFactory::getLanguage();
+        $document = JFactory::getDocument();
+        $lang = JFactory::getLanguage();
         
         $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
         if ($lang->isRTL())
@@ -51,11 +51,11 @@ class seminarmanViewexperience_levels extends JView
             '.search', 'search', '', 'string');
         $search = JString::strtolower($search);
 
-        $courses = &$this->get('Data');
-        $total = &$this->get('Total');
-        $pagination = &$this->get('Pagination');
+        $courses = $this->get('Data');
+        $total = $this->get('Total');
+        $pagination = $this->get('Pagination');
 
-        $requestURL = &$uri->toString();
+        $requestURL = $uri->toString();
 
         $lists['state'] = JHTML::_('grid.state', $filter_state);
 
@@ -64,7 +64,8 @@ class seminarmanViewexperience_levels extends JView
 
         $lists['search'] = $search;
 
-        $this->assignRef('user', JFactory::getUser());
+        $user = JFactory::getUser();
+        $this->assignRef('user', $user);
         $this->assignRef('lists', $lists);
         $this->assignRef('courses', $courses);
         $this->assignRef('pagination', $pagination);

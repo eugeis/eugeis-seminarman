@@ -26,6 +26,14 @@ class CFieldsDate
 	/**
 	 * Method to format the specified value for text type
 	 **/
+	
+	/** Warning: don't rename it to formatData, i know what i did here. **/
+	function formatDate($str, $format) {		
+		
+		if ($str != '0000-00-00')
+			return JHTML::_('date', $str, $format);
+	}
+	
 	function getFieldData( $value )
 	{
 		if( empty( $value ) )
@@ -35,16 +43,40 @@ class CFieldsDate
 		{
 			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_seminarman' . DS . 'libraries' . DS . 'core.php' );
 		}
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_seminarman' . DS . 'models' . DS . 'customfields.php' );
+		// require_once( JPATH_ROOT . DS . 'components' . DS . 'com_seminarman' . DS . 'models' . DS . 'customfields.php' );
 
-		$model	=& CMFactory::getModel( 'customfields' );
-		$myDate = $model->formatDate($value);
-
+		// $model	= CMFactory::getModel( 'customfields' );
+		// $myDate = $model->formatDate($value);
+		$myDate = $this->formatDate($value, JText::_('COM_SEMINARMAN_DATE_FORMAT1'));
 		return $myDate;
 	}
 
 	function getFieldHTML( $field , $required )
 	{
+		$mydate	= '0000-00-00';
+		
+		if(! empty($field->value))
+		{
+			$myDateArr	= explode(' ', $field->value);
+			if(is_array($myDateArr) && count($myDateArr) > 0)
+			{
+				$mydate = $myDateArr[0];
+			}
+		}
+
+		$class	= ($field->required == 1) ? ' required' : '';
+		CMFactory::load( 'helpers' , 'string' );
+		
+		$html = JHTML::calendar( $this->formatDate($mydate, JText::_('COM_SEMINARMAN_DATE_FORMAT1')), 'field' . $field->id, 'field' . $field->id, JText::_('COM_SEMINARMAN_DATE_FORMAT1_ALT'), array('readonly'=>'true'));
+		$html .= '<span id="errfield'.$field->id.'msg" style="display:none;">&nbsp;</span>';
+		
+		return $html;
+		
+	}	
+	
+	function getFieldHTML_OLD( $field , $required )
+	{
+ 
 		$html	= '';
 
 		$day	= '';
@@ -57,11 +89,12 @@ class CFieldsDate
 
 			if(is_array($myDateArr) && count($myDateArr) > 0)
 			{
+				$myDateArr[0] = str_replace('.', '-', $myDateArr[0]);
 				$myDate	= explode('-', $myDateArr[0]);
 
-				$day	= !empty($myDate[2]) ? $myDate[2] : '';
+				$day	= !empty($myDate[0]) ? $myDate[0] : '';
 				$month	= !empty($myDate[1]) ? $myDate[1] : 0;
-				$year	= !empty($myDate[0]) ? $myDate[0] : '';
+				$year	= !empty($myDate[2]) ? $myDate[2] : '';
 			}
 		}
 
@@ -110,6 +143,7 @@ class CFieldsDate
 		$html .= '<input type="textbox" size="5" maxlength="4" name="field' . $field->id . '[]" value="' . $year . '" class="inputbox validate-custom-date' . $class . '" /> ';
 		$html .= JText::_('COM_SEMINARMAN_DAY') . ' / ' . JText::_('COM_SEMINARMAN_MONTH') . ' / ' . JText::_('COM_SEMINARMAN_YEAR');
 		$html .= '<span id="errfield'.$field->id.'msg" style="display:none;">&nbsp;</span>';
+		
 		$html .= '</div>';
 
 		return $html;
@@ -124,7 +158,7 @@ class CFieldsDate
 		return true;
 	}
 
-	function formatdata( $value )
+	function formatdata_OLD( $value )
 	{
 		$finalvalue = '';
 

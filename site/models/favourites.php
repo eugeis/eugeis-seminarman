@@ -34,7 +34,7 @@ class SeminarmanModelFavourites extends JModel
 
         $mainframe = JFactory::getApplication();
 
-        $params = &$mainframe->getParams('com_seminarman');
+        $params = $mainframe->getParams('com_seminarman');
 
     	$id = JRequest::getInt('id', 0);
 
@@ -118,10 +118,10 @@ class SeminarmanModelFavourites extends JModel
     {
         $mainframe = JFactory::getApplication();
 
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
         $gid = (int)$user->get('aid');
-        $params = &$mainframe->getParams('com_seminarman');
-        $jnow = &JFactory::getDate();
+        $params = $mainframe->getParams('com_seminarman');
+        $jnow = JFactory::getDate();
         $now = $jnow->toMySQL();
         $nullDate = $this->_db->getNullDate();
 
@@ -184,7 +184,7 @@ class SeminarmanModelFavourites extends JModel
 
 	function gettitles()
 	{
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		$gid = (int)$user->get('aid');
 		$ordering = 'ordering ASC';
 
@@ -200,7 +200,7 @@ class SeminarmanModelFavourites extends JModel
 	function getCategory($courseid)
 	{
 
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		$gid = (int)$user->get('aid');
 
 		$query = 'SELECT DISTINCT c.*,' .

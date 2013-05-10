@@ -170,7 +170,7 @@ class SeminarmanModelTemplates extends JModel
     {
     	if ($this->_id)
     	{
-    		$group = &$this->getTable();
+    		$group = $this->getTable();
     		if (!$group->checkin($this->_id))
     		{
     			$this->setError($this->_db->getErrorMsg());
@@ -187,11 +187,11 @@ class SeminarmanModelTemplates extends JModel
     
     		if (is_null($uid))
     		{
-    			$user = &JFactory::getUser();
+    			$user = JFactory::getUser();
     			$uid = $user->get('id');
     		}
     
-    		$group = &$this->getTable();
+    		$group = $this->getTable();
     		if (!$group->checkout($uid, $this->_id))
     		{
     			$this->setError($this->_db->getErrorMsg());
@@ -205,7 +205,7 @@ class SeminarmanModelTemplates extends JModel
     
     function move($direction)
     {
-    	$row = &JTable::getInstance('seminarman_templates', '');
+    	$row = JTable::getInstance('seminarman_templates', '');
     
     	if (!$row->load($this->_id))
     	{
@@ -224,7 +224,7 @@ class SeminarmanModelTemplates extends JModel
     
     function saveorder($cid = array(), $order)
     {
-    	$row = &JTable::getInstance('seminarman_templates', '');
+    	$row = JTable::getInstance('seminarman_templates', '');
 
     	for ($i = 0; $i < count($cid); $i++)
     	{

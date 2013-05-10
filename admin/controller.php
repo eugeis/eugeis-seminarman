@@ -35,7 +35,7 @@ class SeminarmanController extends JController
 	/**
 	 * Display the view
 	 */
-	function display()
+	function display( $cachable = false, $urlparams = false )
 	{
 		parent::display();
 

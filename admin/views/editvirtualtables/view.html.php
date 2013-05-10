@@ -30,9 +30,9 @@ class SeminarmanViewEditvirtualtables extends JView
 
         $mainframe = JFactory::getApplication();
 
-        $document = &JFactory::getDocument();
-        $user = &JFactory::getUser();
-        $lang = &JFactory::getLanguage();
+        $document = JFactory::getDocument();
+        $user = JFactory::getUser();
+        $lang = JFactory::getLanguage();
 
 
         $option = JRequest::getVar('option');
@@ -58,7 +58,7 @@ class SeminarmanViewEditvirtualtables extends JView
         $content = JFile::read($xml_path);
 
         jimport('joomla.client.helper');
-        $ftp = &JClientHelper::setCredentialsFromRequest('ftp');
+        $ftp = JClientHelper::setCredentialsFromRequest('ftp');
 
         if ($content !== false)
         {

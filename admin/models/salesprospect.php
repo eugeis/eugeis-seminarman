@@ -70,7 +70,7 @@ class seminarmanModelsalesprospect extends JModel
     {
         if ($this->_id)
         {
-            $group = &$this->getTable();
+            $group = $this->getTable();
             if (!$group->checkin($this->_id))
             {
                 $this->setError($this->_db->getErrorMsg());
@@ -87,11 +87,11 @@ class seminarmanModelsalesprospect extends JModel
 
             if (is_null($uid))
             {
-                $user = &JFactory::getUser();
+                $user = JFactory::getUser();
                 $uid = $user->get('id');
             }
 
-            $group = &$this->getTable();
+            $group = $this->getTable();
             if (!$group->checkout($uid, $this->_id))
             {
                 $this->setError($this->_db->getErrorMsg());
@@ -105,7 +105,7 @@ class seminarmanModelsalesprospect extends JModel
 
     function store($data)
     {
-        $row = &$this->getTable();
+        $row = $this->getTable();
 
         if (!$row->bind($data))
         {
@@ -168,7 +168,7 @@ class seminarmanModelsalesprospect extends JModel
 
     function approve($cid = array(), $approve = 1)
     {
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
 
         if (count($cid))
         {
@@ -192,7 +192,7 @@ class seminarmanModelsalesprospect extends JModel
 
     function move($direction)
     {
-        $row = &$this->getTable();
+        $row = $this->getTable();
         if (!$row->load($this->_id))
         {
             $this->setError($this->_db->getErrorMsg());
@@ -210,7 +210,7 @@ class seminarmanModelsalesprospect extends JModel
 
     function saveorder($cid = array(), $order)
     {
-        $row = &$this->getTable();
+        $row = $this->getTable();
         $groupings = array();
 
         for ($i = 0; $i < count($cid); $i++)
@@ -241,7 +241,7 @@ class seminarmanModelsalesprospect extends JModel
 
 	function getEditableCustomfields($requestid	= null)
 	{
-		$db			=& $this->getDBO();
+		$db			= $this->getDBO();
 		$data		= new stdClass();
 
 		// Attach custom fields into the user object
@@ -312,7 +312,7 @@ class seminarmanModelsalesprospect extends JModel
 
 	function saveCustomfields($requestid, $userId, $fields)
 	{
-		$db = &$this->getDBO();
+		$db = $this->getDBO();
 	
 		foreach ($fields as $id => $value) {
 			 

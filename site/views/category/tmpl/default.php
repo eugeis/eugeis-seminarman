@@ -17,14 +17,6 @@ defined('_JEXEC') or die('Restricted access');
     <h1 class="componentheading"><?php echo $this->params->get('page_title'); ?></h1>
 <?php endif; ?>
 
-<?php
-if ($this->category->id > 0)
-	echo $this->loadTemplate('category');
-
-if (count($this->categories) && $this->category->id > 0)
-    echo $this->loadTemplate('subcategories');
-?>
-
 <script type="text/javascript">
 function tableOrdering( order, dir, task ) {
 
@@ -46,17 +38,18 @@ function tableOrdering( order, dir, task ) {
 <?php
 jimport('joomla.html.pane');
 
-$tabs = &JPane::getInstance('tabs', array('startOffset'=>0));
-echo $tabs->startPane('mytabs');
-echo $tabs->startPanel(JText::_('COM_SEMINARMAN_DATES'), 0);
-echo '<div>' . $this->loadTemplate('courses') . '</div>';
-echo $tabs->endPanel();
-if ($this->params->get('enable_salesprospects', 0) == 1)
-{
-	echo $tabs->startPanel(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 0);
-	echo '<div>' . $this->loadTemplate('templates') . '</div>';
-	echo $tabs->endPanel();
-}
-echo $tabs->endPane();
+//$tabs = &JPane::getInstance('tabs', array('startOffset'=>0));
+//echo $tabs->startPane('mytabs');
+//echo $tabs->startPanel(JText::_('COM_SEMINARMAN_DATES'), 0);
+//echo '<div>' . $this->loadTemplate('courses') . '</div>';
+echo $this->loadTemplate('courses');
+// echo $tabs->endPanel();
+// if ($this->params->get('enable_salesprospects', 0) == 1)
+// {
+// 	echo $tabs->startPanel(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 0);
+// 	echo '<div>' . $this->loadTemplate('templates') . '</div>';
+// 	echo $tabs->endPanel();
+// }
+// echo $tabs->endPane();
 ?>
 </div>

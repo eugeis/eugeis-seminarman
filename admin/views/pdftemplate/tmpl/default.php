@@ -30,7 +30,7 @@ Joomla.submitbutton = function(task)
 		return;
 	}
 <?php 
-	$editor =& JFactory::getEditor();
+	$editor = JFactory::getEditor();
 	echo $editor->save('html');
 ?>
 	Joomla.submitform( task );
@@ -155,6 +155,12 @@ foreach ($this->fields as $field)
 			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{COURSE_URL}', 'html'); return false;">{COURSE_URL}</a>: <? echo JText::_('COM_SEMINARMAN_HYPERLINK'); ?></li>
 			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{COURSE_START_DATE}', 'html'); return false;">{COURSE_START_DATE}</a>: <? echo JText::_('COM_SEMINARMAN_START_DATE'); ?></li>
 			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{COURSE_FINISH_DATE}', 'html'); return false;">{COURSE_FINISH_DATE}</a>: <? echo JText::_('COM_SEMINARMAN_FINISH_DATE'); ?></li>
+			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{COURSE_START_WEEKDAY}', 'html'); return false;">{COURSE_START_WEEKDAY}</a>: <? echo JText::_('COM_SEMINARMAN_START_WEEKDAY'); ?></li>
+			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{COURSE_FIRST_SESSION_TITLE}', 'html'); return false;">{COURSE_FIRST_SESSION_TITLE}</a>: <? echo JText::_('COM_SEMINARMAN_COURSE_FIRST_SESSION_TITLE'); ?></li>
+			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{COURSE_FIRST_SESSION_CLOCK}', 'html'); return false;">{COURSE_FIRST_SESSION_CLOCK}</a>: <? echo JText::_('COM_SEMINARMAN_COURSE_FIRST_SESSION_CLOCK'); ?></li>
+			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{COURSE_FIRST_SESSION_DURATION}', 'html'); return false;">{COURSE_FIRST_SESSION_DURATION}</a>: <? echo JText::_('COM_SEMINARMAN_COURSE_FIRST_SESSION_DURATION'); ?></li>
+			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{COURSE_FIRST_SESSION_ROOM}', 'html'); return false;">{COURSE_FIRST_SESSION_ROOM}</a>: <? echo JText::_('COM_SEMINARMAN_COURSE_FIRST_SESSION_ROOM'); ?></li>
+			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{COURSE_FIRST_SESSION_COMMENT}', 'html'); return false;">{COURSE_FIRST_SESSION_COMMENT}</a>: <? echo JText::_('COM_SEMINARMAN_COURSE_FIRST_SESSION_COMMENT'); ?></li>
 			<li class="li_invoice"><a href="#" onclick="window.parent.jInsertEditorText('{PRICE_PER_ATTENDEE}', 'html'); return false;">{PRICE_PER_ATTENDEE}</a>: <? echo JText::_('COM_SEMINARMAN_PRICE_PER_ATTENDEE'); ?></li>
 			<li class="li_invoice"><a href="#" onclick="window.parent.jInsertEditorText('{PRICE_PER_ATTENDEE_VAT}', 'html'); return false;">{PRICE_PER_ATTENDEE_VAT}</a>: <? echo JText::_('COM_SEMINARMAN_PRICE_PER_ATTENDEE_VAT'); ?></li>
 			<li class="li_invoice"><a href="#" onclick="window.parent.jInsertEditorText('{PRICE_TOTAL}', 'html'); return false;">{PRICE_TOTAL}</a>: <? echo JText::_('COM_SEMINARMAN_TOTAL_PRICE'); ?></li>
@@ -163,9 +169,11 @@ foreach ($this->fields as $field)
 			<li class="li_invoice"><a href="#" onclick="window.parent.jInsertEditorText('{PRICE_VAT}', 'html'); return false;">{PRICE_VAT}</a>: <? echo JText::_('COM_SEMINARMAN_VAT_ABS'); ?></li>
 			<li class="li_invoice"><a href="#" onclick="window.parent.jInsertEditorText('{PRICE_TOTAL_DISCOUNT}', 'html'); return false;">{PRICE_TOTAL_DISCOUNT}</a>: <? echo JText::_('COM_SEMINARMAN_TOTAL_DISCOUNT'); ?></li>
 			<li class="li_invoice"><a href="#" onclick="window.parent.jInsertEditorText('{PRICE_TOTAL_ORIG_VAT}', 'html'); return false;">{PRICE_TOTAL_ORIG_VAT}</a>: <? echo JText::_('COM_SEMINARMAN_TOTAL_ORIG_VAT'); ?></li>
-			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{TUTOR}', 'html'); return false;">{TUTOR}</a>: <? echo JText::_('COM_SEMINARMAN_TUTOR'); ?></li>
+			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{TUTOR}', 'html'); return false;">{TUTOR}</a>: <? echo JText::_('COM_SEMINARMAN_DISPLAY_NAME'); ?></li>
 			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{TUTOR_FIRSTNAME}', 'html'); return false;">{TUTOR_FIRSTNAME}</a>: <? echo JText::_('COM_SEMINARMAN_FIRST_NAME'); ?></li>
 			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{TUTOR_LASTNAME}', 'html'); return false;">{TUTOR_LASTNAME}</a>: <? echo JText::_('COM_SEMINARMAN_LAST_NAME'); ?></li>
+			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{TUTOR_SALUTATION}', 'html'); return false;">{TUTOR_SALUTATION}</a>: <? echo JText::_('COM_SEMINARMAN_SALUTATION'); ?></li>
+			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{TUTOR_OTHER_TITLE}', 'html'); return false;">{TUTOR_OTHER_TITLE}</a>: <? echo JText::_('COM_SEMINARMAN_OTHER_TITLE'); ?></li>
 			<li class="li_invoice"><a href="#" onclick="window.parent.jInsertEditorText('{GROUP}', 'html'); return false;">{GROUP}</a>: <? echo JText::_('COM_SEMINARMAN_GROUP'); ?></li>
 			<li class="li_invoice"><a href="#" onclick="window.parent.jInsertEditorText('{EXPERIENCE_LEVEL}', 'html'); return false;">{EXPERIENCE_LEVEL}</a>: <? echo JText::_('COM_SEMINARMAN_EXPERIENCE_LEVEL'); ?></li>
 			<li class="li_attlst"><? echo JText::_('COM_SEMINARMAN_PDF_LOOP_DESC'); ?></li>

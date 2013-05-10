@@ -74,7 +74,7 @@ class TableSession extends JTable
 		}
 		$this->alias = JFilterOutput::stringURLSafe($this->alias);
 		if(trim(str_replace('-','',$this->alias)) == '') {
-			$datenow =& JFactory::getDate();
+			$datenow = JFactory::getDate();
 			$this->alias = $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
 		}
 

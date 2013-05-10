@@ -38,7 +38,7 @@ class seminarman_cats
 
     function getParentCats()
     {
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
 
         $this->parentcats = array_reverse($this->parentcats);
 
@@ -76,9 +76,9 @@ class seminarman_cats
         return $this->category;
     }
 
-    function getCategoriesTree($published)
+    static function getCategoriesTree($published)
     {
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
 
         if ($published)
         {
@@ -112,7 +112,7 @@ class seminarman_cats
         return $list;
     }
 
-    function treerecurse($id, $indent, $list, &$children, $title, $maxlevel = 9999,
+    static function treerecurse($id, $indent, $list, &$children, $title, $maxlevel = 9999,
         $level = 0, $type = 1)
     {
         if (@$children[$id] && $level <= $maxlevel)
@@ -164,7 +164,7 @@ class seminarman_cats
     }
 
 
-    function buildcatselect($list, $name, $selected, $top, $class =
+    static function buildcatselect($list, $name, $selected, $top, $class =
         'class="inputbox"')
     {
         $catlist = array();

@@ -10,7 +10,8 @@
 defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.formvalidation');
 $mainframe = JFactory::getApplication();
-$params = &$mainframe->getParams('com_seminarman');
+$params = $mainframe->getParams('com_seminarman');
+$Itemid = JRequest::getInt('Itemid');
 ?>
 
 
@@ -39,9 +40,16 @@ function submitbuttonSeminarman(task)
 
     <p class="buttons"><?php echo seminarman_html::printbutton($this->print_link, $this->params); ?></p>
 
-<?php if ($this->params->get('show_page_title', 1) && $this->params->get('page_title') != $this->template->title): ?>
-    <h1 class="componentheading"><?php echo $this->params->get('page_title'); ?></h1>
-<?php endif; ?>
+<?php 
+    if ($this->params->get('show_page_heading', 1)) {
+    	$page_heading = trim($this->params->get('page_heading'));
+        if (!empty($page_heading)) {
+            echo '<h1 class="componentheading">' . $page_heading . '</h1>';
+        } else {
+        	echo '<h1 class="componentheading">' . $this->template->title . '</h1>';
+        }
+    }
+?>    
 
     <h2 class="seminarman course<?php echo $this->template->id; ?>"><?php echo $this->escape($this->template->title); ?></h2>
 
@@ -77,8 +85,8 @@ function submitbuttonSeminarman(task)
             <dt class="location"><?php echo JText::_('COM_SEMINARMAN_LOCATION') . ':'; ?></dt>
             <dd class="location"><?php echo empty($this->template->location) ? JText::_('COM_SEMINARMAN_NOT_SPECIFIED') : $this->template->location; ?></dd>
 <?php endif; ?>
-            <dt class="start_date"><?php echo JText::_('COM_SEMINARMAN_DATES') . ':'; ?></dt>
-            <dd class="start_date"><?php echo JText::_('COM_SEMINARMAN_NOT_SCHEDULED'); ?></dd>
+       <!--  <dt class="start_date"><?php echo JText::_('COM_SEMINARMAN_DATES') . ':'; ?></dt>
+            <dd class="start_date"><?php echo JText::_('COM_SEMINARMAN_NOT_SCHEDULED'); ?></dd> -->
         </dl>
 
         <dl class="course_info_right floattext">
@@ -112,7 +120,7 @@ if ($n != 0):
         foreach ($this->files as $file):
        		echo JHTML::image($file->icon, '') . ' ';
         ?>
-        	<strong><a href="<?php echo JRoute::_('index.php?fileid=' . $file->fileid . '&task=download'); ?>"><?php echo $file->altname ? $this->escape($file->altname) : $this->escape($file->filename); ?></a></strong>
+        	<strong><a href="<?php echo JRoute::_('index.php?fileid=' . $file->fileid . '&task=download' . '&Itemid=' . $Itemid); ?>"><?php echo $file->altname ? $this->escape($file->altname) : $this->escape($file->filename); ?></a></strong>
         <?php
 
         $i++;
@@ -132,6 +140,9 @@ endif;
     <div class="course_applicationform">
 	<?php
 	switch ($params->get('enable_bookings')) {
+		case 3:
+			echo $this->loadTemplate('salesprospectform');
+			break;
 		case 2:
 			echo $this->loadTemplate('salesprospectform');
 			break;
@@ -167,7 +178,7 @@ endif;
         foreach ($this->categories as $category):
 
         ?>
-        <strong><a href="<?php echo JRoute::_('index.php?view=category&cid=' . $category->slug); ?>"><?php echo $this->escape($category->title); ?></a></strong>
+        <strong><a href="<?php echo JRoute::_('index.php?view=category&cid=' . $category->slug . '&Itemid=' . $Itemid); ?>"><?php echo $this->escape($category->title); ?></a></strong>
         <?php
 
         $i++;
@@ -196,7 +207,7 @@ endif;
     <h2 class="seminarman course_tags"><?php echo JText::_('COM_SEMINARMAN_ASSIGNED_TAGS'); ?></h2>
     <div class="taglist">
 <?php foreach ($this->tags as $tag): ?>
-        <strong><a href="<?php echo JRoute::_('index.php?view=tags&id=' . $tag->slug); ?>"><?php echo $this->escape($tag->name); ?></a></strong>
+        <strong><a href="<?php echo JRoute::_('index.php?view=tags&id=' . $tag->slug . '&Itemid=' . $Itemid); ?>"><?php echo $this->escape($tag->name); ?></a></strong>
         <?php $i++; if ($i != $n) echo ','; ?>
 <?php endforeach; ?>
     </div>

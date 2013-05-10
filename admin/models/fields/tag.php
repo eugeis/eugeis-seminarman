@@ -40,7 +40,7 @@ class JFormFieldTag extends JFormField
 
 		JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_seminarman'.DS.'tables');
 
-		$course = &JTable::getInstance('seminarman_tags', '');
+		$course = JTable::getInstance('seminarman_tags', '');
 		if ($this->value)
 		{
 			$course->load($this->value);

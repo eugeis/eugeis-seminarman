@@ -32,7 +32,7 @@ class seminarmanControllerSeminarman extends seminarmanController
         $this->registerTask('edit', 'display');
     }
 
-    function display()
+    function display($cachable = false, $urlparams = false)
     {
         switch ($this->getTask())
         {

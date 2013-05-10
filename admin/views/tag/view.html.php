@@ -29,9 +29,9 @@ class SeminarmanViewTag extends JView
     {
         $mainframe = JFactory::getApplication();
 
-        $document = &JFactory::getDocument();
-        $user = &JFactory::getUser();
-        $lang = &JFactory::getLanguage();
+        $document = JFactory::getDocument();
+        $user = JFactory::getUser();
+        $lang = JFactory::getLanguage();
 
         $cid = JRequest::getVar('cid');
 
@@ -50,8 +50,8 @@ class SeminarmanViewTag extends JView
         JToolBarHelper::save();
         JToolBarHelper::cancel();
 
-        $model = &$this->getModel();
-        $row = &$this->get('Tag');
+        $model = $this->getModel();
+        $row = $this->get('Tag');
 
         if ($row->id)
         {

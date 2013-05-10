@@ -71,8 +71,11 @@ if (is_null($priceg5_usg)) {
 if ($this->params->get('show_price_1') == 0) {
 	$price1_label = JText::_('COM_SEMINARMAN_NET') . ': '
                  . $standard_netto . ' ' . $currency . ', ' . JText::_('COM_SEMINARMAN_GROSS_WITH_TAX') . ': ' . $standard_brutto . ' ' . $currency;
+	if($this->course->vat == 0) {
+		$price1_label = $standard_netto . ' ' . $currency;
+	}
 } else {
-	$price1_label = 'Standard';
+	$price1_label = JText::_('COM_SEMINARMAN_PRICE_STANDARD');
 }
 
 $display_price1 = '<input id="booking_price1" type="radio" value="0" checked="checked" name="booking_price[]"><label for="jformbookingprice1">' . $price1_label . '</label>';
@@ -85,6 +88,10 @@ if (!is_null($this->course->price2) && !($this->params->get('show_price_2') == 0
 			$display_price1 = '';
 			$display_price2 = '<input id="booking_price2" type="radio" value="1" checked="checked" name="booking_price[]"><label for="jformbookingprice2">'
                           . $priceg2_name . ' (' . JText::_('COM_SEMINARMAN_NET') . ': ' . $price2_netto . ' ' . $currency . ', ' . JText::_('COM_SEMINARMAN_GROSS_WITH_TAX') . ': ' . $price2_brutto . ' ' . $currency . ')</label>';
+			if($this->course->vat == 0) {
+				$display_price2 = '<input id="booking_price2" type="radio" value="1" checked="checked" name="booking_price[]"><label for="jformbookingprice2">'
+				. $priceg2_name . ' (' . $price2_netto . ' ' . $currency . ')</label>';
+			}
 		} else {  // nicht getroffen
 			$display_price2 = '';
 		}
@@ -93,9 +100,17 @@ if (!is_null($this->course->price2) && !($this->params->get('show_price_2') == 0
             $display_price1 = '<input id="booking_price1" type="radio" value="0" name="booking_price[]"><label for="jformbookingprice1">' . $price1_label . '</label>';
             $display_price2 = '<br><input id="booking_price2" type="radio" value="1" checked="checked" name="booking_price[]"><label for="jformbookingprice2">'
                           . $priceg2_name . ' (' . JText::_('COM_SEMINARMAN_NET') . ': ' . $price2_netto . ' ' . $currency . ', ' . JText::_('COM_SEMINARMAN_GROSS_WITH_TAX') . ': ' . $price2_brutto . ' ' . $currency . ')</label>';			
+            if($this->course->vat == 0) {
+            	$display_price2 = '<br><input id="booking_price2" type="radio" value="1" checked="checked" name="booking_price[]"><label for="jformbookingprice2">'
+            	. $priceg2_name . ' (' . $price2_netto . ' ' . $currency . ')</label>';
+            }
 		} else {
             $display_price2 = '<br><input id="booking_price2" type="radio" value="1" name="booking_price[]"><label for="jformbookingprice2">'
                           . $priceg2_name . ' (' . JText::_('COM_SEMINARMAN_NET') . ': ' . $price2_netto . ' ' . $currency . ', ' . JText::_('COM_SEMINARMAN_GROSS_WITH_TAX') . ': ' . $price2_brutto . ' ' . $currency . ')</label>';
+            if($this->course->vat == 0) {
+            	$display_price2 = '<br><input id="booking_price2" type="radio" value="1" name="booking_price[]"><label for="jformbookingprice2">'
+            	. $priceg2_name . ' (' . $price2_netto . ' ' . $currency . ')</label>';
+            }
 		}		
 	} elseif ($this->params->get('show_price_2') == 3) {  // Anzeige ohne Preiswert
 		if (array_intersect($current_usergroups, $priceg2_usg)) { // getroffen
@@ -120,6 +135,10 @@ if (!is_null($this->course->price3) && !($this->params->get('show_price_3') == 0
 			$display_price2 = '';
 			$display_price3 = '<input id="booking_price3" type="radio" value="2" checked="checked" name="booking_price[]"><label for="jformbookingprice3">'
                           . $priceg3_name . ' (' . JText::_('COM_SEMINARMAN_NET') . ': ' . $price3_netto . ' ' . $currency . ', ' . JText::_('COM_SEMINARMAN_GROSS_WITH_TAX') . ': ' . $price3_brutto . ' ' . $currency . ')</label>';
+			if($this->course->vat == 0) {
+				$display_price3 = '<input id="booking_price3" type="radio" value="2" checked="checked" name="booking_price[]"><label for="jformbookingprice3">'
+				. $priceg3_name . ' (' . $price3_netto . ' ' . $currency . ')</label>';
+			}
 		} else { // nicht getroffen
 			$display_price3 = '';
 		}
@@ -128,9 +147,17 @@ if (!is_null($this->course->price3) && !($this->params->get('show_price_3') == 0
             $display_price1 = '<input id="booking_price1" type="radio" value="0" name="booking_price[]"><label for="jformbookingprice1">' . $price1_label . '</label>';			
             $display_price3 = '<br><input id="booking_price3" type="radio" value="2" checked="checked" name="booking_price[]"><label for="jformbookingprice3">'
                           . $priceg3_name . ' (' . JText::_('COM_SEMINARMAN_NET') . ': ' . $price3_netto . ' ' . $currency . ', ' . JText::_('COM_SEMINARMAN_GROSS_WITH_TAX') . ': ' . $price3_brutto . ' ' . $currency . ')</label>';
+            if($this->course->vat == 0) {
+            	$display_price3 = '<br><input id="booking_price3" type="radio" value="2" checked="checked" name="booking_price[]"><label for="jformbookingprice3">'
+            	. $priceg3_name . ' (' . $price3_netto . ' ' . $currency . ')</label>';
+            }
 		} else {
             $display_price3 = '<br><input id="booking_price3" type="radio" value="2" name="booking_price[]"><label for="jformbookingprice3">'
-                          . $priceg3_name . ' (' . JText::_('COM_SEMINARMAN_NET') . ': ' . $price3_netto . ' ' . $currency . ', ' . JText::_('COM_SEMINARMAN_GROSS_WITH_TAX') . ': ' . $price3_brutto . ' ' . $currency . ')</label>';	
+                          . $priceg3_name . ' (' . JText::_('COM_SEMINARMAN_NET') . ': ' . $price3_netto . ' ' . $currency . ', ' . JText::_('COM_SEMINARMAN_GROSS_WITH_TAX') . ': ' . $price3_brutto . ' ' . $currency . ')</label>';
+            if($this->course->vat == 0) {
+            	$display_price3 = '<br><input id="booking_price3" type="radio" value="2" name="booking_price[]"><label for="jformbookingprice3">'
+            	. $priceg3_name . ' (' . $price3_netto . ' ' . $currency . ')</label>';
+            }	
 		}	
 	} elseif ($this->params->get('show_price_3') == 3) {  // Anzeige ohne Preiswert
 		if (array_intersect($current_usergroups, $priceg3_usg)) {
@@ -156,6 +183,10 @@ if (!is_null($this->course->price4) && !($this->params->get('show_price_4') == 0
 			$display_price3 = '';
 			$display_price4 = '<input id="booking_price4" type="radio" value="3" checked="checked" name="booking_price[]"><label for="jformbookingprice4">'
 			. $priceg4_name . ' (' . JText::_('COM_SEMINARMAN_NET') . ': ' . $price4_netto . ' ' . $currency . ', ' . JText::_('COM_SEMINARMAN_GROSS_WITH_TAX') . ': ' . $price4_brutto . ' ' . $currency . ')</label>';
+			if($this->course->vat == 0) {
+				$display_price4 = '<input id="booking_price4" type="radio" value="3" checked="checked" name="booking_price[]"><label for="jformbookingprice4">'
+				. $priceg4_name . ' (' . $price4_netto . ' ' . $currency . ')</label>';
+			}
 		} else { // nicht getroffen
 			$display_price4 = '';
 		}
@@ -164,9 +195,17 @@ if (!is_null($this->course->price4) && !($this->params->get('show_price_4') == 0
 			$display_price1 = '<input id="booking_price1" type="radio" value="0" name="booking_price[]"><label for="jformbookingprice1">' . $price1_label . '</label>';
 			$display_price4 = '<br><input id="booking_price4" type="radio" value="3" checked="checked" name="booking_price[]"><label for="jformbookingprice4">'
 			. $priceg4_name . ' (' . JText::_('COM_SEMINARMAN_NET') . ': ' . $price4_netto . ' ' . $currency . ', ' . JText::_('COM_SEMINARMAN_GROSS_WITH_TAX') . ': ' . $price4_brutto . ' ' . $currency . ')</label>';
+			if($this->course->vat == 0) {
+				$display_price4 = '<br><input id="booking_price4" type="radio" value="3" checked="checked" name="booking_price[]"><label for="jformbookingprice4">'
+				. $priceg4_name . ' (' . $price4_netto . ' ' . $currency . ')</label>';
+			}
 		} else {
 			$display_price4 = '<br><input id="booking_price4" type="radio" value="3" name="booking_price[]"><label for="jformbookingprice4">'
 			. $priceg4_name . ' (' . JText::_('COM_SEMINARMAN_NET') . ': ' . $price4_netto . ' ' . $currency . ', ' . JText::_('COM_SEMINARMAN_GROSS_WITH_TAX') . ': ' . $price4_brutto . ' ' . $currency . ')</label>';
+			if($this->course->vat == 0) {
+				$display_price4 = '<br><input id="booking_price4" type="radio" value="3" name="booking_price[]"><label for="jformbookingprice4">'
+				. $priceg4_name . ' (' . $price4_netto . ' ' . $currency . ')</label>';
+			}
 		}
 	} elseif ($this->params->get('show_price_4') == 3) {  // Anzeige ohne Preiswert
 		if (array_intersect($current_usergroups, $priceg4_usg)) {
@@ -193,6 +232,10 @@ if (!is_null($this->course->price5) && !($this->params->get('show_price_5') == 0
 			$display_price4 = '';
 			$display_price5 = '<input id="booking_price5" type="radio" value="4" checked="checked" name="booking_price[]"><label for="jformbookingprice5">'
 			. $priceg5_name . ' (' . JText::_('COM_SEMINARMAN_NET') . ': ' . $price5_netto . ' ' . $currency . ', ' . JText::_('COM_SEMINARMAN_GROSS_WITH_TAX') . ': ' . $price5_brutto . ' ' . $currency . ')</label>';
+			if($this->course->vat == 0) {
+				$display_price5 = '<input id="booking_price5" type="radio" value="4" checked="checked" name="booking_price[]"><label for="jformbookingprice5">'
+				. $priceg5_name . ' (' . $price5_netto . ' ' . $currency . ')</label>';
+			}
 		} else { // nicht getroffen
 			$display_price5 = '';
 		}
@@ -201,9 +244,17 @@ if (!is_null($this->course->price5) && !($this->params->get('show_price_5') == 0
 			$display_price1 = '<input id="booking_price1" type="radio" value="0" name="booking_price[]"><label for="jformbookingprice1">' . $price1_label . '</label>';
 			$display_price5 = '<br><input id="booking_price5" type="radio" value="4" checked="checked" name="booking_price[]"><label for="jformbookingprice5">'
 			. $priceg5_name . ' (' . JText::_('COM_SEMINARMAN_NET') . ': ' . $price5_netto . ' ' . $currency . ', ' . JText::_('COM_SEMINARMAN_GROSS_WITH_TAX') . ': ' . $price5_brutto . ' ' . $currency . ')</label>';
+			if($this->course->vat == 0) {
+				$display_price5 = '<br><input id="booking_price5" type="radio" value="4" checked="checked" name="booking_price[]"><label for="jformbookingprice5">'
+				. $priceg5_name . ' (' . $price5_netto . ' ' . $currency . ')</label>';
+			}
 		} else {
 			$display_price5 = '<br><input id="booking_price5" type="radio" value="4" name="booking_price[]"><label for="jformbookingprice5">'
 			. $priceg5_name . ' (' . JText::_('COM_SEMINARMAN_NET') . ': ' . $price5_netto . ' ' . $currency . ', ' . JText::_('COM_SEMINARMAN_GROSS_WITH_TAX') . ': ' . $price5_brutto . ' ' . $currency . ')</label>';
+			if($this->course->vat == 0) {
+				$display_price5 = '<br><input id="booking_price5" type="radio" value="4" name="booking_price[]"><label for="jformbookingprice5">'
+				. $priceg5_name . ' (' . $price5_netto . ' ' . $currency . ')</label>';
+			}
 		}
 	} elseif ($this->params->get('show_price_5') == 3) {  // Anzeige ohne Preiswert
 		if (array_intersect($current_usergroups, $priceg5_usg)) {
@@ -229,7 +280,11 @@ if (($this->params->get('trigger_virtuemart') == 1)  && !is_null($this->vmlink))
 }
 
 if ($this->params->get('enable_payment_overview') == 1) {
-	$next_action = 'cart';
+	if (($this->params->get('trigger_virtuemart') == 1) && !is_null($this->vmlink)) {
+		$next_action = 'save';
+	} else {
+	    $next_action = 'cart';
+	}
 } else {
 	$next_action = 'save';
 }
@@ -260,7 +315,7 @@ if ($this->params->get('enable_payment_overview') == 1) {
                     <label for="jformattendees">* <?php echo JText::_('COM_SEMINARMAN_NR_ATTENDEES'); ?></label>
                 </td>
                 <td class="paramlist_value vtop">
-                    <input title="<?php echo JText::_('COM_SEMINARMAN_NR_ATTENDEES') . '::' . JText::_('COM_SEMINARMAN_FILL_IN_DETAILS'); ?>" class="hasTip tipRight inputbox required" type="text" id="attendees" name="attendees" size="5" maxlength="3" value="<?php echo $this->escape($this->attendeedata->attendees); ?>" />
+                    <input id='ccb' title="<?php echo JText::_('COM_SEMINARMAN_NR_ATTENDEES') . '::' . JText::_('COM_SEMINARMAN_FILL_IN_DETAILS'); ?>" class="hasTip tipRight inputbox required validate-numeric" type="text" id="attendees" name="attendees" size="5" maxlength="3" value="<?php echo $this->escape($this->attendeedata->attendees); ?>" />
                 </td>
             </tr>
 <?php endif; ?>
@@ -324,7 +379,17 @@ if ($this->params->get('enable_payment_overview') == 1) {
             ?>
             <tr>
                 <td class="paramlist_key vtop" id="lblfield<?php echo $f->id;?>"><label for="lblfield<?php echo $f->id;?>"><?php if ($f->type != "checkboxtos") { if ($f->required == 1) echo '* '; echo JText::_($f->name) . ':'; } ?></label></td>
-                <td class="paramlist_value vtop"><?php echo SeminarmanCustomfieldsLibrary::getFieldHTML($f , ''); ?></td>
+                <td class="paramlist_value vtop">
+                    <?php 
+                        if (($f->type == "checkboxtos") && ($this->params->get('enable_payment_overview') == 1)) {
+                        	if (($this->params->get('trigger_virtuemart') == 1) && !is_null($this->vmlink)) {
+                        		echo SeminarmanCustomfieldsLibrary::getFieldHTML($f , '');
+                        	}
+                        } else { 
+                        	echo SeminarmanCustomfieldsLibrary::getFieldHTML($f , ''); 
+                        }
+                    ?>
+                </td>
             </tr>
             <?php
             }
@@ -347,7 +412,18 @@ if ($this->params->get('enable_payment_overview') == 1) {
         	<?php echo JText::_('COM_SEMINARMAN_ALREADY_BOOKED'); ?>
         </button>
         <?php }else{ ?>
-        <button type="button" class="button validate" onclick="submitbuttonSeminarman('<?php echo $next_action; ?>')">
+        <button type="button" class="button validate" onclick="
+        if (document.getElementById('cca') && document.getElementById('ccb')) { 
+            if (parseInt(document.getElementById('cca').innerHTML) < parseInt(document.getElementById('ccb').value)) {
+        	    alert( '<?php echo JText::_( 'COM_SEMINARMAN_BOOKING_GREATER_FREESPACES2' ) ?>' + ' (' + document.getElementById('ccb').value + ') ' + '<?php echo JText::_( 'COM_SEMINARMAN_BOOKING_GREATER_FREESPACES3' ) ?>' + ' (' + document.getElementById('cca').innerHTML + ').' );
+            } else {
+        	    submitbuttonSeminarman('<?php echo $next_action; ?>')
+            }
+        } 
+        else {
+        	submitbuttonSeminarman('<?php echo $next_action; ?>')
+        }
+        ">
 <?php
     if (($this->params->get('trigger_virtuemart') == 1) && !is_null($this->vmlink)) {
     	echo JText::_('COM_SEMINARMAN_BOOKING_IN_VM');

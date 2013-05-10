@@ -20,6 +20,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+require_once JPATH_ROOT.'/components/com_seminarman/helpers/application.php';
+
 jimport('joomla.application.component.model');
 
 class seminarmanModelapplication extends JModel
@@ -52,7 +54,7 @@ class seminarmanModelapplication extends JModel
         if ($this->_loadData())
         {
 
-            $user = &JFactory::getUser();
+            $user = JFactory::getUser();
 
         } else
             $this->_initData();
@@ -78,7 +80,7 @@ class seminarmanModelapplication extends JModel
     {
         if ($this->_id)
         {
-            $group = &$this->getTable();
+            $group = $this->getTable();
             if (!$group->checkin($this->_id))
             {
                 $this->setError($this->_db->getErrorMsg());
@@ -95,11 +97,11 @@ class seminarmanModelapplication extends JModel
 
             if (is_null($uid))
             {
-                $user = &JFactory::getUser();
+                $user = JFactory::getUser();
                 $uid = $user->get('id');
             }
 
-            $group = &$this->getTable();
+            $group = $this->getTable();
             if (!$group->checkout($uid, $this->_id))
             {
                 $this->setError($this->_db->getErrorMsg());
@@ -113,7 +115,7 @@ class seminarmanModelapplication extends JModel
 
     function store($data)
     {
-        $row = &$this->getTable();
+        $row = $this->getTable();
 
         if (!$row->bind($data))
         {
@@ -178,7 +180,7 @@ class seminarmanModelapplication extends JModel
 
     function approve($cid = array(), $approve = 1)
     {
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
 
         if (count($cid))
         {
@@ -201,7 +203,7 @@ class seminarmanModelapplication extends JModel
 
     function publish($cid = array(), $publish = 1)
     {
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
 
         if (count($cid))
         {
@@ -224,7 +226,7 @@ class seminarmanModelapplication extends JModel
 
     function move($direction)
     {
-        $row = &$this->getTable();
+        $row = $this->getTable();
         if (!$row->load($this->_id))
         {
             $this->setError($this->_db->getErrorMsg());
@@ -242,7 +244,7 @@ class seminarmanModelapplication extends JModel
 
     function saveorder($cid = array(), $order)
     {
-        $row = &$this->getTable();
+        $row = $this->getTable();
         $groupings = array();
 
         for ($i = 0; $i < count($cid); $i++)
@@ -273,7 +275,7 @@ class seminarmanModelapplication extends JModel
 
 	function getEditableCustomfields($applicationId	= null)
 	{
-		$db			=& $this->getDBO();
+		$db			= $this->getDBO();
 		$data		= new stdClass();
 
 		// Attach custom fields into the user object
@@ -342,9 +344,29 @@ class seminarmanModelapplication extends JModel
 		return $data;
 	}
 
+	function getUserId($applicationId)
+	{
+		$db			=& $this->getDBO();
+		$data		= new stdClass();
+
+		// Attach custom fields into the user object
+		$strSQL	= 'SELECT a.user_id FROM #__seminarman_' . $this->childviewname . ' AS a ' .
+				'WHERE a.id = '.$db->quote($applicationId);
+
+		$db->setQuery( $strSQL );
+
+		$result	= $db->loadResult();
+
+		if($db->getErrorNum())
+		{
+			JError::raiseError( 500, $db->stderr());
+		}
+		return $result;
+	}
+
 	function saveCustomfields($applicationId, $userId, $fields)
 	{
-		$db = &$this->getDBO();
+		$db = $this->getDBO();
 	
 		foreach ($fields as $id => $value) {
 			 
@@ -365,7 +387,7 @@ class seminarmanModelapplication extends JModel
 	 * @since	1.0
 	 */
 	function setstatus($cid, $status){
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 
 		if ( $cid ){
 			$query = 'UPDATE #__seminarman_application'

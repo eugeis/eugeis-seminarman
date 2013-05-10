@@ -116,7 +116,7 @@ class SeminarmanControllerTemplates extends SeminarmanController
             }
             $msg = JText::_('COM_SEMINARMAN_RECORD_SAVED');
 
-            $cache = &JFactory::getCache('com_seminarman');
+            $cache = JFactory::getCache('com_seminarman');
             $cache->clean();
 
         } else
@@ -153,7 +153,7 @@ class SeminarmanControllerTemplates extends SeminarmanController
         {
             $msg = JText::_('COM_SEMINARMAN_OPERATION_SUCCESSFULL');
 
-            $cache = &JFactory::getCache('com_seminarman');
+            $cache = JFactory::getCache('com_seminarman');
             $cache->clean();
         }
 
@@ -166,7 +166,7 @@ class SeminarmanControllerTemplates extends SeminarmanController
         JRequest::setVar('hidemainmenu', 1);
 
         $model = $this->getModel('template');
-        $user = &JFactory::getUser();
+        $user = JFactory::getUser();
 
         if ($model->isCheckedOut($user->get('id')))
         {
@@ -233,8 +233,8 @@ class SeminarmanControllerTemplates extends SeminarmanController
 
         JRequest::checkToken() or jexit('Invalid Token');
 
-        $db = &JFactory::getDBO();
-        $user = &JFactory::getUser();
+        $db = JFactory::getDBO();
+        $user = JFactory::getUser();
 
         $cid = JRequest::getVar('cid', array(), 'post', 'array');
         JArrayHelper::toInteger($cid);
@@ -270,7 +270,7 @@ class SeminarmanControllerTemplates extends SeminarmanController
 
         if (count($cid) == 1)
         {
-            $row = &JTable::getInstance('seminarman_templates', '');
+            $row = JTable::getInstance('seminarman_templates', '');
 
         }
 
@@ -289,7 +289,7 @@ class SeminarmanControllerTemplates extends SeminarmanController
                 break;
         }
 
-        $cache = &JFactory::getCache('com_seminarman');
+        $cache = JFactory::getCache('com_seminarman');
         $cache->clean();
 
 
@@ -301,7 +301,7 @@ class SeminarmanControllerTemplates extends SeminarmanController
     
     	JRequest::checkToken() or jexit('Invalid Token');
     
-    	$course = &JTable::getInstance('seminarman_templates', '');
+    	$course = JTable::getInstance('seminarman_templates', '');
     	$course->bind(JRequest::get('post'));
     	$course->checkin();
     
