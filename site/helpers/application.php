@@ -51,7 +51,7 @@ class ApplicationHelper
 	//`bill_addr`, `bill_addr_cont`, `bill_id_country`, `bill_state`, `bill_city`, `bill_zip`, `bill_phone`, `metadescription`,
 	//`metakeywords`, `status`, `date`, `hits`, `published`, `checked_out`, `checked_out_time`, `ordering`, `archived`, `approved`, `params
 	
-	public static function sendemailToUserByCourseAndTemplate($user, $course, $catTitles, $fillErrors, $emailTemplate = 0, $attachment = '')
+	public static function sendemailToUserByCourseAndTemplate(&$user, &$course, &$catTitles, &$fillErrors, &$emailTemplate = 0, &$attachment = '')
 	{
 		$db = JFactory::getDBO();
 	
@@ -75,12 +75,12 @@ class ApplicationHelper
 			}
 			return true;
 		}else {
-			array_push($fillErrors,$course->title.', '.$user->name.' template nicht gefunden.');
+			array_push($fillErrors,'Email template mit id='.$emailTemplate.' nicht gefunden. Kurse='.$course->title.', Benuter: '.$user->name);
 		}
 		return false;
 	}
 	
-	public static function sendEmailToUserByCourse($user, $course, $catTitles, $msgSubject, $msgBody, $msgRecipient, $msgRecipientBCC, $attachment='')
+	public static function sendEmailToUserByCourse(&$user, &$course, &$catTitles, &$msgSubject, &$msgBody, &$msgRecipient, &$msgRecipientBCC, &$attachment='')
 	{
 		global $ueConfig;
 		if (empty($msgRecipient))
@@ -129,7 +129,7 @@ class ApplicationHelper
 		return $sent;
 	}
 
-	public static function sendemail($application_id, $user, $course, $catTitles, $fillErrors, $emailTemplate = 0, $attachment = '')
+	public static function sendemail($application_id, &$user, &$course, &$catTitles, &$fillErrors, &$emailTemplate = 0, &$attachment = '')
 	{
 		$mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
@@ -156,7 +156,7 @@ class ApplicationHelper
 		return false;
 	}
 
-	public static function sendEmailToUserApplication($application_id, $user, $course, $catTitles, $msgSubject, $msgBody, $msgRecipient, $msgRecipientBCC, $attachment='')
+	public static function sendEmailToUserApplication($application_id, &$user, &$course, &$catTitles, &$msgSubject, &$msgBody, &$msgRecipient, &$msgRecipientBCC, &$attachment='')
 	{
 		global $ueConfig;
 		if (empty($msgRecipient))
@@ -227,7 +227,7 @@ class ApplicationHelper
 		return $sent;
 	}
 
-	private static function fillSubject($msgSubject, $user, $course, $catTitles, $params) {
+	private static function fillSubject(&$msgSubject, &$user, &$course, &$catTitles, &$params) {
 		$msgSubject = str_replace('{ADMIN_CUSTOM_RECIPIENT}', $params->get('component_email'), $msgSubject);
 		$msgSubject = str_replace('{TITLE}', $user->title, $msgSubject);
 		$msgSubject = str_replace('{SALUTATION}', $user->salutation, $msgSubject);
@@ -248,7 +248,7 @@ class ApplicationHelper
 		$msgSubject = str_replace('{CATEGORIES}', join(', ',$catTitles), $msgSubject);
 	}
 	
-	private static function fillBody($msgBody, $user, $course, $catTitles, $params) {
+	private static function fillBody(&$msgBody, &$user, &$course, &$catTitles, &$params) {
 		$msgBody = str_replace('{ADMIN_CUSTOM_RECIPIENT}', $params->get('component_email'), $msgBody);
 		$msgBody = str_replace('{TITLE}', $user->title, $msgBody);
 		$msgBody = str_replace('{SALUTATION}', $user->salutation, $msgBody);
@@ -269,7 +269,7 @@ class ApplicationHelper
 		$msgBody = str_replace('{CATEGORIES}', join(', ',$catTitles), $msgBody);
 	}
 	
-	public static function saveCustomfields($applicationId, $userId, $fields)
+	public static function saveCustomfields($applicationId, $userId, &$fields)
 	{
 		$db = JFactory::getDBO();
 
@@ -329,7 +329,7 @@ class ApplicationHelper
 	}
 
 
-	public static function sendRegistrationEmail($user, $password)
+	public static function sendRegistrationEmail(&$user, &$password)
 	{
 		$config	= JFactory::getConfig();
 		$params = JComponentHelper::getParams('com_users');
@@ -465,8 +465,8 @@ class ApplicationHelper
 			
 		return $next;
 	}
-
-	public static function book($user, $course, $fillErrors) {
+	
+	public static function book(&$user, &$course, &$fillErrors) {
 		$db = JFactory::getDBO();
 		JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_seminarman'.DS.'tables');
 		$row = JTable::getInstance('application', 'Table');
@@ -580,7 +580,7 @@ class ApplicationHelper
 		}
 	}
 	
-	public static function isCourseOld($course){
+	public static function isCourseOld(&$course){
 		return ApplicationHelper::isCourseOldByFinishDate($course->finish_date);
 	}
 	

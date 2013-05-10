@@ -22,6 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
+require_once JPATH_ROOT.'/components/com_seminarman/helpers/application.php';
+
 class SeminarmanControllerCourses extends SeminarmanController
 {
     function __construct()
@@ -578,19 +580,231 @@ JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users
 	function attendancelist()
 	{
 		require_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_seminarman'.DS.'classes'.DS.'pdfdocument.php';
-		
+
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 		$model = $this->getModel('course');
-		
+
 		$course = $model->getCourse();
 		$template = $model->getAttendanceLstTemplate($course->attlst_template);
 		$templateData = $model->getAttendanceLstTemplateData();
 		$attendees = $model->getAttendeesData();
 		
-		chdir('..');
+		$templateData['ATTENDEES_STATUS_0'] = 0;
+		$templateData['ATTENDEES_STATUS_1'] = 0;
+		$templateData['ATTENDEES_STATUS_2'] = 0;
+		$templateData['ATTENDEES_STATUS_3'] = 0;
+		
+		//count attendees per status
+		foreach ($attendees as $k => $v) {
+			$key = 'ATTENDEES_STATUS_'.$v['STATUS_ID'];
+			$templateData[$key] = $templateData[$key] + 1;
+		}
+		
 		$pdf = new PdfAttList($template, $templateData, $attendees);
 		$pdf->Output('attendees_'. $course->id .'.pdf', 'I');
 		exit;
+	}
+	
+	function sendattendancelist(){
+		require_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_seminarman'.DS.'classes'.DS.'pdfdocument.php';
+
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		$courseIds = JRequest::getVar( 'cid' );
+		$fillErrors = array();
+		foreach ($courseIds as $courseId) {
+			$model = $this->getModel('course');
+			$model->setId($courseId);
+			$course = $model->getCourse();
+			$template = $model->getAttendanceLstTemplate($course->attlst_template);
+			$templateData = $model->getAttendanceLstTemplateData();
+			$attendees = $model->getAttendeesData();
+			
+			$templateData['ATTENDEES_STATUS_0'] = 0;
+			$templateData['ATTENDEES_STATUS_1'] = 0;
+			$templateData['ATTENDEES_STATUS_2'] = 0;
+			$templateData['ATTENDEES_STATUS_3'] = 0;
+			
+			//count attendees per status
+			foreach ($attendees as $k => $v) {
+				$key = 'ATTENDEES_STATUS_'.$v['STATUS_ID'];
+				$templateData[$key] = $templateData[$key] + 1;
+			}
+			
+			$pdf = new PdfAttList($template, $templateData, $attendees);
+			$pdf->store(JPATH_ROOT.DS.'invoices'.DS.$course->title.'-'.JFactory::getDate($course->start_date)->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1')).'.pdf');
+			$user = $model->getTutorAsUser();
+			$template_id = 2;
+			$catTitles = ApplicationHelper::getCourseCategoryTitles($courseId);
+			ApplicationHelper::sendemailToUserByCourseAndTemplate($user, $course, $catTitles, $fillErrors, $template_id, $pdf->getFile());
+		}
+		if (empty($fillErrors)) {
+			$msg = JText::_( 'COM_SEMINARMAN_ATTENDANCE_LIST_SENT' ) . ' ' . join(', ', $fillErrors);
+		} else {
+			$msg = JText::_( 'COM_SEMINARMAN_ATTENDANCE_LIST_SENT_FAILED' ) . ' Errors: ' . join(', ', $fillErrors);
+		}
+		$this->setRedirect('index.php?option=com_seminarman&view=courses', $msg );
+	}
+
+	function cancelcategorytousergroup()
+	{
+		$this->categorytousergroup(true);
+	}
+	
+	function bookcategorytousergroup()
+	{
+		$this->categorytousergroup(false);
+	}
+	
+	function categorytousergroup($cancel = false)
+	{
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		$courseIds = JRequest::getVar( 'cid' );
+		$fillErrors = array();
+		foreach ($courseIds as $courseId) {
+			$catTitles = ApplicationHelper::getCourseCategoryTitles($courseId);
+			if($catTitles){
+				$groupIds = $this->getGroupIdsMappedByCategories($catTitles);
+				if($groupIds){
+					$userIds = $this->getUserIdsByGroups($groupIds);
+					if($userIds){
+						if($cancel){
+							$this->cancelBookedCourse($courseId, $userIds);
+							$msg = JText::_( 'COM_SEMINARMAN_CANCELED_CATEGORY_TO_USERGROUP' );
+						}else{
+							$users = $this->getUsersByIds($userIds);
+							$course = ApplicationHelper::loadCourse($courseId);
+							$this->bookCourseForUsers($course, $catTitles, $users, $fillErrors);
+							$msg = JText::_( 'COM_SEMINARMAN_BOOKED_CATEGORY_TO_USERGROUP' ) . ' ' . join(', ', $fillErrors);
+						}
+					}else{
+						$msg = JText::_( 'COM_SEMINARMAN_NO_USERS_IN_USERGROUPS' );
+					}
+				}else {
+					$msg = JText::_( 'COM_SEMINARMAN_NO_USERGROUPS_MATCH_TO_CATEGORIES' );
+				}
+			}else{
+				$msg = JText::_( 'COM_SEMINARMAN_NO_CATEGORIES_SELECTED' );
+			}
+		}
+		if(count($this->getErrors())){
+			$msg = $msg. join(',',$this->getErrors());
+		}
+		$this->setRedirect('index.php?option=com_seminarman&view=courses', $msg );
+	}
+
+	private function getUserIdsByGroups($groupIds)
+	{
+		// Get a database object.
+		$db = JFactory::getDbo();
+	
+		$query	= $db->getQuery(true);
+		$query->select('DISTINCT(user_id)');
+		$query->from('#__usergroups as ug1');
+		$query->join('INNER', '#__user_usergroup_map AS m ON ug1.id=m.group_id');
+		$query->where('ug1.id IN ('.join(",",$groupIds).')');
+	
+		$db->setQuery($query);
+	
+		$userIds = $db->loadResultArray();
+	
+		return $userIds;
+	}
+	
+	private function getUsersByIds($userIds)
+	{
+		// Get a database object.
+		$db = JFactory::getDbo();
+
+		$db->setQuery('SELECT u.* FROM #__users AS u WHERE u.id IN ('.join(",",$userIds).')');
+
+		$users = $db->loadObjectList();
+
+		return $users;
+	}
+	
+	private function getAppIdsByCourseIdAndUserIdsByIds($courseId, $userIds)
+	{
+		// Get a database object.
+		$db = JFactory::getDbo();
+	
+		$db->setQuery('SELECT a.id FROM #__seminarman_application AS a WHERE a.course_id=' . $courseId . ' AND a.user_id IN ('.join(",",$userIds).')');
+		
+		$appIds = $db->loadResultArray();
+	
+		return $appIds;
+	}
+
+	private function buildUsergroupPrefix()
+	{
+		$year = (int)date("Y");
+		$mon = (int)date("n");
+
+		if($mon<9){
+			$prefix = $year-1;
+		}else{
+			$prefix = $year;
+		}
+		return $prefix;
+	}
+
+	private function getGroupIdsMappedByCategories($catTitles)
+	{
+		$db = JFactory::getDbo();
+		$prefix = $this->buildUsergroupPrefix();
+
+		//create in string
+		$first = true;
+		$in ='';
+		foreach($catTitles as $catTitle) {
+			if($first){
+				$first = false;
+			}else {
+				$in = $in.',';
+			}
+			$in = $in.$db->quote($prefix.' '.$catTitle,false);
+		}
+
+		$db->setQuery(
+				'SELECT g.id FROM #__usergroups AS g WHERE g.title IN ('.$in.')'
+		);
+		$groupIds = $db->loadResultArray();
+
+		// Check for a database error.
+		if ($db->getErrorNum()) {
+			JError::raiseNotice(500, $db->getErrorMsg());
+			return null;
+		}
+		return $groupIds;
+	}
+
+	private function cancelBookedCourse($courseId, $userIds)
+	{
+		$model = $this->getModel( 'application' );
+		$appIds = $this->getAppIdsByCourseIdAndUserIdsByIds($courseId, $userIds);
+		if(!empty($appIds)){
+			$model->delete($appIds);
+		}
+	}
+	
+	private function bookCourseForUsers($course, $catTitles, $users, $fillErrors)
+	{
+		CMFactory::load('libraries', 'customfields');
+		$customFields = array();
+		$msgEmailError = JText::_( 'COM_SEMINARMAN_BOOKING_EMAIL_ERROR' );
+		$sendEmail = !ApplicationHelper::isCourseOld($course);
+		foreach($users as $user) {
+			$userId = $user->id;
+			// did this user already book that course?
+			$applicationId = ApplicationHelper::getIdByCourseAndUser($course->id, $userId);
+			if (!$applicationId) {
+				$application_id = ApplicationHelper::book($user, $course, $fillErrors);
+				if($application_id != null ){
+					if($sendEmail){
+						ApplicationHelper::sendemail($application_id, $user, $course, $catTitles, $fillErrors);
+					}
+				}
+			}
+		}
 	}
 	
 	function checkAllowed()

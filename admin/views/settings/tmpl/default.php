@@ -105,6 +105,7 @@ echo $pane->startPanel(JText::_('COM_SEMINARMAN_DEFAULT_EMAIL_TEMPLATES'), 'pane
 	<thead>
 		<tr>
 			<th class="pix10 left"><?php echo JText::_('COM_SEMINARMAN_NUM'); ?></th>
+			<th class="pix10 left"><?php echo JText::_('COM_SEMINARMAN_ID'); ?></th>
 			<th class="proc30 left"><?php echo JText::_('COM_SEMINARMAN_DEFAULT_EMAIL_TEMPLATES'); ?></th>
 			<th class="left"><?php echo JText::_('COM_SEMINARMAN_DEFAULT'); ?></th>
 			<th class="left"><?php echo JText::_('COM_SEMINARMAN_USE_FOR'); ?></th>
@@ -117,6 +118,7 @@ $i = 0;
 foreach($this->emailTemplates as $etmpl):?>
     <tr>
     	<td><?php echo $i++.'.';?></td>
+    	<td><?php echo $etmpl->id; ?></td>
         <td><a href="<?php echo JRoute::_('index.php?option=com_seminarman&view=emailtemplate&layout=default&id='.$etmpl->id);?>"><?php echo $etmpl->title;?></a></td>
         <td>
         <a class="jgrid" href="javascript:void(0);" onclick="javascript:setDefaultEmail(<?php echo $etmpl->id; ?>)">

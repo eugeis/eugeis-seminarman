@@ -21,6 +21,8 @@
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
 
+require_once JPATH_ROOT.'/components/com_seminarman/helpers/application.php';
+
 class seminarmanControllerapplication extends seminarmanController
 {
 
@@ -254,20 +256,88 @@ class seminarmanControllerapplication extends seminarmanController
 		$cid  = JRequest::getVar( 'cid' );
 		//JArrayHelper::toInteger($cid);
 		$status = JRequest::getVar('status');
-		// Checkin the booking
-		$model = $this->getModel('application');
 
-		if ($status == 3)  {
-			$status = 0;
-		} else {
-			$status = $status + 1;
-		}
-
-		$model->setstatus($cid, $status);
+		$msg = ApplicationHelper::setStatus($cid, $status);
+		if($msg == null) {
 		$msg = JText::_( 'COM_SEMINARMAN_STATUS_UPDATED' );
+		}
 		$this->setRedirect( 'index.php?option=com_seminarman&view=applications', $msg  );
 	}
+
+	function changecustomfields()   {
+		JRequest::checkToken() or jexit('Invalid Token');
+		$cid = JRequest::getVar('cid', array(), 'post', 'array');
+		JArrayHelper::toInteger($cid);
 	
+		if (count($cid) < 1)
+			JError::raiseError(500, JText::_('SCOM_SEMINARMAN_SELECT_ITEM'));
+	
+		$model = $this->getModel($this->childviewname);
+	
+		JArrayHelper::toInteger($cid);
+	
+		$this->saveCustomFields($cid, true);
+	
+		$this->setRedirect('index.php?option=com_seminarman&view=' . $this->parentviewname);
+	}
+	
+	function saveCustomFields($applicationids, $considerChangeField=false)
+	{
+		// Process and save custom fields
+		$model =& $this->getModel( 'application' );
+	
+		CMFactory::load( 'libraries' , 'customfields' );
+	
+		//get first application id to get fields names and values
+		$values = $this->findCommonCustomFieldsValues($model, $applicationids[0], $considerChangeField);
+	
+		foreach( $applicationids as $applicationid )
+		{
+			$user_id = $model->getUserId($applicationid);
+			$model->saveCustomfields($applicationid, $user_id, $values);
+		}
+	
+		if ($this->getTask() == 'apply')
+		{
+			$link = 'index.php?option=com_seminarman&controller=application&task=edit&cid[]='.$applicationid;
+		}
+		else
+			$link = 'index.php?option=com_seminarman&view=' . $this->parentviewname;
+		$this->setRedirect($link, $msg);
+	}
+	
+	function findCommonCustomFieldsValues($model, $applicationid, $considerChangeField = false)
+	{
+		$values	= array();
+	
+		$customfields	= $model->getEditableCustomfields( $applicationid );
+	
+		foreach( $customfields->fields as $group => $fields )
+		{
+			foreach( $fields as $data )
+			{
+				// Get value from posted data and map it to the field.
+				// Here we need to prepend the 'field' before the id because in the form, the 'field' is prepended to the id.
+				if( !$considerChangeField || JRequest::getVar( 'change_field' . $data['id'] , false , 'POST' ) )
+				{
+					$postData				= JRequest::getVar( 'field' . $data['id'] , '' , 'POST' );
+					$values[ $data['id'] ]	= SeminarmanCustomfieldsLibrary::formatData( $data['type']  , $postData );
+	
+					// @rule: Validate custom customfields if necessary
+					if( !SeminarmanCustomfieldsLibrary::validateField( $data['type'] , $values[ $data['id'] ] , $data['required'] ) )
+					{
+						// If there are errors on the form, display to the user.
+						$message	= JText::sprintf('COM_SEMINARMAN_FIELD_N_CONTAINS_IMPROPER_VALUES' ,  $data['name'] );
+						$this->setredirect( 'index.php?option=com_seminarman&controller=application&task=edit&cid[]=' . $post['id'] , $message , 'error' );
+	
+						return;
+					}
+				}
+			}
+		}
+		return $values;
+	}
+		
 	function notify()
 	{
 

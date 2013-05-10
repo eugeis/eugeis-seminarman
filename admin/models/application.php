@@ -177,7 +177,35 @@ class seminarmanModelapplication extends JModel
 
         return true;
     }
-
+    
+    function deleteByCourseIdAndUsersIds($userIds, $courseId)
+    {
+    	$result = false;
+    	 
+    	JArrayHelper::toInteger($userIds);
+    	$userIdsAsStr = implode(',', $userIds);
+    	 
+    	$query = 'DELETE FROM #__seminarman_' . $this->childviewname . 
+    			 ' WHERE course_id = ' . $courseId . ', user_id IN ( ' . $userIdsAsStr . ' )';
+    	$this->_db->setQuery($query);
+    	if (!$this->_db->query())
+    	{
+    		$this->setError($this->_db->getErrorMsg());
+    		return false;
+    	}
+    	 
+    	$query = 'DELETE FROM #__seminarman_fields_values WHERE applicationid IN ( ' . $cids .
+    	' )';
+    	$this->_db->setQuery($query);
+    	if (!$this->_db->query())
+    	{
+    		$this->setError($this->_db->getErrorMsg());
+    		return false;
+    	}
+    	
+    	return true;
+    }
+    
     function approve($cid = array(), $approve = 1)
     {
         $user = JFactory::getUser();

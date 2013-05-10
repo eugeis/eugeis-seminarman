@@ -80,6 +80,7 @@ class SeminarmanViewCourses extends JView
         JToolBarHelper::deleteList();
         JToolBarHelper::divider();
         JToolBarHelper::custom('bookcategorytousergroup','apply','apply', JText::_('COM_SEMINARMAN_BOOK_CATEGORY_TO_USERGROUP'));
+        JToolBarHelper::custom('cancelcategorytousergroup','cancel','cancel', JText::_('COM_SEMINARMAN_CANCEL_CATEGORY_TO_USERGROUP'));
         JToolBarHelper::custom('attendancelist','stats','stats', JText::_('COM_SEMINARMAN_ATTENDANCE_LIST').' (PDF)');
         JToolBarHelper::custom('sendattendancelist','send','send', JText::_('COM_SEMINARMAN_SEND_ATTENDANCE_LIST'));
         $rows = $this->get('Data');
