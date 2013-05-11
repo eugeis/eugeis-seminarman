@@ -127,7 +127,7 @@ foreach($this->emailTemplates as $etmpl):?>
         	</span>
         </a>
         </td>
-        <td><?php echo $etmpl->templatefor == 0 ? JText::_('COM_SEMINARMAN_BOOKING_CONFIRMATION') : JText::_('COM_SEMINARMAN_SALES_PROSPECT_NOTIFICATION'); ?></td>
+        <td><?php echo JText::_('COM_SEMINARMAN_TEMPLATE_FOR_' . $etmpl->templatefor); ?></td>
         <td><input type="checkbox" name="cid[]" value="<?php echo $etmpl->id; ?>" /></td>
     </tr>
 <?php endforeach; ?>

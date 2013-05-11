@@ -29,7 +29,7 @@ class seminarmanViewEmailtemplate extends JView
 		$lists = array();
 		$emailtemplate = $this->get('data');
 		$fields = $this->get('fields');
-		$templateforSelect = JHTML::_('select.genericlist', array(JText::_('COM_SEMINARMAN_BOOKING_CONFIRMATION'), JText::_('COM_SEMINARMAN_SALES_PROSPECT_NOTIFICATION')), 'templatefor', null, 'value', 'text', $emailtemplate->templatefor);
+		$templateforSelect = JHTML::_('select.genericlist', array(JText::_('COM_SEMINARMAN_TEMPLATE_FOR_0'), JText::_('COM_SEMINARMAN_TEMPLATE_FOR_1'), JText::_('COM_SEMINARMAN_TEMPLATE_FOR_2'), JText::_('COM_SEMINARMAN_TEMPLATE_FOR_3'), JText::_('COM_SEMINARMAN_TEMPLATE_FOR_4')), 'templatefor', null, 'value', 'text', $emailtemplate->templatefor);
 		
 		$this->assignRef('lists', $lists);
 		$this->assignRef('emailtemplate', $emailtemplate);

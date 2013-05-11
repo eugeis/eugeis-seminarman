@@ -189,6 +189,18 @@ echo JHTML::_('grid.sort', 'COM_SEMINARMAN_FINISH_DATE', 'i.finish_date', $this-
 				endif;
 
 				?>
+				<th id="qf_note" class="sectiontableheader"><?php
+
+echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE', 'i.title', $this->lists['filter_order_Dir'],
+	$this->lists['filter_order']);
+
+				?></th>
+				<th id="qf_attendance" class="sectiontableheader"><?php
+
+echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_ATTENDANCE', 'i.title', $this->lists['filter_order_Dir'],
+	$this->lists['filter_order']);
+
+				?></th>
 			</tr>
 	</thead>
 
@@ -274,7 +286,10 @@ if ($params->get('invoice_generate') == 1)
 				endif;
 
 				?>
-
+				<td headers="qf_note"><?php $course->note; ?>
+				</td>
+				<td headers="qf_attendance"><?php echo $course->attendance; ?>
+				</td>				
 			</tr>
 	<?php
 
