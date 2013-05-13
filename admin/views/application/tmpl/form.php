@@ -149,20 +149,12 @@ echo $pane->startPanel( JText::_('COM_SEMINARMAN_APPLICATION') , 'details-page' 
 	<legend><?php echo JText::_('COM_SEMINARMAN_BOOKING_DETAILS'); ?></legend>
 	<table class="admintable">
 		<tr>
-			<td><label for="attendees"><?php echo JText::_('COM_SEMINARMAN_NUMBER_OF_ATTENDEES'); ?>:</label></td>
-			<td><input class="text_area" type="text" name="attendees" id="attendees" size="4" maxlength="3" value="<?php echo $this->application->attendees; ?>" disabled="disabled" /></td>
+			<td><label for="note"><?php echo JText::_('COM_SEMINARMAN_COURSE_NOTE'); ?>:</label></td>
+			<td><input class="text_area" type="text" name="note" id="note" size="32" maxlength="3" value="<?php echo $this->application->note; ?>"/></td>
 		</tr>
         <tr>
-			<td><label for="price_group"><?php echo JText::_('COM_SEMINARMAN_PRICE_GROUP'); ?>:</label></td>
-			<td><input class="text_area" type="text" name="price_group" id="price_group" size="32" maxlength="100" value="<?php echo $this->application->pricegroup; ?>" disabled="disabled" /></td>
-		</tr>
-        <tr>
-			<td><label for="booking_price"><?php echo JText::_('COM_SEMINARMAN_PRICE_BOOKING') .' ('. JText::_('COM_SEMINARMAN_NET') .')'; ?>:</label></td>
-			<td><input class="text_area" type="text" name="booking_price" id="booking_price" size="32" maxlength="100" value="<?php echo $this->application->price_per_attendee . " " . $this->application->currency_price . " " . $this->application->price_type; ?>" disabled="disabled" /></td>
-		</tr>		
-        <tr>
-			<td><label for="course_price_total"><?php echo JText::_('COM_SEMINARMAN_TOTAL_PRICE') .' ('. JText::_('COM_SEMINARMAN_NET') .')'; ?>:</label></td>
-			<td><input class="text_area" type="text" name="course_price_total" id="course_price_total" size="32" maxlength="100" value="<?php echo $this->application->price_total . " " . $this->application->currency_price ." " . $this->application->price_type; ?>" disabled="disabled" /></td>
+			<td><label for="attendance"><?php echo JText::_('COM_SEMINARMAN_COURSE_ATTENDANCE'); ?>:</label></td>
+			<td><input class="text_area" type="text" name="attendance" id="attendance" size="32" maxlength="2" value="<?php echo $this->application->attendance; ?>"/></td>
 		</tr>
 	</table>
 	</fieldset>
@@ -183,14 +175,6 @@ echo $pane->startPanel( JText::_('COM_SEMINARMAN_APPLICATION') , 'details-page' 
         <tr>
 			<td><label for="course_title"><?php echo JText::_('COM_SEMINARMAN_COURSE_TITLE'); ?>:</label></td>
 			<td><input class="text_area" type="text" name="course_title" id="course_title" size="32" maxlength="100" value="<?php echo $this->application->course_title; ?>" disabled="disabled" /></td>
-		</tr>
-        <tr>
-			<td><label for="course_price"><?php echo JText::_('COM_SEMINARMAN_PRICE') .' ('. JText::_('COM_SEMINARMAN_NET') .')'; ?>:</label></td>
-			<td><input class="text_area" type="text" name="course_price" id="course_price" size="32" maxlength="100" value="<?php echo $this->application->price . " " . $this->application->currency_price . " " . $this->application->price_type; ?>" disabled="disabled" /></td>
-		</tr>
-		<tr>
-			<td><label for="course_price_vat"><?php echo JText::_('COM_SEMINARMAN_VAT'); ?>:</label></td>
-			<td><input class="text_area" type="text" name="course_price_vat" id="course_price_vat" size="32" maxlength="100" value="<?php echo $this->application->price_vat; ?>%" disabled="disabled" /></td>
 		</tr>
 		<tr>
 			<td>
