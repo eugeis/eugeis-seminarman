@@ -17,6 +17,14 @@ defined('_JEXEC') or die('Restricted access');
     <h1 class="componentheading"><?php echo $this->params->get('page_title'); ?></h1>
 <?php endif; ?>
 
+<?php
+if ($this->category->id > 0)
+	echo $this->loadTemplate('category');
+
+if (count($this->categories) && $this->category->id > 0)
+    echo $this->loadTemplate('subcategories');
+?>
+
 <script type="text/javascript">
 function tableOrdering( order, dir, task ) {
 

@@ -43,7 +43,7 @@ $Itemid = JRequest::getInt('Itemid');
 	<th id="qf_location" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_LOCATION', 'i.location', $this->lists['filter_order_Dir'],	$this->lists['filter_order']); ?></th>
 <?php endif; ?>
 <?php if ($this->params->get('enable_bookings')): ?>
-	<th id="qf_application" class="sectiontableheader"></th>
+	<th id="qf_application" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_STATUS', 'i.status', $this->lists['filter_order_Dir'],	$this->lists['filter_order']); ?></th>
 <?php endif; ?>
 </tr>
 </thead>

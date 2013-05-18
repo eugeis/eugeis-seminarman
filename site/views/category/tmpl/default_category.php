@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <div class="floattext">
     
-	<h2 class="seminarman cat<?php echo $this->category->id; ?>"><?php echo $this->escape($this->category->title); ?></h2>
+	<h1 class="seminarman cat<?php echo $this->category->id; ?>"><?php echo $this->escape($this->category->title); ?></h1>
 
 <?php
 

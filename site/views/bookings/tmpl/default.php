@@ -168,7 +168,7 @@ echo JHTML::_('grid.sort', 'COM_SEMINARMAN_FINISH_DATE', 'i.finish_date', $this-
 				<?php if ($this->params->get('show_location')): ?>
 				<th id="qf_location" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_LOCATION', 'i.location', $this->lists['filter_order_Dir'],	$this->lists['filter_order']); ?></th>
 				<?php endif; ?>
-				<th id="qf_status" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_STATUS', 'i.status', $this->lists['filter_order_Dir'],	$this->lists['filter_order']); ?></th>
+				<th id="qf_status" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_STATUS', 'app.status', $this->lists['filter_order_Dir'],	$this->lists['filter_order']); ?></th>
 				
 <?php if ($params->get('invoice_generate') == 1): ?>
 <th id="qf_invoice" class="sectiontableheader"><?php echo JText::_('COM_SEMINARMAN_INVOICE'); ?></th>
@@ -191,13 +191,13 @@ echo JHTML::_('grid.sort', 'COM_SEMINARMAN_FINISH_DATE', 'i.finish_date', $this-
 				?>
 				<th id="qf_note" class="sectiontableheader"><?php
 
-echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE', 'i.title', $this->lists['filter_order_Dir'],
+echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE', 'app.note', $this->lists['filter_order_Dir'],
 	$this->lists['filter_order']);
 
 				?></th>
 				<th id="qf_attendance" class="sectiontableheader"><?php
 
-echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_ATTENDANCE', 'i.title', $this->lists['filter_order_Dir'],
+echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_ATTENDANCE', 'app.attendance', $this->lists['filter_order_Dir'],
 	$this->lists['filter_order']);
 
 				?></th>
@@ -286,7 +286,7 @@ if ($params->get('invoice_generate') == 1)
 				endif;
 
 				?>
-				<td headers="qf_note"><?php $course->note; ?>
+				<td headers="qf_note"><?php echo $course->note; ?>
 				</td>
 				<td headers="qf_attendance"><?php echo $course->attendance; ?>
 				</td>				
