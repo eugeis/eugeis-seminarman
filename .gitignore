@@ -18,3 +18,4 @@ Desktop.ini
 # Mac crap
 .DS_Store
 /.gradle
+/ext_joomla
