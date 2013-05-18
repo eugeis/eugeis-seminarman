@@ -110,13 +110,19 @@ class seminarmanViewapplications extends JView
     	$filters[] = JHTML::_('select.option', '4', JText::_( 'COM_SEMINARMAN_COURSE_CODE' ) );
     	$lists['filter_search'] = JHTML::_('select.genericlist', $filters, 'filter_search', 'size="1" class="inputbox"', 'value', 'text', $filter_search );
 
+	   	// build status list
+    	$statuslist[] = JHTML::_('select.option',  '0', JText::_( 'COM_SEMINARMAN_SUBMITTED' ), 'value', 'text' );
+    	$statuslist[] = JHTML::_('select.option',  '1', JText::_( 'COM_SEMINARMAN_PENDING' ), 'value', 'text' );
+    	//$statuslist[] = JHTML::_('select.option',  '2', JText::_( 'COM_SEMINARMAN_PAID' ), 'value', 'text' );
+    	$statuslist[] = JHTML::_('select.option',  '3', JText::_( 'COM_SEMINARMAN_CANCELED' ), 'value', 'text' );
+    	$lists['status'] = JHTML::_('select.genericlist', $statuslist, 'status', 'class="inputbox" size="1"','value', 'text', $application->status );
 
     	// build list of states
     	$javascript = 'onchange="document.adminForm.submit();"';
     	$statuslist[] = JHTML::_('select.option',  '0', '- '. JText::_( 'JLIB_HTML_SELECT_STATE' ). ' -', 'id', 'state' );
     	$statuslist[] = JHTML::_('select.option',  '1', JText::_( 'COM_SEMINARMAN_SUBMITTED' ), 'id', 'state' );
     	$statuslist[] = JHTML::_('select.option',  '2', JText::_( 'COM_SEMINARMAN_PENDING' ), 'id', 'state' );
-    	$statuslist[] = JHTML::_('select.option',  '3', JText::_( 'COM_SEMINARMAN_PAID' ), 'id', 'state' );
+    	//$statuslist[] = JHTML::_('select.option',  '3', JText::_( 'COM_SEMINARMAN_PAID' ), 'id', 'state' );
     	$statuslist[] = JHTML::_('select.option',  '4', JText::_( 'COM_SEMINARMAN_CANCELED' ), 'id', 'state' );
     	$lists['statusid'] = JHTML::_('select.genericlist', $statuslist, 'filter_statusid', 'class="inputbox" size="1" onchange="submitform( );"','id', 'state', $filter_statusid );
 

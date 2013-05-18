@@ -130,7 +130,7 @@ class seminarmanViewapplication extends JView
     	// build status list
     	$statuslist[] = JHTML::_('select.option',  '0', JText::_( 'COM_SEMINARMAN_SUBMITTED' ), 'value', 'text' );
     	$statuslist[] = JHTML::_('select.option',  '1', JText::_( 'COM_SEMINARMAN_PENDING' ), 'value', 'text' );
-    	$statuslist[] = JHTML::_('select.option',  '2', JText::_( 'COM_SEMINARMAN_PAID' ), 'value', 'text' );
+    	//$statuslist[] = JHTML::_('select.option',  '2', JText::_( 'COM_SEMINARMAN_PAID' ), 'value', 'text' );
     	$statuslist[] = JHTML::_('select.option',  '3', JText::_( 'COM_SEMINARMAN_CANCELED' ), 'value', 'text' );
     	$lists['status'] = JHTML::_('select.genericlist', $statuslist, 'status', 'class="inputbox" size="1"','value', 'text', $application->status );
 

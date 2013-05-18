@@ -15,6 +15,37 @@ $params = JComponentHelper::getParams('com_seminarman');
 
 
 <form action="<?php echo $this->requestURL; ?>" method="post" name="adminForm">
+	<fieldset>
+		<legend><?php echo JText::_('COM_SEMINARMAN_MULTISET'); ?></legend>
+		<table>
+			<tr>
+				<td>
+					<table style="margin-right:10px"><tr>
+						<td><input type="checkbox" name="changeNote" title="Die Note setzen"></td>
+						<td><?php echo JText::_( 'COM_SEMINARMAN_COURSE_NOTE' );?></td>
+						<td><input class="text_area" type="text" name="note" id="note" size="3" maxlength="3" value=""/></td>
+					</tr></table>
+				</td>
+				<td>
+					<table style="margin-right:10px"><tr>
+						<td><input type="checkbox" name="changeAttendance" title="Die Anwesenheit setzen"></td>
+						<td><?php echo JText::_( 'COM_SEMINARMAN_COURSE_ATTENDANCE' );?></td>
+						<td><input class="text_area" type="text" name="attendance" id="attendance" size="2" maxlength="2" value=""/></td>
+					</tr></table>
+				</td>
+				<td>
+					<table style="margin-right:10px"><tr>
+						<td><input type="checkbox" name="changeStatus" title="Den Status setzen"></td>
+						<td><?php echo $this->lists['status']; ?></td>
+					</tr></table>
+				</td>			
+				<td class="right"><input type="button" onclick="javascript:if (document.adminForm.boxchecked.value==0){alert('Bitte zuerst eine Auswahl in der Liste vornehmen!');}else{ Joomla.submitbutton('changeMultiAttributtes')};"
+					value="Setzen" />
+				</td>
+			<tr>
+		</table>
+	</fieldset>
+
 <table class="adminform">
 <tr>
    <td class="proc100 left">
@@ -55,7 +86,7 @@ $params = JComponentHelper::getParams('com_seminarman');
    </thead>
    <tfoot>
       <tr>
-         <td colspan="<?php echo ($params->get('invoice_generate') == 1) ? 13 : 12; ?>"><?php echo $this->pagination->getListFooter(); ?></td>
+         <td colspan="<?php echo ($params->get('invoice_generate') == 1) ? 16 : 15; ?>"><?php echo $this->pagination->getListFooter(); ?></td>
       </tr>
    </tfoot>
    <tbody>
@@ -74,9 +105,9 @@ for ($i = 0, $n = count($this->applications); $i < $n; $i++)
     	case 1:
     		$status_text =JText::_( 'COM_SEMINARMAN_PENDING' );
     		break;
-    	case 2:
-    		$status_text = JText::_( 'COM_SEMINARMAN_PAID' );
-    		break;
+//    	case 2:
+//    		$status_text = JText::_( 'COM_SEMINARMAN_PAID' );
+//    		break;
     	case 3:
     		$status_text = JText::_( 'COM_SEMINARMAN_CANCELED' );
     		break;

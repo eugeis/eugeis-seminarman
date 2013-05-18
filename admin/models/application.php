@@ -419,8 +419,7 @@ class seminarmanModelapplication extends JModel
 
 		if ( $cid ){
 			$query = 'UPDATE #__seminarman_application'
-			.' SET status = '
-			. (int)$status.
+			.' SET status = ' . (int)$status .
 			' WHERE id = '.(int)$cid.' AND ( checked_out = 0 OR ( checked_out = '. (int) $user->get('id'). ' ) )';
 			$this->_db->setQuery( $query );
 
@@ -434,13 +433,72 @@ class seminarmanModelapplication extends JModel
 		return true;
 	}
 
+	function changeMultiNote($appIds, $note){
+		$user = JFactory::getUser();
+		
+		$appIdsAsStr = implode(',', $appIds);
 
+		if ( $appIds ){
+			$query = 'UPDATE #__seminarman_application'
+			.' SET note = ' . (double)$note .
+			' WHERE id in (' . $appIdsAsStr . ') AND ( checked_out = 0 OR ( checked_out = '. (int) $user->get('id'). ' ) )';
+			$this->_db->setQuery( $query );
+
+			if (!$this->_db->query()) {
+				$this->setError($this->_db->getErrorMsg());
+				return false;
+			}
+
+		}
+		return true;
+	}	
+	
+	function changeMultiAttendance($appIds, $attendance){
+		$user = JFactory::getUser();
+		
+		$appIdsAsStr = implode(',', $appIds);
+
+		if ( $appIds ){
+			$query = 'UPDATE #__seminarman_application'
+			.' SET attendance = ' . (int)$attendance .
+			' WHERE id in (' . $appIdsAsStr . ') AND ( checked_out = 0 OR ( checked_out = '. (int) $user->get('id'). ' ) )';
+			$this->_db->setQuery( $query );
+
+			if (!$this->_db->query()) {
+				$this->setError($this->_db->getErrorMsg());
+				return false;
+			}
+
+		}
+		return true;
+	}
+
+	function changeMultiStatus($appIds, $status){
+		$user = JFactory::getUser();
+		
+		$appIdsAsStr = implode(',', $appIds);
+
+		if ( $appIds ){
+			$query = 'UPDATE #__seminarman_application'
+			.' SET status = ' . (int)$status .
+			' WHERE id in (' . $appIdsAsStr . ') AND ( checked_out = 0 OR ( checked_out = '. (int) $user->get('id'). ' ) )';
+			$this->_db->setQuery( $query );
+
+			if (!$this->_db->query()) {
+				$this->setError($this->_db->getErrorMsg());
+				return false;
+			}
+		}
+		return true;
+	}
+	
     function _loadData()
     {
 
         if (empty($this->_data))
         {
-            $query = 'SELECT w.*, j.reference_number, j.title AS course_title, j.price, j.currency_price,j.price_type,j.code' .
+            $query = 'SELECT w.*, j.reference_number, j.title AS course_title, j.price, j.currency_price,j.price_type,j.code,' .
+            	' j.start_date, j.finish_date' .
                 ' FROM #__seminarman_' . $this->childviewname . ' AS w' .
                 ' LEFT JOIN #__seminarman_courses AS j ON j.id = w.course_id' . ' WHERE w.id = ' . (int)
                 $this->_id;

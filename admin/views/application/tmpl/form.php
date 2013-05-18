@@ -78,11 +78,19 @@ echo $pane->startPane( 'customfields-fields' );
 echo $pane->startPanel( JText::_('COM_SEMINARMAN_APPLICATION') , 'details-page' );
 ?>
 	<table class="paramlist admintable" style="width: 100%;">
-	<tbody><tr><td>
-<div class="width-60 fltlft">
+	<tbody><tr>
+<td>
 	<fieldset class="adminform">
-		<legend><?php echo JText::_('COM_SEMINARMAN_DETAILS'); ?></legend>
+		<legend><?php echo $this->application->course_title . ' ( ' . JHTML::Date($this->application->start_date, JText::_('COM_SEMINARMAN_DATE_FORMAT1')) . ' - ' . JHTML::Date($this->application->finish_date, JText::_('COM_SEMINARMAN_DATE_FORMAT1')) . ' )'; ?></legend>
 		<table class="admintable">
+			<tr>
+				<td><label for="note"><?php echo JText::_('COM_SEMINARMAN_COURSE_NOTE'); ?>:</label></td>
+				<td><input class="text_area" type="text" name="note" id="note" size="32" maxlength="3" value="<?php echo $this->application->note; ?>"/></td>
+			</tr>
+	        <tr>
+				<td><label for="attendance"><?php echo JText::_('COM_SEMINARMAN_COURSE_ATTENDANCE'); ?>:</label></td>
+				<td><input class="text_area" type="text" name="attendance" id="attendance" size="32" maxlength="2" value="<?php echo $this->application->attendance; ?>"/></td>
+			</tr>
 			<tr>
 				<td><label for="status"><?php echo JText::_('COM_SEMINARMAN_STATUS'); ?>:</label></td>
 				<td><fieldset id="jform_type" class="radio inputbox"><?php echo $this->lists['status']; ?></fieldset></td>
@@ -93,89 +101,10 @@ echo $pane->startPanel( JText::_('COM_SEMINARMAN_APPLICATION') , 'details-page' 
 				<td><label><?php if (empty($this->application->transaction_id)) echo '-'; else echo $this->application->transaction_id; ?></label></td>
 			</tr>
 <?php endif; ?>
-		</table>
-	</fieldset>
-</div>
-
-<?php if (($params->get('invoice_generate') == 1) && ($this->application->price_per_attendee > 0)): ?>
-<div class="width-40 fltrt">
-	<fieldset class="adminform">
-		<legend><?php echo JText::_('COM_SEMINARMAN_INVOICE'); ?></legend>
-		<div class="centered">
-			<a href="<?php echo JRoute::_('index.php?option=com_seminarman&view=application&layout=invoicepdf&cid[]='. $this->application->id); ?>">
-				<img style="display: block; margin-left: auto; margin-right: auto; float: none;" src="components/com_seminarman/assets/images/icon-48-pdf.png" alt="icon_pdf" />
-				<?php echo $this->application->invoice_filename_prefix . $this->application->invoice_number . '.pdf'; ?>
-			</a>
-		</div>
-	</fieldset>
-</div>
-<?php endif; ?>
-
-<div class="width-60 fltlft">
-	<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_SEMINARMAN_ACCOUNT_DETAILS'); ?></legend>
-	<table class="admintable">
 		<tr>
 			<td><label for="name"><?php echo JText::_('COM_SEMINARMAN_USER_NAME'); ?>:</label></td>
 			<td ><?php echo $this->lists['username']; ?></td>
-		</tr>
-		<tr>
-			<td class="key"><label for="name"><?php echo JText::_('COM_SEMINARMAN_SALUTATION'); ?>:</label></td>
-			<td><?php echo $this->lists['salutation']; ?></td>
-		</tr>
-		<tr>
-			<td class="key"><label for="title"><?php echo JText::_('COM_SEMINARMAN_TITLE'); ?>:</label></td>
-			<td><input class="text_area" type="text" name="title" id="title" size="32" maxlength="100" value="<?php echo $this->application->title; ?>" /></td>
-			
-		</tr>  
-		<tr>
-			<td><label for="title"><?php echo JText::_('COM_SEMINARMAN_FIRST_NAME'); ?>:</label></td>
-		<td><input class="text_area" type="text" name="first_name" id="first_name" size="32" maxlength="100" value="<?php echo $this->application->first_name; ?>" /></td>
-		</tr>
-		<tr>
-			<td><label for="alias"><?php echo JText::_('COM_SEMINARMAN_LAST_NAME'); ?>:</label></td>
-			<td><input class="text_area" type="text" name="last_name" id="last_name" size="32" maxlength="100" value="<?php echo $this->application->last_name; ?>" /></td>
-		</tr>
-        <tr>
-			<td><label for="email"><?php echo JText::_('COM_SEMINARMAN_EMAIL'); ?>:</label></td>
-			<td><input class="text_area" type="text" name="email" id="email" size="32" maxlength="100" value="<?php echo $this->application->email; ?>" /></td>
-		</tr>
-	</table>
-	</fieldset>
-</div>
-
-<div class="width-40 fltrt">
-	<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_SEMINARMAN_BOOKING_DETAILS'); ?></legend>
-	<table class="admintable">
-		<tr>
-			<td><label for="note"><?php echo JText::_('COM_SEMINARMAN_COURSE_NOTE'); ?>:</label></td>
-			<td><input class="text_area" type="text" name="note" id="note" size="32" maxlength="3" value="<?php echo $this->application->note; ?>"/></td>
-		</tr>
-        <tr>
-			<td><label for="attendance"><?php echo JText::_('COM_SEMINARMAN_COURSE_ATTENDANCE'); ?>:</label></td>
-			<td><input class="text_area" type="text" name="attendance" id="attendance" size="32" maxlength="2" value="<?php echo $this->application->attendance; ?>"/></td>
-		</tr>
-	</table>
-	</fieldset>
-</div>
-
-<div class="width-60 fltlft">
-	<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_SEMINARMAN_COURSE_DETAILS'); ?></legend>
-	<table class="admintable">
-		<tr>
-			<td><label for="course_id"><?php echo JText::_('COM_SEMINARMAN_ID'); ?>:</label></td>
-			<td><input class="text_area" type="text" name="course_id" id="course_id" size="32" maxlength="100" value="<?php echo $this->application->course_id; ?>" disabled="disabled" /></td>
-		</tr>
-        <tr>
-			<td><label for="reference_number"><?php echo JText::_('COM_SEMINARMAN_COURSE_CODE'); ?>: </label></td>
-			<td><input class="text_area" type="text" name="course_code" id="course_code" size="32" maxlength="100" value="<?php echo $this->application->code; ?>" disabled="disabled" /></td>
-		</tr>
-        <tr>
-			<td><label for="course_title"><?php echo JText::_('COM_SEMINARMAN_COURSE_TITLE'); ?>:</label></td>
-			<td><input class="text_area" type="text" name="course_title" id="course_title" size="32" maxlength="100" value="<?php echo $this->application->course_title; ?>" disabled="disabled" /></td>
-		</tr>
+		</tr>		
 		<tr>
 			<td>
 				<div class="button2-left">
@@ -184,11 +113,10 @@ echo $pane->startPanel( JText::_('COM_SEMINARMAN_APPLICATION') , 'details-page' 
 				</div>
 				</div>
 			</td>
-		</tr>
-	</table>
+		</tr>		
+		</table>
 	</fieldset>
-</div>
-
+</td>
 </tr>
 </tbody>
 </table>
@@ -254,6 +182,8 @@ echo $pane->endPane();
     <input type="hidden" name="controller" value="application" />
 	<input type="hidden" name="cid[]" value="<?php echo $this->application->id; ?>" />
     <input type="hidden" name="user_id" value="<?php echo $this->application->user_id; ?>" />
+    <input type="hidden" name="first_name" value="<?php echo $this->application->first_name; ?>" />
+	<input type="hidden" name="last_name" value="<?php echo $this->application->last_name; ?>" />
 	<input type="hidden" name="task" value="" />
 	<?php echo JHTML::_('form.token'); ?>
 </form>

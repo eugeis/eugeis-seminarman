@@ -264,6 +264,39 @@ class seminarmanControllerapplication extends seminarmanController
 		$this->setRedirect( 'index.php?option=com_seminarman&view=applications', $msg  );
 	}
 
+	function changeMultiAttributtes()   {
+		JRequest::checkToken() or jexit('Invalid Token');
+		$cid = JRequest::getVar('cid', array(), 'post', 'array');
+		JArrayHelper::toInteger($cid);
+	
+		if (count($cid) < 1)
+			JError::raiseError(500, JText::_('SCOM_SEMINARMAN_SELECT_ITEM'));
+	
+		$model = $this->getModel($this->childviewname);
+	
+		JArrayHelper::toInteger($cid);
+		
+		if(JRequest::getVar( 'changeNote' , false , 'POST' )) {
+			$ok = $model->changeMultiNote($cid, JRequest::getVar( 'note' , null, 'POST' ));
+		}
+
+		if(JRequest::getVar( 'changeAttendance' , false , 'POST' )) {
+			$ok = $model->changeMultiAttendance($cid, JRequest::getVar( 'attendance' , null, 'POST' ));
+		}
+		
+		if(JRequest::getVar( 'changeStatus' , false , 'POST' )) {
+			$ok = $model->changeMultiStatus($cid, JRequest::getVar( 'status' , 0, 'POST' ));
+		}
+		
+	    if ($ok) {
+            $msg = count($cid) . ' ' . JText::_('COM_SEMINARMAN_RECORDS_SAVED');
+        } else {
+            $msg = JText::_('ECOM_SEMINARMAN_ERROR_SAVING');
+        }
+		
+		$this->setRedirect('index.php?option=com_seminarman&view=' . $this->parentviewname, $msg);
+	}
+	
 	function changecustomfields()   {
 		JRequest::checkToken() or jexit('Invalid Token');
 		$cid = JRequest::getVar('cid', array(), 'post', 'array');
@@ -428,8 +461,8 @@ class seminarmanControllerapplication extends seminarmanController
 			$stati_text = JText::_( 'COM_SEMINARMAN_SUBMITTED' );
 		} elseif ($stati == 1) {
 			$stati_text = JText::_( 'COM_SEMINARMAN_PENDING' );
-		} elseif ($stati == 2) {
-			$stati_text = JText::_( 'COM_SEMINARMAN_PAID' );
+//		} elseif ($stati == 2) {
+//			$stati_text = JText::_( 'COM_SEMINARMAN_PAID' );
 		} elseif ($stati == 3) {
 			$stati_text = JText::_( 'COM_SEMINARMAN_CANCELED' );
 		}
