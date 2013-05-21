@@ -66,14 +66,13 @@ $params = JComponentHelper::getParams('com_seminarman');
       <tr>
          <th width="5"><?php echo JText::_('COM_SEMINARMAN_NUM'); ?></th>
          <th width="20"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->applications); ?>);" /></th>
-         <th width="10%" class="title"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_LAST_NAME', 'a.last_name', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+         <th width="15%" class="title"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_LAST_NAME', 'a.last_name', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="10%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_FIRST_NAME', 'a.first_name', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="10%"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_EMAIL', 'a.email', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="10%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE', 'j.title', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="10%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_CODE', 'j.code', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="5%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE', 'j.note', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="5%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_ATTENDANCE', 'j.attendance', $this->lists['order_Dir'], $this->lists['order']); ?></th>
-         <th width="5%" nowrap="nowrap"><?php echo JHTML::_('grid.sort',  'COM_SEMINARMAN_ATTENDEES', 'a.attendees', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
          <th width="5%" nowrap="nowrap"><?php echo JHTML::_('grid.sort',  'COM_SEMINARMAN_STATUS', 'a.status', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 <?php if ($params->get('invoice_generate') == 1): ?>
          <th width="10%" nowrap="nowrap"><?php echo JText::_('COM_SEMINARMAN_INVOICE'); ?></th>
@@ -157,7 +156,6 @@ for ($i = 0, $n = count($this->applications); $i < $n; $i++)
          <td class="centered"><?php echo $row->code; ?></td>
          <td class="centered"><?php echo $row->note; ?></td>
          <td class="centered"><?php echo $row->attendance; ?></td>
-         <td class="centered"><?php echo $row->attendees; ?></td>
          <td class="centered">
          <span class="editlinktip hasTip" title="<?php echo JText::_( 'COM_SEMINARMAN_CHANGE_STATUS' );?>::<?php echo JText::_( 'COM_SEMINARMAN_CHANGE_STATUS_DESC' ) ?>">
             <a href="<?php echo JRoute::_( 'index.php?option=com_seminarman&controller=application&task=changestatus&status='. $row->status .'&cid='. $row->id .'&'.JUtility::getToken() .'=1' ); ?>"><?php echo $status_text; ?></a>

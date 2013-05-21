@@ -19,11 +19,4 @@
 	<natures>
 		<nature>org.eclipse.php.core.PHPNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>ext_joomla</name>
-			<type>2</type>
-			<location>D:/OpenServer/domains/localhost/j25de</location>
-		</link>
-	</linkedResources>
 </projectDescription>

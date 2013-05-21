@@ -1,7 +1,13 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 group = 'eugeis-seminarman'
 version = '2.2.1.1-SNAPSHOT'
 
-ext.joomlaHome = 'D:/OpenServer/domains/localhost/j25de'
+if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+	ext.joomlaHome = 'D:/OpenServer/domains/localhost/j25de'
+}else {
+	ext.joomlaHome = '/var/www/dev/bs'
+}
 
 def joomlaExists = { project.file(joomlaHome).exists() }
 
@@ -57,21 +63,30 @@ task syncAll(dependsOn: ['syncAdmin', 'syncSite']) {
 	onlyIf joomlaExists
 }
 
-task mklinkAdmin(type:Exec) {
+task linkAdmin(type:Exec) {
 	onlyIf joomlaExists
   	def srcPath = file("$joomlaHome/administrator/components/com_seminarman").absolutePath
-  	def targetPath = file('.\\admin').absolutePath
-  	commandLine 'cmd', '/c', 'mklink', '/D', srcPath, targetPath	
+  	def targetPath = file('./admin').absolutePath
+	if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+		commandLine 'cmd', '/c', 'mklink', '/D', srcPath, targetPath	
+	}else {
+		commandLine 'bash -c', "ln -s $srcPath $targetPath"
+	}
+	
 }
 
-task mklinkSite(type:Exec) {
+task linkSite(type:Exec) {
 	onlyIf joomlaExists
   	def srcPath = file("$joomlaHome/components/com_seminarman").absolutePath
-  	def targetPath = file('.\\site').absolutePath
-  	commandLine 'cmd', '/c', 'mklink', '/D', srcPath, targetPath	
+  	def targetPath = file('./site').absolutePath
+  	if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+		commandLine 'cmd', '/c', 'mklink', '/D', srcPath, targetPath	
+	}else {
+		commandLine 'bash -c', "ln -s $srcPath $targetPath"
+	}	
 }
 
-task mklinks(dependsOn: ['mklinkSite', 'mklinkAdmin']) {
+task symlinks(dependsOn: ['linkSite', 'linkAdmin']) {
 	onlyIf joomlaExists
 }
 

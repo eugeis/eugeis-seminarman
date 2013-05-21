@@ -164,8 +164,24 @@ class seminarmanModelapplications extends JModel
     	
     	if ($search && $filter_search == 4) {
     		$where[] = ' LOWER(j.code) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
-    	} 
+    	}
 
+    	if ($search && $filter_search == 5) {
+    		if ($this->searchForNull($search)) {
+    			$where[] = ' (a.note IS NULL OR length(a.note) = 0)';
+    		}else {
+    			$where[] = ' a.note = '.(double)$search;
+    		}
+    	}
+    	
+    	if ($search && $filter_search == 6) {
+    		if ($this->searchForNull($search)) {
+    			$where[] = ' (a.attendance IS NULL OR length(a.attendance) = 0)';
+    		}else {
+    			$where[] = ' a.attendance = '.(int)$search;
+    		}
+    	}
+    	
        	switch ($filter_state)
        	{
        		case 'P':
@@ -188,6 +204,10 @@ class seminarmanModelapplications extends JModel
         $where = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');
 
         return $where;
+    }
+    
+    function searchForNull($search) {
+    	return strcasecmp($search, 'null') == 0;
     }
 
 	/* Method to fetch course titles
