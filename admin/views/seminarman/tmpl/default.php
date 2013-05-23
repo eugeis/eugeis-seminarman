@@ -24,6 +24,9 @@ if(JHTMLSeminarman::UserIsCourseManager()){
 $link = 'index.php?option=com_seminarman&amp;view=applications';
 SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-applications.png', JText::_('COM_SEMINARMAN_APPLICATION'));
 
+$link = 'index.php?option=com_seminarman&amp;view=users';
+SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-users.png', JText::_('COM_SEMINARMAN_USERS'));
+
 $link = 'index.php?option=com_seminarman&amp;view=salesprospects';
 SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-inter.png', JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'));
 
@@ -77,7 +80,7 @@ SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-tags.png', JText::_('C
 <a href="http://joomlacode.org/gf/project/com_seminarman/forum/" target=_blank class="osg_support_button osg_support_white">Forum</a><br /><br />	
 <div class="info_panel">
 The OSG Seminar Manager is a free software licensed under the GNU General Public License (GPL) version 2 or later.<br /><br />
-Der OSG Seminar Manager ist eine freie Software, die unter der GNU General Public License (GPL) Version 2 oder später lizenziert wurde.
+Der OSG Seminar Manager ist eine freie Software, die unter der GNU General Public License (GPL) Version 2 oder spï¿½ter lizenziert wurde.
 </div>					
 						</div>
                         </div>

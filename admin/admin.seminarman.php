@@ -55,6 +55,9 @@ if( $controller = JRequest::getWord('controller') ) {
 	}
 }
 
+// Register helper class
+JLoader::register('UsersHelper', JPATH_COMPONENT.DS.'/helpers/users.php');
+
 //Create the controller
 $classname  = 'SeminarmanController'.$controller;
 $controller = new $classname( );

@@ -9,6 +9,8 @@ if (Os.isFamily(Os.FAMILY_WINDOWS)) {
 	ext.joomlaHome = '/var/www/dev/bs'
 }
 
+println "Joomla Home: $joomlaHome"
+
 def joomlaExists = { project.file(joomlaHome).exists() }
 
 //admin
