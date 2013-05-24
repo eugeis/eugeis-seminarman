@@ -55,7 +55,8 @@ class SeminarmanViewCourses extends JView
         if(JHTMLSeminarman::UserIsCourseManager()){
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'),'index.php?option=com_seminarman&view=applications');
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 'index.php?option=com_seminarman&view=salesprospects');
+    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_USERS'), 'index.php?option=com_seminarman&view=users');
+		JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 'index.php?option=com_seminarman&view=salesprospects');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'),'index.php?option=com_seminarman&view=courses', true);
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TEMPLATES'),'index.php?option=com_seminarman&view=templates');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_CATEGORIES'),'index.php?option=com_seminarman&view=categories');
@@ -81,7 +82,6 @@ class SeminarmanViewCourses extends JView
         JToolBarHelper::divider();
         JToolBarHelper::custom('bookcategorytousergroup','apply','apply', JText::_('COM_SEMINARMAN_BOOK_CATEGORY_TO_USERGROUP'));
         JToolBarHelper::custom('cancelcategorytousergroup','cancel','cancel', JText::_('COM_SEMINARMAN_CANCEL_CATEGORY_TO_USERGROUP'));
-        JToolBarHelper::custom('attendancelist','stats','stats', JText::_('COM_SEMINARMAN_ATTENDANCE_LIST').' (PDF)');
         JToolBarHelper::custom('sendattendancelist','send','send', JText::_('COM_SEMINARMAN_SEND_ATTENDANCE_LIST'));
         $rows = $this->get('Data');
         $pageNav = $this->get('Pagination');
@@ -99,8 +99,8 @@ class SeminarmanViewCourses extends JView
     			. ' WHERE published = 1'
     			. ' AND courseid = '.$row->id
     			. ' ORDER BY ordering';
-    		$db->setQuery($sql);
-    		$course_sessions = $db->loadObjectList();
+    	$db->setQuery($sql);
+    	$course_sessions = $db->loadObjectList();
 		$row->count_sessions = count($course_sessions);
 
     	$itemParams = new JParameter($row->attribs);

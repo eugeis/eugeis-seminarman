@@ -21,6 +21,9 @@ $loggeduser = JFactory::getUser();
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_seminarman&view=users');?>" method="post" name="adminForm" id="adminForm">
+	<?php //Load the batch processing form. ?>
+	<?php echo $this->loadTemplate('batch'); ?>
+	
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo JText::_('COM_USERS_SEARCH_USERS'); ?></label>
@@ -68,13 +71,7 @@ $loggeduser = JFactory::getUser();
 				<th class="nowrap" width="10%">
 					<?php echo JHtml::_('grid.sort', 'JGLOBAL_USERNAME', 'a.username', $listDirn, $listOrder); ?>
 				</th>
-				<th class="nowrap" width="5%">
-					<?php echo JHtml::_('grid.sort', 'COM_USERS_HEADING_ENABLED', 'a.block', $listDirn, $listOrder); ?>
-				</th>
-				<th class="nowrap" width="5%">
-					<?php echo JHtml::_('grid.sort', 'COM_USERS_HEADING_ACTIVATED', 'a.activation', $listDirn, $listOrder); ?>
-				</th>
-				<th class="nowrap" width="10%">
+				<th class="nowrap" width="30%">
 					<?php echo JText::_('COM_USERS_HEADING_GROUPS'); ?>
 				</th>
 				<th class="nowrap" width="15%">
@@ -134,26 +131,8 @@ $loggeduser = JFactory::getUser();
 				<td class="center">
 					<?php echo $this->escape($item->username); ?>
 				</td>
-				<td class="center">
-					<?php if ($canChange) : ?>
-						<?php if ($loggeduser->id != $item->id) : ?>
-							<?php echo JHtml::_('grid.boolean', $i, !$item->block, 'users.unblock', 'users.block'); ?>
-						<?php else : ?>
-							<?php echo JHtml::_('grid.boolean', $i, !$item->block, 'users.block', null); ?>
-						<?php endif; ?>
-					<?php else : ?>
-						<?php echo JText::_($item->block ? 'JNO' : 'JYES'); ?>
-					<?php endif; ?>
-				</td>
-				<td class="center">
-					<?php echo JHtml::_('grid.boolean', $i, !$item->activation, 'users.activate', null); ?>
-				</td>
-				<td class="center">
-					<?php if (substr_count($item->group_names, "\n") > 1) : ?>
-						<span class="hasTip" title="<?php echo JText::_('COM_USERS_HEADING_GROUPS').'::'.nl2br($item->group_names); ?>"><?php echo JText::_('COM_USERS_USERS_MULTIPLE_GROUPS'); ?></span>
-					<?php else : ?>
-						<?php echo nl2br($item->group_names); ?>
-					<?php endif; ?>
+				<td  class="nowrap left">
+					<?php echo $item->group_names_all; ?>
 				</td>
 				<td class="center">
 					<?php echo $this->escape($item->email); ?>
@@ -175,9 +154,6 @@ $loggeduser = JFactory::getUser();
 			<?php endforeach; ?>
 		</tbody>
 	</table>
-
-	<?php //Load the batch processing form. ?>
-	<?php echo $this->loadTemplate('batch'); ?>
 
 	<div>
 		<input type="hidden" name="task" value="" />

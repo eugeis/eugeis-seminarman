@@ -581,7 +581,6 @@ JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users
 	{
 		require_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_seminarman'.DS.'classes'.DS.'pdfdocument.php';
 
-		JRequest::checkToken() or jexit( 'Invalid Token' );
 		$model = $this->getModel('course');
 
 		$course = $model->getCourse();

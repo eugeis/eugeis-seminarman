@@ -42,7 +42,7 @@ class SeminarmanViewUsers extends JViewLegacy
 			
 			JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman');
 			JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'), 'index.php?option=com_seminarman&view=applications');
-			JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_USERS'), 'index.php?option=com_seminarman&view=users', true);
+			JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_USERS'), 'index.php?option=com_seminarman&view=users',true);
 			JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 'index.php?option=com_seminarman&view=salesprospects');
 			JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'), 'index.php?option=com_seminarman&view=courses');
 			JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TEMPLATES'),'index.php?option=com_seminarman&view=templates');
@@ -63,7 +63,27 @@ class SeminarmanViewUsers extends JViewLegacy
 	
 			// Include the component HTML helpers.
 			JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-	
+			
+			$db = JFactory::getDBO();
+			
+			// get all templates
+			$query = 'SELECT id AS value, CONCAT(title, \' (\', id, \')\') as text FROM #__seminarman_courses ORDER BY title';
+			
+			$db->setQuery($query);
+			$courses = $db->loadObjectList();
+			
+			foreach ($courses as $course)
+				$courseList[] = JHTML::_('select.option', $course->value, JText::_($course->text));
+			
+			// template aus post
+			$courseId = JRequest::getVar('courseId', 0);
+			if ($courseId == 0)
+			if (!empty($row->courseId))
+				$courseId = $row->courseId;
+			
+			$this->coursesList = $courseList;
+			//$lists['coursesList'] = JHTML::_('select.genericlist', $types, 'courseId', 'class="inputbox" size="1" ', 'value', 'text', $courseId);
+			
 			$this->addToolbar();
 			parent::display($tpl);
 		}else{
@@ -85,31 +105,31 @@ class SeminarmanViewUsers extends JViewLegacy
 
 		JToolBarHelper::title(JText::_('COM_USERS_VIEW_USERS_TITLE'), 'user');
 
-		if ($canDo->get('core.create')) {
-			JToolBarHelper::addNew('user.add');
-		}
-		if ($canDo->get('core.edit')) {
-			JToolBarHelper::editList('user.edit');
-		}
+// 		if ($canDo->get('core.create')) {
+// 			JToolBarHelper::addNew('user.add');
+// 		}
+// 		if ($canDo->get('core.edit')) {
+// 			JToolBarHelper::editList('user.edit');
+// 		}
 
-		if ($canDo->get('core.edit.state')) {
-			JToolBarHelper::divider();
-			JToolBarHelper::publish('users.activate', 'COM_USERS_TOOLBAR_ACTIVATE', true);
-			JToolBarHelper::unpublish('users.block', 'COM_USERS_TOOLBAR_BLOCK', true);
-			JToolBarHelper::custom('users.unblock', 'unblock.png', 'unblock_f2.png', 'COM_USERS_TOOLBAR_UNBLOCK', true);
-			JToolBarHelper::divider();
-		}
+// 		if ($canDo->get('core.edit.state')) {
+// 			JToolBarHelper::divider();
+// 			JToolBarHelper::publish('users.activate', 'COM_USERS_TOOLBAR_ACTIVATE', true);
+// 			JToolBarHelper::unpublish('users.block', 'COM_USERS_TOOLBAR_BLOCK', true);
+// 			JToolBarHelper::custom('users.unblock', 'unblock.png', 'unblock_f2.png', 'COM_USERS_TOOLBAR_UNBLOCK', true);
+// 			JToolBarHelper::divider();
+// 		}
 
-		if ($canDo->get('core.delete')) {
-			JToolBarHelper::deleteList('', 'users.delete');
-			JToolBarHelper::divider();
-		}
+// 		if ($canDo->get('core.delete')) {
+// 			JToolBarHelper::deleteList('', 'users.delete');
+// 			JToolBarHelper::divider();
+// 		}
 
-		if ($canDo->get('core.admin')) {
-			JToolBarHelper::preferences('com_users');
-			JToolBarHelper::divider();
-		}
+// 		if ($canDo->get('core.admin')) {
+// 			JToolBarHelper::preferences('com_users');
+// 			JToolBarHelper::divider();
+// 		}
 
-		JToolBarHelper::help('JHELP_USERS_USER_MANAGER');
+// 		JToolBarHelper::help('JHELP_USERS_USER_MANAGER');
 	}
 }

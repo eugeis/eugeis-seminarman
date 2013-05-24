@@ -15,7 +15,7 @@ $params = JComponentHelper::getParams('com_seminarman');
 
 
 <form action="<?php echo $this->requestURL; ?>" method="post" name="adminForm">
-	<fieldset>
+	<fieldset class="batch">
 		<legend><?php echo JText::_('COM_SEMINARMAN_MULTISET'); ?></legend>
 		<table>
 			<tr>

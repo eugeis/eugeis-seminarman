@@ -231,6 +231,7 @@ class SeminarmanModelUsers extends JModelList
 					$item->group_count = $userGroups[$item->id]->group_count;
 					//Group_concat in other databases is not supported
 					$item->group_names = $this->_getUserDisplayedGroups($item->id);
+					$item->group_names_all = $this->_getUserDisplayedGroups($item->id, '; ');
 				}
 
 				if (isset($userNotes[$item->id]))
@@ -406,7 +407,7 @@ class SeminarmanModelUsers extends JModelList
 		return $query;
 	}
 	//sqlsrv change
-	function _getUserDisplayedGroups($user_id)
+	function _getUserDisplayedGroups($user_id, $separator = '\n')
 	{
 		$db = JFactory::getDbo();
 		$sql = "SELECT title FROM ".$db->quoteName('#__usergroups')." ug left join ".
@@ -415,6 +416,6 @@ class SeminarmanModelUsers extends JModelList
 
 		$db->setQuery($sql);
 		$result = $db->loadColumn();
-		return implode("\n", $result);
+		return implode($separator, $result);
 	}
 }

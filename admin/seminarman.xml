@@ -51,6 +51,7 @@
 			img="../administrator/components/com_seminarman/assets/images/seminarman.png">COM_SEMINARMAN_MENU</menu>
 		<submenu>
 			<menu view="applications" img="components/com_seminarman/assets/images/icon-16-applications.png">COM_SEMINARMAN_MENU_APPLICATIONS</menu>
+			<menu view="users" img="components/com_seminarman/assets/images/icon-16-users.png">COM_SEMINARMAN_MENU_USERS</menu>
 			<menu view="salesprospects" img="components/com_seminarman/assets/images/icon-16-inter.png">COM_SEMINARMAN_MENU_SALES_PROSPECTS</menu>
 			<menu view="users" img="components/com_seminarman/assets/images/icon-16-users.png">COM_SEMINARMAN_MENU_USERS</menu>
 			<menu view="courses" img="components/com_seminarman/assets/images/icon-16-courses.png">COM_SEMINARMAN_MENU_COURSES</menu>

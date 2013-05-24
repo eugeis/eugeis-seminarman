@@ -772,7 +772,8 @@ class SeminarmanModelCourse extends JModel
        	                      ' a.title AS `TITLE`,'.
        	                      ' a.first_name AS `FIRSTNAME`,'.
        	                      ' a.last_name AS `LASTNAME`,'.
-       	                      ' a.email AS `EMAIL`'.
+       	                      ' a.email AS `EMAIL`,'.
+    						  ' a.status AS `STATUS_ID`'.
      	                    ' FROM `#__seminarman_application` AS a'.
 				' LEFT JOIN `#__seminarman_courses` AS c ON a.course_id = c.id'.
       	                    ' WHERE c.id = '. (int) $this->_id .

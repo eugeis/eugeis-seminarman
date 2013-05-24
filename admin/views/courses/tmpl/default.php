@@ -227,7 +227,13 @@ for ($i = 0, $n = count($this->rows); $i < $n; $i++)
 			echo JHtml::_('jgrid.state', $states, $row->canceled, $i);
 		?>
 	</td>
-	<td align="center"><?php echo $row->currentBookings . "(" . $row->min_attend . ") " . JText::_( 'COM_SEMINARMAN_OF' ) . " "; echo $row->capacity; ?></td>
+	<td align="center">
+		<?php
+			$attendanceReportLink = 'index.php?option=com_seminarman&amp;controller=courses&amp;task=attendancelist&amp;cid[]=' . $row->id;
+			$currentBookings = $row->currentBookings . "(" . $row->min_attend . ") " . JText::_( 'COM_SEMINARMAN_OF' ) . " ". $row->capacity;
+		?>
+		<a href="<?php echo $attendanceReportLink ?>" target="_blank"><?php echo $currentBookings ?></a>
+	</td>
 	<td align="center"><?php echo $row->hits == 0 ? '-' : $row->hits; ?></td>
 	<td class="order" colspan="2">
 		<span><?php echo $this->pageNav->orderUpIcon($i, true, 'orderup', 'Move Up', $this->ordering); ?></span>
