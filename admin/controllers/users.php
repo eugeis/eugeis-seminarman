@@ -10,7 +10,9 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controlleradmin');
+//jimport('joomla.application.component.controlleradmin');
+jimport('joomla.application.component.controller');
+
 
 /**
  * Users list controller class.
@@ -19,7 +21,8 @@ jimport('joomla.application.component.controlleradmin');
  * @subpackage  com_users
  * @since       1.6
  */
-class SeminarmanControllerUsers extends JControllerAdmin
+class seminarmanControllerUsers extends seminarmanController
+//class SeminarmanControllerUsers extends JControllerAdmin
 {
 	/**
 	 * @var    string  The prefix to use with controller messages.
@@ -61,6 +64,11 @@ class SeminarmanControllerUsers extends JControllerAdmin
 		return parent::getModel($name, $prefix, $config);
 	}
 
+	function bookCourse()   {
+		// Check for request forgeries.
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+	}
+	
 	/**
 	 * Method to change the block status on a record.
 	 *

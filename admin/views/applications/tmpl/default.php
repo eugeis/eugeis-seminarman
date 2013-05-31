@@ -15,36 +15,59 @@ $params = JComponentHelper::getParams('com_seminarman');
 
 
 <form action="<?php echo $this->requestURL; ?>" method="post" name="adminForm">
-	<fieldset class="batch">
-		<legend><?php echo JText::_('COM_SEMINARMAN_MULTISET'); ?></legend>
-		<table>
-			<tr>
-				<td>
-					<table style="margin-right:10px"><tr>
-						<td><input type="checkbox" name="changeNote" title="Die Note setzen"></td>
-						<td><?php echo JText::_( 'COM_SEMINARMAN_COURSE_NOTE' );?></td>
-						<td><input class="text_area" type="text" name="note" id="note" size="3" maxlength="3" value=""/></td>
-					</tr></table>
-				</td>
-				<td>
-					<table style="margin-right:10px"><tr>
-						<td><input type="checkbox" name="changeAttendance" title="Die Anwesenheit setzen"></td>
-						<td><?php echo JText::_( 'COM_SEMINARMAN_COURSE_ATTENDANCE' );?></td>
-						<td><input class="text_area" type="text" name="attendance" id="attendance" size="2" maxlength="2" value=""/></td>
-					</tr></table>
-				</td>
-				<td>
-					<table style="margin-right:10px"><tr>
-						<td><input type="checkbox" name="changeStatus" title="Den Status setzen"></td>
-						<td><?php echo $this->lists['status']; ?></td>
-					</tr></table>
-				</td>			
-				<td class="right"><input type="button" onclick="javascript:if (document.adminForm.boxchecked.value==0){alert('Bitte zuerst eine Auswahl in der Liste vornehmen!');}else{ Joomla.submitbutton('changeMultiAttributtes')};"
-					value="Setzen" />
-				</td>
-			<tr>
-		</table>
-	</fieldset>
+
+<fieldset class="batch">
+	<legend><?php echo JText::_('COM_SEMINARMAN_MULTISET'); ?></legend>
+	<table>
+		<tr>
+			<td>
+				<table style="margin-right:10px"><tr>
+					<td><input type="checkbox" name="changeNoteReading" title="Die Note für Lesen der Lektüre setzen"></td>
+					<td><?php echo JText::_( 'COM_SEMINARMAN_COURSE_NOTE_READING' );?></td>
+					<td><input class="text_area" type="text" name="noteReading" id="note" size="3" maxlength="3" value=""/></td>
+				</tr></table>
+			</td>
+			<td>
+				<table style="margin-right:10px"><tr>
+					<td><input type="checkbox" name="changeNoteTest" title="Die Note für Test setzen"></td>
+					<td><?php echo JText::_( 'COM_SEMINARMAN_COURSE_NOTE_TEST' );?></td>
+					<td><input class="text_area" type="text" name="noteTest" id="note" size="3" maxlength="3" value=""/></td>
+				</tr></table>
+			</td>
+			<td>
+				<table style="margin-right:10px"><tr>
+					<td><input type="checkbox" name="changeNoteWork" title="Die Note für Facharbeit setzen"></td>
+					<td><?php echo JText::_( 'COM_SEMINARMAN_COURSE_NOTE_WORK' );?></td>
+					<td><input class="text_area" type="text" name="noteWork" id="note" size="3" maxlength="3" value=""/></td>
+				</tr></table>
+			</td>
+			<td>
+				<table style="margin-right:10px"><tr>
+					<td><input type="checkbox" name="changeNote" title="Die Note setzen"></td>
+					<td><?php echo JText::_( 'COM_SEMINARMAN_COURSE_NOTE' );?></td>
+					<td><input class="text_area" type="text" name="note" id="note" size="3" maxlength="3" value=""/></td>
+				</tr></table>
+			</td>
+			<td>
+				<table style="margin-right:10px"><tr>
+					<td><input type="checkbox" name="changeAttendance" title="Die Anwesenheit setzen"></td>
+					<td><?php echo JText::_( 'COM_SEMINARMAN_COURSE_ATTENDANCE' );?></td>
+					<td><input class="text_area" type="text" name="attendance" id="attendance" size="2" maxlength="2" value=""/></td>
+				</tr></table>
+			</td>
+			<td>
+				<table style="margin-right:10px"><tr>
+					<td><input type="checkbox" name="changeStatus" title="Den Status setzen"></td>
+					<td><?php echo $this->lists['status']; ?></td>
+				</tr></table>
+			</td>			
+			<td class="right">
+				<input type="button" onclick="javascript:if (document.adminForm.boxchecked.value==0){alert('Bitte zuerst eine Auswahl in der Liste vornehmen!');}else{ Joomla.submitbutton('changeMultiAttributtes')};"
+					value="<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>" />
+			</td>
+		<tr>
+	</table>
+</fieldset>
 
 <table class="adminform">
 <tr>
@@ -71,6 +94,9 @@ $params = JComponentHelper::getParams('com_seminarman');
          <th width="10%"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_EMAIL', 'a.email', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="10%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE', 'j.title', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="10%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_CODE', 'j.code', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+         <th width="5%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE_READING', 'j.note_reading', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+         <th width="5%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE_TEST', 'j.note_test', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+         <th width="5%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE_WORK', 'j.note_work', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="5%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE', 'j.note', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="5%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_ATTENDANCE', 'j.attendance', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="5%" nowrap="nowrap"><?php echo JHTML::_('grid.sort',  'COM_SEMINARMAN_STATUS', 'a.status', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
@@ -154,6 +180,9 @@ for ($i = 0, $n = count($this->applications); $i < $n; $i++)
                <a href="<?php echo JRoute::_('index.php?option=com_seminarman&controller=courses&task=edit&cid[]='. $row->courseid); ?>"><?php echo $this->escape($row->title); ?></a></span>
          </td>
          <td class="centered"><?php echo $row->code; ?></td>
+         <td class="centered"><?php echo $row->note_reading; ?></td>
+         <td class="centered"><?php echo $row->note_test; ?></td>
+         <td class="centered"><?php echo $row->note_work; ?></td>
          <td class="centered"><?php echo $row->note; ?></td>
          <td class="centered"><?php echo $row->attendance; ?></td>
          <td class="centered">

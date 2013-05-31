@@ -45,7 +45,8 @@ class seminarmanViewsalesprospects extends JView
 
         if(JHTMLSeminarman::UserIsCourseManager()){        
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman');
-        JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'), 'index.php?option=com_seminarman&view=applications');\nJ                   SubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_USERS'), 'index.php?option=com_seminarman&view=users');
+        JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'), 'index.php?option=com_seminarman&view=applications');
+        JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_USERS'), 'index.php?option=com_seminarman&view=users');
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_USERS'), 'index.php?option=com_seminarman&view=users');
 		JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 'index.php?option=com_seminarman&view=salesprospects', true);
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'), 'index.php?option=com_seminarman&view=courses');
@@ -56,7 +57,8 @@ class seminarmanViewsalesprospects extends JView
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_SETTINGS'),'index.php?option=com_seminarman&view=settings');
         }else{
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman');
-        JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'), 'index.php?option=com_seminarman&view=applications');\nJ                   SubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_USERS'), 'index.php?option=com_seminarman&view=users');
+        JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'), 'index.php?option=com_seminarman&view=applications');
+        JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_USERS'), 'index.php?option=com_seminarman&view=users');
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 'index.php?option=com_seminarman&view=salesprospects', true);
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'), 'index.php?option=com_seminarman&view=courses');        	
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TAGS'), 'index.php?option=com_seminarman&view=tags');

@@ -276,8 +276,20 @@ class seminarmanControllerapplication extends seminarmanController
 	
 		JArrayHelper::toInteger($cid);
 		
+		if(JRequest::getVar( 'changeNoteReading' , false , 'POST' )) {
+			$ok = $model->changeMulti('note_reading', $cid, JRequest::getVar( 'noteReading' , null, 'POST' ));
+		}
+		
+		if(JRequest::getVar( 'changeNoteTest' , false , 'POST' )) {
+			$ok = $model->changeMulti('note_test', $cid, JRequest::getVar( 'noteTest' , null, 'POST' ));
+		}
+		
+		if(JRequest::getVar( 'changeNoteWork' , false , 'POST' )) {
+			$ok = $model->changeMulti('note_work', $cid, JRequest::getVar( 'noteWork' , null, 'POST' ));
+		}
+				
 		if(JRequest::getVar( 'changeNote' , false , 'POST' )) {
-			$ok = $model->changeMultiNote($cid, JRequest::getVar( 'note' , null, 'POST' ));
+			$ok = $model->changeMulti('note', $cid, JRequest::getVar( 'note' , null, 'POST' ));
 		}
 
 		if(JRequest::getVar( 'changeAttendance' , false , 'POST' )) {

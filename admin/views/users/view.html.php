@@ -30,10 +30,14 @@ class SeminarmanViewUsers extends JViewLegacy
 		
 		if(JHTMLSeminarman::UserIsCourseManager()){
 			
+			$db = JFactory::getDBO();
+			$uri = JFactory::getURI();
+			$childviewname = 'Users';
 			$document = JFactory::getDocument();
 			$params = JComponentHelper::getParams('com_seminarman');
 			$lang = JFactory::getLanguage();
-			
+			$requestURL = $uri->toString();
+				
 			$document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
 			if ($lang->isRTL())
 			{
@@ -64,8 +68,6 @@ class SeminarmanViewUsers extends JViewLegacy
 			// Include the component HTML helpers.
 			JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 			
-			$db = JFactory::getDBO();
-			
 			// get all templates
 			$query = 'SELECT id AS value, CONCAT(title, \' (\', id, \')\') as text FROM #__seminarman_courses ORDER BY title';
 			
@@ -84,6 +86,8 @@ class SeminarmanViewUsers extends JViewLegacy
 			$this->coursesList = $courseList;
 			//$lists['coursesList'] = JHTML::_('select.genericlist', $types, 'courseId', 'class="inputbox" size="1" ', 'value', 'text', $courseId);
 			
+			$this->assignRef('requestURL', $requestURL);
+				
 			$this->addToolbar();
 			parent::display($tpl);
 		}else{

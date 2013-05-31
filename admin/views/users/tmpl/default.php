@@ -20,9 +20,44 @@ $listDirn = $this->escape($this->state->get('list.direction'));
 $loggeduser = JFactory::getUser();
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_seminarman&view=users');?>" method="post" name="adminForm" id="adminForm">
-	<?php //Load the batch processing form. ?>
-	<?php echo $this->loadTemplate('batch'); ?>
+<form action="<?php echo $this->requestURL; ?>" method="post" name="adminForm" id="adminForm">
+
+	<?php
+		// Create the copy/move options.
+		$options = array(
+			JHtml::_('select.option', 'add', JText::_('COM_USERS_BATCH_ADD')),
+			JHtml::_('select.option', 'del', JText::_('COM_USERS_BATCH_DELETE')),
+			JHtml::_('select.option', 'set', JText::_('COM_USERS_BATCH_SET'))
+		);
+		
+		// Create the copy/move options.
+		$course_options = array(
+				JHtml::_('select.option', 'bookCourse', JText::_('COM_SEMINARMAN_BOOK_COURSE')),
+				JHtml::_('select.option', 'unbookCourse', JText::_('COM_SEMINARMAN_CANCEL_COURSE')),
+		);
+	?>
+	<fieldset class="batch">
+		<legend><?php echo JText::_('COM_USERS_BATCH_OPTIONS');?></legend>
+	
+		<table style="margin-right:10px">
+			<tr>
+				<td><?php echo JText::_('COM_SEMINARMAN_SELECT_COURSE');?></td>
+				<td>
+					<select name="selectCourse" class="inputbox" id="courseId">
+						<option value=""><?php echo JText::_('JSELECT') ?></option>
+						<?php echo JHtml::_('select.options', $this->coursesList); ?>
+					</select>
+				</td>
+				<td>
+					<?php echo JHtml::_('select.radiolist', $course_options, 'bookCourse', '', 'value', 'text', 'bookCourse') ?>
+				</td>
+				<td>
+					<input type="button" onclick="javascript:if (document.adminForm.boxchecked.value==0){alert('Bitte zuerst Schüler auswählen!');}else{ Joomla.submitbutton('bookCourse')};"
+						value="<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>" />
+				</td>
+			</tr>
+		</table>
+	</fieldset>
 	
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
