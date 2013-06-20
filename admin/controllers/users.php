@@ -64,7 +64,7 @@ class seminarmanControllerUsers extends seminarmanController
 		return parent::getModel($name, $prefix, $config);
 	}
 
-	function bookCourse()   {
+	public function bookCourse()   {
 		// Check for request forgeries.
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 	}
