@@ -33,7 +33,7 @@ $loggeduser = JFactory::getUser();
 		// Create the copy/move options.
 		$course_options = array(
 				JHtml::_('select.option', 'bookCourse', JText::_('COM_SEMINARMAN_BOOK_COURSE')),
-				JHtml::_('select.option', 'unbookCourse', JText::_('COM_SEMINARMAN_CANCEL_COURSE')),
+				JHtml::_('select.option', 'cancelCourse', JText::_('COM_SEMINARMAN_CANCEL_COURSE')),
 		);
 	?>
 	<fieldset class="batch">

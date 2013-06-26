@@ -13,6 +13,7 @@ defined('_JEXEC') or die;
 //jimport('joomla.application.component.controlleradmin');
 jimport('joomla.application.component.controller');
 
+require_once JPATH_ROOT.'/components/com_seminarman/helpers/application.php';
 
 /**
  * Users list controller class.
@@ -64,9 +65,85 @@ class seminarmanControllerUsers extends seminarmanController
 		return parent::getModel($name, $prefix, $config);
 	}
 
+
 	public function bookCourse()   {
-		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		$userIds	= JRequest::getVar('cid', array(), '', 'array');
+		$users = $this->getUsersByIds($userIds);
+		$courseId = JRequest::getVar('selectCourse', '', 'POST');
+		$course = ApplicationHelper::loadCourse($courseId);
+		if($userIds){
+			$fillErrors = array();
+			$this->bookCourseForUsers($course, $catTitles, $users, $fillErrors);
+			$msg = JText::_( 'COM_SEMINARMAN_BOOKED_USERS' ) . ' ' . join(', ', $fillErrors);
+		}else{
+			$msg = JText::_( 'COM_SEMINARMAN_NO_USERS_IN_USERGROUPS' );
+		}
+		$this->setRedirect('index.php?option=com_seminarman&view=users', $msg);
+	}
+	
+	public function cancelCourse()   {
+		$userIds	= JRequest::getVar('cid', array(), '', 'array');
+		$users = $this->getUsersByIds($userIds);
+		$courseId = JRequest::getVar('selectCourse', '', 'POST');
+		$course = ApplicationHelper::loadCourse($courseId);
+		if($userIds){
+			$fillErrors = array();
+			$this->cancelCourseForUsers($course, $catTitles, $users, $fillErrors);							
+			$msg = JText::_( 'COM_SEMINARMAN_CANCELED_USERS' );
+		}else{
+			$msg = JText::_( 'COM_SEMINARMAN_NO_USERS_IN_USERGROUPS' );
+		}
+		$this->setRedirect('index.php?option=com_seminarman&view=users', $msg);
+	}
+	
+
+	private function cancelCourseForUsers($course, $catTitles, $users, $fillErrors)
+	{
+		$msgEmailError = JText::_( 'COM_SEMINARMAN_CANCELING_EMAIL_ERROR' );
+		$sendEmail = !ApplicationHelper::isCourseOld($course);
+		$model = $this->getModel( 'application' );
+		foreach($users as $user) {
+			$userId = $user->id;
+			// did this user already book that course?
+			$applicationId = ApplicationHelper::getIdByCourseAndUser($course->id, $userId);
+			if ($applicationId) {
+				if($sendEmail){
+					ApplicationHelper::sendemail($application_id, $user, $course, $catTitles, $fillErrors, 3);
+				}
+				ApplicationHelper::cancel($applicationId);
+			}
+		}
+	}	
+	
+	private function bookCourseForUsers($course, $catTitles, $users, $fillErrors)
+	{
+		$msgEmailError = JText::_( 'COM_SEMINARMAN_BOOKING_EMAIL_ERROR' );
+		$sendEmail = !ApplicationHelper::isCourseOld($course);
+		foreach($users as $user) {
+			$userId = $user->id;
+			// did this user already book that course?
+			$applicationId = ApplicationHelper::getIdByCourseAndUser($course->id, $userId);
+			if (!$applicationId) {
+				$application_id = ApplicationHelper::book($user, $course, $fillErrors);
+				if($application_id != null ){
+					if($sendEmail){
+						ApplicationHelper::sendemail($application_id, $user, $course, $catTitles, $fillErrors, $course->email_template);
+					}
+				}
+			}
+		}
+	}
+	
+	private function getUsersByIds($userIds)
+	{
+		// Get a database object.
+		$db = JFactory::getDbo();
+
+		$db->setQuery('SELECT u.* FROM #__users AS u WHERE u.id IN ('.join(",",$userIds).')');
+
+		$users = $db->loadObjectList();
+
+		return $users;
 	}
 	
 	/**
