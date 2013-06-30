@@ -59,7 +59,7 @@ $loggeduser = JFactory::getUser();
 			<tr>
 				<td><?php echo JText::_('COM_USERS_BATCH_GROUP') ?></td>
 				<td>
-					<select name="batch[group_id]" class="inputbox" id="batch-group-id">
+					<select name="selectGroup" class="inputbox" id="groupid">
 					<option value=""><?php echo JText::_('JSELECT') ?></option>
 					<?php echo JHtml::_('select.options', JHtml::_('user.groups', JFactory::getUser()->get('isRoot'))); ?>
 				</select>
