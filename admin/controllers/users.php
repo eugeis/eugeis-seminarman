@@ -66,37 +66,28 @@ class seminarmanControllerUsers extends seminarmanController
 	}
 
 
-	public function bookCourse()   {
+	public function changeCourses()   {
 		$userIds	= JRequest::getVar('cid', array(), '', 'array');
-		$users = $this->getUsersByIds($userIds);
-		$courseId = JRequest::getVar('selectCourse', '', 'POST');
-		$course = ApplicationHelper::loadCourse($courseId);
 		if($userIds){
+			$courseId = JRequest::getVar('selectCourse', '', 'POST');
+			$course = ApplicationHelper::loadCourse($courseId);
+			$users = $this->getUsersByIds($userIds);
 			$fillErrors = array();
-			$this->bookCourseForUsers($course, $catTitles, $users, $fillErrors);
-			$msg = JText::_( 'COM_SEMINARMAN_BOOKED_USERS' ) . ' ' . join(', ', $fillErrors);
+			$catTitles = array();
+			$changeCourses = JRequest::getVar('changeCourses', '', 'POST');;
+			if($changeCourses == 'bookCourse') {
+				$this->bookCourseForUsers($course, $catTitles, $users, $fillErrors);
+				$msg = JText::_( 'COM_SEMINARMAN_BOOKED_USERS' ) . ' ' . join(', ', $fillErrors);
+			} else {
+				$this->cancelCourseForUsers($course, $catTitles, $users, $fillErrors);							
+				$msg = JText::_( 'COM_SEMINARMAN_CANCELED_USERS' );
+			}
 		}else{
 			$msg = JText::_( 'COM_SEMINARMAN_NO_USERS_IN_USERGROUPS' );
 		}
 		$this->setRedirect('index.php?option=com_seminarman&view=users', $msg);
 	}
 	
-	public function cancelCourse()   {
-		$userIds	= JRequest::getVar('cid', array(), '', 'array');
-		$users = $this->getUsersByIds($userIds);
-		$courseId = JRequest::getVar('selectCourse', '', 'POST');
-		$course = ApplicationHelper::loadCourse($courseId);
-		if($userIds){
-			$fillErrors = array();
-			$this->cancelCourseForUsers($course, $catTitles, $users, $fillErrors);							
-			$msg = JText::_( 'COM_SEMINARMAN_CANCELED_USERS' );
-		}else{
-			$msg = JText::_( 'COM_SEMINARMAN_NO_USERS_IN_USERGROUPS' );
-		}
-		$this->setRedirect('index.php?option=com_seminarman&view=users', $msg);
-	}
-	
-
 	private function cancelCourseForUsers($course, $catTitles, $users, $fillErrors)
 	{
 		$msgEmailError = JText::_( 'COM_SEMINARMAN_CANCELING_EMAIL_ERROR' );

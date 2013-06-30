@@ -49,10 +49,26 @@ $loggeduser = JFactory::getUser();
 					</select>
 				</td>
 				<td>
-					<?php echo JHtml::_('select.radiolist', $course_options, 'bookCourse', '', 'value', 'text', 'bookCourse') ?>
+					<?php echo JHtml::_('select.radiolist', $course_options, 'changeCourses', '', 'value', 'text', 'bookCourse') ?>
 				</td>
 				<td>
-					<input type="button" onclick="javascript:if (document.adminForm.boxchecked.value==0){alert('Bitte zuerst Schüler auswählen!');}else{ Joomla.submitbutton('bookCourse')};"
+					<input type="button" onclick="javascript:if (document.adminForm.boxchecked.value==0){alert('Bitte zuerst Teilnehmer auswählen!');}else{ Joomla.submitbutton('changeCourses')};"
+						value="<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>" />
+				</td>
+			</tr>
+			<tr>
+				<td><?php echo JText::_('COM_USERS_BATCH_GROUP') ?></td>
+				<td>
+					<select name="batch[group_id]" class="inputbox" id="batch-group-id">
+					<option value=""><?php echo JText::_('JSELECT') ?></option>
+					<?php echo JHtml::_('select.options', JHtml::_('user.groups', JFactory::getUser()->get('isRoot'))); ?>
+				</select>
+				</td>
+				<td>
+					<?php echo JHtml::_('select.radiolist', $options, 'changeGroups', '', 'value', 'text', 'add') ?>
+				</td>
+				<td>
+					<input type="button" onclick="javascript:if (document.adminForm.boxchecked.value==0){alert('Bitte zuerst Teilnehmer auswählen!');}else{ Joomla.submitbutton('changeGroups')};"
 						value="<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>" />
 				</td>
 			</tr>
