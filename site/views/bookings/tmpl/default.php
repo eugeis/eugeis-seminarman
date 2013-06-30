@@ -132,76 +132,33 @@ echo $this->lists['filter_experience_level'];
 
 			?>
 		</div>
-		<?php
-
-		endif;
-
-		?>
+		<?php endif; ?>
 </div>
-<?php
-
-endif;
-
-?>
+<?php endif; ?>
 
 <table class="seminarmancoursetable" summary="seminarman">
 	<thead>
-			<tr>
-				<th id="qf_title" class="sectiontableheader"><?php
-
-echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_TITLE', 'i.title', $this->lists['filter_order_Dir'],
-	$this->lists['filter_order']);
-
-				?></th>
-				<th id="qf_start_date" class="sectiontableheader"><?php
-
-echo JHTML::_('grid.sort', 'COM_SEMINARMAN_START_DATE', 'i.start_date', $this->lists['filter_order_Dir'],
-	$this->lists['filter_order']);
-
-				?></th>
-				<th id="qf_finish_date" class="sectiontableheader"><?php
-
-echo JHTML::_('grid.sort', 'COM_SEMINARMAN_FINISH_DATE', 'i.finish_date', $this->lists['filter_order_Dir'],
-	$this->lists['filter_order']);
-
-				?></th>
-				<?php if ($this->params->get('show_location')): ?>
-				<th id="qf_location" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_LOCATION', 'i.location', $this->lists['filter_order_Dir'],	$this->lists['filter_order']); ?></th>
-				<?php endif; ?>
-				<th id="qf_status" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_STATUS', 'app.status', $this->lists['filter_order_Dir'],	$this->lists['filter_order']); ?></th>
+		<tr>
+			<th id="qf_title" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_TITLE', 'i.title', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
+			<th id="qf_start_date" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_START_DATE', 'i.start_date', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
+			<th id="qf_finish_date" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_FINISH_DATE', 'i.finish_date', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
+			<?php if ($this->params->get('show_location')): ?>
+			<th id="qf_location" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_LOCATION', 'i.location', $this->lists['filter_order_Dir'],	$this->lists['filter_order']); ?></th>
+			<?php endif; ?>
+			<th width="5%" id="qf_status" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_STATUS', 'app.status', $this->lists['filter_order_Dir'],	$this->lists['filter_order']); ?></th>
 				
-<?php if ($params->get('invoice_generate') == 1): ?>
-<th id="qf_invoice" class="sectiontableheader"><?php echo JText::_('COM_SEMINARMAN_INVOICE'); ?></th>
-<?php endif; ?>
-				
-				<?php
-
-				if ($this->params->get('enable_paypal')):
-
-				?>
-					<th id="qf_application" class="sectiontableheader"><?php
-
-					echo JText::_('COM_SEMINARMAN_PAY_ONLINE');
-
-					?></th>
-				<?php
-
-				endif;
-
-				?>
-				<th id="qf_note" class="sectiontableheader"><?php
-
-echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE', 'app.note', $this->lists['filter_order_Dir'],
-	$this->lists['filter_order']);
-
-				?></th>
-				<th id="qf_attendance" class="sectiontableheader"><?php
-
-echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_ATTENDANCE', 'app.attendance', $this->lists['filter_order_Dir'],
-	$this->lists['filter_order']);
-
-				?></th>
-			</tr>
+		<?php if ($params->get('invoice_generate') == 1): ?>
+			<th id="qf_invoice" class="sectiontableheader"><?php echo JText::_('COM_SEMINARMAN_INVOICE'); ?></th>
+		<?php endif; ?>
+		<?php if ($this->params->get('enable_paypal')): ?>
+			<th id="qf_application" class="sectiontableheader"><?php echo JText::_('COM_SEMINARMAN_PAY_ONLINE'); ?></th>
+		<?php endif; ?>
+			<th width="5%" id="qf_attendance" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_ATTENDANCE', 'app.attendance', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
+			<th width="5%" id="qf_note_reading" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE_READING', 'app.note_reading', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+			<th width="5%" id="qf_note_test" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE_TEST', 'app.note_test', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+			<th width="5%" id="qf_note_work" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE_WORK', 'app.note_work', $this->lists['order_Dir'], $this->lists['order']); ?></th>				
+			<th width="5%" id="qf_note" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE', 'app.note', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
+		</tr>
 	</thead>
 
 	<tbody>
@@ -272,24 +229,17 @@ if ($params->get('invoice_generate') == 1)
 	else
 		echo '<td class="centered">-</td>';
 }
-?>				<?php
-
- 				if ($this->params->get('enable_paypal')):
-
- 				?>
+?>				<?php if ($this->params->get('enable_paypal')): ?>
 					<td headers="qf_book"><?php if ($course->price > 0) echo $course->book_link; ?>
 
 
 					</td>
-				<?php
-
-				endif;
-
-				?>
-				<td headers="qf_note"><?php echo $course->note; ?>
-				</td>
-				<td headers="qf_attendance"><?php echo $course->attendance; ?>
-				</td>				
+				<?php endif; ?>
+				<td headers="qf_attendance"><?php echo $course->attendance; ?></td>
+         		<td class="qf_note_reading"><?php echo $course->note_reading; ?></td>
+         		<td class="qf_note_test"><?php echo $course->note_test; ?></td>
+         		<td class="qf_note_work"><?php echo $course->note_work; ?></td>				
+				<td headers="qf_note"><?php echo $course->note; ?></td>				
 			</tr>
 	<?php
 

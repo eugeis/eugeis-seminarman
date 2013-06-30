@@ -24,21 +24,21 @@ $params = JComponentHelper::getParams('com_seminarman');
 				<table style="margin-right:10px"><tr>
 					<td><input type="checkbox" name="changeNoteReading" title="Die Note für Lesen der Lektüre setzen"></td>
 					<td><?php echo JText::_( 'COM_SEMINARMAN_COURSE_NOTE_READING' );?></td>
-					<td><input class="text_area" type="text" name="noteReading" id="note" size="3" maxlength="3" value=""/></td>
+					<td><input class="text_area" type="text" name="noteReading" id="noteReading" size="3" maxlength="3" value=""/></td>
 				</tr></table>
 			</td>
 			<td>
 				<table style="margin-right:10px"><tr>
 					<td><input type="checkbox" name="changeNoteTest" title="Die Note für Test setzen"></td>
 					<td><?php echo JText::_( 'COM_SEMINARMAN_COURSE_NOTE_TEST' );?></td>
-					<td><input class="text_area" type="text" name="noteTest" id="note" size="3" maxlength="3" value=""/></td>
+					<td><input class="text_area" type="text" name="noteTest" id="noteTest" size="3" maxlength="3" value=""/></td>
 				</tr></table>
 			</td>
 			<td>
 				<table style="margin-right:10px"><tr>
 					<td><input type="checkbox" name="changeNoteWork" title="Die Note für Facharbeit setzen"></td>
 					<td><?php echo JText::_( 'COM_SEMINARMAN_COURSE_NOTE_WORK' );?></td>
-					<td><input class="text_area" type="text" name="noteWork" id="note" size="3" maxlength="3" value=""/></td>
+					<td><input class="text_area" type="text" name="noteWork" id="noteWork" size="3" maxlength="3" value=""/></td>
 				</tr></table>
 			</td>
 			<td>
@@ -92,14 +92,14 @@ $params = JComponentHelper::getParams('com_seminarman');
          <th width="15%" class="title"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_LAST_NAME', 'a.last_name', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="10%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_FIRST_NAME', 'a.first_name', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="10%"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_EMAIL', 'a.email', $this->lists['order_Dir'], $this->lists['order']); ?></th>
-         <th width="10%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE', 'j.title', $this->lists['order_Dir'], $this->lists['order']); ?></th>
-         <th width="10%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_CODE', 'j.code', $this->lists['order_Dir'], $this->lists['order']); ?></th>
-         <th width="5%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE_READING', 'j.note_reading', $this->lists['order_Dir'], $this->lists['order']); ?></th>
-         <th width="5%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE_TEST', 'j.note_test', $this->lists['order_Dir'], $this->lists['order']); ?></th>
-         <th width="5%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE_WORK', 'j.note_work', $this->lists['order_Dir'], $this->lists['order']); ?></th>
-         <th width="5%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE', 'j.note', $this->lists['order_Dir'], $this->lists['order']); ?></th>
-         <th width="5%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_ATTENDANCE', 'j.attendance', $this->lists['order_Dir'], $this->lists['order']); ?></th>
-         <th width="5%" nowrap="nowrap"><?php echo JHTML::_('grid.sort',  'COM_SEMINARMAN_STATUS', 'a.status', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+         <th width="15%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE', 'j.title', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+         <th width="5%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_CODE', 'j.code', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+         <th width="5%" ><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE', 'a.note', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+         <th width="5%" ><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE_READING', 'a.note_reading', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+         <th width="5%" ><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE_TEST', 'a.note_test', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+         <th width="5%" ><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE_WORK', 'a.note_work', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+         <th width="5%" ><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_ATTENDANCE', 'a.attendance', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+         <th width="5%" ><?php echo JHTML::_('grid.sort',  'COM_SEMINARMAN_STATUS', 'a.status', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 <?php if ($params->get('invoice_generate') == 1): ?>
          <th width="10%" nowrap="nowrap"><?php echo JText::_('COM_SEMINARMAN_INVOICE'); ?></th>
 <?php endif; ?>
@@ -111,7 +111,7 @@ $params = JComponentHelper::getParams('com_seminarman');
    </thead>
    <tfoot>
       <tr>
-         <td colspan="<?php echo ($params->get('invoice_generate') == 1) ? 16 : 15; ?>"><?php echo $this->pagination->getListFooter(); ?></td>
+         <td colspan="<?php echo ($params->get('invoice_generate') == 1) ? 18 : 17; ?>"><?php echo $this->pagination->getListFooter(); ?></td>
       </tr>
    </tfoot>
    <tbody>
@@ -180,11 +180,11 @@ for ($i = 0, $n = count($this->applications); $i < $n; $i++)
                <a href="<?php echo JRoute::_('index.php?option=com_seminarman&controller=courses&task=edit&cid[]='. $row->courseid); ?>"><?php echo $this->escape($row->title); ?></a></span>
          </td>
          <td class="centered"><?php echo $row->code; ?></td>
+         <td class="centered"><?php echo $row->attendance; ?></td>
          <td class="centered"><?php echo $row->note_reading; ?></td>
          <td class="centered"><?php echo $row->note_test; ?></td>
          <td class="centered"><?php echo $row->note_work; ?></td>
          <td class="centered"><?php echo $row->note; ?></td>
-         <td class="centered"><?php echo $row->attendance; ?></td>
          <td class="centered">
          <span class="editlinktip hasTip" title="<?php echo JText::_( 'COM_SEMINARMAN_CHANGE_STATUS' );?>::<?php echo JText::_( 'COM_SEMINARMAN_CHANGE_STATUS_DESC' ) ?>">
             <a href="<?php echo JRoute::_( 'index.php?option=com_seminarman&controller=application&task=changestatus&status='. $row->status .'&cid='. $row->id .'&'.JUtility::getToken() .'=1' ); ?>"><?php echo $status_text; ?></a>

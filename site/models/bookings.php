@@ -86,7 +86,7 @@ class SeminarmanModelBookings extends JModel
     	    ' CASE WHEN CHAR_LENGTH(i.alias) THEN CONCAT_WS(\':\', i.id, i.alias) ELSE i.id END as slug,' .
     	    ' gr.title AS cgroup, lev.title AS level, app.id AS applicationid, app.status,' . 
     	    ' app.invoice_filename_prefix AS invoice_filename_prefix, app.invoice_number AS invoice_number,' .
-    		' app.note, app.attendance' .
+    		' app.note_reading, app.note_test, app.note_work, app.note, app.attendance' .
     	    ' FROM #__seminarman_courses AS i' .
             ' LEFT JOIN #__seminarman_application AS app ON app.course_id = i.id' .
     	    ' LEFT JOIN #__seminarman_cats_course_relations AS rel ON rel.courseid = i.id' .

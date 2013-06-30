@@ -1,8 +1,8 @@
 
-ALTER IGNORE TABLE `#__seminarman_application` ADD `noteReading` varchar(3) AFTER `attendees`;
-ALTER IGNORE TABLE `#__seminarman_application` ADD `noteTest` varchar(3) AFTER `attendees`;
-ALTER IGNORE TABLE `#__seminarman_application` ADD `noteWork` varchar(3) AFTER `attendees`;
-ALTER IGNORE TABLE `#__seminarman_application` ADD `note` varchar(3) AFTER `attendees`;
+ALTER IGNORE TABLE `#__seminarman_application` ADD `note_reading` varchar(3) AFTER `attendees`;
+ALTER IGNORE TABLE `#__seminarman_application` ADD `note_test` varchar(3) AFTER `note_reading`;
+ALTER IGNORE TABLE `#__seminarman_application` ADD `note_work` varchar(3) AFTER `note_test`;
+ALTER IGNORE TABLE `#__seminarman_application` ADD `note` varchar(3) AFTER `note_work`;
 ALTER IGNORE TABLE `#__seminarman_application` ADD `attendance` INTEGER(11) AFTER `note`;
 
 ALTER IGNORE TABLE `#__seminarman_courses` ADD `email_template_cancel` INTEGER(11) NOT NULL DEFAULT '0' AFTER `email_template`;

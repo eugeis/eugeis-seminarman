@@ -303,7 +303,7 @@ class seminarmanControllerapplication extends seminarmanController
 	    if ($ok) {
             $msg = count($cid) . ' ' . JText::_('COM_SEMINARMAN_RECORDS_SAVED');
         } else {
-            $msg = JText::_('ECOM_SEMINARMAN_ERROR_SAVING');
+            $msg = join(',', $model->getErrors());
         }
 		
 		$this->setRedirect('index.php?option=com_seminarman&view=' . $this->parentviewname, $msg);
