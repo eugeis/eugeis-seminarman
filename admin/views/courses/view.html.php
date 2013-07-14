@@ -22,6 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
+require_once (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_seminarman' . DS .
+            'helpers' . DS . 'seminarman.php');
+
 class SeminarmanViewCourses extends JView
 {
 
@@ -56,19 +59,16 @@ class SeminarmanViewCourses extends JView
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'),'index.php?option=com_seminarman&view=applications');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_USERS'), 'index.php?option=com_seminarman&view=users');
-		JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 'index.php?option=com_seminarman&view=salesprospects');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'),'index.php?option=com_seminarman&view=courses', true);
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TEMPLATES'),'index.php?option=com_seminarman&view=templates');
+    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_PERIODS'),'index.php?option=com_seminarman&view=periods');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_CATEGORIES'),'index.php?option=com_seminarman&view=categories');
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TAGS'),'index.php?option=com_seminarman&view=tags');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TUTORS'),'index.php?option=com_seminarman&view=tutors');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_SETTINGS'),'index.php?option=com_seminarman&view=settings');
         } else {
   	    JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'),'index.php?option=com_seminarman&view=applications');
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 'index.php?option=com_seminarman&view=salesprospects');
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'),'index.php?option=com_seminarman&view=courses', true);        	
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TAGS'),'index.php?option=com_seminarman&view=tags');
+    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'),'index.php?option=com_seminarman&view=courses', true);
         }
 
         JToolBarHelper::title(JText::_('COM_SEMINARMAN_COURSES'), 'courses');
@@ -83,7 +83,11 @@ class SeminarmanViewCourses extends JView
         JToolBarHelper::custom('bookcategorytousergroup','apply','apply', JText::_('COM_SEMINARMAN_BOOK_CATEGORY_TO_USERGROUP'));
         JToolBarHelper::custom('cancelcategorytousergroup','cancel','cancel', JText::_('COM_SEMINARMAN_CANCEL_CATEGORY_TO_USERGROUP'));
         JToolBarHelper::custom('sendattendancelist','send','send', JText::_('COM_SEMINARMAN_SEND_ATTENDANCE_LIST'));
-        $rows = $this->get('Data');
+		// build list of periods
+        $filter_periodid = $mainframe->getUserStateFromRequest('com_seminarman' . 'periods.filter_periodid', 'filter_periodid', 0, 'int' );
+		$lists['periodid'] = JHTMLSeminarman::getPeriodsList($filter_periodid);
+       	
+		$rows = $this->get('Data');
         $pageNav = $this->get('Pagination');
         
         //search filter - what field to use for search

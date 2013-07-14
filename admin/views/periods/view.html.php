@@ -22,59 +22,78 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class seminarmanViewtutors extends JView
+require_once (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_seminarman' . DS .
+            'helpers' . DS . 'seminarman.php');
+
+class seminarmanViewPeriods extends JView
 {
     function display($tpl = null)
     {
-    	require_once (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_seminarman' . DS .
-            'helpers' . DS . 'seminarman.php');
-        
-        if(JHTMLSeminarman::UserIsCourseManager()){ 
-        	
         $mainframe = JFactory::getApplication();
 
         $db = JFactory::getDBO();
         $uri = JFactory::getURI();
+        $childviewname = 'period';
         $document = JFactory::getDocument();
         $lang = JFactory::getLanguage();
-
+        
         $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
         if ($lang->isRTL())
-            $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend_rtl.css');
-
+        {
+        	$document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend_rtl.css');
+        }
+        
+		//hide submenu
+        //JRequest::setVar('hidemainmenu', 1);
+        
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'),'index.php?option=com_seminarman&view=applications');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_USERS'), 'index.php?option=com_seminarman&view=users');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'),'index.php?option=com_seminarman&view=courses');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TEMPLATES'),'index.php?option=com_seminarman&view=templates');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_CATEGORIES'),'index.php?option=com_seminarman&view=categories');
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TUTORS'),'index.php?option=com_seminarman&view=tutors', true);
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_PERIODS'),'index.php?option=com_seminarman&view=periods');
+    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TUTORS'),'index.php?option=com_seminarman&view=tutors');
+    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_PERIODS'),'index.php?option=com_seminarman&view=periods', true);
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_SETTINGS'),'index.php?option=com_seminarman&view=settings');
-
-    	JToolBarHelper::title(JText::_('COM_SEMINARMAN_TUTORS'), 'tutors');
-        JToolBarHelper::addNew();
-        JToolBarHelper::editList();
-        JToolBarHelper::divider();
-        JToolBarHelper::publishList();
-        JToolBarHelper::unpublishList();
-        JToolBarHelper::divider();
-        JToolBarHelper::deleteList();
+    	
         
-        $filter_state = $mainframe->getUserStateFromRequest('com_seminarman.tutors.filter_state', 'filter_state', '', 'word');
-        $filter_order = $mainframe->getUserStateFromRequest('com_seminarman.tutors.filter_order', 'filter_order', 'a.ordering', 'cmd');
-        $filter_order_Dir = $mainframe->getUserStateFromRequest('com_seminarman.tutors.filter_order_Dir', 'filter_order_Dir', '', 'word');
-        $search = $mainframe->getUserStateFromRequest('com_seminarman.tutors.search', 'search', '', 'string');
+        $filter_state = $mainframe->getUserStateFromRequest('com_seminarman' . $childviewname .
+            '.filter_state', 'filter_state', '', 'word');
+        $filter_order = $mainframe->getUserStateFromRequest('com_seminarman' . $childviewname .
+            '.filter_order', 'filter_order', 'a.ordering', 'cmd');
+        $filter_order_Dir = $mainframe->getUserStateFromRequest('com_seminarman' . $childviewname .
+            '.filter_order_Dir', 'filter_order_Dir', '', 'word');
+        $search = $mainframe->getUserStateFromRequest('com_seminarman' . $childviewname .
+            '.search', 'search', '', 'string');
         $search = JString::strtolower($search);
-
+        
         $courses = $this->get('Data');
         $total = $this->get('Total');
         $pagination = $this->get('Pagination');
 
         $requestURL = $uri->toString();
-        
-        $lists['state'] = JHTML::_('grid.state', $filter_state, JText::_('JPUBLISHED'), JText::_('JUNPUBLISHED'));
 
+        foreach ($courses as $row):
+    	
+	    	//set start and finish dates
+	    	if ($row->start_date != '0000-00-00')
+	    		$row->start_date = JHTML::_('date', $row->start_date, JText::_('COM_SEMINARMAN_DATE_FORMAT1'));
+	        else
+	        	$row->start_date = JText::_('COM_SEMINARMAN_NOT_SPECIFIED');
+	
+	        if ($row->finish_date != '0000-00-00')
+	        	$row->finish_date = JHTML::_('date', $row->finish_date, JText::_('COM_SEMINARMAN_DATE_FORMAT1'));
+	        else
+	        	$row->finish_date = JText::_('COM_SEMINARMAN_NOT_SPECIFIED');
+    
+		endforeach;
+        
+    	// build list of periods
+        $filter_periodid = $mainframe->getUserStateFromRequest('com_seminarman' . 'periods.filter_periodid', 'filter_periodid', 0, 'int' );
+		$lists['periodid'] = JHTMLSeminarman::getPeriodsList($filter_periodid);
+		
+        $lists['state'] = JHTML::_('grid.state', $filter_state);
+        
         $lists['order_Dir'] = $filter_order_Dir;
         $lists['order'] = $filter_order;
 
@@ -88,12 +107,5 @@ class seminarmanViewtutors extends JView
         $this->assignRef('requestURL', $requestURL);
 
         parent::display($tpl);
-        
-        }else{
-        	
-$app = JFactory::getApplication();
-$app->redirect('index.php?option=com_seminarman', 'Only seminar manager group can access trainers.');	
-        	
-        }
     }
 }

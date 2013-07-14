@@ -179,7 +179,29 @@ class JHTMLSeminarman
         return $value;
     }
     
+	static function getPeriods()
+	{
+		$db = JFactory::getDBO();
+		$sql = 'SELECT id, title as title'
+		. ' FROM #__seminarman_period'
+		. ' WHERE published = 1'
+		. ' ORDER BY title';
+		$db->setQuery($sql);
+		$titles = $db->loadObjectlist();
+		return $titles;
+	}
+	
+	static function getPeriodsList($filter_periodid)
+	{
+		$titles = JHTMLSeminarman::getPeriods();
 
+    	$javascript = 'onchange="document.adminForm.submit();"';
+    	$periodlist = array();
+    	$periodlist[] = JHTML::_('select.option',  '0', '- '. JText::_( 'COM_SEMINARMAN_SELECT_PERIOD' ). ' -', 'id', 'title' );
+    	$periodlist = array_merge( $periodlist, $titles );
+    	return JHTML::_('select.genericlist', $periodlist, 'filter_periodid', 'class="inputbox" size="1" onchange="submitform( );"','id', 'title', $filter_periodid );
+	}
+	
     static function getSelectCountry($var, $default, $disabled)
     {
         $db = JFactory::getDBO();
@@ -220,7 +242,22 @@ class JHTMLSeminarman
 		return JHtml::_('select.genericlist', $types, $var, 'class="inputbox" size="1" ' . $disabled, 'value', 'text', $default);
 	}
 	
+	static function getPeriod($var, $default, $disabled = '')
+	{
+		$db = JFactory::getDBO();
 
+		$query = 'SELECT id AS value, title AS text FROM #__seminarman_period';
+		$db->setQuery($query);
+		$items = $db->loadObjectList();
+
+		$types[] = JHtml::_('select.option', '0', '- '. JText::_('COM_SEMINARMAN_NOVALUE') .' -');
+		foreach ($items as $item)  {
+			$types[] = JHtml::_('select.option', $item->value, JText::_($item->text));
+		}
+
+		return JHtml::_('select.genericlist', $types, $var, 'class="inputbox" size="1" ' . $disabled, 'value', 'text', $default);
+	}
+	
 	static function getSelectATGroup($var, $default, $disabled)
 	{
 		$db = JFactory::getDBO();

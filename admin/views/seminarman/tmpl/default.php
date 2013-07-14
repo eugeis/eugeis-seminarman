@@ -27,9 +27,6 @@ SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-applications.png', JTe
 $link = 'index.php?option=com_seminarman&amp;view=users';
 SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-users.png', JText::_('COM_SEMINARMAN_USERS'));
 
-$link = 'index.php?option=com_seminarman&amp;view=salesprospects';
-SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-inter.png', JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'));
-
 $link = 'index.php?option=com_seminarman&amp;view=courses';
 SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-courses.png', JText::_('COM_SEMINARMAN_COURSES'));
 
@@ -42,8 +39,8 @@ SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-templates.png', JText:
 $link = 'index.php?option=com_seminarman&amp;view=templates';
 SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-templateedit.png', JText::_('COM_SEMINARMAN_NEW_TEMPLATE'));
 
-$link = 'index.php?option=com_seminarman&amp;view=tags';
-SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-tags.png', JText::_('COM_SEMINARMAN_TAGS'));
+$link = 'index.php?option=com_seminarman&amp;view=periods';
+SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-tags.png', JText::_('COM_SEMINARMAN_PERIODS'));
 
 $link = 'index.php?option=com_seminarman&amp;view=categories';
 SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-categories.png', JText::_('COM_SEMINARMAN_CATEGORIES'));
@@ -54,6 +51,7 @@ SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-tutors.png', JText::_(
 $link = 'index.php?option=com_seminarman&amp;view=settings';
 SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-config.png', JText::_('COM_SEMINARMAN_SETTINGS'));
 
+
 echo LiveUpdate::getIcon();
 
 } else {
@@ -61,17 +59,12 @@ echo LiveUpdate::getIcon();
 $link = 'index.php?option=com_seminarman&amp;view=applications';
 SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-applications.png', JText::_('COM_SEMINARMAN_APPLICATION'));
 
-$link = 'index.php?option=com_seminarman&amp;view=salesprospects';
-SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-inter.png', JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'));
-
 $link = 'index.php?option=com_seminarman&amp;view=courses';
 SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-courses.png', JText::_('COM_SEMINARMAN_COURSES'));
 
 $link = 'index.php?option=com_seminarman&amp;view=course';
 SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-courseedit.png', JText::_('COM_SEMINARMAN_NEW_COURSE'));	
 
-$link = 'index.php?option=com_seminarman&amp;view=tags';
-SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-tags.png', JText::_('COM_SEMINARMAN_TAGS'));
 }
 ?>
 						</div>

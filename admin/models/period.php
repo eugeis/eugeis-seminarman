@@ -8,12 +8,12 @@
 * it under the terms of the GNU General Public License as published by
 * the Free Software Foundation, either version 2 of the License, or
 * any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
@@ -22,7 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class seminarmanModelCountry extends JModel
+require_once (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_seminarman' . DS . 'helpers' . DS . 'seminarman.php');
+
+class seminarmanModelPeriod extends JModel
 {
     var $_id = null;
 
@@ -36,7 +38,7 @@ class seminarmanModelCountry extends JModel
         $edit = JRequest::getVar('edit', true);
         if ($edit)
             $this->setId((int)$array[0]);
-        $this->childviewname = 'country';
+        $this->childviewname = 'period';
     }
 
     function setId($id)
@@ -60,6 +62,20 @@ class seminarmanModelCountry extends JModel
         return $this->_data;
     }
 
+    function &getData(&$currentPeriod)
+    {
+
+        if ($this->_loadData())
+        {
+
+            $user = JFactory::getUser();
+
+        } else
+            $this->_initData();
+
+        return $this->_data;
+    }
+        
     function isCheckedOut($uid = 0)
     {
         if ($this->_loadData())
@@ -111,7 +127,29 @@ class seminarmanModelCountry extends JModel
         return false;
     }
 
-	function store($data)
+	function setDefault($id)
+	{
+		$db = JFactory::getDBO();
+		
+		$db->setQuery('UPDATE #__seminarman_period SET isdefault=1 WHERE id='. (int)$id);
+		$db->query();
+		$db->setQuery('UPDATE #__seminarman_period SET isdefault=0 WHERE id<>'. (int)$id);
+		$db->query();
+	}
+	
+    function makeOneDefault()
+    {
+    	$db = JFactory::getDBO();
+    	 
+    	$db->setQuery('SELECT COUNT(id) FROM #__seminarman_period WHERE isdefault=1');
+    	$count = $db->loadResult();
+    	if ($count == 0) {
+    		$db->setQuery('UPDATE #__seminarman_period SET isdefault=1 WHERE LIMIT 1');
+    		$db->query();
+    	}
+    }
+    
+    function store($data)
     {
         $row = $this->getTable();
 
@@ -122,6 +160,9 @@ class seminarmanModelCountry extends JModel
         }
 
         $row->date = gmdate('Y-m-d H:i:s');
+                
+        $row->start_date = JHTMLSeminarman::localDate2DbDate($row->start_date);
+        $row->finish_date = JHTMLSeminarman::localDate2DbDate($row->finish_date);
 
         if (!$row->id)
         {
@@ -153,17 +194,6 @@ class seminarmanModelCountry extends JModel
         {
             JArrayHelper::toInteger($cid);
             $cids = implode(',', $cid);
-
-            $query_check = 'SELECT groupid FROM #__seminarman_courses' . ' WHERE ' . $this->
-                childviewname . 'id IN ( ' . $cids . ' )';
-            $this->_db->setQuery($query_check);
-            $relatedRecords = $this->_db->loadResult();
-            if ($relatedRecords > 0)
-            {
-                JError::raiseWarning('ERROR_CODE', JText::_('There are records assigned to selected course. Please delete the related records first.'));
-                return false;
-            }
-
 
             $query = 'DELETE FROM #__seminarman_' . $this->childviewname . ' WHERE id IN ( ' . $cids .
                 ' )';
@@ -293,23 +323,22 @@ class seminarmanModelCountry extends JModel
 
         if (empty($this->_data))
         {
-            $country = new stdClass();
-            $country->id = 0;
-            $country->loc = null;
-            $country->code = null;
-            $country->alias = null;
-            $country->title = null;
-            $country->description = null;
-            $country->date = null;
-            $country->hits = 0;
-            $country->published = 0;
-            $country->checked_out = 0;
-            $country->checked_out_time = 0;
-            $country->ordering = 0;
-            $country->archived = 0;
-            $country->approved = 0;
-            $country->params = null;
-            $this->_data = $country;
+            $period = new stdClass();
+            $period->id = 0;
+            $period->title = null;
+            $period->alias = null;
+            $period->code = null;
+            $period->description = null;
+            $period->date = null;
+            $period->hits = 0;
+            $period->published = 0;
+            $period->checked_out = 0;
+            $period->checked_out_time = 0;
+            $period->ordering = 0;
+            $period->archived = 0;
+            $period->approved = 0;
+            $period->params = null;
+            $this->_data = $period;
             return (boolean)$this->_data;
 
         }

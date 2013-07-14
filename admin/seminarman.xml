@@ -52,13 +52,12 @@
 		<submenu>
 			<menu view="applications" img="components/com_seminarman/assets/images/icon-16-applications.png">COM_SEMINARMAN_MENU_APPLICATIONS</menu>
 			<menu view="users" img="components/com_seminarman/assets/images/icon-16-users.png">COM_SEMINARMAN_MENU_USERS</menu>
-			<menu view="salesprospects" img="components/com_seminarman/assets/images/icon-16-inter.png">COM_SEMINARMAN_MENU_SALES_PROSPECTS</menu>
 			<menu view="users" img="components/com_seminarman/assets/images/icon-16-users.png">COM_SEMINARMAN_MENU_USERS</menu>
 			<menu view="courses" img="components/com_seminarman/assets/images/icon-16-courses.png">COM_SEMINARMAN_MENU_COURSES</menu>
 			<menu view="templates" img="components/com_seminarman/assets/images/icon-16-templates.png">COM_SEMINARMAN_MENU_TEMPLATES</menu>
-			<menu view="tags" img="components/com_seminarman/assets/images/icon-16-tags.png">COM_SEMINARMAN_MENU_TAGS</menu>
 			<menu view="tutors" img="components/com_seminarman/assets/images/icon-16-tutors.png">COM_SEMINARMAN_MENU_TUTORS</menu>
 			<menu view="categories" img="components/com_seminarman/assets/images/icon-16-categories.png">COM_SEMINARMAN_MENU_CATEGORIES</menu>
+			<menu view="periods" img="components/com_seminarman/assets/images/icon-16-tags.png">COM_SEMINARMAN_MENU_PERIODS</menu>
 			<menu view="settings" img="components/com_seminarman/assets/images/icon-16-config.png">COM_SEMINARMAN_MENU_SETTINGS</menu>
 		</submenu>
 		<files folder="admin">

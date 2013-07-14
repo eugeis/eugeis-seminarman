@@ -576,6 +576,31 @@ CREATE TABLE IF NOT EXISTS `#__seminarman_fields_values_tutors` (
   PRIMARY KEY (`tutor_id`,`field_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `#__seminarman_period` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) DEFAULT NULL,
+  `alias` varchar(100) NOT NULL,
+  `code` char(2) DEFAULT NULL,
+  `color` varchar(7) NOT NULL,
+  `description` text,
+  `start_date` date NOT NULL DEFAULT '0000-00-00',
+  `finish_date` date NOT NULL DEFAULT '0000-00-00',
+  `isdefault` INT( 1 ) NOT NULL DEFAULT '0',
+  `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `hits` int(11) NOT NULL DEFAULT '0',
+  `published` tinyint(1) NOT NULL DEFAULT '0',
+  `checked_out` int(11) NOT NULL DEFAULT '0',
+  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `archived` tinyint(1) NOT NULL DEFAULT '0',
+  `approved` tinyint(1) NOT NULL DEFAULT '0',
+  `params` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `name` (`title`),
+  KEY `code` (`code`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+
 INSERT IGNORE INTO `#__seminarman_country` (`id`, `loc`, `code`, `title`, `alias`, `description`, `date`, `hits`, `published`, `language`, `checked_out`, `checked_out_time`, `ordering`, `access`, `params`) VALUES
 (3, 'AF', 'BF', 'Burkina Faso', '', NULL, '0000-00-00 00:00:00', 0, 1, '', 0, '0000-00-00 00:00:00', 151, 0, ''),
 (5, 'AF', 'CM', 'Cameroon', '', NULL, '0000-00-00 00:00:00', 0, 1, '', 0, '0000-00-00 00:00:00', 137, 0, ''),

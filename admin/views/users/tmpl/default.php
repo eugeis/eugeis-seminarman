@@ -106,6 +106,7 @@ $loggeduser = JFactory::getUser();
 				<option value=""><?php echo JText::_('COM_USERS_OPTION_FILTER_DATE');?></option>
 				<?php echo JHtml::_('select.options', Usershelper::getRangeOptions(), 'value', 'text', $this->state->get('filter.range'));?>
 			</select>
+			<?php echo $this->lists['periodid'];?>
 		</div>
 	</fieldset>
 	<div class="clr"> </div>

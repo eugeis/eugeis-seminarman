@@ -34,6 +34,8 @@ class SeminarmanModelCourses extends JModel
     var $_pagination = null;
 
     var $_id = null;
+    
+    var $currentPeriodId = null;
 
     function __construct()
     {
@@ -41,6 +43,8 @@ class SeminarmanModelCourses extends JModel
 
         $mainframe = JFactory::getApplication();
 
+        $this->currentPeriodId = $mainframe->getUserStateFromRequest('com_seminarman' . 'periods.filter_periodid', 'filter_periodid', 0, 'int' );
+        
         $limit = $mainframe->getUserStateFromRequest('com_seminarman' . '.limit', 'limit', $mainframe->
             getCfg('list_limit'), 'int');
         $limitstart = $mainframe->getUserStateFromRequest('com_seminarman' . '.limitstart',
@@ -184,7 +188,12 @@ class SeminarmanModelCourses extends JModel
                                     $where[] = 'i.state = -4';
                                 }
         }
-
+        
+        if ($this->currentPeriodId > 0) {
+    		$currentPeriod = $this->getCurrentPeriod();
+    		$where[] = '(i.finish_date >= "' . $currentPeriod->start_date . '" AND ' . 'i.start_date <= "' . $currentPeriod->finish_date . '")';
+    	}
+        
        if(!(JHTMLSeminarman::UserIsCourseManager())){
             $where[] = 'i.tutor_id = ' . JHTMLSeminarman::getUserTutorID();
         }
@@ -367,6 +376,15 @@ class SeminarmanModelCourses extends JModel
         }
         return false;
     }
+    
+	function getCurrentPeriod()
+	{
+		$db = JFactory::getDBO();
+		$sql = 'SELECT * FROM #__seminarman_period WHERE id = '. $this->currentPeriodId;
+		$db->setQuery($sql);
+		$ret = $db->loadObject();
+		return $ret;
+	}
 
 }
 

@@ -30,13 +30,17 @@ class seminarmanModelapplications extends JModel
 
     var $_pagination = null;
 
+    var $currentPeriodId = null;
+    
     function __construct()
     {
         parent::__construct();
 
         $mainframe = JFactory::getApplication();
         $this->childviewname = 'application';
-
+		
+        $this->currentPeriodId = $mainframe->getUserStateFromRequest('com_seminarman' . 'periods.filter_periodid', 'filter_periodid', 0, 'int' );
+		
         $limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->
             getCfg('list_limit'), 'int');
         $limitstart = $mainframe->getUserStateFromRequest('com_seminarman' . '.limitstart',
@@ -149,6 +153,11 @@ class seminarmanModelapplications extends JModel
     	if ($filter_statusid > 0) {
     		$where[] = 'a.status = '.((int) $filter_statusid - 1);
     	}
+    	
+    	if ($this->currentPeriodId > 0) {
+    		$currentPeriod = $this->getCurrentPeriod();
+    		$where[] = '(j.finish_date >= "' . $currentPeriod->start_date . '" AND ' . 'j.start_date <= "' . $currentPeriod->finish_date . '")';
+    	}
 
     	if ($search && $filter_search == 1) {
     		$where[] = ' LOWER(a.last_name) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
@@ -232,6 +241,15 @@ class seminarmanModelapplications extends JModel
 		$db->setQuery($sql);
 		$titles = $db->loadObjectlist();
 		return $titles;
+	}
+	
+	function getCurrentPeriod()
+	{
+		$db = JFactory::getDBO();
+		$sql = 'SELECT * FROM #__seminarman_period WHERE id = '. $this->currentPeriodId;
+		$db->setQuery($sql);
+		$ret = $db->loadObject();
+		return $ret;
 	}
 
 

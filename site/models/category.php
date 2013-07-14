@@ -168,7 +168,7 @@ class SeminarmanModelCategory extends JModel
                 $where .= ' AND i.state = 1' . ' AND ( publish_up = ' . $this->_db->Quote($nullDate) .
                     ' OR publish_up <= ' . $this->_db->Quote($now) . ' )' . ' AND ( publish_down = ' .
                     $this->_db->Quote($nullDate) . ' OR publish_down >= ' . $this->_db->Quote($now) .
-                    ' )';
+                    ' ) AND i.start_date > (CURDATE() - INTERVAL 60 DAY)';
 
                 break;
 

@@ -6,6 +6,9 @@
 
 defined('_JEXEC') or die;
 
+require_once (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_seminarman' . DS .
+            'helpers' . DS . 'seminarman.php');
+
 /**
  * View class for a list of users.
  *
@@ -30,6 +33,8 @@ class SeminarmanViewUsers extends JViewLegacy
 		
 		if(JHTMLSeminarman::UserIsCourseManager()){
 			
+			$mainframe = JFactory::getApplication();
+			
 			$db = JFactory::getDBO();
 			$uri = JFactory::getURI();
 			$childviewname = 'Users';
@@ -50,13 +55,22 @@ class SeminarmanViewUsers extends JViewLegacy
 			JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'), 'index.php?option=com_seminarman&view=courses');
 			JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TEMPLATES'),'index.php?option=com_seminarman&view=templates');
 			JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_CATEGORIES'), 'index.php?option=com_seminarman&view=categories');
-			JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TAGS'), 'index.php?option=com_seminarman&view=tags');
 			JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TUTORS'), 'index.php?option=com_seminarman&view=tutors');
+    		JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_PERIODS'),'index.php?option=com_seminarman&view=periods');
 			JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_SETTINGS'),'index.php?option=com_seminarman&view=settings');
-		
+			
+			// build list of periods
+	        $filter_periodid = $mainframe->getUserStateFromRequest('com_seminarman' . 'periods.filter_periodid', 'filter_periodid', 0, 'int' );
+			$lists['periodid'] = JHTMLSeminarman::getPeriodsList($filter_periodid);
+	       	
 			$this->items		= $this->get('Items');
 			$this->pagination	= $this->get('Pagination');
 			$this->state		= $this->get('State');
+			
+			// build list of periods
+        	$filter_periodid = $mainframe->getUserStateFromRequest('com_seminarman' . 'periods.filter_periodid', 'filter_periodid', 0, 'int' );
+			$lists['periodid'] = JHTMLSeminarman::getPeriodsList($filter_periodid);
+			$this->lists = $lists;
 	
 			// Check for errors.
 			if (count($errors = $this->get('Errors'))) {

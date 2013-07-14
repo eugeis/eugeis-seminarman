@@ -48,19 +48,16 @@ class seminarmanViewapplications extends JView
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman');
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'), 'index.php?option=com_seminarman&view=applications', true);
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_USERS'), 'index.php?option=com_seminarman&view=users');
-        JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 'index.php?option=com_seminarman&view=salesprospects');
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'), 'index.php?option=com_seminarman&view=courses');
        	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TEMPLATES'),'index.php?option=com_seminarman&view=templates');
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_CATEGORIES'), 'index.php?option=com_seminarman&view=categories');
-        JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TAGS'), 'index.php?option=com_seminarman&view=tags');
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TUTORS'), 'index.php?option=com_seminarman&view=tutors');
+    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_PERIODS'),'index.php?option=com_seminarman&view=periods');
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_SETTINGS'),'index.php?option=com_seminarman&view=settings');
         }else{
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman');
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'), 'index.php?option=com_seminarman&view=applications', true);
-        JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 'index.php?option=com_seminarman&view=salesprospects');
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'), 'index.php?option=com_seminarman&view=courses'); 
-        JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TAGS'), 'index.php?option=com_seminarman&view=tags');       	
         }
 
         JToolBarHelper::title(JText::_('COM_SEMINARMAN_APPLICATIONS'), 'applications');
@@ -89,7 +86,11 @@ class seminarmanViewapplications extends JView
         $search = $mainframe->getUserStateFromRequest('com_seminarman' . $childviewname . '.search', 'search', '', 'string');
         $search = JString::strtolower($search);
 
-        $applications = $this->get('Data');
+        // build list of periods
+        $filter_periodid = $mainframe->getUserStateFromRequest('com_seminarman' . 'periods.filter_periodid', 'filter_periodid', 0, 'int' );
+		$lists['periodid'] = JHTMLSeminarman::getPeriodsList($filter_periodid);
+
+		$applications = $this->get('Data');
         $total = $this->get('Total');
         $pagination = $this->get('Pagination');
 
@@ -114,6 +115,7 @@ class seminarmanViewapplications extends JView
     	$lists['filter_search'] = JHTML::_('select.genericlist', $filters, 'filter_search', 'size="1" class="inputbox"', 'value', 'text', $filter_search );
 
 	   	// build status list
+    	$statuslist = array();
     	$statuslist[] = JHTML::_('select.option',  '0', JText::_( 'COM_SEMINARMAN_SUBMITTED' ), 'value', 'text' );
     	$statuslist[] = JHTML::_('select.option',  '1', JText::_( 'COM_SEMINARMAN_PENDING' ), 'value', 'text' );
     	//$statuslist[] = JHTML::_('select.option',  '2', JText::_( 'COM_SEMINARMAN_PAID' ), 'value', 'text' );
@@ -122,6 +124,7 @@ class seminarmanViewapplications extends JView
 
     	// build list of states
     	$javascript = 'onchange="document.adminForm.submit();"';
+    	$statuslist = array();
     	$statuslist[] = JHTML::_('select.option',  '0', '- '. JText::_( 'JLIB_HTML_SELECT_STATE' ). ' -', 'id', 'state' );
     	$statuslist[] = JHTML::_('select.option',  '1', JText::_( 'COM_SEMINARMAN_SUBMITTED' ), 'id', 'state' );
     	$statuslist[] = JHTML::_('select.option',  '2', JText::_( 'COM_SEMINARMAN_PENDING' ), 'id', 'state' );
@@ -129,7 +132,7 @@ class seminarmanViewapplications extends JView
     	$statuslist[] = JHTML::_('select.option',  '4', JText::_( 'COM_SEMINARMAN_CANCELED' ), 'id', 'state' );
     	$lists['statusid'] = JHTML::_('select.genericlist', $statuslist, 'filter_statusid', 'class="inputbox" size="1" onchange="submitform( );"','id', 'state', $filter_statusid );
 
-        $lists['state'] = JHTML::_('grid.state', $filter_state, JText::_('JPUBLISHED'), JText::_('JUNPUBLISHED'), null, JText::_('JTRASHED'));
+    	$lists['state'] = JHTML::_('grid.state', $filter_state, JText::_('JPUBLISHED'), JText::_('JUNPUBLISHED'), null, JText::_('JTRASHED'));
         $lists['order_Dir'] = $filter_order_Dir;
         $lists['order'] = $filter_order;
         $lists['search'] = $search;

@@ -79,7 +79,7 @@ $params = JComponentHelper::getParams('com_seminarman');
       <input type="button" onclick="document.getElementById('search').value='';this.form.getElementById('filter_statusid').value='0';this.form.getElementById('filter_courseid').value='0';this.form.getElementById('filter_state').value='';this.form.submit();" value="<?php echo JText::_('COM_SEMINARMAN_RESET'); ?>" />
    </td>
    <td nowrap="nowrap">
-      <?php echo $this->lists['statusid']; echo $this->lists['courseid']; echo $this->lists['state']; ?>
+      <?php echo $this->lists['statusid']; echo $this->lists['courseid']; echo $this->lists['state']; echo $this->lists['periodid']; ?>
    </td>
 </tr>
 </table>
@@ -94,11 +94,11 @@ $params = JComponentHelper::getParams('com_seminarman');
          <th width="10%"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_EMAIL', 'a.email', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="15%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE', 'j.title', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="5%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_CODE', 'j.code', $this->lists['order_Dir'], $this->lists['order']); ?></th>
-         <th width="5%" ><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE', 'a.note', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+         <th width="5%" ><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_ATTENDANCE', 'a.attendance', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="5%" ><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE_READING', 'a.note_reading', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="5%" ><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE_TEST', 'a.note_test', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="5%" ><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE_WORK', 'a.note_work', $this->lists['order_Dir'], $this->lists['order']); ?></th>
-         <th width="5%" ><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_ATTENDANCE', 'a.attendance', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+         <th width="5%" ><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_NOTE', 'a.note', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="5%" ><?php echo JHTML::_('grid.sort',  'COM_SEMINARMAN_STATUS', 'a.status', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 <?php if ($params->get('invoice_generate') == 1): ?>
          <th width="10%" nowrap="nowrap"><?php echo JText::_('COM_SEMINARMAN_INVOICE'); ?></th>

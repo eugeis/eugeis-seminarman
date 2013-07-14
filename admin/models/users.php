@@ -20,6 +20,8 @@ jimport('joomla.application.component.modellist');
  */
 class SeminarmanModelUsers extends JModelList
 {
+	var $currentPeriodId = null;
+	
 	/**
 	 * Constructor.
 	 *
@@ -46,6 +48,9 @@ class SeminarmanModelUsers extends JModelList
 		}
 
 		parent::__construct($config);
+		
+		$mainframe = JFactory::getApplication();
+		$this->currentPeriodId = $mainframe->getUserStateFromRequest('com_seminarman' . 'periods.filter_periodid', 'filter_periodid', 0, 'int' );
 	}
 
 	/**

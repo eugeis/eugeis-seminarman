@@ -350,6 +350,10 @@ function hide_calc(idc) {
 			<?php echo $this->lists['experience_level']; ?>
 		</li>
 		<li>
+			<label for="experience_level"><?php echo JText::_('COM_SEMINARMAN_PERIODS') ?></label>
+			<?php echo $this->lists['periods']; ?>
+		</li>		
+		<li>
 			<label for="theme_points"><?php echo JText::_('COM_SEMINARMAN_POINTS'); ?></label>
 			<input class="inputbox" type="text" name="theme_points" id="theme_points" size="10" maxlength="20" value="<?php echo $this->row->theme_points; ?>" />
 		</li>
