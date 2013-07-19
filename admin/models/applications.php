@@ -191,6 +191,10 @@ class seminarmanModelapplications extends JModel
     		}
     	}
     	
+    	if ($search && $filter_search == 7) {
+    		$where[] = ' LOWER(j.title) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
+    	}
+    	
        	switch ($filter_state)
        	{
        		case 'P':

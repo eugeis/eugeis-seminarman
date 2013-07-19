@@ -112,6 +112,7 @@ class seminarmanViewapplications extends JView
     	$filters[] = JHTML::_('select.option', '4', JText::_( 'COM_SEMINARMAN_COURSE_CODE' ) );
     	$filters[] = JHTML::_('select.option', '5', JText::_( 'COM_SEMINARMAN_COURSE_NOTE' ) );
     	$filters[] = JHTML::_('select.option', '6', JText::_( 'COM_SEMINARMAN_COURSE_ATTENDANCE' ) );
+    	$filters[] = JHTML::_('select.option', '7', JText::_( 'COM_SEMINARMAN_COURSE' ) );
     	$lists['filter_search'] = JHTML::_('select.genericlist', $filters, 'filter_search', 'size="1" class="inputbox"', 'value', 'text', $filter_search );
 
 	   	// build status list
