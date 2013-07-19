@@ -96,7 +96,7 @@ class seminarmanModelapplications extends JModel
         $where = $this->_buildContentWhere();
         $orderby = $this->_buildContentOrderBy();
 
-        $query = ' SELECT a.*, u.name AS editor, j.reference_number, j.title, j.id AS courseid, j.start_date, j.finish_date, j.code' .
+        $query = ' SELECT a.*, a.user_id, u.name AS editor, j.reference_number, j.title, j.id AS courseid, j.start_date, j.finish_date, j.code' .
             ' FROM #__seminarman_' . $this->childviewname . ' AS a ' .
             ' LEFT JOIN #__users AS u ON u.id = a.checked_out ' .
             ' LEFT JOIN #__seminarman_courses AS j ON j.id = a.course_id' . $where . $orderby;

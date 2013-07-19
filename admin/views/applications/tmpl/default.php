@@ -168,7 +168,9 @@ for ($i = 0, $n = count($this->applications); $i < $n; $i++)
             </span>
 <?php    } ?>
          </td>
-         <td class="left"><?php echo $row->first_name; ?></td>
+         <td class="left">
+         <a href="<?php echo JRoute::_('index.php?option=com_users&task=user.edit&id='.(int) $row->user_id); ?>" title="<?php echo JText::sprintf('COM_USERS_EDIT_USER', $this->escape($row->first_name)); ?>">
+         <?php echo $this->escape($row->first_name); ?></a></td>
          <td class="centered"><?php echo ('<a style="font-size: 1em;" href="mailto:'.$row->email.'">'.$row->email.'</a>');?></td>
          <td class="centered"><span class="editlinktip hasTip" title="<?php echo JText::_('COM_SEMINARMAN_VIEW_COURSE_DETAILS'); ?>::<?php
 
