@@ -168,7 +168,7 @@ for ($i = 0, $n = count($this->applications); $i < $n; $i++)
             </span>
 <?php    } ?>
          </td>
-         <td class="centered"><?php echo $row->first_name; ?></td>
+         <td class="left"><?php echo $row->first_name; ?></td>
          <td class="centered"><?php echo ('<a style="font-size: 1em;" href="mailto:'.$row->email.'">'.$row->email.'</a>');?></td>
          <td class="centered"><span class="editlinktip hasTip" title="<?php echo JText::_('COM_SEMINARMAN_VIEW_COURSE_DETAILS'); ?>::<?php
 

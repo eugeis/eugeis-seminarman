@@ -60,10 +60,12 @@ class seminarmanControllerUsers extends seminarmanController
 	 *
 	 * @since	1.6
 	 */
+	/*
 	public function getModel($name = 'User', $prefix = 'UsersModel', $config = array('ignore_request' => true))
 	{
 		return parent::getModel($name, $prefix, $config);
 	}
+	*/
 
 	public function changeGroups()   {
 		$userIds	= JRequest::getVar('cid', array(), '', 'array');

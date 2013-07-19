@@ -34,7 +34,6 @@ class SeminarmanViewUsers extends JViewLegacy
 		if(JHTMLSeminarman::UserIsCourseManager()){
 			
 			$mainframe = JFactory::getApplication();
-			
 			$db = JFactory::getDBO();
 			$uri = JFactory::getURI();
 			$childviewname = 'Users';

@@ -62,20 +62,6 @@ class seminarmanModelPeriod extends JModel
         return $this->_data;
     }
 
-    function &getData(&$currentPeriod)
-    {
-
-        if ($this->_loadData())
-        {
-
-            $user = JFactory::getUser();
-
-        } else
-            $this->_initData();
-
-        return $this->_data;
-    }
-        
     function isCheckedOut($uid = 0)
     {
         if ($this->_loadData())

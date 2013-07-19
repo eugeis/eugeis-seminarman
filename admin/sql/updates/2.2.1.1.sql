@@ -22,10 +22,6 @@ CREATE TABLE IF NOT EXISTS `#__seminarman_period` (
   KEY `code` (`code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-ALTER IGNORE TABLE `#__seminarman_period` ADD `start_date`  date NOT NULL DEFAULT '0000-00-00' AFTER `description`;
-ALTER IGNORE TABLE `#__seminarman_period` ADD `finish_date`  date NOT NULL DEFAULT '0000-00-00' AFTER `start_date`;
-ALTER IGNORE TABLE `#__seminarman_period` ADD `isdefault` INT( 1 ) NOT NULL DEFAULT '0' AFTER `finish_date`;
-
 ALTER IGNORE TABLE `#__seminarman_application` ADD `note_reading` varchar(3) AFTER `attendees`;
 ALTER IGNORE TABLE `#__seminarman_application` ADD `note_test` varchar(3) AFTER `note_reading`;
 ALTER IGNORE TABLE `#__seminarman_application` ADD `note_work` varchar(3) AFTER `note_test`;
