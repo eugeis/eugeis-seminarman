@@ -37,6 +37,8 @@ class SeminarmanModelUsers extends JModelList
 			$config['filter_fields'] = array(
 				'id', 'a.id',
 				'name', 'a.name',
+				'last_name', 'a.last_name',
+				'first_name', 'a.first_name',
 				'username', 'a.username',
 				'email', 'a.email',
 				'block', 'a.block',
@@ -108,7 +110,7 @@ class SeminarmanModelUsers extends JModelList
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('a.name', 'asc');
+		parent::populateState('last_name', 'asc');
 	}
 
 	/**
@@ -269,7 +271,7 @@ class SeminarmanModelUsers extends JModelList
 		$query->select(
 			$this->getState(
 				'list.select',
-				'a.*'
+				'a.*,split_str(a.name," ", 1) as first_name,split_str(a.name," ", 2) as last_name'
 			)
 		);
 
@@ -407,7 +409,7 @@ class SeminarmanModelUsers extends JModelList
 		}
 
 		// Add the list ordering clause.
-		$query->order($db->escape($this->getState('list.ordering', 'a.name')).' '.$db->escape($this->getState('list.direction', 'ASC')));
+		$query->order($db->escape($this->getState('list.ordering', 'a.last_name')).' '.$db->escape($this->getState('list.direction', 'ASC')));
 
 		return $query;
 	}

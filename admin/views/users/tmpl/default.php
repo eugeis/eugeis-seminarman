@@ -118,6 +118,12 @@ $loggeduser = JFactory::getUser();
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th class="left">
+					<?php echo JHtml::_('grid.sort', 'COM_USERS_HEADING_LAST_NAME', 'last_name', $listDirn, $listOrder); ?>
+				</th>
+				<th class="left">
+					<?php echo JHtml::_('grid.sort', 'COM_USERS_HEADING_FIRST_NAME', 'first_name', $listDirn, $listOrder); ?>
+				</th>
+				<th class="left nowrap">
 					<?php echo JHtml::_('grid.sort', 'COM_USERS_HEADING_NAME', 'a.name', $listDirn, $listOrder); ?>
 				</th>
 				<th class="nowrap" width="10%">
@@ -163,6 +169,12 @@ $loggeduser = JFactory::getUser();
 						<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 					<?php endif; ?>
 				</td>
+				<td class="left">
+					<?php echo $this->escape($item->last_name); ?>
+				</td>				
+				<td class="left">
+					<?php echo $this->escape($item->first_name); ?>
+				</td>				
 				<td>
 					<div class="fltrt">
 						<?php echo JHtml::_('users.filterNotes', $item->note_count, $item->id); ?>

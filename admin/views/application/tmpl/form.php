@@ -84,6 +84,14 @@ echo $pane->startPanel( JText::_('COM_SEMINARMAN_APPLICATION') , 'details-page' 
 		<legend><?php echo $this->application->course_title . ' ( ' . JHTML::Date($this->application->start_date, JText::_('COM_SEMINARMAN_DATE_FORMAT1')) . ' - ' . JHTML::Date($this->application->finish_date, JText::_('COM_SEMINARMAN_DATE_FORMAT1')) . ' )'; ?></legend>
 		<table class="admintable">
 			<tr>
+				<td><label for="title"><?php echo JText::_('COM_SEMINARMAN_FIRST_NAME'); ?>:</label></td>
+				<td><input class="text_area" type="text" name="first_name" id="first_name" size="32" maxlength="100" value="<?php echo $this->application->first_name; ?>" /></td>
+			</tr>
+			<tr>
+				<td><label for="alias"><?php echo JText::_('COM_SEMINARMAN_LAST_NAME'); ?>:</label></td>
+				<td><input class="text_area" type="text" name="last_name" id="last_name" size="32" maxlength="100" value="<?php echo $this->application->last_name; ?>" /></td>
+			</tr>
+			<tr>
 				<td><label for="note"><?php echo JText::_('COM_SEMINARMAN_COURSE_NOTE'); ?>:</label></td>
 				<td><input class="text_area" type="text" name="note" id="note" size="32" maxlength="3" value="<?php echo $this->application->note; ?>"/></td>
 			</tr>
@@ -182,8 +190,6 @@ echo $pane->endPane();
     <input type="hidden" name="controller" value="application" />
 	<input type="hidden" name="cid[]" value="<?php echo $this->application->id; ?>" />
     <input type="hidden" name="user_id" value="<?php echo $this->application->user_id; ?>" />
-    <input type="hidden" name="first_name" value="<?php echo $this->application->first_name; ?>" />
-	<input type="hidden" name="last_name" value="<?php echo $this->application->last_name; ?>" />
 	<input type="hidden" name="task" value="" />
 	<?php echo JHTML::_('form.token'); ?>
 </form>

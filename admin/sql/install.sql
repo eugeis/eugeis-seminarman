@@ -600,6 +600,14 @@ CREATE TABLE IF NOT EXISTS `#__seminarman_period` (
   KEY `code` (`code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
+CREATE FUNCTION SPLIT_STR(
+x VARCHAR(255),
+delim VARCHAR(12),
+pos INT
+)
+RETURNS VARCHAR(255)
+RETURN REPLACE(SUBSTRING(SUBSTRING_INDEX(x, delim, pos),
+LENGTH(SUBSTRING_INDEX(x, delim, pos -1)) + 1),delim, '')
 
 INSERT IGNORE INTO `#__seminarman_country` (`id`, `loc`, `code`, `title`, `alias`, `description`, `date`, `hits`, `published`, `language`, `checked_out`, `checked_out_time`, `ordering`, `access`, `params`) VALUES
 (3, 'AF', 'BF', 'Burkina Faso', '', NULL, '0000-00-00 00:00:00', 0, 1, '', 0, '0000-00-00 00:00:00', 151, 0, ''),
