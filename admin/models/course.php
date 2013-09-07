@@ -773,11 +773,16 @@ class SeminarmanModelCourse extends JModel
        	                      ' a.first_name AS `FIRSTNAME`,'.
        	                      ' a.last_name AS `LASTNAME`,'.
        	                      ' a.email AS `EMAIL`,'.
+    						  ' a.note_reading AS `NOTE_READING`,'.
+						      ' a.note_test AS `NOTE_TEST`,'.
+						      ' a.note_work AS `NOTE_WORK`,'.
+						      ' a.note AS `NOTE`,'.
+						      ' a.attendance AS `ATTENDANCE`,'.
     						  ' a.status AS `STATUS_ID`'.
      	                    ' FROM `#__seminarman_application` AS a'.
 				' LEFT JOIN `#__seminarman_courses` AS c ON a.course_id = c.id'.
       	                    ' WHERE c.id = '. (int) $this->_id .
-      	                    ' ORDER BY a.id');
+      	                    ' ORDER BY a.last_name');
     	$data = $db->loadAssocList('id');  	
     	
     	foreach ($data as $k => $v) {

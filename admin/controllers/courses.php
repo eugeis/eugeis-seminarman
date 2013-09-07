@@ -629,6 +629,19 @@ JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users
 				$templateData[$key] = $templateData[$key] + 1;
 			}
 			
+			//count attendees per status
+			foreach ($attendees as $k => $v) {
+				$key = 'ATTENDEES_STATUS_'.$v['STATUS_ID'];
+				$templateData[$key] = $templateData[$key] + 1;
+			}
+			
+			//remove all with status not 1
+			foreach ($attendees as $k => $v) {
+				if($v['STATUS_ID'] != 1) {
+					unset($attendees[$k]);
+				}
+			}
+			
 			$pdf = new PdfAttList($template, $templateData, $attendees);
 			$pdf->store(JPATH_ROOT.DS.'invoices'.DS.$course->title.'-'.JFactory::getDate($course->start_date)->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1')).'.pdf');
 			$user = $model->getTutorAsUser();
