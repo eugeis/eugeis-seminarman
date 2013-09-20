@@ -263,7 +263,117 @@ class seminarmanControllerapplication extends seminarmanController
 		}
 		$this->setRedirect( 'index.php?option=com_seminarman&view=applications', $msg  );
 	}
+	
+	public function changeGroups()   {
+		$appIds	= JRequest::getVar('cid', array(), '', 'array');
+		$model = $this->getModel($this->childviewname);
+		if($appIds){
+			$userIds = $model->getUserIds($appIds); 
+			$groupId = JRequest::getVar('selectGroup', '', 'POST');
+			$changeGroups = JRequest::getVar('changeGroups', '', 'POST');;
+			$done = $this->batchUser($groupId, $userIds, $changeGroups);
+		}
+		$this->setRedirect('index.php?option=com_seminarman&view=users', $msg);
+	}
+	
+	public function batchUser($group_id, $user_ids, $action)
+	{
+		// Get the DB object
+		$db = JFactory::getDBO();
 
+		JArrayHelper::toInteger($user_ids);
+
+		switch ($action)
+		{
+			// Sets users to a selected group
+			case 'set':
+				$doDelete	= 'all';
+				$doAssign	= true;
+				break;
+
+			// Remove users from a selected group
+			case 'del':
+				$doDelete	= 'group';
+				break;
+
+			// Add users to a selected group
+			case 'add':
+			default:
+				$doAssign	= true;
+				break;
+		}
+
+		// Remove the users from the group if requested.
+		if (isset($doDelete))
+		{
+			$query = $db->getQuery(true);
+
+			// Remove users from the group
+			$query->delete($db->quoteName('#__user_usergroup_map'));
+			$query->where($db->quoteName('user_id') . ' IN (' . implode(',', $user_ids) . ')');
+
+			// Only remove users from selected group
+			if ($doDelete == 'group')
+			{
+				$query->where($db->quoteName('group_id') . ' = ' . (int) $group_id);
+			}
+
+			$db->setQuery($query);
+
+			// Check for database errors.
+			if (!$db->query())
+			{
+				$this->setError($db->getErrorMsg());
+				return false;
+			}
+		}
+
+		// Assign the users to the group if requested.
+		if (isset($doAssign))
+		{
+			$query = $db->getQuery(true);
+
+			// First, we need to check if the user is already assigned to a group
+			$query->select($db->quoteName('user_id'));
+			$query->from($db->quoteName('#__user_usergroup_map'));
+			$query->where($db->quoteName('group_id') . ' = ' . (int) $group_id);
+			$db->setQuery($query);
+			$users = $db->loadColumn();
+
+			// Build the values clause for the assignment query.
+			$query->clear();
+			$groups = false;
+			foreach ($user_ids as $id)
+			{
+				if (!in_array($id, $users))
+				{
+					$query->values($id . ',' . $group_id);
+					$groups = true;
+				}
+			}
+
+			// If we have no users to process, throw an error to notify the user
+			if (!$groups)
+			{
+				$this->setError(JText::_('COM_USERS_ERROR_NO_ADDITIONS'));
+				return false;
+			}
+
+			$query->insert($db->quoteName('#__user_usergroup_map'));
+			$query->columns(array($db->quoteName('user_id'), $db->quoteName('group_id')));
+			$db->setQuery($query);
+
+			// Check for database errors.
+			if (!$db->query())
+			{
+				$this->setError($db->getErrorMsg());
+				return false;
+			}
+		}
+
+		return true;
+	}
+	
 	function changeMultiAttributtes()   {
 		JRequest::checkToken() or jexit('Invalid Token');
 		$cid = JRequest::getVar('cid', array(), 'post', 'array');

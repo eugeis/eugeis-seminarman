@@ -391,6 +391,34 @@ class seminarmanModelapplication extends JModel
 		}
 		return $result;
 	}
+	
+	function getUserIds($appIds)
+	{
+		$db			=& $this->getDBO();
+		$data		= new stdClass();
+
+		$appIdsAsStr = implode(',', $appIds);
+		
+		// Attach custom fields into the user object
+		$strSQL	= 'SELECT distinct a.user_id FROM #__seminarman_' . $this->childviewname . ' AS a ' .
+				'WHERE a.id in (' . $appIdsAsStr . ')';
+
+		$db->setQuery( $strSQL );
+
+		$result	= $db->loadAssocList();
+
+		if($db->getErrorNum())
+		{
+			JError::raiseError( 500, $db->stderr());
+		}
+		
+		$ret = array();
+		for($i = 0; $i < count($result); $i++)
+		{
+			$ret[$i] = $result[$i]['user_id'];
+		}
+		return $ret;
+	}
 
 	function saveCustomfields($applicationId, $userId, $fields)
 	{

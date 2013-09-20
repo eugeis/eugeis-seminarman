@@ -15,6 +15,14 @@ $params = JComponentHelper::getParams('com_seminarman');
 
 
 <form action="<?php echo $this->requestURL; ?>" method="post" name="adminForm">
+<?php
+	// Create the copy/move options.
+	$options = array(
+		JHtml::_('select.option', 'add', JText::_('COM_USERS_BATCH_ADD')),
+		JHtml::_('select.option', 'del', JText::_('COM_USERS_BATCH_DELETE')),
+		JHtml::_('select.option', 'set', JText::_('COM_USERS_BATCH_SET'))
+	);
+?>
 
 <fieldset class="batch">
 	<legend><?php echo JText::_('COM_SEMINARMAN_MULTISET'); ?></legend>
@@ -66,6 +74,28 @@ $params = JComponentHelper::getParams('com_seminarman');
 					value="<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>" />
 			</td>
 		<tr>
+	</table>
+</fieldset>
+<fieldset class="batch">
+	<legend><?php echo JText::_('COM_USERS_BATCH_OPTIONS');?></legend>
+
+	<table style="margin-right:10px">
+		<tr>
+			<td><?php echo JText::_('COM_USERS_BATCH_GROUP') ?></td>
+			<td>
+				<select name="selectGroup" class="inputbox" id="groupid">
+				<option value=""><?php echo JText::_('JSELECT') ?></option>
+				<?php echo JHtml::_('select.options', JHtml::_('user.groups', JFactory::getUser()->get('isRoot'))); ?>
+			</select>
+			</td>
+			<td>
+				<?php echo JHtml::_('select.radiolist', $options, 'changeGroups', '', 'value', 'text', 'add') ?>
+			</td>
+			<td>
+				<input type="button" onclick="javascript:if (document.adminForm.boxchecked.value==0){alert('Bitte zuerst eine Auswahl in der Liste vornehmen!');}else{ Joomla.submitbutton('changeGroups')};"
+					value="<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>" />
+			</td>
+		</tr>
 	</table>
 </fieldset>
 

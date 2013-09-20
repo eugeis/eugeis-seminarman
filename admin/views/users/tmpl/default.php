@@ -68,7 +68,7 @@ $loggeduser = JFactory::getUser();
 					<?php echo JHtml::_('select.radiolist', $options, 'changeGroups', '', 'value', 'text', 'add') ?>
 				</td>
 				<td>
-					<input type="button" onclick="javascript:if (document.adminForm.boxchecked.value==0){alert('Bitte zuerst Teilnehmer auswählen!');}else{ Joomla.submitbutton('changeGroups')};"
+					<input type="button" onclick="javascript:if (document.adminForm.boxchecked.value==0){alert('Bitte zuerst eine Auswahl in der Liste vornehmen!');}else{ Joomla.submitbutton('changeGroups')};"
 						value="<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>" />
 				</td>
 			</tr>
