@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class SeminarmanModelTags extends JModel
+class SeminarmanModelTags extends JModelLegacy
 {
     var $_data = null;
 
@@ -115,7 +115,7 @@ class SeminarmanModelTags extends JModel
         $orderby = $this->_buildCourseOrderBy();
 
     	$query = 'SELECT DISTINCT i.*, (i.plus / (i.plus + i.minus) ) * 100 AS votes,' .
-            ' emp.title as tutor,' .
+            ' CONCAT_WS(" ", emp.firstname, emp.lastname) as tutor,' .
     	    ' CASE WHEN CHAR_LENGTH(i.alias) THEN CONCAT_WS(\':\', i.id, i.alias) ELSE i.id END as slug,' .
     	    ' gr.title AS cgroup, lev.title AS level' .
     	    ' FROM #__seminarman_courses AS i' .
@@ -150,7 +150,8 @@ class SeminarmanModelTags extends JModel
         $params = $mainframe->getParams('com_seminarman');
 
         $jnow = JFactory::getDate();
-        $now = $jnow->toMySQL();
+        // $now = $jnow->toMySQL();
+        $now = $jnow->toSQL();
         $nullDate = $this->_db->getNullDate();
 
         $state = 1;
@@ -198,10 +199,10 @@ class SeminarmanModelTags extends JModel
     		if ($filter)
     		{
 
-    			$filter = $this->_db->getEscaped(trim(JString::strtolower($filter)));
+    			$filter = $this->_db->escape(trim(JString::strtolower($filter)));
 
     			$where .= ' AND LOWER( i.title ) LIKE ' . $this->_db->Quote('%' . $this->_db->
-    			    getEscaped($filter, true) . '%', false);
+    			    escape($filter, true) . '%', false);
     		}
     	}
 
@@ -307,8 +308,8 @@ class SeminarmanModelTags extends JModel
 			$filter_experience_level2 = JRequest::getString('filter_experience_level2', '', 'request');
 	
 			if ($filter2) {
-				$filter2 = $this->_db->getEscaped(trim(JString::strtolower($filter2)));
-				$like = $this->_db->Quote('%' . $this->_db->getEscaped($filter2, true) . '%', false);
+				$filter2 = $this->_db->escape(trim(JString::strtolower($filter2)));
+				$like = $this->_db->Quote('%' . $this->_db->escape($filter2, true) . '%', false);
 				$query .= ' AND ( LOWER( i.title ) LIKE ' . $like .' OR LOWER( i.code ) LIKE '. $like .')';
 	
 			}
@@ -353,7 +354,8 @@ class SeminarmanModelTags extends JModel
 	        	          ' WHERE user_id = '. $user->id. 
 	        	          ' AND published = 1';
 		$db->setQuery($q);
-		$this->_bookings = $db->loadResultArray();
+		// $this->_bookings = $db->loadResultArray();
+		$this->_bookings = $db->loadColumn();
 	}
 }
 

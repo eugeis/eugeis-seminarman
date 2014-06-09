@@ -315,18 +315,10 @@ class SeminarmanControllerCourses extends SeminarmanController
     {
     	
 // jimport('joomla.application.component.modeladmin'); 
-JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users' . DS . 'models' , 'UsersModel');
+JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users' . DS . 'models' , 'UsersModel');
     	
         JRequest::setVar('view', 'course');
         JRequest::setVar('hidemainmenu', 1);
-        
-        // $items_model =& JModel::getInstance('claudy', 'UsersModel');
-        // $items_model = JModel::getInstance( 'claudy', 'UsersModel' );
-        // var_dump($items_model);
-        // $items_model->setState();
-        // $items_model->setClaudy();
-        
-        // $this->test();
 
         $model = $this->getModel('course');
         $user = JFactory::getUser();
@@ -580,13 +572,16 @@ JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users
 	function attendancelist()
 	{
 		require_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_seminarman'.DS.'classes'.DS.'pdfdocument.php';
-
+		
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 		$model = $this->getModel('course');
-
+		
 		$course = $model->getCourse();
 		$template = $model->getAttendanceLstTemplate($course->attlst_template);
 		$templateData = $model->getAttendanceLstTemplateData();
 		$attendees = $model->getAttendeesData();
+		
+		chdir('..');
 		
 		$templateData['ATTENDEES_STATUS_0'] = 0;
 		$templateData['ATTENDEES_STATUS_1'] = 0;
@@ -831,6 +826,91 @@ JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users
 				}
 			}
 		}
+	}
+
+	function attendancelist_alt()
+	{
+		require_once (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_seminarman' . DS .
+				'helpers' . DS . 'seminarman.php');
+		if (SeminarmanFunctions::isSmanpdflistPlgEnabled()) {
+		require_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_seminarman'.DS.'classes'.DS.'pdfdocument.php';
+	
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		$model = $this->getModel('course');
+	
+		$course = $model->getCourse();
+		
+		$plugin_pdflist = JPluginHelper::getPlugin('seminarman', 'smanpdflist');
+		$pdflist_params = new JRegistry($plugin_pdflist->params);
+		$tmpl_id = $pdflist_params->get('template_1_id');
+		
+		$template = $model->getAttendanceLstTemplate($tmpl_id);
+		$templateData = $model->getAttendanceLstTemplateData();
+		$attendees = $model->getAttendeesData();
+	
+		chdir('..');
+		$pdf = new PdfAttList($template, $templateData, $attendees);
+		$pdf->Output('attendees_'. $course->id .'_alt2.pdf', 'I');
+		exit;
+		}
+	}
+	
+	function attendancelist_alt_three()
+	{
+		require_once (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_seminarman' . DS .
+				'helpers' . DS . 'seminarman.php');
+		if (SeminarmanFunctions::isSmanpdflistPlgEnabled()) {
+		require_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_seminarman'.DS.'classes'.DS.'pdfdocument.php';
+	
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		$model = $this->getModel('course');
+	
+		$course = $model->getCourse();
+		
+		$plugin_pdflist = JPluginHelper::getPlugin('seminarman', 'smanpdflist');
+		$pdflist_params = new JRegistry($plugin_pdflist->params);
+		$tmpl_id = $pdflist_params->get('template_2_id');
+		
+		$template = $model->getAttendanceLstTemplate($tmpl_id);
+		$templateData = $model->getAttendanceLstTemplateData();
+		$attendees = $model->getAttendeesData();
+	
+		chdir('..');
+		$pdf = new PdfAttList($template, $templateData, $attendees);
+		$pdf->Output('attendees_'. $course->id .'_alt3.pdf', 'I');
+		exit;
+		}
+	}
+	
+	function certificatelist() {
+		require_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_seminarman'.DS.'classes'.DS.'pdfdocument.php';
+		
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		$model = $this->getModel('course');
+		
+		$course = $model->getCourse();
+		$template = new stdClass();
+		$template->srcpdf = "";
+		$template->margin_left = "20";
+		$template->margin_right = "20";
+		$template->margin_top = "20";
+		$template->margin_bottom = "20";
+		$template->paperformat = "A4";
+		$template->orientation = "P";
+		$template->html = $course->certificate_text;
+		
+		if (empty($template->html)) {
+			$mainframe = JFactory::getApplication();
+			$mainframe->redirect('index.php?option=com_seminarman&view=courses', JText::_('COM_SEMINARMAN_CERTIFICATE_TEXT_EMPTY'), 'notice');
+		}
+		
+		$templateData = $model->getAttendanceLstTemplateData();
+		$attendees = $model->getAttendeesData();
+		
+		chdir('..');
+		$pdf = new PdfAttList($template, $templateData, $attendees);
+		$pdf->Output('certificates_'. $course->id .'.pdf', 'I');
+		exit;		
 	}
 	
 	function checkAllowed()

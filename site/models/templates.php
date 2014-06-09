@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class SeminarmanModelTemplates extends JModel
+class SeminarmanModelTemplates extends JModelLegacy
 {
     var $_template = null;
     var $_salesProspectData = null;
@@ -98,7 +98,8 @@ class SeminarmanModelTemplates extends JModel
         if (empty($this->_template))
         {
             $query = 'SELECT i.*, c.access AS cataccess, c.id AS catid, c.published AS catpublished, c.title AS categorytitle,' .
-                ' u.name AS author, u.usertype,' .
+                // ' u.name AS author, u.usertype,' .
+                ' u.name AS author,' .
                 ' gr.title AS cgroup,' .
                 ' lev.title AS level,' .
                 ' i.id as slug,' .
@@ -227,7 +228,8 @@ class SeminarmanModelTemplates extends JModel
     {
         $query = 'SELECT tid FROM #__seminarman_tags_template_relations WHERE templateid = ' . (int)$this->_id;
         $this->_db->setQuery($query);
-        return $this->_db->loadResultArray();
+        // return $this->_db->loadResultArray();
+        return $this->_db->loadColumn();
     }
 
 	function isCheckedOut($uid = 0)

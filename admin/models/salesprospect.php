@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class seminarmanModelsalesprospect extends JModel
+class seminarmanModelsalesprospect extends JModelLegacy
 {
     var $_id = null;
 
@@ -246,8 +246,8 @@ class seminarmanModelsalesprospect extends JModel
 
 		// Attach custom fields into the user object
 		$strSQL	= 'SELECT field.*, value.value '
-				. 'FROM ' . $db->nameQuote('#__seminarman_fields') . ' AS field '
-				. 'LEFT JOIN ' . $db->nameQuote('#__seminarman_fields_values_salesprospect') . ' AS value '
+				. 'FROM ' . $db->quoteName('#__seminarman_fields') . ' AS field '
+				. 'LEFT JOIN ' . $db->quoteName('#__seminarman_fields_values_salesprospect') . ' AS value '
  				. 'ON field.id=value.field_id AND value.requestid=' . $db->Quote($requestid) . ' '
  				. 'WHERE published=1 ' 
  				. 'ORDER BY field.ordering';

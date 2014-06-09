@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class SeminarmanViewFilemanager extends JView
+class SeminarmanViewFilemanager extends JViewLegacy
 {
     function display($tpl = null)
     {
@@ -44,7 +44,7 @@ class SeminarmanViewFilemanager extends JView
             '.filemanager.filter_assigned', 'filter_assigned', '*', 'word');
         $search = $mainframe->getUserStateFromRequest($option . '.filemanager.search',
             'search', '', 'string');
-        $search = $db->getEscaped(trim(JString::strtolower($search)));
+        $search = $db->escape(trim(JString::strtolower($search)));
 
         $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
         if ($lang->isRTL())
@@ -53,7 +53,8 @@ class SeminarmanViewFilemanager extends JView
         }
 
         JToolBarHelper::title(JText::_('COM_SEMINARMAN_FILEMANAGER'), 'qffilemanager');
-        JToolBarHelper::customX('goback', 'back.png', 'back_f2.png', 'COM_SEMINARMAN_GO_BACK', false, true);
+        // JToolBarHelper::customX('goback', 'back.png', 'back_f2.png', 'COM_SEMINARMAN_GO_BACK', false, true);
+        JToolBarHelper::custom('goback', 'backward-2', 'backward-2', 'COM_SEMINARMAN_GO_BACK', false, true);
         JToolBarHelper::deleteList();
 
         $rows = $this->get('Data');
@@ -81,8 +82,8 @@ class SeminarmanViewFilemanager extends JView
 
         if ($params->get('enable_flash', 1))
         {
-            JHTML::_('behavior.uploader', 'file-upload', array('onAllComplete' =>
-                'function(){ window.location.reload(); }'));
+              // JHTML::_('behavior.uploader', 'file-upload', array('onAllComplete' =>
+              //  'function(){ window.location.reload(); }'));
         }
 
         jimport('joomla.client.helper');

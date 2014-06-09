@@ -1,0 +1,818 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<fieldset name="component" label="COM_SEMINARMAN_COMPONENT_LABEL"
+		description="COM_SEMINARMAN_COMPONENT_DESC">
+
+		<field name="enable_bookings" type="list" class="inputbox" default="0"
+			label="COM_SEMINARMAN_ENABLE_BOOKINGS" description="COM_SEMINARMAN_ENABLE_BOOKINGS_DESC"
+			menu="HIDE">
+			<option value="0">JNO</option>
+			<option value="1">COM_SEMINARMAN_REGISTERED_USERS</option>
+			<option value="2">COM_SEMINARMAN_ALL_USERS</option>
+			<option value="3">COM_SEMINARMAN_ALL_USERS_NO_REG</option>
+		</field>
+		<field name="enable_loginform" type="radio" class="btn-group"
+			default="1" label="COM_SEMINARMAN_SHOW_LOGIN_FORM"
+			description="COM_SEMINARMAN_SHOW_LOGIN_FORM_DESC" menu="HIDE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="enable_multiple_bookings_per_user" type="radio" class="btn-group"
+			default="0" label="COM_SEMINARMAN_MULTIPLE_BOOKINGS_PER_USER"
+			description="COM_SEMINARMAN_MULTIPLE_BOOKINGS_PER_USER_DESC" menu="HIDE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="enable_bookings_deletable" type="radio" default="0" class="btn-group"
+			label="COM_SEMINARMAN_BOOKINGS_DELETABLE" description="COM_SEMINARMAN_BOOKINGS_DELETABLE_DESC"
+			menu="HIDE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="enable_num_of_attendees" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_ENABLE_NUM_OF_ATTENDEES" description="COM_SEMINARMAN_ENABLE_NUM_OF_ATTENDEES_DESC"
+			menu="HIDE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="show_price_1" type="list" default="0" class="inputbox"
+			label="COM_SEMINARMAN_SHOW_PRICE_1" description="COM_SEMINARMAN_SHOW_PRICE_1_DESC"
+			menu="HIDE">
+			<option value="0">COM_SEMINARMAN_SHOW_PRICE_VALUE</option>
+			<option value="1">COM_SEMINARMAN_ONLY_PRICE_GROUP_NAME</option>
+		</field>
+		<field name="show_price_2" type="list" default="1" class="inputbox"
+			label="COM_SEMINARMAN_SHOW_PRICE_2" description="COM_SEMINARMAN_SHOW_PRICE_2_DESC"
+			menu="HIDE">
+			<option value="0">COM_SEMINARMAN_NO_USER</option>
+			<option value="1">COM_SEMINARMAN_ALLOWED_USERS</option>
+			<option value="2">COM_SEMINARMAN_ALL_USERS</option>
+			<option value="3">COM_SEMINARMAN_ONLY_PRICE_GROUP_NAME</option>
+		</field>
+		<field name="show_price_3" type="list" default="1" class="inputbox"
+			label="COM_SEMINARMAN_SHOW_PRICE_3" description="COM_SEMINARMAN_SHOW_PRICE_3_DESC"
+			menu="HIDE">
+			<option value="0">COM_SEMINARMAN_NO_USER</option>
+			<option value="1">COM_SEMINARMAN_ALLOWED_USERS</option>
+			<option value="2">COM_SEMINARMAN_ALL_USERS</option>
+			<option value="3">COM_SEMINARMAN_ONLY_PRICE_GROUP_NAME</option>
+		</field>
+		<field name="show_price_4" type="list" default="1" class="inputbox"
+			label="COM_SEMINARMAN_SHOW_PRICE_4" description="COM_SEMINARMAN_SHOW_PRICE_4_DESC"
+			menu="HIDE">
+			<option value="0">COM_SEMINARMAN_NO_USER</option>
+			<option value="1">COM_SEMINARMAN_ALLOWED_USERS</option>
+			<option value="2">COM_SEMINARMAN_ALL_USERS</option>
+			<option value="3">COM_SEMINARMAN_ONLY_PRICE_GROUP_NAME</option>
+		</field>
+		<field name="show_price_5" type="list" default="1" class="inputbox"
+			label="COM_SEMINARMAN_SHOW_PRICE_5" description="COM_SEMINARMAN_SHOW_PRICE_5_DESC"
+			menu="HIDE">
+			<option value="0">COM_SEMINARMAN_NO_USER</option>
+			<option value="1">COM_SEMINARMAN_ALLOWED_USERS</option>
+			<option value="2">COM_SEMINARMAN_ALL_USERS</option>
+			<option value="3">COM_SEMINARMAN_ONLY_PRICE_GROUP_NAME</option>
+		</field>
+
+		<field name="enable_salesprospects" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_SALESPROSPECTS_ENABLE" description="COM_SEMINARMAN_SALESPROSPECTS_ENABLE_DESC"
+			menu="HIDE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_price_template" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_SHOW_PRICE_1_TEMPLATE" description="COM_SEMINARMAN_SHOW_PRICE_1_TEMPLATE_DESC"
+			menu="HIDE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field name="enable_payment_overview" type="radio" default="0" class="btn-group"
+			label="COM_SEMINARMAN_SHOW_PAYMENT_OVERVIEW" description="COM_SEMINARMAN_SHOW_PAYMENT_OVERVIEW_DESC"
+			menu="HIDE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>		
+		
+		<field name="application_landingpage" type="text" default="index.php" size="40"
+			label="COM_SEMINARMAN_APPLICATION_LANDINGPAGE" description="COM_SEMINARMAN_APPLICATION_LANDINGPAGE_DESC" />
+		<field name="@spacer" type="spacer" default="" label=""
+			description="" />
+		<field name="show_modify_date" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_SHOW_MODIFIED_DATE" description="COM_SEMINARMAN_SHOW_MODIFIED_DATE_DESC"
+			menu="HIDE">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_hits" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_SHOW_HITS" description="COM_SEMINARMAN_SHOW_HITS_DESC"
+			menu="HIDE">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_sessions" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_SHOW_SESSIONS" description="COM_SEMINARMAN_SHOW_SESSIONS_DESC">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_tags" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_SHOW_TAGS" description="COM_SEMINARMAN_SHOW_TAGS_DESC"
+			menu="HIDE">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_favourites" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_SHOW_FAVOURITES" description="COM_SEMINARMAN_SHOW_FAVOURITES_DESC"
+			menu="HIDE">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_categories" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_SHOW_CATEGORIES" description="COM_SEMINARMAN_SHOW_CATEGORIES_DESC">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_hyperlink" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_SHOW_HYPERLINK" description="COM_SEMINARMAN_SHOW_HYPERLINK_DESC"
+			menu="HIDE">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_experience_level" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_SHOW_EXPERIENCE_LEVEL" description="COM_SEMINARMAN_SHOW_EXPERIENCE_LEVEL_DESC"
+			menu="HIDE">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_location" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_SHOW_LOCATION" description="COM_SEMINARMAN_SHOW_LOCATION_DESC"
+			menu="HIDE">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_group" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_SHOW_GROUP" description="COM_SEMINARMAN_SHOW_GROUP_DESC"
+			menu="HIDE">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_tutor" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_SHOW_TUTOR" description="COM_SEMINARMAN_SHOW_TUTOR_DESC"
+			menu="HIDE">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_capacity" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_SHOW_CAPACITY" description="COM_SEMINARMAN_SHOW_CAPACITY_DESC"
+			menu="HIDE">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="current_capacity" type="list" default="1" class="inputbox"
+			label="COM_SEMINARMAN_CURRENCT_CAPACITY" description="COM_SEMINARMAN_CURRENCT_CAPACITY_DESC"
+			menu="HIDE">
+			<option value="0">JHIDE</option>
+			<option value="1">COM_SEMINARMAN_SHOW_ALL</option>
+			<option value="2">COM_SEMINARMAN_SHOW_PENDING_AND_PAID</option>
+		</field>
+
+		<field name="@spacer" type="spacer" default="" label=""
+			description="" />
+
+		<field name="filter" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_SHOW_FILTERBOX" description="COM_SEMINARMAN_SHOW_FILTERBOX_DESC">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="display" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_SHOW_LIMITBOX" description="COM_SEMINARMAN_SHOW_LIMITBOX_DESC">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="limit" type="text" default="10"
+			label="COM_SEMINARMAN_LIST_LIMIT" description="COM_SEMINARMAN_LIST_LIMIT_DESC" />
+		<field name="catlimit" type="text" default="5"
+			label="COM_SEMINARMAN_CAT_LIST_LIMIT" description="COM_SEMINARMAN_CAT_LIST_LIMIT_DESC" />
+		<field name="list_ordering" type="list" default="0" class="inputbox"
+			label="COM_SEMINARMAN_ORDERING" description="COM_SEMINARMAN_LISTORDERING">
+			<option value="0">COM_SEMINARMAN_TITLE</option>
+			<option value="1">COM_SEMINARMAN_START_DATE</option>
+			<option value="2">COM_SEMINARMAN_ORDERING</option>
+		</field>
+
+		<field name="@spacer" type="spacer" default="" label=""
+			description="" />
+
+		<field name="show_icons" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_SHOW_ICONS" description="COM_SEMINARMAN_SHOW_ICONS_DESC">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_print_icon" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_PRINT_ICON">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_email_icon" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_EMAIL_ICON">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_state_icon" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_STATE_ICON">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+
+		<field name="feed_summary" type="list" default="0" class="inputbox"
+			label="COM_SEMINARMAN_SHOW_FEED" description="COM_SEMINARMAN_SHOW_FEED_DESC"
+			menu="HIDE">
+			<option value="0">COM_SEMINARMAN_INTRO_TEXT</option>
+			<option value="1">COM_SEMINARMAN_FULL_TEXT</option>
+		</field>
+	</fieldset>
+	<fieldset name="defaults" label="COM_SEMINARMAN_DEFAULTS_LABEL"
+		description="COM_SEMINARMAN_DEFAULTS_DESC">
+		<field name="currency" type="list" default="USD"
+			label="COM_SEMINARMAN_CURRENCY" description="COM_SEMINARMAN_CURRENCYDESC"
+			menu="HIDE">
+	<option value="AED">AED</option>
+	<option value="AFN">AFN</option>
+	<option value="ALL">ALL</option>
+	<option value="AMD">AMD</option>
+	<option value="ANB">ANB</option>
+	<option value="ANG">ANG</option>
+	<option value="AOA">AOA</option>
+	<option value="ARS">ARS</option>
+	<option value="AUD">AUD</option>
+	<option value="AWG">AWG</option>
+	<option value="AZN">AZN</option>
+	<option value="BAM">BAM</option>
+	<option value="BBD">BBD</option>
+	<option value="BDT">BDT</option>
+	<option value="BGN">BGN</option>
+	<option value="BHD">BHD</option>
+	<option value="BIF">BIF</option>
+	<option value="BMD">BMD</option>
+	<option value="BND">BND</option>
+	<option value="BOB">BOB</option>
+	<option value="BOV">BOV</option>
+	<option value="BRL">BRL</option>
+	<option value="BSD">BSD</option>
+	<option value="BTN">BTN</option>
+	<option value="BWP">BWP</option>
+	<option value="BYR">BYR</option>
+	<option value="BZD">BZD</option>
+	<option value="CAD">CAD</option>
+	<option value="CDF">CDF</option>
+	<option value="CHE">CHE</option>
+	<option value="CHF">CHF</option>
+	<option value="CHW">CHW</option>
+	<option value="CLF">CLF</option>
+	<option value="CLP">CLP</option>
+	<option value="CMG">CMG</option>
+	<option value="CNY">CNY</option>
+	<option value="COU">COU</option>
+	<option value="COP">COP</option>
+	<option value="CRC">CRC</option>
+	<option value="CUC">CUC</option>
+	<option value="CUP">CUP</option>
+	<option value="CVE">CVE</option>
+	<option value="CYP">CYP</option>
+	<option value="CZK">CZK</option>
+	<option value="DIN">DIN</option>
+	<option value="DJF">DJF</option>
+	<option value="DKK">DKK</option>
+	<option value="CHF">CHF</option>
+	<option value="DOP">DOP</option>
+	<option value="DZD">DZD</option>
+	<option value="EEK">EEK</option>
+	<option value="EGP">EGP</option>
+	<option value="ETP">ETP</option>
+	<option value="EUR">EUR</option>
+	<option value="FJD">FJD</option>
+	<option value="FKP">FKP</option>
+	<option value="GBP">GBP</option>
+	<option value="GEL">GEL</option>
+	<option value="GHS">GHS</option>
+	<option value="GIB">GIB</option>
+	<option value="GIP">GIP</option>
+	<option value="GMD">GMD</option>
+	<option value="GNF">GNF</option>
+	<option value="GTQ">GTQ</option>
+	<option value="GYD">GYD</option>
+	<option value="HKD">HKD</option>
+	<option value="HNL">HNL</option>
+	<option value="HRK">HRK</option>
+	<option value="HTG">HTG</option>
+	<option value="HUF">HUF</option>
+	<option value="IDR">IDR</option>
+	<option value="INR">INR</option>
+	<option value="ILS">ILS</option>
+	<option value="IQD">IQD</option>
+	<option value="IRR">IRR</option>
+	<option value="ISK">ISK</option>
+	<option value="JMD">JMD</option>
+	<option value="JNOK">JNOK</option>
+	<option value="JOD">JOD</option>
+	<option value="JPY">JPY</option>
+	<option value="KES">KES</option>
+	<option value="KGS">KGS</option>
+	<option value="KHR">KHR</option>
+	<option value="KMF">KMF</option>
+	<option value="KPW">KPW</option>
+	<option value="KRW">KRW</option>
+	<option value="KWD">KWD</option>
+	<option value="KYD">KYD</option>
+	<option value="KZT">KZT</option>
+	<option value="LAK">LAK</option>
+	<option value="LBP">LBP</option>
+  <option value="LIT">LIT</option>
+	<option value="LKR">LKR</option>
+	<option value="LRD">LRD</option>
+	<option value="LSL">LSL</option>
+	<option value="LTL">LTL</option>
+	<option value="LVL">LVL</option>
+	<option value="LYD">LYD</option>
+	<option value="MAD">MAD</option>
+	<option value="MDL">MDL</option>
+	<option value="MGA">MGA</option>
+	<option value="MKD">MKD</option>
+	<option value="MMK">MMK</option>
+	<option value="MNT">MNT</option>
+	<option value="MOP">MOP</option>
+	<option value="MRO">MRO</option>
+	<option value="MTL">MTL</option>
+	<option value="MUR">MUR</option>
+	<option value="MVR">MVR</option>
+	<option value="MWK">MWK</option>
+	<option value="MXN">MXN</option>
+	<option value="MXV">MXV</option>
+	<option value="MYR">MYR</option>
+	<option value="MZN">MZN</option>
+	<option value="NAD">NAD</option>
+	<option value="NGN">NGN</option>
+	<option value="NIO">NIO</option>
+	<option value="NOK">NOK</option>
+	<option value="NPR">NPR</option>
+	<option value="NZD">NZD</option>
+	<option value="OMR">OMR</option>
+	<option value="PAB">PAB</option>
+	<option value="PEN">PEN</option>
+	<option value="PGK">PGK</option>
+	<option value="PHP">PHP</option>
+	<option value="PKR">PKR</option>
+	<option value="PLN">PLN</option>
+	<option value="PYG">PYG</option>
+	<option value="QAR">QAR</option>
+	<option value="ROL">ROL</option>
+	<option value="RON">RON</option>
+	<option value="RSD">RSD</option>
+	<option value="RUB">RUB</option>
+	<option value="RWF">RWF</option>
+	<option value="SAR">SAR</option>
+	<option value="SBD">SBD</option>
+	<option value="SCR">SCR</option>
+	<option value="SDG">SDG</option>
+	<option value="SEK">SEK</option>
+	<option value="SGD">SGD</option>
+	<option value="SHP">SHP</option>
+	<option value="SIT">SIT</option>
+	<option value="SLL">SLL</option>
+	<option value="SOS">SOS</option>
+	<option value="SRD">SRD</option>
+	<option value="SSP">SSP</option>
+	<option value="STD">STD</option>
+	<option value="SVC">SVC</option>
+	<option value="SYP">SYP</option>
+	<option value="SZL">SZL</option>
+	<option value="THB">THB</option>
+	<option value="TJS">TJS</option>
+	<option value="TMT">TMT</option>
+	<option value="TND">TND</option>
+	<option value="TOP">TOP</option>
+	<option value="TRY">TRY</option>
+	<option value="TTD">TTD</option>
+	<option value="TWD">TWD</option>
+	<option value="TZS">TZS</option>
+	<option value="UAH">UAH</option>
+	<option value="UGX">UGX</option>
+	<option value="USD">USD</option>
+	<option value="UYI">UYI</option>
+	<option value="UYU">UYU</option>
+	<option value="UZS">UZS</option>
+	<option value="VEF">VEF</option>
+	<option value="VND">VND</option>
+	<option value="VUV">VUV</option>
+	<option value="WST">WST</option>
+	<option value="XAF">XAF</option>
+	<option value="XCD">XCD</option>
+	<option value="XDR">XDR</option>
+	<option value="XOF">XOF</option>
+	<option value="XPF">XPF</option>
+	<option value="XTS">XTS</option>
+	<option value="XXX">XXX</option>
+	<option value="YER">YER</option>
+	<option value="ZAR">ZAR</option>
+	<option value="ZMK">ZMK</option>
+	<option value="ZMW">ZMW</option>
+	<option value="ZWR">ZWR</option>
+		</field>
+		<field name="second_currency" type="list" default="NONE"
+			label="COM_SEMINARMAN_SHOW_CURRENCY_2" description="COM_SEMINARMAN_SHOW_CURRENCY_2_DESC"
+			menu="HIDE">
+			<option value="NONE">NONE</option>
+	<option value="AED">AED</option>
+	<option value="AFN">AFN</option>
+	<option value="ALL">ALL</option>
+	<option value="AMD">AMD</option>
+	<option value="ANB">ANB</option>
+	<option value="ANG">ANG</option>
+	<option value="AOA">AOA</option>
+	<option value="ARS">ARS</option>
+	<option value="AUD">AUD</option>
+	<option value="AWG">AWG</option>
+	<option value="AZN">AZN</option>
+	<option value="BAM">BAM</option>
+	<option value="BBD">BBD</option>
+	<option value="BDT">BDT</option>
+	<option value="BGN">BGN</option>
+	<option value="BHD">BHD</option>
+	<option value="BIF">BIF</option>
+	<option value="BMD">BMD</option>
+	<option value="BND">BND</option>
+	<option value="BOB">BOB</option>
+	<option value="BOV">BOV</option>
+	<option value="BRL">BRL</option>
+	<option value="BSD">BSD</option>
+	<option value="BTN">BTN</option>
+	<option value="BWP">BWP</option>
+	<option value="BYR">BYR</option>
+	<option value="BZD">BZD</option>
+	<option value="CAD">CAD</option>
+	<option value="CDF">CDF</option>
+	<option value="CHE">CHE</option>
+	<option value="CHF">CHF</option>
+	<option value="CHW">CHW</option>
+	<option value="CLF">CLF</option>
+	<option value="CLP">CLP</option>
+	<option value="CMG">CMG</option>
+	<option value="CNY">CNY</option>
+	<option value="COU">COU</option>
+	<option value="COP">COP</option>
+	<option value="CRC">CRC</option>
+	<option value="CUC">CUC</option>
+	<option value="CUP">CUP</option>
+	<option value="CVE">CVE</option>
+	<option value="CYP">CYP</option>
+	<option value="CZK">CZK</option>
+	<option value="DIN">DIN</option>
+	<option value="DJF">DJF</option>
+	<option value="DKK">DKK</option>
+	<option value="CHF">CHF</option>
+	<option value="DOP">DOP</option>
+	<option value="DZD">DZD</option>
+	<option value="EEK">EEK</option>
+	<option value="EGP">EGP</option>
+	<option value="ETP">ETP</option>
+	<option value="EUR">EUR</option>
+	<option value="FJD">FJD</option>
+	<option value="FKP">FKP</option>
+	<option value="GBP">GBP</option>
+	<option value="GEL">GEL</option>
+	<option value="GHS">GHS</option>
+	<option value="GIB">GIB</option>
+	<option value="GIP">GIP</option>
+	<option value="GMD">GMD</option>
+	<option value="GNF">GNF</option>
+	<option value="GTQ">GTQ</option>
+	<option value="GYD">GYD</option>
+	<option value="HKD">HKD</option>
+	<option value="HNL">HNL</option>
+	<option value="HRK">HRK</option>
+	<option value="HTG">HTG</option>
+	<option value="HUF">HUF</option>
+	<option value="IDR">IDR</option>
+	<option value="INR">INR</option>
+	<option value="ILS">ILS</option>
+	<option value="IQD">IQD</option>
+	<option value="IRR">IRR</option>
+	<option value="ISK">ISK</option>
+	<option value="JMD">JMD</option>
+	<option value="JNOK">JNOK</option>
+	<option value="JOD">JOD</option>
+	<option value="JPY">JPY</option>
+	<option value="KES">KES</option>
+	<option value="KGS">KGS</option>
+	<option value="KHR">KHR</option>
+	<option value="KMF">KMF</option>
+	<option value="KPW">KPW</option>
+	<option value="KRW">KRW</option>
+	<option value="KWD">KWD</option>
+	<option value="KYD">KYD</option>
+	<option value="KZT">KZT</option>
+	<option value="LAK">LAK</option>
+	<option value="LBP">LBP</option>
+    <option value="LIT">LIT</option>
+	<option value="LKR">LKR</option>
+	<option value="LRD">LRD</option>
+	<option value="LSL">LSL</option>
+	<option value="LTL">LTL</option>
+	<option value="LVL">LVL</option>
+	<option value="LYD">LYD</option>
+	<option value="MAD">MAD</option>
+	<option value="MDL">MDL</option>
+	<option value="MGA">MGA</option>
+	<option value="MKD">MKD</option>
+	<option value="MMK">MMK</option>
+	<option value="MNT">MNT</option>
+	<option value="MOP">MOP</option>
+	<option value="MRO">MRO</option>
+	<option value="MTL">MTL</option>
+	<option value="MUR">MUR</option>
+	<option value="MVR">MVR</option>
+	<option value="MWK">MWK</option>
+	<option value="MXN">MXN</option>
+	<option value="MXV">MXV</option>
+	<option value="MYR">MYR</option>
+	<option value="MZN">MZN</option>
+	<option value="NAD">NAD</option>
+	<option value="NGN">NGN</option>
+	<option value="NIO">NIO</option>
+	<option value="NOK">NOK</option>
+	<option value="NPR">NPR</option>
+	<option value="NZD">NZD</option>
+	<option value="OMR">OMR</option>
+	<option value="PAB">PAB</option>
+	<option value="PEN">PEN</option>
+	<option value="PGK">PGK</option>
+	<option value="PHP">PHP</option>
+	<option value="PKR">PKR</option>
+	<option value="PLN">PLN</option>
+	<option value="PYG">PYG</option>
+	<option value="QAR">QAR</option>
+	<option value="ROL">ROL</option>
+	<option value="RON">RON</option>
+	<option value="RSD">RSD</option>
+	<option value="RUB">RUB</option>
+	<option value="RWF">RWF</option>
+	<option value="SAR">SAR</option>
+	<option value="SBD">SBD</option>
+	<option value="SCR">SCR</option>
+	<option value="SDG">SDG</option>
+	<option value="SEK">SEK</option>
+	<option value="SGD">SGD</option>
+	<option value="SHP">SHP</option>
+	<option value="SIT">SIT</option>
+	<option value="SLL">SLL</option>
+	<option value="SOS">SOS</option>
+	<option value="SRD">SRD</option>
+	<option value="SSP">SSP</option>
+	<option value="STD">STD</option>
+	<option value="SVC">SVC</option>
+	<option value="SYP">SYP</option>
+	<option value="SZL">SZL</option>
+	<option value="THB">THB</option>
+	<option value="TJS">TJS</option>
+	<option value="TMT">TMT</option>
+	<option value="TND">TND</option>
+	<option value="TOP">TOP</option>
+	<option value="TRY">TRY</option>
+	<option value="TTD">TTD</option>
+	<option value="TWD">TWD</option>
+	<option value="TZS">TZS</option>
+	<option value="UAH">UAH</option>
+	<option value="UGX">UGX</option>
+	<option value="USD">USD</option>
+	<option value="UYI">UYI</option>
+	<option value="UYU">UYU</option>
+	<option value="UZS">UZS</option>
+	<option value="VEF">VEF</option>
+	<option value="VND">VND</option>
+	<option value="VUV">VUV</option>
+	<option value="WST">WST</option>
+	<option value="XAF">XAF</option>
+	<option value="XCD">XCD</option>
+	<option value="XDR">XDR</option>
+	<option value="XOF">XOF</option>
+	<option value="XPF">XPF</option>
+	<option value="XTS">XTS</option>
+	<option value="XXX">XXX</option>
+	<option value="YER">YER</option>
+	<option value="ZAR">ZAR</option>
+	<option value="ZMK">ZMK</option>
+	<option value="ZMW">ZMW</option>
+	<option value="ZWR">ZWR</option>
+		</field>
+		<field name="factor" type="text" default="0" label="COM_SEMINARMAN_FACTOR_CURRENCY_2"
+			description="COM_SEMINARMAN_FACTOR_CURRENCY_2_DESC" size="70" menu="HIDE" />
+		<field name="component_email" type="text" default=""
+			label="COM_SEMINARMAN_SEND_EMAIL_TO_ADDRESS" description="COM_SEMINARMAN_COMPONENT_EMAIL"
+			size="70" menu="HIDE" />
+		<field name="vat" type="text" default="19" label="COM_SEMINARMAN_VAT"
+			description="COM_SEMINARMAN_COMPONENT_VAT" size="70" menu="HIDE" />
+		<field name="display_free_charge" type="text" default="COM_SEMINARMAN_FREE_OF_CHARGE" label="COM_SEMINARMAN_DISPLAY_NO_CHARGE"
+			description="COM_SEMINARMAN_DISPLAY_NO_CHARGE_DESC" size="70" menu="HIDE" />
+	</fieldset>
+	<fieldset name="invoices" label="COM_SEMINARMAN_INVOICES"
+		description="COM_SEMINARMAN_INVOICES_DESC">
+		<field name="invoice_generate" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_INVOICE_CREATE" description="COM_SEMINARMAN_INVOICE_CREATE_DESC"
+			menu="HIDE">
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+
+		</field>
+		<field name="invoice_attach" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_INVOICE_ATTACH" description="COM_SEMINARMAN_INVOICE_ATTACH_DESC"
+			menu="HIDE">
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field name="invoice_save_dir" type="text" default="invoices"
+			label="COM_SEMINARMAN_INVOICE_SAVE_DIR" description="COM_SEMINARMAN_INVOICE_SAVE_DIR_DESC"
+			size="70" menu="HIDE" />
+		<field name="invoice_number_start" type="text" default="1000"
+			label="COM_SEMINARMAN_INVOICE_NUMBER_START" description="COM_SEMINARMAN_INVOICE_NUMBER_START_DESC"
+			size="70" menu="HIDE" />
+	</fieldset>
+	<fieldset name="uploads" label="COM_SEMINARMAN_UPLOADS_LABEL"
+		description="COM_SEMINARMAN_UPLOADS_DESC">
+		<field name="upload_extensions" type="text" size="50"
+			default="bmp,csv,doc,gif,ico,jpg,jpeg,odg,odp,ods,odt,pdf,png,ppt,swf,txt,xcf,xls,BMP,CSV,DOC,GIF,ICO,JPG,JPEG,ODG,ODP,ODS,ODT,PDF,PNG,PPT,SWF,TXT,XCF,XLS,zip"
+			label="COM_SEMINARMAN_LEGAL_EXTENSIONS_LABEL" description="COM_SEMINARMAN_LEGAL_EXTENSIONS_DESC"
+			menu="HIDE" />
+		<field name="upload_maxsize" type="text" size="50" default="10000000"
+			label="COM_SEMINARMAN_MAXIMUM_SIZE_LABEL" description="COM_SEMINARMAN_MAXIMUM_SIZE_DESC"
+			menu="HIDE" />
+		<field name="file_path" type="text" size="50"
+			default="components/com_seminarman/upload" label="COM_SEMINARMAN_PATH_TO_FILE_FOLDER"
+			menu="HIDE" />
+		<field name="restrict_uploads" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_RESTRICT_UPLOADS" description="COM_SEMINARMAN_RESTRICT_UPLOADS_DESC"
+			menu="HIDE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="check_mime" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_CHECK_MIME" description="COM_SEMINARMAN_CHECK_MIME_DESC"
+			menu="HIDE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="image_extensions" type="text" size="50"
+			default="bmp,gif,jpg,png" label="COM_SEMINARMAN_LEGAL_IMAGE_EXTENSIONS_LABEL"
+			description="COM_SEMINARMAN_LEGAL_IMAGE_EXTENSIONS_DESC" menu="HIDE" />
+		<field name="pwidth" type="text" default="100"
+			label="COM_SEMINARMAN_PHOTO_WIDTH" description="" menu="HIDE" />
+		<field name="pheight" type="text" default="200"
+			label="COM_SEMINARMAN_PHOTO_HEIGHT" description="" menu="HIDE" />
+		<field name="image_path" type="text" size="50" default="images"
+			label="COM_SEMINARMAN_PATH_TO_IMAGE_FOLDER" menu="HIDE" />
+		<field name="upload_mime" type="text" size="50"
+			default="image/jpeg,image/gif,image/png,image/bmp,application/x-shockwave-flash,application/msword,application/excel,application/pdf,application/powerpoint,text/plain,application/x-zip"
+			label="COM_SEMINARMAN_LEGAL_MIME_TYPES_LABEL" description="COM_SEMINARMAN_LEGAL_MIME_TYPES_DESC"
+			menu="HIDE" />
+		<field name="upload_mime_illegal" type="text" size="50" default="text/html"
+			label="COM_SEMINARMAN_ILLEGAL_MIME_TYPES" description="COM_SEMINARMAN_ILLEGAL_MIME_TYPES_DESC"
+			menu="HIDE" />
+
+
+	</fieldset>
+	<fieldset name="paypal" label="COM_SEMINARMAN_PAYMENTS_LABEL"
+		description="COM_SEMINARMAN_PAYMENTS_DESC">
+		<field name="enable_paypal" type="radio" default="0" class="btn-group"
+			label="COM_SEMINARMAN_ENABLE_PAYPAL" description="COM_SEMINARMAN_ENABLE_PAYPAL_DESC"
+			menu="HIDE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+			<option value="2">COM_SEMINARMAN_PAYPAL_SANDBOX_YES</option>
+		</field>
+		<field name="paypal_email" type="text" default=""
+			label="COM_SEMINARMAN_PAYPAL_EMAIL_ADDRESS" description="COM_SEMINARMAN_PAYPAL_EMAIL_DESC"
+			size="70" menu="HIDE" />
+		<field name="paypal_sandbox" type="text" default=""
+			label="COM_SEMINARMAN_PAYPAL_SANDBOX_ADDRESS" description="COM_SEMINARMAN_PAYPAL_SANDBOX_DESC"
+			size="70" menu="HIDE" />
+		<field name="invoice_after_pay" type="radio" default="0" class="btn-group"
+			label="COM_SEMINARMAN_INVOICE_AFTER_PAY" description="COM_SEMINARMAN_INVOICE_AFTER_PAY_DESC"
+			menu="HIDE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	</fieldset>
+    <fieldset name="extension_support" label="COM_SEMINARMAN_EXTENSIONS_LABEL"
+		description="COM_SEMINARMAN_EXTENSIONS_DESC">
+		<!-- <field name="trigger_onprepare_content" type="radio" default="0"
+			label="COM_SEMINARMAN_ENABLE_TRIGGER_ONPREPARECONTENT_EVENT"
+			description="COM_SEMINARMAN_ENABLE_TRIGGER_ONPREPARECONTENT_EVENT_DESC"
+			menu="HIDE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="trigger_virtuemart" type="radio" default="0"
+			label="VirtueMart Engine"
+			description="Das Buchungssystem in VirtueMart intergrieren"
+			menu="HIDE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="trigger_points" type="radio" default="0"
+			label="Qualifikationsystem"
+			description="in Qualifikationsystem intergrieren"
+			menu="HIDE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>  -->
+		<field name="advanced_booking" type="radio" default="0" class="btn-group"
+			label="COM_SEMINARMAN_ADV_BOOKING"
+			description="COM_SEMINARMAN_ADV_BOOKING_DESC"
+			menu="HIDE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="waitinglist_active" type="radio" default="0" class="btn-group"
+			label="COM_SEMINARMAN_WAITINGLIST"
+			description="COM_SEMINARMAN_WAITINGLIST_DESC"
+			menu="HIDE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="alt_pdflist" type="radio" default="0" class="btn-group"
+			label="COM_SEMINARMAN_ALT_PDFLIST"
+			description="COM_SEMINARMAN_ALT_PDFLIST_DESC"
+			menu="HIDE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="spacer_adv_booking" type="spacer" label="COM_SEMINARMAN_ADV_BOOKING_PLG_REQUIRED" />
+		<field name="spacer_waitinglist" type="spacer" label="COM_SEMINARMAN_WAITINGLIST_PLG_REQUIRED" />
+		<field name="spacer_alt_pdflist" type="spacer" label="COM_SEMINARMAN_ALT_PDFLIST_PLG_REQUIRED" />
+   </fieldset>
+   <fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+       <field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" component="com_seminarman" section="component">
+          <action name="core.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />
+          <action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
+          <action name="core.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
+       </field>
+   </fieldset>
+   <fieldset name="misc" label="Misc" description="">
+       <field name="spacer_courses_table" type="spacer" label="COM_SEMINARMAN_COURSE_TABLE" />
+		<field name="show_price_in_table" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_PRICE" description="COM_SEMINARMAN_PRICE_DESC"
+			menu="HIDE">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_begin_date_in_table" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_START_DATE" description="COM_SEMINARMAN_SHOW_START_DESC"
+			menu="HIDE">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_end_date_in_table" type="radio" default="1" class="btn-group"
+			label="COM_SEMINARMAN_FINISH_DATE" description="COM_SEMINARMAN_SHOW_END_DESC"
+			menu="HIDE">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_datetime_in_table" type="list" default="0" class="inputbox"
+			label="COM_SEMINARMAN_DISPLAY_ART_DATETIME" description="COM_SEMINARMAN_DISPLAY_ART_DATETIME_DESC"
+			menu="HIDE">
+			<option value="0">COM_SEMINARMAN_DISPLAY_ART_DATETIME_1</option>
+			<option value="1">COM_SEMINARMAN_DISPLAY_ART_DATETIME_2</option>
+			<option value="2">COM_SEMINARMAN_DISPLAY_ART_DATETIME_3</option>
+		</field>
+       <field name="spacer_tutor_block" type="spacer" label="COM_SEMINARMAN_TUTOR_PROFILE_FRONTEND_CONFIG" />
+		<field name="show_company_data" type="radio" default="0" class="btn-group"
+			label="COM_SEMINARMAN_COMPANY_INFORMATION" description="COM_SEMINARMAN_COMPANY_INFORMATION_DESC"
+			menu="HIDE">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+       <field name="tutor_company_data" type="list" default="" multiple="multiple" label="COM_SEMINARMAN_COMPANY_FIELDS" description="COM_SEMINARMAN_COMPANY_FIELDS_DESC">
+			<option value="tutor_comp_name">COM_SEMINARMAN_COMPANY_NAME</option>
+			<option value="tutor_primary_phone">COM_SEMINARMAN_PRIMARY_PHONE</option>
+			<option value="tutor_fax_number">COM_SEMINARMAN_FAX_NUMBER</option>
+			<option value="tutor_email">COM_SEMINARMAN_EMAIL</option>
+			<option value="tutor_url">COM_SEMINARMAN_WEBSITE</option>
+			<option value="tutor_street">COM_SEMINARMAN_STREET</option>
+			<option value="tutor_zip">COM_SEMINARMAN_ZIP</option>
+			<option value="tutor_city">COM_SEMINARMAN_CITY</option>
+			<option value="tutor_state">COM_SEMINARMAN_STATE</option>
+			<option value="tutor_country">COM_SEMINARMAN_COUNTRY</option>
+			<option value="tutor_company_type">COM_SEMINARMAN_COMPANY_TYPE</option>
+			<option value="tutor_industry">COM_SEMINARMAN_INDUSTRY</option>
+		</field>
+		<field name="spacer_attendance_lst" type="spacer" label="COM_SEMINARMAN_ATTENDANCE_LIST_LBL" />
+		<field name="order_of_attlst" type="list" default="0" class="inputbox"
+			label="COM_SEMINARMAN_ORDER_ATTLST" description="COM_SEMINARMAN_ORDER_ATTLST_DESC"
+			menu="HIDE">
+			<option value="0">COM_SEMINARMAN_ID</option>
+			<option value="1">COM_SEMINARMAN_LAST_NAME</option>
+			<option value="2">COM_SEMINARMAN_FIRST_NAME</option>
+			<option value="3">COM_SEMINARMAN_EMAIL</option>
+		</field>		
+   </fieldset>
+</config>

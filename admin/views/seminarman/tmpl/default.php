@@ -51,7 +51,6 @@ SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-tutors.png', JText::_(
 $link = 'index.php?option=com_seminarman&amp;view=settings';
 SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-config.png', JText::_('COM_SEMINARMAN_SETTINGS'));
 
-
 echo LiveUpdate::getIcon();
 
 } else {
@@ -65,6 +64,8 @@ SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-courses.png', JText::_
 $link = 'index.php?option=com_seminarman&amp;view=course';
 SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-courseedit.png', JText::_('COM_SEMINARMAN_NEW_COURSE'));	
 
+$link = 'index.php?option=com_seminarman&amp;view=tags';
+SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-tags.png', JText::_('COM_SEMINARMAN_TAGS'));
 }
 ?>
 						</div>
@@ -73,7 +74,7 @@ SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-courseedit.png', JText
 <a href="http://joomlacode.org/gf/project/com_seminarman/forum/" target=_blank class="osg_support_button osg_support_white">Forum</a><br /><br />	
 <div class="info_panel">
 The OSG Seminar Manager is a free software licensed under the GNU General Public License (GPL) version 2 or later.<br /><br />
-Der OSG Seminar Manager ist eine freie Software, die unter der GNU General Public License (GPL) Version 2 oder sp�ter lizenziert wurde.
+Der OSG Seminar Manager ist eine freie Software, die unter der GNU General Public License (GPL) Version 2 oder später lizenziert wurde.
 </div>					
 						</div>
                         </div>
@@ -83,7 +84,12 @@ Der OSG Seminar Manager ist eine freie Software, die unter der GNU General Publi
 $title = JText::_('COM_SEMINARMAN_LATEST_APPLICATIONS');
 echo $this->pane->startPane('stat-pane');
 echo $this->pane->startPanel($title, 'latestApplications');
+// $options = NULL;
+// echo JHtml::_('tabs.start', 'stat-pane', $options);
+// echo JHtml::_('sliders.start', 'stat-pane', $options);
 
+// echo JHtml::_('tabs.panel', JText::_('COM_SEMINARMAN_LATEST_APPLICATIONS'), 'latestApplications');
+// echo JHtml::_('sliders.panel', JText::_('COM_SEMINARMAN_LATEST_APPLICATIONS'), 'latestApplications');
 ?>
 				<table class="adminlist">
 				<?php
@@ -126,6 +132,8 @@ $title = JText::_('COM_SEMINARMAN_ADDED_COURSES');
 echo $this->pane->endPanel();
 echo $this->pane->startPanel($title, 'latestJobs');
 
+// echo JHtml::_('tabs.panel', JText::_('COM_SEMINARMAN_ADDED_COURSES'), 'latestJobs');
+// echo JHtml::_('sliders.panel', JText::_('COM_SEMINARMAN_ADDED_COURSES'), 'latestJobs');
 ?>
 				<table class="adminlist">
 				<?php
@@ -162,10 +170,12 @@ for ($i = 0, $n; $i < $n; $i++)
 ?>
 				</table>
 				<?php
+echo $this->pane->endPanel();
 echo $this->pane->endPane();
-echo $this->pane->endPane();
+				// echo JHtml::_('tabs.end');
+				// echo JHtml::_('sliders.end');
 ?>
-                    </div>
+                    
                     
 <div style="text-align:center; margin-top: 100px;">
  <a href="http://www.osg-gmbh.de" target="_blank"><img src="components/com_seminarman/assets/images/logo.png" width=90 alt="Open Source Group Logo" title="Open Source Group Gmbh"></a>
@@ -178,7 +188,7 @@ echo $this->pane->endPane();
                     </div>                        
 			</td>
 		</tr>
-		<tr><td colspan="2"><div style="text-align: center;">OSG Seminar Manager <?php 
+		<tr><td colspan="2"><div style="text-align: center; margin-top:15px;">OSG Seminar Manager <?php 
 		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'classes'.DS.'xmlslurp.php';
 		$xmlslurp = new LiveUpdateXMLSlurp();
 		$data = $xmlslurp->getInfo('com_seminarman', 'seminarman.xml');

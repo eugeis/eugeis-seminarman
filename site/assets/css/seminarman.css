@@ -41,7 +41,7 @@ padding-bottom:0.5em;
 }
 
 div#seminarman a h2.booking {
-  background: url(../images/shopcart.png) 0 0 no-repeat;
+  background: url(../images/booking_now.png) 0 0 no-repeat;
   height: 30px;
   padding: 5px 5px 5px 40px;
 }
@@ -113,8 +113,20 @@ margin-bottom: 10px;
 }
 
 div#seminarman .course_applicationform {
-border: 1px solid silver;
-background-color: #CCCCCC;
+border: 1px solid E5E5E5;
+/** background-color: #CCCCCC; **/
+  background: #E5E5E5;
+  background: linear-gradient(top, #F5F5F5 0, #E5E5E5 100%) no-repeat;
+  background: -webkit-linear-gradient(top, #F5F5F5 0, #E5E5E5 100%) no-repeat;
+  background: -moz-linear-gradient(top, #F5F5F5 0, #E5E5E5 100%) no-repeat;
+  background: -o-linear-gradient(top, #F5F5F5 0, #E5E5E5 100%) no-repeat;
+  background: -ms-linear-gradient(top, #F5F5F5 0, #E5E5E5 100%) no-repeat;
+  background: linear-gradient(top, #F5F5F5 0, #E5E5E5 100%) no-repeat;
+  -svg-background: linear-gradient(top, #F5F5F5 0, #E5E5E5 100%) no-repeat;
+  border: 1px solid #ccc;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
 padding: 0.8em;
 margin-bottom: 10px;
 }
@@ -169,7 +181,22 @@ div#seminarman .current {
   border: 1px solid #CCCCCC;
   clear: both;
   padding: 10px;
-  background: url("../images/tbl_bg.gif") repeat-x scroll 0 0 transparent;
+  background: url("../images/tbl_bg.gif") repeat-x scroll 0 -2px transparent;
+}
+
+div#seminarman dl#mytabs {
+    bottom: -1px;
+    z-index: 65;
+    position: relative;
+}
+
+div#seminarman dl#mytabs dt.open {
+    background: none repeat scroll 0 0 #EFEFEF;
+    border-bottom: 1px solid #EFEFEF !important;	
+}
+
+div#seminarman dl#mytabs dt.closed {
+	bottom: 2px;
 }
 
 div#seminarman dt { /* definition term */
@@ -182,9 +209,22 @@ min-width: 11em;
 
 div#seminarman dd { /* definition description */
 display: block;
-margin: 0 0 5px 12em; padding: 0.3em 0;
+margin: 0 0 0 12em; padding: 0.3em 0;
 font-size: 1em;
 background: transparent;
+}
+
+div#seminarman .course_details dl dt { 
+	clear: both;
+}
+
+div#seminarman .tutor_block_right dl dt { 
+	clear: both;
+	min-width: 8em;
+}
+
+div#seminarman .tutor_block_right dl dd {
+	margin: 0 0 0 9em;
 }
 
 div#seminarman div.description {
@@ -243,7 +283,17 @@ div#seminarman table.seminarmancoursetable th td #qf_hits
 { text-align: center; width: 10%;  }
 
 div.seminarman div#course_appform form#login-form {
-    background: none repeat scroll 0 0 #EEEEEE;
+  background: #E5E5E5;
+  background: linear-gradient(top, #EEEEEE 0, #E5E5E5 100%) no-repeat;
+  background: -webkit-linear-gradient(top, #EEEEEE 0, #E5E5E5 100%) no-repeat;
+  background: -moz-linear-gradient(top, #EEEEEE 0, #E5E5E5 100%) no-repeat;
+  background: -o-linear-gradient(top, #EEEEEE 0, #E5E5E5 100%) no-repeat;
+  background: -ms-linear-gradient(top, #EEEEEE 0, #E5E5E5 100%) no-repeat;
+  background: linear-gradient(top, #EEEEEE 0, #E5E5E5 100%) no-repeat;
+  -svg-background: linear-gradient(top, #EEEEEE 0, #E5E5E5 100%) no-repeat;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
     margin: 0 auto 10px;
     padding: 5px;
     width: 300px;
@@ -416,10 +466,11 @@ div#seminarman .qf_addtag {
     width: 100%;
     border-spacing: 1px;
     padding: 0px;
+    border: none !important;
 }
 
 .ccontentTable td {
-	padding: 0px;
+	padding: 2px;
 }
 
 .centered {

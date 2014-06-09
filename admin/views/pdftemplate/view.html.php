@@ -22,12 +22,17 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class seminarmanViewPdfTemplate extends JView
+class seminarmanViewPdfTemplate extends JViewLegacy
 {
     function display($tpl = null)
-    {
+    {       
         $document = JFactory::getDocument();
+        $lang = JFactory::getLanguage();
         $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
+        if ($lang->isRTL())
+        {
+        	$document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend_rtl.css');
+        }
         
         $db = JFactory::getDBO();
 
@@ -36,7 +41,7 @@ class seminarmanViewPdfTemplate extends JView
 
     	JToolBarHelper::title(JText::_('COM_SEMINARMAN_PDF_TEMPLATE'), 'config');
     	
-    	JToolBarHelper::custom('pdf_preview', 'preview.png', 'preview.png', 'COM_SEMINARMAN_PDF_PREVIEW', false);
+    	JToolBarHelper::custom('pdf_preview', 'eye', 'eye', 'COM_SEMINARMAN_PDF_PREVIEW', false);
     	JToolBarHelper::divider();
     	JToolBarHelper::apply();
     	JToolBarHelper::save();

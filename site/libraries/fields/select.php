@@ -47,7 +47,7 @@ class CFieldsSelect
 
 		if($isDropDown)
 		{
-			$html	.= '<option value="" ' . $defaultSelected . '>- ' . JText::_('COM_SEMINARMAN_CHOOSE_PLEASE') . '- </option>';
+			$html	.= '<option value="" ' . $defaultSelected . '>- ' . JText::_('COM_SEMINARMAN_CHOOSE_PLEASE') . ' -</option>';
 		}
 
 		if( !empty( $field->options ) )

@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 
-<form action="<?php echo JURI::base();?>index.php?option=com_seminarman" method="post" name="adminForm">
+<form action="<?php echo JURI::base();?>index.php?option=com_seminarman" method="post" name="adminForm" id="adminForm">
 <table class="adminlist" cellspacing="1">
 	<thead>
 		<tr class="title">
@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JText::_('COM_SEMINARMAN_NUM'); ?>
 			</th>
 			<th width="1%">
-				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->fields ); ?>);" />
+				<?php echo JHtml::_('grid.checkall'); ?>
 			</th>
 			<th>
 				<?php echo JText::_('COM_SEMINARMAN_NAME'); ?>
@@ -78,7 +78,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td style="background-color: #EEEEEE;"><?php echo $purpose_title; ?></td>
 			<td colspan="3" style="background-color: #EEEEEE;"></td>
 			<td align="center" id="published<?php echo $field->id;?>" style="background-color: #EEEEEE;">
-				<?php echo $published = JHTML::_('grid.published', $field, $i); ?>
+				<?php echo $published = JHTML::_('jgrid.published', $field->published, $i); ?>
 			</td>
 			<td align="right" style="background-color: #EEEEEE;" class="order">
 				<span><?php echo $this->pagination->orderUpIcon( $count, true, 'orderup', 'Move Up'); ?></span>
@@ -120,7 +120,7 @@ defined('_JEXEC') or die('Restricted access');
 				</span>
 			</td>
 			<td align="center" id="published<?php echo $field->id;?>">
-            <?php echo $published = JHTML::_('grid.published', $field, $i); ?>
+            <?php echo $published = JHTML::_('jgrid.published', $field->published, $i); ?>
 			</td>
 			<td align="right" class="order">
 				<span><?php echo $this->pagination->orderUpIcon( $count , true, 'orderup', 'Move Up'); ?></span>

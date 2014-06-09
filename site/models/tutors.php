@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class SeminarmanModelTutors extends JModel
+class SeminarmanModelTutors extends JModelLegacy
 {
 	var $_data = null;
 	var $_id = null;

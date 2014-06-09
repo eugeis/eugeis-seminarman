@@ -19,13 +19,14 @@ function submitbuttonSeminarman(task)
 {
 	var form = document.adminForm;
 
-	if ((document.getElementById('cm_tos')) && !(document.getElementById('cm_tos').checked)) 
-		alert( "<?php echo JText::sprintf('COM_SEMINARMAN_ACCEPT_TOS', 'AGB'); ?>" );	
+	if (task == "cancel")
+		Joomla.submitform( task );
+	else if ((document.getElementById('cm_tos')) && !(document.getElementById('cm_tos').checked))
+		  alert( "<?php echo JText::sprintf('COM_SEMINARMAN_ACCEPT_TOS', 'AGB'); ?>" );
 	else if (document.formvalidator.isValid(form))
 		Joomla.submitform( task );
 	else
-		alert("<?php echo JText::_('COM_SEMINARMAN_VALUES_NOT_ACCEPTABLE'); ?>");
-
+		  alert("<?php echo JText::_('COM_SEMINARMAN_VALUES_NOT_ACCEPTABLE'); ?>");
 };
 </script>
 <?php 
@@ -107,7 +108,7 @@ $price_total_booking_with_tax = $price_total_booking * (1 + $tax_rate);
                     	//    $str_datum = substr($str_datum, 1);
                     	//    echo $str_datum;
                     	} else {
-                    	    echo $_POST[$var]; 
+                    	    if (isset($_POST[$var])) echo $_POST[$var]; 
                     	}
                     }
                   ?></td>
@@ -182,7 +183,9 @@ $price_total_booking_with_tax = $price_total_booking * (1 + $tax_rate);
     	}
     }
 ?>
-<button type="button" class="button cancel" onclick="window.history.back()"><?php echo JText::_('COM_SEMINARMAN_CART_CANCEL_BUTTON');?></button>
+<button type="button" class="button cancel" onclick="submitbuttonSeminarman('cancel')">
+<?php echo JText::_('COM_SEMINARMAN_CART_CANCEL_BUTTON');?>
+</button>
 <button type="button" class="button validate" onclick="submitbuttonSeminarman('save')">
 <?php echo JText::_('COM_SEMINARMAN_CART_CONFIRM_BUTTON');?>
 </button>
@@ -207,7 +210,9 @@ $price_total_booking_with_tax = $price_total_booking * (1 + $tax_rate);
     			}
     			}
     		} elseif ($f->type != "checkboxtos") {
-    		    echo '<input type="hidden" name="' . $var .'" value="' . $_POST[$var] . '" />';
+    			if (isset($_POST[$var])) {
+    		        echo '<input type="hidden" name="' . $var .'" value="' . $_POST[$var] . '" />';
+    			}
     		}
     	}
     }

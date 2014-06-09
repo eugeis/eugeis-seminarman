@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<catalogue name="VIRTUAL TABLES">
+<table>
+<title>Salutation</title>
+<author>Profinvent</author>
+<values>
+<value>Herr</value>
+<value>Frau</value>
+<value>Mr.</value>
+<value>Mrs.</value>
+<value>Ms.</value>
+</values>
+</table>
+<table>
+<title>Price Type</title>
+<author>Profinvent</author>
+<values>
+<value>pro Platz</value>
+<value>pro Monat</value>
+<value>pro Jahr</value>
+</values>
+</table>
+<table>
+<title>Major</title>
+<author>Profinvent</author>
+<values>
+<value>Architecture / Design</value>
+<value>Customer Service</value>
+<value>Chef Jobs</value>
+<value>Childcare</value>
+<value>Construction</value>
+<value>Drivers</value>
+<value>Education / Training</value>
+<value>Finance</value>
+<value>Fitness and Leisure</value>
+<value>Healthcare / Medical</value>
+<value>Recruitment</value>
+<value>IT</value>
+<value>Legal</value>
+<value>Manufacturing</value>
+<value>Marketing</value>
+<value>Auctioneering</value>
+<value>Pubs</value>
+<value>Restaurants / Catering</value>
+<value>Tourism</value>
+</values>
+</table>
+<table>
+<title>Industry</title>
+<author>Profinvent</author>
+<values>
+<value>Architecture / Design</value>
+<value>Customer Service</value>
+<value>Chef Jobs</value>
+<value>Childcare</value>
+<value>Construction</value>
+<value>Drivers</value>
+<value>Education / Training</value>
+<value>Finance</value>
+<value>Fitness and Leisure</value>
+<value>Healthcare / Medical</value>
+<value>Recruitment</value>
+<value>IT</value>
+<value>Legal</value>
+<value>Manufacturing</value>
+<value>Marketing</value>
+<value>Auctioneering</value>
+<value>Pubs</value>
+<value>Restaurants / Catering</value>
+<value>Tourism</value>
+</values>
+</table>
+<table>
+<title>Job Experience</title>
+<author>Profinvent</author>
+<values>
+<value>1 Jahr</value>
+<value>2 Jahre</value>
+<value>3 Jahre</value>
+<value>4 Jahre</value>
+<value>mehr als 4 Jahre</value>
+</values>
+</table>
+</catalogue>

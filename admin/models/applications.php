@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class seminarmanModelapplications extends JModel
+class seminarmanModelapplications extends JModelLegacy
 {
     var $_data = null;
 
@@ -160,41 +160,21 @@ class seminarmanModelapplications extends JModel
     	}
 
     	if ($search && $filter_search == 1) {
-    		$where[] = ' LOWER(a.last_name) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
+    		$where[] = ' LOWER(a.last_name) LIKE '.$db->Quote( '%'.$db->escape( $search, true ).'%', false );
     	}
 
     	if ($search && $filter_search == 2) {
-    		$where[] = ' LOWER(a.first_name) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
+    		$where[] = ' LOWER(a.first_name) LIKE '.$db->Quote( '%'.$db->escape( $search, true ).'%', false );
     	}
 
     	if ($search && $filter_search == 3) {
-    		$where[] = ' LOWER(a.email) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
+    		$where[] = ' LOWER(a.email) LIKE '.$db->Quote( '%'.$db->escape( $search, true ).'%', false );
     	}
     	
     	if ($search && $filter_search == 4) {
-    		$where[] = ' LOWER(j.code) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
-    	}
+    		$where[] = ' LOWER(j.code) LIKE '.$db->Quote( '%'.$db->escape( $search, true ).'%', false );
+    	} 
 
-    	if ($search && $filter_search == 5) {
-    		if ($this->searchForNull($search)) {
-    			$where[] = ' (a.note IS NULL OR length(a.note) = 0)';
-    		}else {
-    			$where[] = ' a.note = '.(double)$search;
-    		}
-    	}
-    	
-    	if ($search && $filter_search == 6) {
-    		if ($this->searchForNull($search)) {
-    			$where[] = ' (a.attendance IS NULL OR length(a.attendance) = 0)';
-    		}else {
-    			$where[] = ' a.attendance = '.(int)$search;
-    		}
-    	}
-    	
-    	if ($search && $filter_search == 7) {
-    		$where[] = ' LOWER(j.title) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
-    	}
-    	
        	switch ($filter_state)
        	{
        		case 'P':
@@ -232,12 +212,12 @@ class seminarmanModelapplications extends JModel
 	{
 		$db = JFactory::getDBO();
 		if(JHTMLSeminarman::UserIsCourseManager()){
-		$sql = 'SELECT id, title as title'
+		$sql = 'SELECT id, CONCAT(title, " (", code, ")") as title'
 		. ' FROM #__seminarman_courses'
 		. ' WHERE state = 1'
 		. ' ORDER BY title';
 		}else{
-		$sql = 'SELECT id, title as title'
+		$sql = 'SELECT id, CONCAT(title, " (", code, ")") as title'
 		. ' FROM #__seminarman_courses'
 		. ' WHERE (state = 1 AND tutor_id = ' . JHTMLSeminarman::getUserTutorID() . ')' 
 		. ' ORDER BY title';			

@@ -29,7 +29,7 @@ jimport('joomla.application.component.model');
 * @subpackage Content
 * @since 1.5.0
 */
-class seminarmanModelPaypal extends JModel{
+class seminarmanModelPaypal extends JModelLegacy{
     /**
     * Booking id
     *

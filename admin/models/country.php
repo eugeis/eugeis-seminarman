@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class seminarmanModelCountry extends JModel
+class seminarmanModelCountry extends JModelLegacy
 {
     var $_id = null;
 
@@ -111,7 +111,7 @@ class seminarmanModelCountry extends JModel
         return false;
     }
 
-	function store($data)
+    function store($data)
     {
         $row = $this->getTable();
 

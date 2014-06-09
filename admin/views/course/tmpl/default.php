@@ -354,16 +354,16 @@ function hide_calc(idc) {
 			<fieldset id="canceled" class="radio"><?php echo $this->lists['canceled']; ?></fieldset>
 		</li>
 		<li>
-			<label for="name"><?php echo JText::_('COM_SEMINARMAN_TITLE') ?><span class="star">&nbsp;*</span></label>
+			<label for="title"><?php echo JText::_('COM_SEMINARMAN_TITLE') ?><span class="star">&nbsp;*</span></label>
 			<input class="inputbox" <?php echo $readonly; ?> type="text" name="title" id="title" size="32" maxlength="254" value="<?php echo $this->row->title; ?>" />
 		</li>
 		<li>
-			<label for="title"><?php echo JText::_('COM_SEMINARMAN_ALIAS') ?></label>
+			<label for="alias"><?php echo JText::_('COM_SEMINARMAN_ALIAS') ?></label>
 			<input class="inputbox" <?php echo $readonly; ?> type="text" name="alias" id="alias" size="32" maxlength="254" value="<?php echo $this->row->alias; ?>" />
 		</li>
 		<li>
 			<label for="code"><?php echo JText::_('COM_SEMINARMAN_COURSE_CODE') ?></label>
-			<input name="code" id="code" <?php echo $readonly; ?> size="32" maxlength="20" value="<?php echo $this->row->code; ?>" />
+			<input class="inputbox" type="text" name="code" id="code" <?php echo $readonly; ?> size="32" maxlength="20" value="<?php echo $this->row->code; ?>" />
 		</li>
 		<li>
 			<label for="course_template"><?php echo JText::_('COM_SEMINARMAN_TEMPLATE');?></label>
@@ -375,37 +375,100 @@ function hide_calc(idc) {
 			<?php echo $this->lists['username']; ?>
 		</li>
 		<li>
-			<label for="start_date"><?php echo JText::_('COM_SEMINARMAN_START_DATE'); ?></label>
+			<label for="start_date"><?php echo JText::_('COM_SEMINARMAN_START_DATE') . ' / ' . JText::_('COM_SEMINARMAN_TIME'); ?></label>
 			<?php echo JHTML::calendar( formatDate($this->row->start_date, JText::_('COM_SEMINARMAN_DATE_FORMAT1')), 'start_date', 'start_date', JText::_('COM_SEMINARMAN_DATE_FORMAT1_ALT'));?>
+		    <label style="clear: none; min-width: 2px; width: auto;">&#47;</label>
+		    <input class="inputbox" type="text" name="start_time" id="start_time" size="4" maxlength="5" value="<?php echo (!empty($this->row->start_time)) ? date('H:i', strtotime($this->row->start_time)) : '';?>" /><label style="clear: none; min-width: 20px; width: auto;">(hh:mm)</label>
 		</li>
 		<li>
-			<label for="finish_date"><?php echo JText::_('COM_SEMINARMAN_FINISH_DATE'); ?></label>
+			<label for="finish_date"><?php echo JText::_('COM_SEMINARMAN_FINISH_DATE') . ' / ' . JText::_('COM_SEMINARMAN_TIME'); ?></label>
 			<?php echo JHTML::calendar( formatDate($this->row->finish_date, JText::_('COM_SEMINARMAN_DATE_FORMAT1')),  'finish_date', 'finish_date', JText::_('COM_SEMINARMAN_DATE_FORMAT1_ALT'));?>
+		    <label style="clear: none; min-width: 2px; width: auto;">&#47;</label>
+		    <input class="inputbox" type="text" name="finish_time" id="finish_time" size="4" maxlength="5" value="<?php echo (!empty($this->row->finish_time)) ? date('H:i', strtotime($this->row->finish_time)) : '';?>" /><label style="clear: none; min-width: 20px; width: auto;">(hh:mm)</label>
 		</li>
 		<li>
-			<label for="COM_SEMINARMAN_EMAIL_COURSE_BOOKED"><?php echo JText::_('COM_SEMINARMAN_EMAIL_COURSE_BOOKED'); ?></label>
+			<label for="email_template"><?php echo JText::_('COM_SEMINARMAN_EMAIL_TEMPLATE'); ?></label>
 			<?php echo $this->lists['email_template']; ?>
 		</li>
 		<li>
-			<label for="email_template_cancel"><?php echo JText::_('COM_SEMINARMAN_EMAIL_COURSE_CANCELED'); ?></label>
-			<?php echo $this->lists['email_template_cancel']; ?>
+			<label for="invoice_template"><?php echo JText::_('COM_SEMINARMAN_INVOICE_TEMPLATE'); ?></label>
+			<?php echo $this->lists['invoice_template']; ?>
 		</li>
-		<li>
-			<label for="email_template_trainer"><?php echo JText::_('COM_SEMINARMAN_EMAIL_LIST_ATTENDEES'); ?></label>
-			<?php echo $this->lists['email_template_trainer']; ?>
-		</li>
-		<li>
-			<label for="email_template_trainer_cancel"><?php echo JText::_('COM_SEMINARMAN_EMAIL_COURSE_CANCELED_TRAINER'); ?></label>
-			<?php echo $this->lists['email_template_trainer_cancel']; ?>
-		</li>						
 		<li>
 			<label for="attlst_template"><?php echo JText::_('COM_SEMINARMAN_ATTENDANCE_LIST_TEMPLATE'); ?></label>
 			<?php echo $this->lists['attlst_template']; ?>
 		</li>
 		<li>
+			<label for="group"><?php echo JText::_('COM_SEMINARMAN_GROUP') ?></label>
+			<?php echo $this->lists['atgroup']; ?>
+		</li>
+		<li>
+			<label for="experience_level"><?php echo JText::_('COM_SEMINARMAN_EXPERIENCE_LEVEL') ?></label>
+			<?php echo $this->lists['experience_level']; ?>
+		</li>
+		<li>
 			<label for="theme_points"><?php echo JText::_('COM_SEMINARMAN_POINTS'); ?></label>
 			<input class="inputbox" <?php echo $readonly; ?> type="text" name="theme_points" id="theme_points" size="10" maxlength="20" value="<?php echo $this->row->theme_points; ?>" />
 		</li>
+		<li>
+			<label for="price"><?php echo JText::_('COM_SEMINARMAN_PRICE') ?> (<?php $params = JComponentHelper::getParams( 'com_seminarman' ); echo $params->get( 'currency' ); ?>)</label>
+			<input class="inputbox" <?php echo $readonly; ?> type="text" name="price" id="price" size="10" maxlength="20" value="<?php echo $this->row->price; ?>" />
+			<input class="calculator" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_BUTTON') ?>" onclick="show_calculator(1);" />
+		</li>
+<li id="netto_rechner1" style="clear: left; background: #ddd; margin-left: 110px; padding: 10px; overflow: hidden; display: none;">
+  <?php echo JText::sprintf('COM_SEMINARMAN_CALC_DESC', $this->row->vat); ?><br>
+  <input class="calc_input"  type="text" name="bruttopreis1" id="bruttopreis1" size="10" maxlength="20" value="" />
+  <input class="calc_input" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_NET_BUTTON') ?>" onclick="calc_netto(1);" />
+  <input class="calc_input" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_CLOSE') ?>" onclick="hide_calc(1);" />
+</li>
+		<li>
+			<label for="price2"><?php echo '2. ' . JText::_('COM_SEMINARMAN_PRICE') ?> (<?php $params = JComponentHelper::getParams( 'com_seminarman' ); echo $params->get( 'currency' ); ?>)</label>
+			<input class="inputbox" <?php echo $readonly_price; ?> type="text" name="price2" id="price2" size="10" maxlength="20" value="<?php echo $this->row->price2; ?>" />
+			<?php echo $apply_2_discount; ?>
+			<input class="calculator" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_BUTTON') ?>" onclick="show_calculator(2);" />
+		</li>
+<li id="netto_rechner2" style="clear: left; background: #ddd; margin-left: 110px; padding: 10px; overflow: hidden; display: none;">
+  <?php echo JText::sprintf('COM_SEMINARMAN_CALC_DESC', $this->row->vat); ?><br>
+  <input class="calc_input"  type="text" name="bruttopreis2" id="bruttopreis2" size="10" maxlength="20" value="" />
+  <input class="calc_input" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_NET_BUTTON') ?>" onclick="calc_netto(2);" />
+  <input class="calc_input" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_CLOSE') ?>" onclick="hide_calc(2);" />
+</li>
+		<li>
+			<label for="price3"><?php echo '3. ' . JText::_('COM_SEMINARMAN_PRICE') ?> (<?php $params = JComponentHelper::getParams( 'com_seminarman' ); echo $params->get( 'currency' ); ?>)</label>
+			<input class="inputbox" <?php echo $readonly_price; ?> type="text" name="price3" id="price3" size="10" maxlength="20" value="<?php echo $this->row->price3; ?>" />
+		    <?php echo $apply_3_discount; ?>
+		    <input class="calculator" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_BUTTON') ?>" onclick="show_calculator(3);" />
+		</li>
+<li id="netto_rechner3" style="clear: left; background: #ddd; margin-left: 110px; padding: 10px; overflow: hidden; display: none;">
+  <?php echo JText::sprintf('COM_SEMINARMAN_CALC_DESC', $this->row->vat); ?><br>
+  <input class="calc_input"  type="text" name="bruttopreis3" id="bruttopreis3" size="10" maxlength="20" value="" />
+  <input class="calc_input" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_NET_BUTTON') ?>" onclick="calc_netto(3);" />
+  <input class="calc_input" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_CLOSE') ?>" onclick="hide_calc(3);" />
+</li>
+		<li>
+			<label for="price4"><?php echo '4. ' . JText::_('COM_SEMINARMAN_PRICE') ?> (<?php $params = JComponentHelper::getParams( 'com_seminarman' ); echo $params->get( 'currency' ); ?>)</label>
+			<input class="inputbox" <?php echo $readonly_price; ?> type="text" name="price4" id="price4" size="10" maxlength="20" value="<?php echo $this->row->price4; ?>" />
+		    <?php echo $apply_4_discount; ?>
+		    <input class="calculator" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_BUTTON') ?>" onclick="show_calculator(4);" />
+		</li>
+<li id="netto_rechner4" style="clear: left; background: #ddd; margin-left: 110px; padding: 10px; overflow: hidden; display: none;">
+  <?php echo JText::sprintf('COM_SEMINARMAN_CALC_DESC', $this->row->vat); ?><br>
+  <input class="calc_input"  type="text" name="bruttopreis4" id="bruttopreis4" size="10" maxlength="20" value="" />
+  <input class="calc_input" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_NET_BUTTON') ?>" onclick="calc_netto(4);" />
+  <input class="calc_input" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_CLOSE') ?>" onclick="hide_calc(4);" />
+</li>
+		<li>
+			<label for="price5"><?php echo '5. ' . JText::_('COM_SEMINARMAN_PRICE') ?> (<?php $params = JComponentHelper::getParams( 'com_seminarman' ); echo $params->get( 'currency' ); ?>)</label>
+			<input class="inputbox" <?php echo $readonly_price; ?> type="text" name="price5" id="price5" size="10" maxlength="20" value="<?php echo $this->row->price5; ?>" />
+		    <?php echo $apply_5_discount; ?>
+		    <input class="calculator" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_BUTTON') ?>" onclick="show_calculator(5);" />
+		</li>
+<li id="netto_rechner5" style="clear: left; background: #ddd; margin-left: 110px; padding: 10px; overflow: hidden; display: none;">
+  <?php echo JText::sprintf('COM_SEMINARMAN_CALC_DESC', $this->row->vat); ?><br>
+  <input class="calc_input"  type="text" name="bruttopreis5" id="bruttopreis5" size="10" maxlength="20" value="" />
+  <input class="calc_input" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_NET_BUTTON') ?>" onclick="calc_netto(5);" />
+  <input class="calc_input" type="button" value="<?php echo JText::_('COM_SEMINARMAN_CALC_CLOSE') ?>" onclick="hide_calc(5);" />
+</li>
 		<li>
 			<label for="vat"><?php echo JText::_('COM_SEMINARMAN_VAT') ?></label>
 			<input class="inputbox" <?php echo $readonly; ?> type="text" name="vat" id="vat" size="10" maxlength="20" value="<?php echo $this->row->vat; ?>%" />
@@ -448,28 +511,46 @@ $title = JText::_('COM_SEMINARMAN_DETAILS');
 echo $this->pane->startPane('det-pane');
 echo $this->pane->startPanel($title, 'details');
 echo '<fieldset class="panelform">';
-echo $this->form->render('details');
+$fields = $this->form->getFieldset('details');
+foreach( $fields AS $field ){
+  // echo $this->form->getLabel( $field, null );
+  // echo $this->form->getInput( $field, null, null );
+  echo $field->label;
+  echo $field->input;
+}
 echo '</fieldset>';
 
 $title = JText::_('COM_SEMINARMAN_PARAMETERS');
 echo $this->pane->endPanel();
 echo $this->pane->startPanel($title, 'params');
 echo '<fieldset class="panelform">';
-echo $this->form->render('params', 'basic');
+$fields = $this->form->getFieldset('basic');
+foreach( $fields AS $field ){
+  echo $field->label;
+  echo $field->input;
+}
 echo '</fieldset>';
 
 $title = JText::_('COM_SEMINARMAN_PARAMETERS_ADVANCED');
 echo $this->pane->endPanel();
 echo $this->pane->startPanel($title, "params-page");
 echo '<fieldset class="panelform">';
-echo $this->form->render('params', 'advanced');
+$fields = $this->form->getFieldset('advanced');
+foreach( $fields AS $field ){
+  echo $field->label;
+  echo $field->input;
+}
 echo '</fieldset>';
 
 $title = JText::_('COM_SEMINARMAN_METADATA_INFORMATION');
 echo $this->pane->endPanel();
 echo $this->pane->startPanel($title, "metadata-page");
 echo '<fieldset class="panelform">';
-echo $this->form->render('meta', 'metadata');
+$fields = $this->form->getFieldset('metadata');
+foreach( $fields AS $field ){
+  echo $field->label;
+  echo $field->input;
+}
 echo '</fieldset>';
 
 echo $this->pane->endPanel();
@@ -494,7 +575,7 @@ echo $this->pane->endPane();
 	</fieldset>
 	
 	<fieldset class="adminform">
-		<legend><?php echo JText::_('COM_SEMINARMAN_CERTIFICATE_TEXT'); ?></legend>
+		<legend><?php echo JText::_('COM_SEMINARMAN_CERTIFICATE_TEXT') . " <small>(" . JText::_('COM_SEMINARMAN_CERTIFICATE_PARAMS_SUPPORT') . ")</small>"; ?></legend>
 		<?php 
 		if(JHTMLSeminarman::UserIsCourseManager()){
 		echo $this->editor->display('certificate_text', $this->row->certificate_text, '100%', '250', '50', '15', array('pagebreak', 'readmore')); 
@@ -508,12 +589,12 @@ echo $this->pane->endPane();
 	<fieldset class="adminform">
 		<legend><?php echo JText::_('COM_SEMINARMAN_FILES'); ?></legend>
 		<div id="filelist"><?php echo $this->fileselect; ?></div>
-		<div class="button2-left">
+		<div class="button2-left btn">
 			<div class="blank">
 				<a class="modal" title="<?php echo JText::_('COM_SEMINARMAN_SELECT'); ?>" href="<?php echo $this->linkfsel; ?>" rel="{handler: 'iframe', size: {x: 850, y: 450}}"><?php echo JText::_('COM_SEMINARMAN_SELECT'); ?></a>
 			</div>
 		</div>
-		<div class="button2-left">
+		<div class="button2-left btn">
 			<div class="blank">
 				<a title="<?php echo JText::_('COM_SEMINARMAN_UPLOAD'); ?>" href="<?php	echo "index.php?option=com_seminarman&view=filemanager";?>" target="_blank"><?php echo JText::_('COM_SEMINARMAN_UPLOAD'); ?></a>
 			</div>

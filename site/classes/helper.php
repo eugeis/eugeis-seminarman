@@ -34,8 +34,9 @@ class seminarman_html
 
             if ($params->get('show_icons'))
             {
-                $image = JHTML::_('image.site', 'printButton.png', 'media/system/images/', null, null,
-                    JText::_('COM_SEMINARMAN_PRINT'));
+                // $image = JHTML::_('image.site', 'printButton.png', 'media/system/images/', null, null,
+                //    JText::_('COM_SEMINARMAN_PRINT'));
+            	$image = JHTML::_('image', 'media/system/images/printButton.png', JText::_('COM_SEMINARMAN_PRINT'));
             } else
             {
                 $image = JText::_('COM_SEMINARMAN_ICON_SEPARATOR') . '&nbsp;' . JText::_('COM_SEMINARMAN_PRINT') . '&nbsp;' . JText::
@@ -74,25 +75,26 @@ class seminarman_html
 
             if ($view == 'category')
             {
-                $link = $base . JRoute::_('index.php?view=' . $view . '&cid=' . $slug, false);
+                $link = $base . JRoute::_('index.php?option=com_seminarman&view=' . $view . '&cid=' . $slug, false);
             } elseif ($view == 'courses')
             {
-                $link = $base . JRoute::_('index.php?view=' . $view . '&cid=' . $slug . '&id=' .
+                $link = $base . JRoute::_('index.php?option=com_seminarman&view=' . $view . '&cid=' . $slug . '&id=' .
                     $courseslug, false);
             } elseif ($view == 'tags')
             {
-                $link = $base . JRoute::_('index.php?view=' . $view . '&id=' . $slug, false);
+                $link = $base . JRoute::_('index.php?option=com_seminarman&view=' . $view . '&id=' . $slug, false);
             } else
             {
-                $link = $base . JRoute::_('index.php?view=' . $view, false);
+                $link = $base . JRoute::_('index.php?option=com_seminarman&view=' . $view, false);
             }
             $url = 'index.php?option=com_mailto&tmpl=component&link=' . base64_encode($link);
             $status = 'width=400,height=300,menubar=yes,resizable=yes';
 
             if ($params->get('show_icons'))
             {
-                $image = JHTML::_('image.site', 'emailButton.png', 'media/system/images/', null, null,
-                    JText::_('COM_SEMINARMAN_EMAIL'));
+                // $image = JHTML::_('image.site', 'emailButton.png', 'media/system/images/', null, null,
+                //    JText::_('COM_SEMINARMAN_EMAIL'));
+            	$image = JHTML::_('image', 'media/system/images/emailButton.png', JText::_('COM_SEMINARMAN_EMAIL'));
             } else
             {
                 $image = JText::_('COM_SEMINARMAN_ICON_SEPARATOR') . '&nbsp;' . JText::_('COM_SEMINARMAN_EMAIL'). '&nbsp;' . JText::
@@ -183,8 +185,9 @@ class seminarman_html
         {
             if ($params->get('show_icons'))
             {
-                $image = JHTML::_('image.site', 'heart_delete.png',
-                    'components/com_seminarman/assets/images/', null, null, JText::_('COM_SEMINARMAN_REMOVE_FAVOURITE'));
+                // $image = JHTML::_('image.site', 'heart_delete.png',
+                //    'components/com_seminarman/assets/images/', null, null, JText::_('COM_SEMINARMAN_REMOVE_FAVOURITE'));
+            	$image = JHTML::_('image', 'components/com_seminarman/assets/images/heart_delete.png', JText::_('COM_SEMINARMAN_REMOVE_FAVOURITE'));
             } else
             {
                 $image = JText::_('COM_SEMINARMAN_ICON_SEPARATOR') . '&nbsp;' . JText::_('COM_SEMINARMAN_REMOVE_FAVOURITE') .
@@ -193,7 +196,7 @@ class seminarman_html
             $overlib = JText::_('COM_SEMINARMAN_REMOVE_FAVOURITE_TIP');
             $text = JText::_('COM_SEMINARMAN_REMOVE_FAVOURITE');
 
-            $link = 'index.php?task=removefavourite&cid=' . $course->categoryslug . '&id=' . $course->
+            $link = 'index.php?option=com_seminarman&task=removefavourite&cid=' . $course->categoryslug . '&id=' . $course->
                 slug;
             $output = '<a href="' . JRoute::_($link) .
                 '" class="editlinktip hasTip" title="' . $text . '::' . $overlib . '">' . $image .
@@ -202,8 +205,9 @@ class seminarman_html
         {
             if ($params->get('show_icons'))
             {
-                $image = JHTML::_('image.site', 'heart_add.png',
-                    'components/com_seminarman/assets/images/', null, null, JText::_('COM_SEMINARMAN_FAVOURE'));
+                // $image = JHTML::_('image.site', 'heart_add.png',
+                //    'components/com_seminarman/assets/images/', null, null, JText::_('COM_SEMINARMAN_FAVOURE'));
+            	$image = JHTML::_('image', 'components/com_seminarman/assets/images/heart_add.png', JText::_('COM_SEMINARMAN_FAVOURITE'));
             } else
             {
                 $image = JText::_('COM_SEMINARMAN_ICON_SEPARATOR') . '&nbsp;' . JText::_('COM_SEMINARMAN_FAVOURE') . '&nbsp;' .
@@ -212,7 +216,7 @@ class seminarman_html
             $overlib = JText::_('COM_SEMINARMAN_FAVOURE_TIP');
             $text = JText::_('COM_SEMINARMAN_FAVOURE');
 
-            $link = 'index.php?task=addfavourite&cid=' . $course->categoryslug . '&id=' . $course->
+            $link = 'index.php?option=com_seminarman&task=addfavourite&cid=' . $course->categoryslug . '&id=' . $course->
                 slug;
             $output = '<a href="' . JRoute::_($link) .
                 '" class="editlinktip hasTip" title="' . $text . '::' . $overlib . '">' . $image .
@@ -225,9 +229,10 @@ class seminarman_html
 
             if ($params->get('show_icons'))
             {
-                $image = JHTML::_('image.site', 'heart_login.png',
-                    'components/com_seminarman/assets/images/', null, null, $text,
-                    'class="editlinktip hasTip" title="' . $text . '::' . $overlib . '"');
+                // $image = JHTML::_('image.site', 'heart_login.png',
+                //    'components/com_seminarman/assets/images/', null, null, $text,
+                //    'class="editlinktip hasTip" title="' . $text . '::' . $overlib . '"');
+            	$image = JHTML::_('image', 'components/com_seminarman/assets/images/heart_login.png', $text, 'class="editlinktip hasTip" title="' . $text . '::' . $overlib . '"');
             } else
             {
                 $image = JText::_('COM_SEMINARMAN_ICON_SEPARATOR') . '&nbsp;' .
@@ -249,8 +254,9 @@ class seminarman_html
 
             if ($params->get('show_icons'))
             {
-                $image = JHTML::_('image.site', 'heart.png',
-                    'components/com_seminarman/assets/images/', null, null, JText::_('COM_SEMINARMAN_FAVOURITES'));
+                // $image = JHTML::_('image.site', 'heart.png',
+                //    'components/com_seminarman/assets/images/', null, null, JText::_('COM_SEMINARMAN_FAVOURITES'));
+            	$image = JHTML::_('image', 'components/com_seminarman/assets/images/heart.png', JText::_('COM_SEMINARMAN_FAVOURITES'));
             } else
             {
                 $image = JText::_('COM_SEMINARMAN_ICON_SEPARATOR') . '&nbsp;' . JText::_('COM_SEMINARMAN_FAVOURITES') . '&nbsp;' .
@@ -259,7 +265,7 @@ class seminarman_html
             $overlib = JText::_('COM_SEMINARMAN_FAVOURITES_TIP');
             $text = JText::_('COM_SEMINARMAN_FAVOURITES');
 
-            $link = 'index.php?view=favourites';
+            $link = 'index.php?option=com_seminarman&view=favourites';
             $output = '<a href="' . JRoute::_($link) .
                 '" class="editlinktip hasTip" title="' . $text . '::' . $overlib . '">' . $image .
                 '</a>';
@@ -282,8 +288,9 @@ class seminarman_html
 
                 if ($params->get('show_icons'))
                 {
-                    $image = JHTML::_('image.site', 'delete.png',
-                        'components/com_seminarman/assets/images/', null, null, JText::_('COM_SEMINARMAN_REMOVE_FAVOURITE'));
+                    // $image = JHTML::_('image.site', 'delete.png',
+                    //    'components/com_seminarman/assets/images/', null, null, JText::_('COM_SEMINARMAN_REMOVE_FAVOURITE'));
+                	$image = JHTML::_('image', 'components/com_seminarman/assets/images/delete.png', JText::_('COM_SEMINARMAN_REMOVE_FAVOURITE'));
                 } else
                 {
                     $image = JText::_('COM_SEMINARMAN_ICON_SEPARATOR') . '&nbsp;' . JText::_('COM_SEMINARMAN_FAVOURITES') . '&nbsp;' .
@@ -292,7 +299,7 @@ class seminarman_html
                 $overlib = JText::_('COM_SEMINARMAN_REMOVE_FAVOURITE_TIP');
                 $text = JText::_('COM_SEMINARMAN_REMOVE_FAVOURITE');
 
-                $link = 'index.php?task=removefavourite&id=' . $course->id;
+                $link = 'index.php?option=com_seminarman&task=removefavourite&id=' . $course->id;
                 $output = '<a href="' . JRoute::_($link) .
                     '" class="editlinktip hasTip" title="' . $text . '::' . $overlib . '">' . $image .
                     '</a>';
@@ -306,7 +313,7 @@ class seminarman_html
 
 class seminarman_upload
 {
-    function check($file, &$err)
+    static function check($file, &$err)
     {
         $params = JComponentHelper::getParams('com_seminarman');
 
@@ -419,7 +426,7 @@ class seminarman_upload
         return true;
     }
 
-    function sanitize($base_Dir, $filename)
+    static function sanitize($base_Dir, $filename)
     {
         jimport('joomla.filesystem.file');
 

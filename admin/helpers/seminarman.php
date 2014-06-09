@@ -379,14 +379,25 @@ class JHTMLSeminarman
     
     static function getVirtualTable()
     {
-        $parser = JFactory::getXMLParser('Simple');
+        // $parser = JFactory::getXMLParser('Simple');
 
-        $pathToXML_File = JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'virtual_tables.xml';
-        $parser->loadFile($pathToXML_File);
-        $document = &$parser->document;
+        // $pathToXML_File = JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'virtual_tables.xml';
+        
+        // $parser->loadFile($pathToXML_File);
+        // $document = &$parser->document;
 
-        $result =  &$document->table;
-        return $result;
+        // $result =  &$document->table;
+        // return $result;
+        
+    	$pathToXML_File = JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'virtual_tables.xml';
+    	$xml=JFactory::getXML($pathToXML_File);
+    	
+    	$tables = array();
+    	foreach($xml->table as $table) {
+    	  $tables[] = $table;
+    	}
+    	
+    	return $tables;
     }
 
     
@@ -397,13 +408,22 @@ class JHTMLSeminarman
         for ($i = 0, $c = count($tables); $i < $c; $i++)
         {
             $album = $tables[$i];
-            $name = $album->getElementByPath('title');
-            if ($name->data() == $tableTitle) {
-                if ($values = $album->getElementByPath('values')) {
-                    $listing = $values->value;
+            // $name = $album->getElementByPath('title');
+            $name = $album->title;
+            // if ($name->data() == $tableTitle) {
+            if ($name == $tableTitle) {
+                // if ($values = $album->getElementByPath('values')) {
+            	if ($values = $album->values) {
+                    // $listing = $values->value;
+                    $listing = array();
+                    foreach($values->value as $wert) {
+                    	$listing[]=$wert;
+                    }
+                    
                     for ($ti = 0, $tc = count($listing); $ti < $tc; $ti++) {
                         $value = &$listing[$ti];
-                        $XMLvalue[$ti] = $value->data();
+                        // $XMLvalue[$ti] = $value->data();
+                        $XMLvalue[$ti] = $value;
                     }
                 }
                 return $XMLvalue;
@@ -548,6 +568,173 @@ class JHTMLSeminarman
 		}
 		return false;
     }
+    
+    static function get_price_view ($course_id, $jsfunction = '', $vmlink = NULL) {
+    
+    	$db = JFactory::getDbo();
+    	$params = JComponentHelper::getParams( 'com_seminarman' );
+    
+    	$html = "";
+    
+    	$query = $db->getQuery(true);
+    	$query->select('*')
+    	->from('#__seminarman_courses')
+    	->where('id = '.(int)$course_id);
+    	$db->setQuery($query);
+    	$course = $db->loadObject();
+    
+    	$currency = $params->get( 'currency' );
+    
+    	$tax_rate = doubleval(str_replace(",", ".", $course->vat))/100;
+    	//             $tax_rate = doubleval(str_replace(",", ".", $this->escape($course->vat)))/100;
+    
+    	$standard_netto = $course->price;
+    	//$standard_netto = $this->escape($this->price_before_vat);
+    
+    	$standard_brutto = JText::sprintf('%.2f', round(doubleval(str_replace(",", ".", $standard_netto)) * (1 + $tax_rate), 2));
+    	$standard_netto = JText::sprintf('%.2f', round(doubleval(str_replace(",", ".", $standard_netto)), 2));
+    	//             $standard_brutto = JText::sprintf('%.2f', round(doubleval(str_replace(",", ".", $this->escape($standard_netto))) * (1 + $tax_rate), 2));
+    	//             $standard_netto = JText::sprintf('%.2f', round(doubleval(str_replace(",", ".", $this->escape($standard_netto))), 2));
+    
+    
+    	$display_party = array();
+    	 
+    	$display_free_charge = $params->get('display_free_charge');
+    
+    	if ($params->get('show_price_1') == 0) {
+    		$price1_label = JText::_('COM_SEMINARMAN_NET') . ': '
+    		. $standard_netto . ' ' . $currency . ', ' . JText::_('COM_SEMINARMAN_GROSS_WITH_TAX') . ': ' . $standard_brutto . ' ' . $currency;
+    		if($course->vat == 0) {
+    			$price1_label = $standard_netto . ' ' . $currency;
+    		}
+    	} else {
+    		$price1_label = JText::_('COM_SEMINARMAN_PRICE_STANDARD');
+    	}
+    	 
+    	if (!empty($display_free_charge) && ($standard_netto == 0)) {
+    		$price1_label = JText::_($params->get('display_free_charge'));
+    	}
+    
+    	// price1
+    	$display_party[ 'display_price1' ] = '<input id="booking_price1" type="radio" value="0" checked="checked" name="booking_price[]" '.$jsfunction.'><label for="jformbookingprice1">' . $price1_label . '</label>';
+    
+    	// price2-5
+    	for ( $i=2; $i < 6; $i++ ) {
+    		$val = JHTMLSeminarman::_get_price_display ( $db, $course, $i, $display_party, $price1_label, $jsfunction );
+    	}
+    
+    	if (($params->get('trigger_virtuemart') == 1)  && !is_null($vmlink)) {
+    		$display_party[ 'display_price1' ] = '<input id="booking_price1" type="radio" value="66" checked="checked" name="booking_price[]" '.$jsfunction.'><label for="jformbookingprice1">'
+    		. JText::_('COM_SEMINARMAN_PRICE_SHOW_IN_VM') . '</label>';
+    		$display_party[ 'display_price2' ] = '';
+    		$display_party[ 'display_price3' ] = '';
+    		$display_party[ 'display_price4' ] = '';
+    		$display_party[ 'display_price5' ] = '';
+    	}
+    
+    	$html .= $display_party[ 'display_price1' ];
+    	$html .= $display_party[ 'display_price2' ];
+    	$html .= $display_party[ 'display_price3' ];
+    	$html .= $display_party[ 'display_price4' ];
+    	$html .= $display_party[ 'display_price5' ];
+    
+    	return $html;
+    }
+    
+    static function _get_price_display ( $db, $course, $num, &$display_party, $price1_label, $jsfunction ) {
+    
+    	// fetch the pricegrp from db
+    	$query_pricegroup = $db->getQuery(true);
+    	$query_pricegroup->select('*')
+    	->from('#__seminarman_pricegroups')
+    	->where("gid=$num");
+    	$db->setQuery($query_pricegroup);
+    	$priceg = $db->loadAssoc();
+    	$priceg_name = $priceg['title'];
+    	$priceg_usg = json_decode($priceg['jm_groups']);
+    
+    	if (is_null($priceg_usg)) {
+    		$priceg_usg = array();
+    	}
+    
+    	// build view
+    	$user = JFactory::getUser();
+    	$current_usergroups = $user->getAuthorisedGroups();
+    
+    	$courseprice = $course->{"price$num"};
+    	$coursevat = $course->vat;
+    	$params = JComponentHelper::getParams( 'com_seminarman' );
+    	$currency = $params->get( 'currency' );
+    	$tax_rate = doubleval(str_replace(",", ".", $course->vat))/100;
+    	$param_show = $params->get("show_price_$num");
+    	 
+    	$display_free_charge = $params->get('display_free_charge');
+    
+    	if (!is_null($courseprice) && !($param_show == 0)) {
+    		$price_netto = JText::sprintf('%.2f', round(doubleval(str_replace(",", ".", $courseprice)), 2));
+    		$price_brutto = JText::sprintf('%.2f', round(doubleval(str_replace(",", ".", $courseprice)) * (1 + $tax_rate), 2));
+    
+    		$dp_chck = '<input id="booking_price'.$num.'" type="radio" value="' . ($num-1) . '" checked="checked" name="booking_price[]" '.$jsfunction.' style="clear: left;" >';
+    		$dp_unck = '<input id="booking_price'.$num.'" type="radio" value="' . ($num-1) . '" name="booking_price[]" '.$jsfunction.' style="clear: left;" >';
+    
+    		$label_n = '<label for="jformbookingprice'.$num.'" >'
+    		. $priceg_name . ' (' . $price_netto . ' ' . $currency . ')</label>';
+    		$label_nb = '<label for="jformbookingprice'.$num.'" >'
+    		. $priceg_name . ' (' . JText::_('COM_SEMINARMAN_NET') . ': ' . $price_netto . ' ' . $currency . ', ' .
+    		JText::_('COM_SEMINARMAN_GROSS_WITH_TAX') . ': ' . $price_brutto . ' ' . $currency . ')</label>';
+    		$label_ng = '<label for="jformbookingprice'.$num.'" >'
+    		. $priceg_name . '<span style="display: none;"> ' . $price_netto . ' ' . $currency . ' </span> ' . '</label>';
+    
+    		if (!empty($display_free_charge) && ($courseprice == 0)) {
+    			$label_n = '<label for="jformbookingprice'.$num.'" >'
+    			. $priceg_name . ' (' . JText::_($params->get('display_free_charge')) . ')</label>';
+    			$label_nb = '<label for="jformbookingprice'.$num.'" >'
+    			. $priceg_name . ' (' . JText::_($params->get('display_free_charge')) . ')</label>';
+    		}
+    
+    		if ($param_show == 1) {  // Anzeige nur für getroffene Nutzer
+    			if (array_intersect($current_usergroups, $priceg_usg)) { // getroffen
+    
+    				for( $i = 1; $i < $num; $i++ ) {
+    					$display_party[ "display_price$num" ] = '';
+    				}
+    				$display_price = '<br>'. $dp_chck . $label_nb;
+    				if($coursevat == 0) {
+    					$display_price = '<br>'. $dp_chck . $label_n;
+    				}
+    			}
+    			else {  // nicht getroffen
+    				$display_price = '';
+    			}
+    		} elseif ($param_show == 2) {  // Anzeige für alle Nutzer
+    			if (array_intersect($current_usergroups, $priceg_usg)) { // getroffen
+    				$display_party[ 'display_price1' ] = '<input id="booking_price1" type="radio" value="0" name="booking_price[]" style="clear: left;" '.$jsfunction.' ><label for="jformbookingprice1">' . $price1_label . '</label>';
+    				$display_price = '<br>'.$dp_chck . $label_nb;
+    				if($coursevat == 0) {
+    					$display_price = '<br>'.$dp_chck . $label_n;
+    				}
+    			}
+    			else {
+    				$display_price = '<br>'.$dp_unck . $label_nb;
+    				if($coursevat == 0) {
+    					$display_price = '<br>'.$dp_unck . $label_n;
+    				}
+    			}
+    		} elseif ($param_show == 3) {  // Anzeige ohne Preiswert
+    			if (array_intersect($current_usergroups, $priceg_usg)) { // getroffen
+    				$display_party[ 'display_price1' ] = '<input id="booking_price1" type="radio" value="0" name="booking_price[]" style="clear: left;" '.$jsfunction.' ><label for="jformbookingprice1">' . $price1_label . '</label>';
+    				$display_price = '<br>'.$dp_chck . $label_ng;
+    			} else {
+    				$display_price = '<br>'.$dp_unck . $label_ng;
+    			}
+    		}
+    	} else { // Anzeige für keine Nutzer oder kein x. Preis definiert
+    		$display_price = '';
+    	}
+    
+    	$display_party[ "display_price$num"] = $display_price;
+    	return true;
+    }    
 }
 
 class SeminarmanFunctions {
@@ -582,5 +769,38 @@ class SeminarmanFunctions {
     	} else {
     		return true;
     	}
+    }
+    
+    static function isSmanbookingPlgEnabled() {
+    	$db = JFactory::getDbo();
+    	$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'smanbooking'");
+    	$smbookingplg_enabled = ($db->loadResult() == 1);
+    	if(!$smbookingplg_enabled){
+    		return false;
+    	} else {
+    		return true;
+    	}
+    }
+    
+    static function isSmanwaitingPlgEnabled() {
+    	$db = JFactory::getDbo();
+    	$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'smanwaiting'");
+    	$smwaitingplg_enabled = ($db->loadResult() == 1);
+    	if(!$smwaitingplg_enabled){
+    		return false;
+    	} else {
+    		return true;
+    	}
+    }
+    
+    static function isSmanpdflistPlgEnabled() {
+    	$db = JFactory::getDbo();
+    	$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'smanpdflist'");
+    	$smpdflistplg_enabled = ($db->loadResult() == 1);
+    	if(!$smpdflistplg_enabled){
+    		return false;
+    	} else {
+    		return true;
+    	}    	
     }
 }

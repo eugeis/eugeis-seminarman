@@ -80,7 +80,8 @@ echo $this->session->getName() . '=' . $this->session->getId();
 
 ?>&amp;<?php
 
-echo JUtility::getToken();
+// echo JUtility::getToken();
+echo JSession::getFormToken();
 
 ?>=1" id="uploadForm" method="post" enctype="multipart/form-data">
                 <fieldset>

@@ -118,7 +118,7 @@ class SeminarmanModelTemplateelement extends JModel
             '.templates.filter_state', 'filter_state', '', 'word');
         $search = $mainframe->getUserStateFromRequest('com_seminarman' . '.templates.search',
             'search', '', 'string');
-        $search = $this->_db->getEscaped(trim(JString::strtolower($search)));
+        $search = $this->_db->escape(trim(JString::strtolower($search)));
 
         $where = array();
 
@@ -153,7 +153,7 @@ class SeminarmanModelTemplateelement extends JModel
         if ($search)
         {
             $where[] = ' LOWER(i.title) LIKE ' . $this->_db->Quote('%' . $this->_db->
-                getEscaped($search, true) . '%', false);
+                escape($search, true) . '%', false);
         }
 
         $where = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');

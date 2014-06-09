@@ -25,7 +25,7 @@ jimport('joomla.application.component.view');
 jimport('joomla.html.parameter' );
 jimport('joomla.html.pagination');
 
-class SeminarmanViewTags extends JView{
+class SeminarmanViewTags extends JViewLegacy{
     function display($tpl = null)
     {
         $mainframe = JFactory::getApplication();
@@ -90,7 +90,7 @@ class SeminarmanViewTags extends JView{
     		setlocale(LC_NUMERIC, $old_locale);
     		
     		$menuclass = 'category' . $params->get('pageclass_sfx');
-    		$itemParams = new JParameter($item->attribs);
+    		$itemParams = new JRegistry($item->attribs);
     		
     		if (($item->url) <> 'http://'){
     			switch ($itemParams->get('target', $params->get('target'))){
@@ -165,7 +165,7 @@ class SeminarmanViewTags extends JView{
     			if (!$params->get('enable_multiple_bookings_per_user') && $user->id && $model->hasUserBooked($item->id))
     				$item->book_link = '<span class="centered italic">' . JText::_('COM_SEMINARMAN_ALREADY_BOOKED_SHORT') . '</span>';
     			else
-    				$item->book_link = '<div class="button2-left"><div class="blank"><a href="' . JRoute::_('index.php?view=courses&cid=' . $category->slug . '&id=' . $item->slug . '&Itemid=' . $Itemid) . '">' . JText::_('COM_SEMINARMAN_BOOK_NOW') . '</a></div></div>';
+    				$item->book_link = '<div class="button2-left"><div class="blank"><a href="' . JRoute::_('index.php?option=com_seminarman&view=courses&cid=' . $category->slug . '&id=' . $item->slug . '&Itemid=' . $Itemid) . '">' . JText::_('COM_SEMINARMAN_BOOK_NOW') . '</a></div></div>';
     		else
     			$item->book_link = '<span class="centered italic">' . JText::_('COM_SEMINARMAN_FULL') . '</span>';
     		 
@@ -212,7 +212,7 @@ class SeminarmanViewTags extends JView{
     		setlocale(LC_NUMERIC, $old_locale);
     		
     		$menuclass = 'category' . $params->get('pageclass_sfx');
-    		$itemParams = new JParameter($item->attribs);
+    		$itemParams = new JRegistry($item->attribs);
     		
     		if (($item->url) <> 'http://'){
     			switch ($itemParams->get('target', $params->get('target'))){

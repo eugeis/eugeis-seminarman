@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.file');
 
-class SeminarmanModelFileselement extends JModel
+class SeminarmanModelFileselement extends JModelLegacy
 {
     var $_data = null;
 
@@ -138,20 +138,20 @@ class SeminarmanModelFileselement extends JModel
             'search', '', 'string');
         $filter = $mainframe->getUserStateFromRequest('com_seminarman' . '.fileselement.filter',
             'filter', '', 'int');
-        $search = $this->_db->getEscaped(trim(JString::strtolower($search)));
+        $search = $this->_db->escape(trim(JString::strtolower($search)));
 
         $where = array();
 
         if ($search && $filter == 1)
         {
             $where[] = ' LOWER(f.filename) LIKE ' . $this->_db->Quote('%' . $this->_db->
-                getEscaped($search, true) . '%', false);
+                escape($search, true) . '%', false);
         }
 
         if ($search && $filter == 2)
         {
             $where[] = ' LOWER(f.altname) LIKE ' . $this->_db->Quote('%' . $this->_db->
-                getEscaped($search, true) . '%', false);
+                escape($search, true) . '%', false);
         }
 
         $where = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');

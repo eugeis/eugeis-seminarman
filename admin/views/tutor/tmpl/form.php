@@ -51,11 +51,9 @@ else
 				alert( "<?php echo JText::_('COM_SEMINARMAN_MISSING_SALUTATION_NAME.', true); ?>" );
 
 			}
-
 			else {
 				Joomla.submitform( task );
 			}
-	
 	}
 
 	function updatejuserform(){
@@ -149,8 +147,9 @@ else
 		<?php
 		if ($this->tutor->logofilename != '') { ?>
 			<img src="<?php $params = JComponentHelper::getParams( 'com_seminarman' ); echo JURI::root().$params->get('image_path', 'images'). '/' . $this->tutor->logofilename; ?>">
+			<input type="checkbox" name="image_remove" value="1" /><?php echo '<span class="readonly">'. JText::_('COM_SEMINARMAN_REMOVE') . '</span>'; ?>
 		<?php } ?>
-		
+		<div class="clear"></div>
 		<input class="text_area" type="file" name="logofilename" id="logofilename" size="32" maxlength="250" value=""/>
 	</fieldset>
 	</div>
@@ -263,6 +262,10 @@ else
 				<tr>
 					<td class="key"><label for="name"><?php echo JText::_('COM_SEMINARMAN_FAX_NUMBER'); ?>:</label></td>
 					<td><input class="inputbox" type="text" name="fax_number" id="fax_number" size="60" maxlength="100" value="<?php echo $this->tutor->fax_number; ?>" /></td>
+				</tr>
+				<tr>
+					<td class="key"><label for="name"><?php echo JText::_('COM_SEMINARMAN_EMAIL'); ?>:</label></td>
+					<td><input class="inputbox" type="text" name="email" id="email" size="60" maxlength="100" value="<?php echo $this->tutor->email; ?>" /></td>
 				</tr>
 				<tr>
 					<td class="key"><label for="name"><?php echo JText::_('COM_SEMINARMAN_WEBSITE'); ?>:</label></td>

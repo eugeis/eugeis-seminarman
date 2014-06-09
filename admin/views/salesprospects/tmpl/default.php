@@ -20,7 +20,7 @@ function notify(id) {
 }
 </script>
 
-<form action="<?php echo $this->requestURL; ?>" method="post" name="adminForm">
+<form action="<?php echo $this->requestURL; ?>" method="post" name="adminForm" id="adminForm">
 <table class="adminform">
 <tr>
    <td class="proc100 left">
@@ -40,7 +40,7 @@ function notify(id) {
    <thead>
       <tr>
          <th width="5"><?php echo JText::_('COM_SEMINARMAN_NUM'); ?></th>
-         <th width="20"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->salesprospects); ?>);" /></th>
+         <th width="20"><?php echo JHtml::_('grid.checkall'); ?></th>
          <th class="title"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_LAST_NAME', 'a.last_name', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="10%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_FIRST_NAME', 'a.first_name', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="15%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_EMAIL', 'a.email', $this->lists['order_Dir'], $this->lists['order']); ?></th>

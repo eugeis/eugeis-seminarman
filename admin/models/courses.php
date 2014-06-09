@@ -25,7 +25,7 @@ jimport('joomla.application.component.model');
 require_once (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_seminarman' . DS .
             'helpers' . DS . 'seminarman.php');
 
-class SeminarmanModelCourses extends JModel
+class SeminarmanModelCourses extends JModelLegacy
 {
     var $_data = null;
 
@@ -155,7 +155,7 @@ class SeminarmanModelCourses extends JModel
 	$filter_search = $mainframe->getUserStateFromRequest( 'com_seminarman'.'.application.filter_search',    'filter_search',      '',            'int' );
         $search = $mainframe->getUserStateFromRequest('com_seminarman' . '.courses.search',
             'search', '', 'string');
-        $search = $this->_db->getEscaped(trim(JString::strtolower($search)));
+        $search = $this->_db->escape(trim(JString::strtolower($search)));
 
         $where = array();
 
@@ -203,12 +203,12 @@ class SeminarmanModelCourses extends JModel
         if ($search && $filter_search == 1)
         {
             $where[] = ' LOWER(i.title) LIKE ' . $this->_db->Quote('%' . $this->_db->
-                getEscaped($search, true) . '%', false);
+                escape($search, true) . '%', false);
         }
         
         if ($search && $filter_search == 2) {
         	$where[] = ' LOWER(i.code) LIKE '.$this->_db->Quote('%' . $this->_db->
-                getEscaped($search, true) . '%', false);
+                escape($search, true) . '%', false);
         }
 
         $where = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');

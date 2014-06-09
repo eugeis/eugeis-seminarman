@@ -16,7 +16,7 @@ $user = JFactory::getUser();
 ?>
 
 <div class="qickseminarman">
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 
 	<table class="adminform">
 		<tr>
@@ -36,7 +36,7 @@ $user = JFactory::getUser();
 	<thead>
 		<tr>
 			<th width="5"><?php echo JText::_('COM_SEMINARMAN_NUM'); ?></th>
-			<th width="5" align="center"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count($this->rows); ?>);" /></th>
+			<th width="5" align="center"><?php echo JHtml::_('grid.checkall'); ?></th>
 			<th width="15%"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_NAME', 'i.name', $this->lists['order_Dir'], $this->lists['order']); ?></th>
 			<th width="30%"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_TITLE', 'i.title', $this->lists['order_Dir'], $this->lists['order']); ?></th>
 			<th width="10"><?php echo JText::_('COM_SEMINARMAN_COURSE_CODE'); ?></th>

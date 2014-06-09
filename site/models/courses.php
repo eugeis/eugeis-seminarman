@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class SeminarmanModelCourses extends JModel
+class SeminarmanModelCourses extends JModelLegacy
 {
     var $_course = null;
     var $_tags = null;
@@ -152,7 +152,8 @@ class SeminarmanModelCourses extends JModel
     {
         $mainframe = JFactory::getApplication();
         $jnow = JFactory::getDate();
-        $now = $jnow->toMySQL();
+        // $now = $jnow->toMySQL();
+        $now = $jnow->toSQL();
         $nullDate = $this->_db->getNullDate();
 
         if ($this->_id == '0')
@@ -163,9 +164,10 @@ class SeminarmanModelCourses extends JModel
         if (empty($this->_course))
         {
             $query = 'SELECT i.*, (i.plus / (i.plus + i.minus) ) * 100 AS votes, c.access AS cataccess, c.id AS catid, c.published AS catpublished, c.title AS categorytitle,' .
-                ' u.name AS author, u.usertype,' .
-                ' emp.title AS tutor,' .
-				' emp.published AS tutor_published,' .
+                // ' u.name AS author, u.usertype,' .
+                ' u.name AS author,' .
+                ' CONCAT_WS(\' \', emp.salutation, emp.other_title, emp.firstname, emp.lastname) AS tutor,' .
+                ' emp.published AS tutor_published,' .
                 ' gr.title AS cgroup,' .
                 ' lev.title AS level,' .
                 ' CASE WHEN CHAR_LENGTH(i.alias) THEN CONCAT_WS(\':\', i.id, i.alias) ELSE i.id END as slug,' .
@@ -230,7 +232,7 @@ class SeminarmanModelCourses extends JModel
         			 ' WHERE user_id = '. (int)$user->get('id').
         			 ' AND course_id = ' . $this->_id .
         			 ' AND course_id = ' . $this->_id .
-        			 ' AND published <> -2';
+        			 ' AND published <> -2 AND status < 3';
         	
         	$this->_db->setQuery($query);
         	$this->_attendeedata = $this->_db->loadObject();
@@ -314,7 +316,8 @@ class SeminarmanModelCourses extends JModel
         $query = 'SELECT tid FROM #__seminarman_tags_course_relations WHERE courseid = ' . (int)
             $this->_id;
         $this->_db->setQuery($query);
-        $used = $this->_db->loadResultArray();
+        // $used = $this->_db->loadResultArray();
+        $used = $this->_db->loadColumn();
         return $used;
     }
 
@@ -512,7 +515,8 @@ class SeminarmanModelCourses extends JModel
         $query = 'SELECT DISTINCT catid FROM #__seminarman_cats_course_relations WHERE courseid = ' . (int)
             $this->_id;
         $this->_db->setQuery($query);
-        $used = $this->_db->loadResultArray();
+        // $used = $this->_db->loadResultArray();
+        $used = $this->_db->loadColumn();
         return $used;
     }
 

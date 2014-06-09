@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class SeminarmanModelFilemanager extends JModel
+class SeminarmanModelFilemanager extends JModelLegacy
 {
     var $_data = null;
 
@@ -138,20 +138,20 @@ class SeminarmanModelFilemanager extends JModel
             'search', '', 'string');
         $filter = $mainframe->getUserStateFromRequest('com_seminarman' . '.filemanager.filter',
             'filter', '', 'int');
-        $search = $this->_db->getEscaped(trim(JString::strtolower($search)));
+        $search = $this->_db->escape(trim(JString::strtolower($search)));
 
         $where = array();
 
         if ($search && $filter == 1)
         {
             $where[] = ' LOWER(f.filename) LIKE ' . $this->_db->Quote('%' . $this->_db->
-                getEscaped($search, true) . '%', false);
+                escape($search, true) . '%', false);
         }
 
         if ($search && $filter == 2)
         {
             $where[] = ' LOWER(f.altname) LIKE ' . $this->_db->Quote('%' . $this->_db->
-                getEscaped($search, true) . '%', false);
+                escape($search, true) . '%', false);
         }
 
         $where = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');
@@ -195,7 +195,8 @@ class SeminarmanModelFilemanager extends JModel
                 $cids . ')';
 
             $this->_db->setQuery($query);
-            $filenames = $this->_db->loadResultArray();
+            // $filenames = $this->_db->loadResultArray();
+            $filenames = $this->_db->loadColumn();
 
             foreach ($filenames as $name)
             {

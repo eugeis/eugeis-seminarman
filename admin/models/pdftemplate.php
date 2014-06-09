@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class seminarmanModelPdftemplate extends JModel
+class seminarmanModelPdftemplate extends JModelLegacy
 {
     var $id = null;
 
@@ -150,7 +150,7 @@ class seminarmanModelPdftemplate extends JModel
 		
 		$query = "SELECT DISTINCT name, fieldcode, type FROM #__seminarman_fields" .
 		    " WHERE published = 1".
-		    " AND visible = 1".
+		    // " AND visible = 1".
 			" AND type NOT LIKE '%group%'";
 		$db->setQuery($query);
 		$fields = $db->loadObjectList();
@@ -168,5 +168,18 @@ class seminarmanModelPdftemplate extends JModel
 		$db->query();
 		$db->setQuery('UPDATE #__seminarman_pdftemplate SET isdefault=0 WHERE templatefor='.(int)$tf.' AND id<>'. (int)$id);
 		$db->query();
+	}
+	
+	function getTemplate($id = 0)
+	{
+		$db = JFactory::getDBO();
+		$query = 'SELECT * FROM #__seminarman_pdftemplate WHERE templatefor=0 AND ';
+		if ($id == 0) {
+			$query .= 'isdefault=1 LIMIT 1';
+		} else {
+			$query .= 'id='.(int)$id.' LIMIT 1';
+		}
+		$db->setQuery($query);
+		return $db->loadObject();
 	}
 }

@@ -60,7 +60,7 @@ class ApplicationHelper
 			return false;
 		}
 		
-		$query = "SELECT * FROM " . $db->nameQuote('#__seminarman_emailtemplate') . " WHERE ( id=" . $emailTemplate . ")";
+		$query = "SELECT * FROM " . $db->quoteName('#__seminarman_emailtemplate') . " WHERE ( id=" . $emailTemplate . ")";
 		$db->setQuery($query);
 		$template = $db->loadObject();
 		if ($template) {
@@ -140,7 +140,7 @@ class ApplicationHelper
 			$emailCond = " AND isdefault=1";
 		}
 
-		$query = "SELECT * FROM " . $db->nameQuote('#__seminarman_emailtemplate') . " WHERE (templatefor=0".  $emailCond . ")";
+		$query = "SELECT * FROM " . $db->quoteName('#__seminarman_emailtemplate') . " WHERE (templatefor=0".  $emailCond . ")";
 		$db->setQuery($query);
 		$template = $db->loadObject();
 		if ($template) {
@@ -168,8 +168,8 @@ class ApplicationHelper
 		$config = JFactory::getConfig();
 		$params = JComponentHelper::getParams('com_seminarman');
 
-		$query = 'SELECT field.*, value.value ' . 'FROM ' . $db->nameQuote('#__seminarman_fields') .
-		' AS field ' . 'LEFT JOIN ' . $db->nameQuote('#__seminarman_fields_values') .
+		$query = 'SELECT field.*, value.value ' . 'FROM ' . $db->quoteName('#__seminarman_fields') .
+		' AS field ' . 'LEFT JOIN ' . $db->quoteName('#__seminarman_fields_values') .
 		' AS value ' . 'ON field.id=value.field_id AND value.applicationid=' . $application_id .
 		' ' . 'WHERE field.published=' . $db->Quote('1') . ' ' .
 		'ORDER BY field.ordering';
@@ -296,9 +296,9 @@ class ApplicationHelper
 		$emails = '';
 		$db = JFactory::getDBO();
 
-		$query = 'SELECT ' . $db->nameQuote('email') . ' FROM ' . $db->nameQuote('#__users') .
-		' WHERE ' . $db->nameQuote('gid') . '=' . $db->quote(24) . ' OR ' . $db->
-		nameQuote('gid') . '=' . $db->Quote(25);
+		$query = 'SELECT ' . $db->quoteName('email') . ' FROM ' . $db->quoteName('#__users') .
+		' WHERE ' . $db->quoteName('gid') . '=' . $db->quote(24) . ' OR ' . $db->
+		quoteName('gid') . '=' . $db->Quote(25);
 
 		$db->setQuery($query);
 		$emails = $db->loadResultArray();

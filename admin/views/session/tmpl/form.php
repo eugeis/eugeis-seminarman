@@ -36,6 +36,44 @@ else
 	}
 </script>
 
+<style type="text/css">
+
+fieldset.adminform label {
+	min-width: 100px;
+	text-align: right;
+	padding-right: 10px;
+	margin: 3px 0;
+}
+
+fieldset input, fieldset select, fieldset img, fieldset button {
+    float: left;
+    margin: 3px 5px 3px 0;
+    width: auto;
+    max-width: 200px;
+}
+
+fieldset.adminform {
+	margin: 5px;
+}
+
+fieldset.radio {
+    border: 0 none;
+    float: left;
+    margin: 0 0 5px;
+    padding: 0 ! important;
+}
+
+fieldset.radio label {
+    clear: none;
+    display: inline;
+    float: left;
+    padding-left: 0;
+    padding-right: 10px;
+    min-width: 0 ! important;
+}
+
+</style>
+
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 

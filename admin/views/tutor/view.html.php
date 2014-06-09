@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class seminarmanViewtutor extends JView
+class seminarmanViewtutor extends JViewLegacy
 {
 	function display($tpl = null)
 	{
@@ -89,7 +89,9 @@ class seminarmanViewtutor extends JView
 		$lists['templates_add'] = JHTMLSeminarman::getSelectTemplate('template_id');
 		$lists['qualified_templates'] = $this->get('Templates');
 		
-		$lists['ordering'] = JHTML::_('list.specificordering', $tutor, $tutor->id, $query);
+		// $lists['ordering'] = JHtml::_('list.specificordering', $tutor, $tutor->id, $query);
+		$lists['ordering'] = JHtml::_('list.ordering', $tutor->id, $query);
+
 		$lists['published'] = JHTML::_('select.booleanlist', 'published', 'class="inputbox"', $tutor->published);
 		$lists['username'] = JHTMLSeminarman::getSelectUserForTrainer('juser_id', $tutor->user_id, 0);
 		$lists['salutation'] = JHTMLSeminarman::getListFromXML('Salutation', 'salutation', 0, $tutor->salutation);
@@ -119,9 +121,6 @@ class seminarmanViewtutor extends JView
         }
 		
 		JFilterOutput::objectHTMLSafe($tutor, ENT_QUOTES, 'description');
-
-		$file = JPATH_COMPONENT . DS . 'models' . DS . 'tutor.xml';
-		$params = new JParameter($tutor->params, $file);
 		
 		$data = new stdClass();
 		$data->customfields = $model->getEditableCustomfields($tutor->id);
@@ -131,7 +130,6 @@ class seminarmanViewtutor extends JView
 		$this->assignRef('fields', $fields);
 		$this->assignRef('lists', $lists);
 		$this->assignRef('tutor', $tutor);
-		$this->assignRef('params', $params);
 
 		parent::display($tpl);
 	}

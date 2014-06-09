@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class SeminarmanViewTagelement extends JView
+class SeminarmanViewTagelement extends JViewLegacy
 {
 
     function display($tpl = null)
@@ -40,7 +40,7 @@ class SeminarmanViewTagelement extends JView
         $filter_order     = $mainframe->getUserStateFromRequest('com_seminarman.tags.filter_order', 'filter_order', 't.name', 'cmd');
         $filter_order_Dir = $mainframe->getUserStateFromRequest('com_seminarman.tags.filter_order_Dir', 'filter_order_Dir', '', 'word');
         $search           = $mainframe->getUserStateFromRequest('com_seminarman.tags.search', 'search', '', 'string');
-        $search           = $db->getEscaped(trim(JString::strtolower($search)));
+        $search           = $db->escape(trim(JString::strtolower($search)));
 
         $rows = $this->get('Data');
         $pageNav = $this->get('Pagination');

@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class SeminarmanModelFavourites extends JModel
+class SeminarmanModelFavourites extends JModelLegacy
 {
     var $_data = null;
 
@@ -122,7 +122,8 @@ class SeminarmanModelFavourites extends JModel
         $gid = (int)$user->get('aid');
         $params = $mainframe->getParams('com_seminarman');
         $jnow = JFactory::getDate();
-        $now = $jnow->toMySQL();
+        // $now = $jnow->toMySQL();
+        $now = $jnow->toSQL();
         $nullDate = $this->_db->getNullDate();
 
         $state = 1;
@@ -169,10 +170,10 @@ class SeminarmanModelFavourites extends JModel
     		if ($filter)
     		{
 
-    			$filter = $this->_db->getEscaped(trim(JString::strtolower($filter)));
+    			$filter = $this->_db->escape(trim(JString::strtolower($filter)));
 
     			$where .= ' AND LOWER( i.title ) LIKE ' . $this->_db->Quote('%' . $this->_db->
-    			    getEscaped($filter, true) . '%', false);
+    			    escape($filter, true) . '%', false);
     		}
     	}
     	if ($filter_experience_level)

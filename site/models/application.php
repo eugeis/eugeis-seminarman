@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class seminarmanModelapplication extends JModel
+class seminarmanModelapplication extends JModelLegacy
 {
     var $_id = null;
 
@@ -130,6 +130,11 @@ class seminarmanModelapplication extends JModel
     	 
         JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_seminarman'.DS.'tables');
         $row = JTable::getInstance('application', 'Table');
+        
+        $tempArray = array();
+        $dataArray = array('date'=>date('Y-m-d H:i:s'), 'user'=>JText::_('COM_SEMINARMAN_ONLINE_BOOKING'), 'status'=>0);
+        array_push($tempArray, $dataArray);
+        $data['params']['protocols'] = json_encode($tempArray);
         
         if (!$row->bind($data)) {
             $this->setError($this->_db->getErrorMsg());
@@ -267,7 +272,7 @@ class seminarmanModelapplication extends JModel
         	$emailCond = " AND isdefault=1";
         }
 
-        $query = "SELECT * FROM " . $db->nameQuote('#__seminarman_emailtemplate') . " WHERE (templatefor=0".  $emailCond . ")";
+        $query = "SELECT * FROM " . $db->quoteName('#__seminarman_emailtemplate') . " WHERE (templatefor=0".  $emailCond . ")";
         $db->setQuery($query);
         $template = $db->loadObject();
         if ($template) {
@@ -306,14 +311,14 @@ class seminarmanModelapplication extends JModel
         $queryResult = $db->loadObject();
         if ($queryResult) {        	
         	// what is the below for? not my codes
-            $userQuery = "SELECT name, email FROM " . $db->nameQuote('#__users') . "
+            $userQuery = "SELECT name, email FROM " . $db->quoteName('#__users') . "
 			WHERE id = " . $emaildata['user_id'];
 
             $db->setQuery($userQuery);
             $user = $db->loadObject();
 
             // what is this (below)? not my codes
-            $tutorQuery = "SELECT name, email FROM " . $db->nameQuote('#__users') . "
+            $tutorQuery = "SELECT name, email FROM " . $db->quoteName('#__users') . "
 			WHERE id = " . $queryResult->user_id;
 
             $db->setQuery($tutorQuery);
@@ -323,7 +328,7 @@ class seminarmanModelapplication extends JModel
             // tutor custom fields
             $query_tutor_custom = 'SELECT f.fieldcode, ct.value FROM `#__seminarman_fields_values_tutors` AS ct'.
             		' LEFT JOIN `#__seminarman_fields` AS f ON ct.field_id = f.id'.
-            		' WHERE ct.tutor_id = '. $queryResult->tutor_id . ' AND f.published = ' . $db->Quote('1') . ' AND f.visible = ' . $db->Quote('1');
+            		' WHERE ct.tutor_id = '. $queryResult->tutor_id . ' AND f.published = ' . $db->Quote('1');
             $db->setQuery($query_tutor_custom);
             $tutor_customs = $db->loadAssocList();
             
@@ -335,8 +340,8 @@ class seminarmanModelapplication extends JModel
             }
             
             // app custom fields (it MUST be here after tutor customs, otherwise you have problems; i don't think the below codes are well done, but it works. they are not my codes.)
-            $query = 'SELECT field.*, value.value ' . 'FROM ' . $db->nameQuote('#__seminarman_fields') .
-                ' AS field ' . 'LEFT JOIN ' . $db->nameQuote('#__seminarman_fields_values') .
+            $query = 'SELECT field.*, value.value ' . 'FROM ' . $db->quoteName('#__seminarman_fields') .
+                ' AS field ' . 'LEFT JOIN ' . $db->quoteName('#__seminarman_fields_values') .
                 ' AS value ' . 'ON field.id=value.field_id AND value.applicationid=' . $emaildata['applicationid'] .
                 ' ' . 'WHERE field.published=' . $db->Quote('1') . ' ' .
                 'ORDER BY field.ordering';
@@ -398,6 +403,9 @@ class seminarmanModelapplication extends JModel
             $queryResult->price_vat = JText::sprintf('%.2f', round($tax_booking, 2));
             $queryResult->price_total_discount = JText::sprintf('%.2f', round(($price_total_orig - $price_total_booking), 2));
             $queryResult->price_total_orig_vat = JText::sprintf('%.2f', round($price_total_orig_with_tax, 2));
+            
+            $queryResult->price_booking_single = JText::sprintf('%.2f', round($price_booking, 2));
+            $queryResult->price_booking_total = JText::sprintf('%.2f', round($price_total_booking, 2));
             
             setlocale(LC_NUMERIC, $old_locale);
             
@@ -466,6 +474,7 @@ class seminarmanModelapplication extends JModel
             $msgSubject = str_replace('{LASTNAME}', $queryResult->last_name, $msgSubject);
             $msgSubject = str_replace('{EMAIL}', $queryResult->email, $msgSubject);
             // $msgSubject = str_replace('{ATTENDEES}', $queryResult->attendees, $msgSubject);
+            $msgSubject = str_replace('{COURSE_ID}', $queryResult->course_id, $msgSubject);
             $msgSubject = str_replace('{COURSE_TITLE}', $queryResult->course, $msgSubject);
             $msgSubject = str_replace('{COURSE_CODE}', $queryResult->code, $msgSubject);
             $msgSubject = str_replace('{COURSE_INTROTEXT}', $queryResult->introtext, $msgSubject);
@@ -481,8 +490,13 @@ class seminarmanModelapplication extends JModel
             $msgSubject = str_replace('{PRICE_VAT}', $queryResult->price_vat, $msgSubject);
             $msgSubject = str_replace('{PRICE_TOTAL_DISCOUNT}', $queryResult->price_total_discount, $msgSubject);
             $msgSubject = str_replace('{PRICE_TOTAL_ORIG_VAT}', $queryResult->price_total_orig_vat, $msgSubject);
+            $msgSubject = str_replace('{PRICE_REAL_BOOKING_SINGLE}', $queryResult->price_booking_single, $msgSubject);
+            $msgSubject = str_replace('{PRICE_REAL_BOOKING_TOTAL}', $queryResult->price_booking_total, $msgSubject);
+            $msgSubject = str_replace('{PRICE_GROUP_ORDERED}', $queryResult->pricegroup, $msgSubject);
             $msgSubject = str_replace('{COURSE_START_DATE}', JFactory::getDate($emaildata['start_date'])->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1')), $msgSubject);
             $msgSubject = str_replace('{COURSE_FINISH_DATE}', JFactory::getDate($emaildata['finish_date'])->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1')), $msgSubject);
+            $msgSubject = str_replace('{COURSE_START_TIME}', (!empty($emaildata['start_time'])) ? date('H:i', strtotime($emaildata['start_time'])) : '', $msgSubject);
+            $msgSubject = str_replace('{COURSE_FINISH_TIME}', (!empty($emaildata['finish_time'])) ? date('H:i', strtotime($emaildata['finish_time'])) : '', $msgSubject);
             $msgSubject = str_replace('{TUTOR}', $queryResult->tutor, $msgSubject);
             $msgSubject = str_replace('{TUTOR_FIRSTNAME}', $queryResult->tutor_first_name, $msgSubject);
             $msgSubject = str_replace('{TUTOR_LASTNAME}', $queryResult->tutor_last_name, $msgSubject);
@@ -506,6 +520,7 @@ class seminarmanModelapplication extends JModel
             $msgBody = str_replace('{FIRSTNAME}', $queryResult->first_name, $msgBody);
             $msgBody = str_replace('{LASTNAME}', $queryResult->last_name, $msgBody);
             $msgBody = str_replace('{EMAIL}', $queryResult->email, $msgBody);
+            $msgBody = str_replace('{COURSE_ID}', $queryResult->course_id, $msgBody);
             $msgBody = str_replace('{COURSE_TITLE}', $queryResult->course, $msgBody);
             $msgBody = str_replace('{COURSE_CODE}', $queryResult->code, $msgBody);
             $msgBody = str_replace('{COURSE_INTROTEXT}', $queryResult->introtext, $msgBody);
@@ -521,10 +536,15 @@ class seminarmanModelapplication extends JModel
             $msgBody = str_replace('{PRICE_VAT}', $queryResult->price_vat, $msgBody);
             $msgBody = str_replace('{PRICE_TOTAL_DISCOUNT}', $queryResult->price_total_discount, $msgBody);
             $msgBody = str_replace('{PRICE_TOTAL_ORIG_VAT}', $queryResult->price_total_orig_vat, $msgBody);
+            $msgBody = str_replace('{PRICE_REAL_BOOKING_SINGLE}', $queryResult->price_booking_single, $msgBody);
+            $msgBody = str_replace('{PRICE_REAL_BOOKING_TOTAL}', $queryResult->price_booking_total, $msgBody);
+            $msgBody = str_replace('{PRICE_GROUP_ORDERED}', $queryResult->pricegroup, $msgBody);
             //$msgBody = str_replace('{COURSE_START_DATE}', strftime("%a, %d %B %Y", strtotime($emaildata['start_date'])), $msgBody);
             $msgBody = str_replace('{COURSE_START_DATE}', JFactory::getDate($emaildata['start_date'])->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1')), $msgBody);
             //$msgBody = str_replace('{COURSE_FINISH_DATE}', strftime("%a, %d %B %Y", strtotime($emaildata['finish_date'])), $msgBody);
-            $msgBody = str_replace('{COURSE_FINISH_DATE}', JFactory::getDate($emaildata['finish_date'])->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1')), $msgBody);      
+            $msgBody = str_replace('{COURSE_FINISH_DATE}', JFactory::getDate($emaildata['finish_date'])->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1')), $msgBody); 
+            $msgBody = str_replace('{COURSE_START_TIME}', (!empty($emaildata['start_time'])) ? date('H:i', strtotime($emaildata['start_time'])) : '', $msgBody);
+            $msgBody = str_replace('{COURSE_FINISH_TIME}', (!empty($emaildata['finish_time'])) ? date('H:i', strtotime($emaildata['finish_time'])) : '', $msgBody);
             $msgBody = str_replace('{TUTOR}', $queryResult->tutor, $msgBody);
             $msgBody = str_replace('{TUTOR_FIRSTNAME}', $queryResult->tutor_first_name, $msgBody);
             $msgBody = str_replace('{TUTOR_LASTNAME}', $queryResult->tutor_last_name, $msgBody);
@@ -546,8 +566,10 @@ class seminarmanModelapplication extends JModel
             
             $msgRecipients = explode(",", $msgRecipient);
             
-            $senderEmail = $config->getValue('mailfrom');
-            $senderName = $config->getValue('fromname');
+            // $senderEmail = $config->getValue('mailfrom');
+            // $senderName = $config->getValue('fromname');
+            $senderEmail = $config->get('mailfrom');
+            $senderName = $config->get('fromname');
             $message->addRecipient($msgRecipients);
             if (!empty($msgRecipientBCC))
             {
@@ -598,12 +620,13 @@ class seminarmanModelapplication extends JModel
         $emails = '';
         $db = $this->getDBO();
 
-        $query = 'SELECT ' . $db->nameQuote('email') . ' FROM ' . $db->nameQuote('#__users') .
-            ' WHERE ' . $db->nameQuote('gid') . '=' . $db->quote(24) . ' OR ' . $db->
-            nameQuote('gid') . '=' . $db->Quote(25);
+        $query = 'SELECT ' . $db->quoteName('email') . ' FROM ' . $db->quoteName('#__users') .
+            ' WHERE ' . $db->quoteName('gid') . '=' . $db->quote(24) . ' OR ' . $db->
+            quoteName('gid') . '=' . $db->Quote(25);
 
         $db->setQuery($query);
-        $emails = $db->loadResultArray();
+        // $emails = $db->loadResultArray(); 
+        $emails = $db->loadColumn();
 
         return $emails;
     }
@@ -715,6 +738,8 @@ class seminarmanModelapplication extends JModel
   	                      ' a.price_per_attendee AS `PRICE_PER_ATTENDEE`,'.
   	                      ' a.price_total AS `PRICE_TOTAL`,'.
    	                      ' a.price_vat AS `PRICE_VAT_PERCENT`,'.
+    			          ' a.pricegroup AS `PRICE_GROUP_ORDERED`,'.
+    			          ' a.status AS `PAYMENT_STATUS`,'.
    	                      ' c.code AS `COURSE_CODE`,'.
    	                      ' c.title AS `COURSE_TITLE`,'.
    	                      ' c.capacity AS `COURSE_CAPACITY`,'.
@@ -722,6 +747,8 @@ class seminarmanModelapplication extends JModel
    	                      ' c.url AS `COURSE_URL`,'.
    	                      ' c.start_date AS `COURSE_START_DATE`,'.
    	                      ' c.finish_date AS `COURSE_FINISH_DATE`,'.
+    			' c.start_time AS `COURSE_START_TIME`,'.
+    			' c.finish_time AS `COURSE_FINISH_TIME`,'.
     	                  ' c.price AS `COURSE_PRICE_ORIG`,'.
     					  ' c.id AS `COURSE_ID`,'.
     			          ' t.id AS `TUTOR_ID`,'.
@@ -740,6 +767,16 @@ class seminarmanModelapplication extends JModel
   	                    ' WHERE a.id = '. (int) $applicationid );
     	$data = $db->loadAssoc();
     	
+    	if ($data['PAYMENT_STATUS'] == 0) {
+    		$data['PAYMENT_STATUS'] = JText::_( 'COM_SEMINARMAN_SUBMITTED' );
+    	} elseif ($data['PAYMENT_STATUS'] == 1) {
+    		$data['PAYMENT_STATUS'] = JText::_( 'COM_SEMINARMAN_PENDING' );
+    	} elseif ($data['PAYMENT_STATUS'] == 2) {
+    		$data['PAYMENT_STATUS'] = JText::_( 'COM_SEMINARMAN_PAID' );
+    	} elseif ($data['PAYMENT_STATUS'] == 3) {
+    		$data['PAYMENT_STATUS'] = JText::_( 'COM_SEMINARMAN_CANCELED' );
+    	}
+    	
     	// custom fields
     	$db->setQuery('SELECT fieldcode, value FROM `#__seminarman_fields_values` AS v'.
         	              ' LEFT JOIN `#__seminarman_fields` AS f ON v.field_id = f.id'.
@@ -750,7 +787,7 @@ class seminarmanModelapplication extends JModel
     	// custom tutor fields
     	$db->setQuery('SELECT f.fieldcode, ct.value FROM `#__seminarman_fields_values_tutors` AS ct'.
     			       ' LEFT JOIN `#__seminarman_fields` AS f ON ct.field_id = f.id'.
-    			       ' WHERE ct.tutor_id = '. (int) $data['TUTOR_ID'] . ' AND f.published = ' . $db->Quote('1') . ' AND f.visible = ' . $db->Quote('1'));
+    			       ' WHERE ct.tutor_id = '. (int) $data['TUTOR_ID'] . ' AND f.published = ' . $db->Quote('1'));
     	foreach ($db->loadRowList() as $row)
     		$data[$row[0]] = $row[1]; 
     	
@@ -798,12 +835,17 @@ class seminarmanModelapplication extends JModel
 		$data['PRICE_TOTAL_VAT'] = JText::sprintf('%.2f', round($price_total_booking_with_tax, 2));
 		$data['PRICE_TOTAL_ORIG_VAT'] = JText::sprintf('%.2f', round($price_total_orig_with_tax, 2));
 		
+		$data['PRICE_REAL_BOOKING_SINGLE'] = JText::sprintf('%.2f', round($price_booking, 2));
+		$data['PRICE_REAL_BOOKING_TOTAL'] = JText::sprintf('%.2f', round($price_total_booking, 2));
+		
 		setlocale(LC_NUMERIC, $old_locale);
     	 
     	// format date
     	$data['INVOICE_DATE'] = JFactory::getDate($data['INVOICE_DATE'])->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1'));
     	$data['COURSE_START_DATE'] = JFactory::getDate($data['COURSE_START_DATE'])->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1'));
     	$data['COURSE_FINISH_DATE'] = JFactory::getDate($data['COURSE_FINISH_DATE'])->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1'));
+    	$data['COURSE_START_TIME'] = (!empty($data['COURSE_START_TIME'])) ? date('H:i', strtotime($data['COURSE_START_TIME'])) : '';
+    	$data['COURSE_FINISH_TIME'] = (!empty($data['COURSE_FINISH_TIME'])) ? date('H:i', strtotime($data['COURSE_FINISH_TIME'])) : '';
 
     	// start weekday
     	$langs = JComponentHelper::getParams('com_languages');

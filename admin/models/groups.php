@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class seminarmanModelgroups extends JModel
+class seminarmanModelgroups extends JModelLegacy
 {
     var $_data = null;
 
@@ -138,7 +138,7 @@ class seminarmanModelgroups extends JModel
 
         if ($search)
         {
-            $where[] = ' LOWER(a.title) LIKE ' . $db->Quote('%' . $db->getEscaped($search, true) .
+            $where[] = ' LOWER(a.title) LIKE ' . $db->Quote('%' . $db->escape($search, true) .
                 '%', false);
         }
 

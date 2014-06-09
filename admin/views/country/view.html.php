@@ -22,11 +22,18 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class seminarmanViewCountry extends JView
+class seminarmanViewCountry extends JViewLegacy
 {
     function display($tpl = null)
     {
         $mainframe = JFactory::getApplication();
+        
+        $document = JFactory::getDocument();
+        $lang = JFactory::getLanguage();
+        
+        $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
+        if ($lang->isRTL())
+        	$document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend_rtl.css');
 
         if ($this->getLayout() == 'form')
         {
@@ -80,19 +87,16 @@ class seminarmanViewCountry extends JView
         $query = 'SELECT ordering AS value, title AS text' . ' FROM #__seminarman_country' .
             ' ORDER BY ordering';
 
-        $lists['ordering'] = JHTML::_('list.specificordering', $country, $country->id, $query);
+        // $lists['ordering'] = JHTML::_('list.specificordering', $country, $country->id, $query);
+        $lists['ordering'] = JHTML::_('list.ordering', $country->id, $query);
 
         $lists['published'] = JHTML::_('select.booleanlist', 'published',
             'class="inputbox"', $country->published);
 
         JFilterOutput::objectHTMLSafe($country, ENT_QUOTES, 'description');
 
-        $file = JPATH_COMPONENT . DS . 'models' . DS . 'country.xml';
-        $params = new JParameter($country->params, $file);
-
         $this->assignRef('lists', $lists);
         $this->assignRef('country', $country);
-        $this->assignRef('params', $params);
 
         parent::display($tpl);
     }

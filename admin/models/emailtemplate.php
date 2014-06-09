@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class seminarmanModelEmailtemplate extends JModel
+class seminarmanModelEmailtemplate extends JModelLegacy
 {
 	var $id = null;
 	
@@ -144,7 +144,7 @@ class seminarmanModelEmailtemplate extends JModel
 		
 		$query = "SELECT DISTINCT name, fieldcode, type FROM #__seminarman_fields" .
 		    " WHERE published = 1".
-		    " AND visible = 1".
+		    // " AND visible = 1".
 			" AND type NOT LIKE '%group%'";
 		$db->setQuery($query);
 		return $db->loadObjectList();

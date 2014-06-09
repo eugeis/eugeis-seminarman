@@ -21,7 +21,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage seminarman
  * @since 1.5.0
  */
-class seminarmanViewsession extends JView
+class seminarmanViewsession extends JViewLegacy
 {
    function display($tpl = null)
    {
@@ -100,7 +100,8 @@ class seminarmanViewsession extends JView
          . ' WHERE courseid = ' . (int) $session->courseid
          . ' ORDER BY ordering';
 
-      $lists['ordering']         = JHTML::_('list.specificordering',  $session, $session->id, $query );
+      // $lists['ordering']         = JHTML::_('list.specificordering',  $session, $session->id, $query );
+      $lists['ordering'] = JHTML::_('list.ordering', $session->id, $query );
 
       //Get data from Model (list of published courses)
       $titles = $this->get( 'titles' );
@@ -121,12 +122,8 @@ class seminarmanViewsession extends JView
       //clean session data
       JFilterOutput::objectHTMLSafe( $session, ENT_QUOTES, 'description' );
 
-      $file    = JPATH_COMPONENT.DS.'models'.DS.'session.xml';
-      $params = new JParameter( $session->params, $file );
-
       $this->assignRef('lists',     $lists);
       $this->assignRef('session',    $session);
-      $this->assignRef('params',    $params);
 
       parent::display($tpl);
    }

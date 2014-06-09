@@ -24,7 +24,7 @@ jimport('joomla.application.component.controller');
 /**
  * Seminarman Component Controller
  */
-class SeminarmanController extends JController
+class SeminarmanController extends JControllerLegacy
 {
 	function __construct()
 	{

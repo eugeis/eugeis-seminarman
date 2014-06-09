@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <div class="floattext">
     
-	<h1 class="seminarman cat<?php echo $this->category->id; ?>"><?php echo $this->escape($this->category->title); ?></h1>
+	<h2 class="seminarman cat<?php echo $this->category->id; ?>"><?php echo $this->escape($this->category->title); ?></h2>
 
 <?php
 
@@ -20,8 +20,9 @@ if (!empty($this->category->image)):
 ?>
 	<div class="catimg">
 <?php
-    echo JHTML::_('image.site', $this->category->image, 'images/', null, null,
-        $this->escape($this->category->title));
+// echo JHTML::_('image.site', $this->category->image, 'images/', null, null,
+//		$this->escape($this->category->title));
+  echo JHTML::_('image', 'images/' . $this->category->image, $this->escape($this->category->title));
 ?>
 	</div>
 <?php

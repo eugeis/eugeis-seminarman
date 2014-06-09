@@ -23,7 +23,7 @@ $i = 0;
 <?php
 foreach ($this->categories as $sub):
 ?>
-		<strong><a href="<?php echo JRoute::_('index.php?view=category&cid=' . $sub->slug . '&Itemid=' . $Itemid); ?>"><?php echo $this->escape($sub->title); ?></a></strong>
+		<strong><a href="<?php echo JRoute::_('index.php?option=com_seminarman&view=category&cid=' . $sub->slug . '&Itemid=' . $Itemid); ?>"><?php echo $this->escape($sub->title); ?></a></strong>
 		(<?php echo $sub->assignedseminarmans != null ? $sub->assignedseminarmans : 0; ?>)
 
 <?php

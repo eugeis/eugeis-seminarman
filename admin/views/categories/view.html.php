@@ -41,7 +41,7 @@ class SeminarmanViewCategories extends JView
         $filter_state = $mainframe->getUserStateFromRequest('com_seminarman.categories.filter_state', 'filter_state', '*', 'word');
         $search = $mainframe->getUserStateFromRequest('com_seminarman.categories.search',
             'search', '', 'string');
-        $search = $db->getEscaped(trim(JString::strtolower($search)));
+        $search = $db->escape(trim(JString::strtolower($search)));
 
         $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
         if ($lang->isRTL())

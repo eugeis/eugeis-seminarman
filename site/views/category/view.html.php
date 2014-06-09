@@ -27,7 +27,7 @@ jimport('joomla.html.pagination');
 
 require_once JPATH_ROOT.'/components/com_seminarman/helpers/application.php';
 
-class SeminarmanViewCategory extends JView{
+class SeminarmanViewCategory extends JViewLegacy{
     function display($tpl = null)
     {
         $mainframe = JFactory::getApplication();
@@ -55,6 +55,7 @@ class SeminarmanViewCategory extends JView{
 
         $category = $this->get('Category');
         $courses = $this->get('Data');
+        
         $templates = $this->get('LstOfProspects');
         
         $limit = $mainframe->getUserStateFromRequest('com_seminarman.' . $this->getLayout() .'.limit', 'limit', $params->def('limit', 0), 'int');
@@ -65,7 +66,7 @@ class SeminarmanViewCategory extends JView{
         $categories = $this->get('Childs');
 
         foreach ($parents as $parent){
-            $pathway->addItem($this->escape($parent->title), JRoute::_('index.php?view=category&cid=' .
+            $pathway->addItem($this->escape($parent->title), JRoute::_('index.php?option=com_seminarman&view=category&cid=' .
                     $parent->categoryslug . '&Itemid=' . $Itemid));
         }
 
@@ -103,7 +104,7 @@ class SeminarmanViewCategory extends JView{
             setlocale(LC_NUMERIC, $old_locale);
 
             $menuclass = 'category' . $params->get('pageclass_sfx');
-            $itemParams = new JParameter($item->attribs);
+            $itemParams = new JRegistry($item->attribs);
             
             if (($item->url) <> 'http://'){
                 switch ($params->get('target', $params->get('target'))){
@@ -161,6 +162,8 @@ class SeminarmanViewCategory extends JView{
                  . ' AND b.status > ' . $current_capacity_setting
                  . ' AND b.status < 3';
                 $db->setQuery($sql);
+                
+                $item->booked_places = $db->loadResult();
 
                 if (($item->capacity - $db->loadResult()) > 0)
                 	$booking_ok = True;
@@ -200,6 +203,18 @@ class SeminarmanViewCategory extends JView{
             }else{
                 $item->finish_date = JText::_('COM_SEMINARMAN_NOT_SPECIFIED');
             }
+            
+            if (!empty($item->start_time)) {
+            	$item->start_time = date('H:i', strtotime($item->start_time));
+            } else {
+            	$item->start_time = '';
+            }
+            
+            if (!empty($item->finish_time)) {
+            	$item->finish_time = date('H:i', strtotime($item->finish_time));
+            } else {
+            	$item->finish_time = '';
+            }
 
             $sql = 'SELECT * FROM #__seminarman_sessions'
              . ' WHERE published = 1'
@@ -230,7 +245,7 @@ class SeminarmanViewCategory extends JView{
         	
         
         	$menuclass = 'category' . $params->get('pageclass_sfx');
-        	$itemParams = new JParameter($item->attribs);
+        	$itemParams = new JRegistry($item->attribs);
         
         	if (($item->url) <> 'http://'){
         		switch ($params->get('target', $params->get('target'))){

@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class SeminarmanViewFileselement extends JView
+class SeminarmanViewFileselement extends JViewLegacy
 {
     function display($tpl = null)
     {
@@ -40,7 +40,7 @@ class SeminarmanViewFileselement extends JView
             'filter', '', 'int');
         $search = $mainframe->getUserStateFromRequest('com_seminarman' . '.fileselement.search',
             'search', '', 'string');
-        $search = $db->getEscaped(trim(JString::strtolower($search)));
+        $search = $db->escape(trim(JString::strtolower($search)));
 
         $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
 

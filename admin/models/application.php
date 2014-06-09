@@ -24,7 +24,7 @@ require_once JPATH_ROOT.'/components/com_seminarman/helpers/application.php';
 
 jimport('joomla.application.component.model');
 
-class seminarmanModelapplication extends JModel
+class seminarmanModelapplication extends JModelLegacy
 {
     var $_id = null;
 
@@ -308,8 +308,8 @@ class seminarmanModelapplication extends JModel
 
 		// Attach custom fields into the user object
 		$strSQL	= 'SELECT field.*, value.value '
-				. 'FROM ' . $db->nameQuote('#__seminarman_fields') . ' AS field '
-				. 'LEFT JOIN ' . $db->nameQuote('#__seminarman_fields_values') . ' AS value '
+				. 'FROM ' . $db->quoteName('#__seminarman_fields') . ' AS field '
+				. 'LEFT JOIN ' . $db->quoteName('#__seminarman_fields_values') . ' AS value '
  				. 'ON field.id=value.field_id AND value.applicationid=' . $db->Quote($applicationId) . ' '
  				. 'WHERE published=1 ' 
  				. 'ORDER BY field.ordering';
@@ -447,7 +447,8 @@ class seminarmanModelapplication extends JModel
 
 		if ( $cid ){
 			$query = 'UPDATE #__seminarman_application'
-			.' SET status = ' . (int)$status .
+			.' SET status = '
+			. (int)$status.
 			' WHERE id = '.(int)$cid.' AND ( checked_out = 0 OR ( checked_out = '. (int) $user->get('id'). ' ) )';
 			$this->_db->setQuery( $query );
 
@@ -460,6 +461,40 @@ class seminarmanModelapplication extends JModel
 
 		return true;
 	}
+
+    function update_protocol($cid, $status){
+    	$user = JFactory::getUser();
+    	
+    	if ( $cid ){
+			$query = 'SELECT params FROM #__seminarman_application WHERE id = '.(int)$cid;
+			$this->_db->setQuery($query);
+			$params_string = $this->_db->loadResult();
+			$app_params_obj = new JRegistry();
+			$app_params_obj->loadString($params_string);
+			$app_params = $app_params_obj->toArray();
+
+            if (!empty($app_params['protocols'])) {
+            	$tempArray = json_decode($app_params['protocols'], true);
+            	$dataArray = array('date'=>date('Y-m-d H:i:s'), 'user'=>JFactory::getUser()->username, 'status'=>$status);
+        	    array_push($tempArray, $dataArray);
+        	    $protocols = json_encode($tempArray);
+            } else {
+            	$tempArray = array();
+            	$dataArray = array('date'=>date('Y-m-d H:i:s'), 'user'=>JFactory::getUser()->username, 'status'=>$status);
+        	    array_push($tempArray, $dataArray);
+        	    $protocols = json_encode($tempArray);
+            }
+			$app_params_obj->set('protocols', $protocols);
+			$params_string = $app_params_obj->toString();
+            $query_update = "UPDATE #__seminarman_application SET params = '" . $this->_db->escape($params_string) . "' WHERE id = " . (int)$cid;
+            $this->_db->setQuery( $query_update );
+            if (!$this->_db->query()) {
+            	$this->setError($this->_db->getErrorMsg());
+            	return false;
+            }            
+    	}
+    	return true;
+    }
 
 	function changeMulti($column, $appIds, $value){
 		$user = JFactory::getUser();

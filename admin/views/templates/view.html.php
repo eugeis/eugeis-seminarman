@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class SeminarmanViewTemplates extends JView
+class SeminarmanViewTemplates extends JViewLegacy
 {
 
     function display($tpl = null)
@@ -48,7 +48,7 @@ class SeminarmanViewTemplates extends JView
         $filter_state = $mainframe->getUserStateFromRequest('com_seminarman.templates.filter_state', 'filter_state', '*', 'word');
         $filter_category = $mainframe->getUserStateFromRequest('com_seminarman.templates.filter_category', 'filter_category', '*');
         $search = $mainframe->getUserStateFromRequest('com_seminarman.templates.search', 'search', '', 'string');
-        $search = $db->getEscaped(trim(JString::strtolower($search)));
+        $search = $db->escape(trim(JString::strtolower($search)));
 
         $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
         if ($lang->isRTL())
@@ -62,6 +62,7 @@ class SeminarmanViewTemplates extends JView
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'),'index.php?option=com_seminarman&view=courses');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TEMPLATES'),'index.php?option=com_seminarman&view=templates', true);
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_CATEGORIES'),'index.php?option=com_seminarman&view=categories');
+    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TAGS'),'index.php?option=com_seminarman&view=tags');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TUTORS'),'index.php?option=com_seminarman&view=tutors');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_PERIODS'),'index.php?option=com_seminarman&view=periods');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_SETTINGS'),'index.php?option=com_seminarman&view=settings');

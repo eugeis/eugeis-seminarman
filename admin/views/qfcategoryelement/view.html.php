@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class SeminarmanViewQfcategoryelement extends JView
+class SeminarmanViewQfcategoryelement extends JViewLegacy
 {
 
     function display($tpl = null)
@@ -40,7 +40,7 @@ class SeminarmanViewQfcategoryelement extends JView
         $filter_order     = $mainframe->getUserStateFromRequest('com_seminarman.categories.filter_order', 'filter_order', 'c.title', 'cmd');
         $filter_order_Dir = $mainframe->getUserStateFromRequest('com_seminarman.categories.filter_order_Dir', 'filter_order_Dir', '', 'word');
         $search           = $mainframe->getUserStateFromRequest('com_seminarman.categories.search', 'search', '', 'string');
-        $search           = $db->getEscaped(trim(JString::strtolower($search)));
+        $search           = $db->escape(trim(JString::strtolower($search)));
 
         $rows = $this->get('Data');
         $pageNav = $this->get('Pagination');

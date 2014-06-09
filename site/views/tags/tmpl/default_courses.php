@@ -46,7 +46,7 @@ $Itemid = JRequest::getInt('Itemid');
 <?php if ($this->params->get('show_location')): ?>
 	<th id="qf_location" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_LOCATION', 'i.location', $this->lists['filter_order_Dir'],	$this->lists['filter_order']); ?></th>
 <?php endif; ?>
-	<th id="qf_price" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_PRICE', 'i.price', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>*</th>
+	<th id="qf_price" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_PRICE', 'i.price', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?><?php echo ($this->params->get('show_gross_price') != 2) ? "*" : ""; ?></th>
 <?php if ($this->params->get('enable_bookings')): ?>
 	<th id="qf_application" class="sectiontableheader"></th>
 <?php endif; ?>
@@ -59,11 +59,10 @@ $Itemid = JRequest::getInt('Itemid');
 
 $i=0;
 foreach ($this->courses as $course):
-	$itemParams = new JParameter($course->attribs);
 ?>
 <tr class="sectiontableentry" >
 	<td headers="qf_code" nowrap="nowrap"><?php echo $this->escape($course->code); ?></td>
-	<td headers="qf_title"><strong><a href="<?php echo JRoute::_('index.php?view=courses&cid=' . $course->category->slug . '&id=' . $course->slug . '&Itemid=' . $Itemid); ?>"><?php echo $this->escape($course->title); ?></a></strong><?php echo $course->show_new_icon; echo $course->show_sale_icon; ?></td>
+	<td headers="qf_title"><strong><a href="<?php echo JRoute::_('index.php?option=com_seminarman&view=courses&cid=' . $course->category->slug . '&id=' . $course->slug . '&Itemid=' . $Itemid); ?>"><?php echo $this->escape($course->title); ?></a></strong><?php echo $course->show_new_icon; echo $course->show_sale_icon; ?></td>
 	<td headers="qf_start_date" nowrap="nowrap"><?php echo $course->start_date; ?></td>
 	<td headers="qf_finish_date" nowrap="nowrap"><?php echo $course->finish_date; ?></td>
 <?php if ($this->params->get('show_location')): ?>
@@ -80,9 +79,11 @@ foreach ($this->courses as $course):
 $i++;
 endforeach;
 ?>
+<?php if ($this->params->get('show_gross_price') != 2): ?>
 <tr class="sectiontableentry" >
 	<td colspan="<?php echo $colspan; ?>" class="right">*<?php echo ($this->params->get('show_gross_price') == 1) ? JText::_('COM_SEMINARMAN_WITH_VAT') : JText::_('COM_SEMINARMAN_WITHOUT_VAT'); ?></td>
 </tr>
+<?php endif; ?>
 </tbody>
 </table>
 

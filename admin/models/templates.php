@@ -72,7 +72,7 @@ class SeminarmanModelTemplates extends JModel
     	$filter_state = $mainframe->getUserStateFromRequest('com_seminarman.templates.filter_state', 'filter_state', '', 'word');
     	$filter_category = $mainframe->getUserStateFromRequest('com_seminarman.templates.filter_category', 'filter_category', '');
     	$search = $mainframe->getUserStateFromRequest('com_seminarman.templates.search', 'search', '', 'string');
-    	$search = $this->_db->getEscaped(trim(JString::strtolower($search)));
+    	$search = $this->_db->escape(trim(JString::strtolower($search)));
     
     	$where = array();
     
@@ -81,7 +81,7 @@ class SeminarmanModelTemplates extends JModel
     	
     	if ($search)
     	{
-    		$searchterm = $this->_db->Quote('%' . $this->_db->getEscaped($search, true) . '%', false);
+    		$searchterm = $this->_db->Quote('%' . $this->_db->escape($search, true) . '%', false);
     		$where[] = ' (LOWER(i.name) LIKE ' . $searchterm . ' OR LOWER(i.title) LIKE ' . $searchterm . ')';
     	}
     

@@ -19,6 +19,44 @@
 **/
 defined('_JEXEC') or die('Restricted access');
 
+if(!defined('DS')){
+	define('DS',DIRECTORY_SEPARATOR);
+}
+
+class JPaneOSGF {
+	var $_type = NULL;
+
+	function __construct() {
+
+	}
+
+	static function getInstance($typ) {
+		$obj = New self();
+		$obj->_type = $typ;
+		return $obj;
+	}
+
+	function startPane($PaneID, $options=NULL) {
+		if ($this->_type == "tabs") {
+			return JHtml::_('tabs.start', $PaneID, $options);
+		}
+	}
+
+	function startPanel($title, $titleID) {
+		if ($this->_type == "tabs") {
+			return JHtml::_('tabs.panel', $title, $titleID);
+		}
+	}
+
+	function endPanel(){
+		return;
+	}
+
+	function endPane(){
+		return JHtml::_('tabs.end');
+	}
+}
+
 require_once (JPATH_COMPONENT . DS . 'classes' . DS . 'helper.php');
 require_once (JPATH_COMPONENT . DS . 'classes' . DS . 'categories.php');
 
@@ -27,7 +65,9 @@ require_once ( JPATH_ROOT.DS.'components'.DS.'com_seminarman'.DS.'defines.semina
 $params = JComponentHelper::getParams('com_seminarman');
 define('COM_SEMINARMAN_FILEPATH', JPATH_ROOT . DS . $params->get('file_path','components/com_seminarman/uploads'));
 
-
+$language = JFactory::getLanguage();
+$language->load('com_seminarman', JPATH_SITE, 'en-GB', true);
+$language->load('com_seminarman', JPATH_SITE, null, true);
 
 JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables');
 

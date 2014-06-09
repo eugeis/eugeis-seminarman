@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_SEMINARMAN_SEMINARMAN" option="COM_SEMINARMAN_SEMINARMAN">
+		<message>
+			<![CDATA[This layout is hidden]]>
+		</message>
+	</layout>
+	<state>
+		<name>COM_SEMINARMAN_SEMINARMAN</name>
+		<description>Hidden Layout.</description>
+		<params>
+		</params>
+	</state>
+</metadata>

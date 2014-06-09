@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
-class SeminarmanController extends JController
+class SeminarmanController extends JControllerLegacy
 {
     function __construct()
     {
@@ -32,15 +32,11 @@ class SeminarmanController extends JController
     function display($cachable = false, $urlparams = false)
     {
 
-
-
         $user = JFactory::getUser();
-        if ($user->get('id') || JRequest::getVar('view') == 'category')
-        {
-            parent::display(false);
-        } else
-        {
-            parent::display(true);
+        if ($user->get('id') || JRequest::getVar('view') == 'category') {
+        	parent::display(false);
+        } else {
+        	parent::display(true);
         }
     }
 
@@ -224,7 +220,7 @@ class SeminarmanController extends JController
         $cache = JFactory::getCache('com_seminarman');
         $cache->clean();
 
-        $this->setRedirect(JRoute::_('index.php?view=courses&cid=' . $cid . '&id=' . $id, false),
+        $this->setRedirect(JRoute::_('index.php?option=com_seminarman&view=courses&cid=' . $cid . '&id=' . $id, false),
             $msg);
 
         return;

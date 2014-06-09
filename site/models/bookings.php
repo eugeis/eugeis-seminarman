@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class SeminarmanModelBookings extends JModel
+class SeminarmanModelBookings extends JModelLegacy
 {
     var $_data = null;
 
@@ -84,9 +84,7 @@ class SeminarmanModelBookings extends JModel
 
     	$query = 'SELECT DISTINCT i.*, (i.plus / (i.plus + i.minus) ) * 100 AS votes, emp.comp_name AS tutor,' .
     	    ' CASE WHEN CHAR_LENGTH(i.alias) THEN CONCAT_WS(\':\', i.id, i.alias) ELSE i.id END as slug,' .
-    	    ' gr.title AS cgroup, lev.title AS level, app.id AS applicationid, app.status,' . 
-    	    ' app.invoice_filename_prefix AS invoice_filename_prefix, app.invoice_number AS invoice_number,' .
-    		' app.note_reading, app.note_test, app.note_work, app.note, app.attendance' .
+    	    ' gr.title AS cgroup, lev.title AS level, app.id AS applicationid, app.status, app.invoice_filename_prefix AS invoice_filename_prefix, app.invoice_number AS invoice_number' .
     	    ' FROM #__seminarman_courses AS i' .
             ' LEFT JOIN #__seminarman_application AS app ON app.course_id = i.id' .
     	    ' LEFT JOIN #__seminarman_cats_course_relations AS rel ON rel.courseid = i.id' .
@@ -118,7 +116,8 @@ class SeminarmanModelBookings extends JModel
         //$gid = (int)$user->get('aid');
         $params = $mainframe->getParams('com_seminarman');
         $jnow = JFactory::getDate();
-        $now = $jnow->toMySQL();
+        // $now = $jnow->toMySQL();
+        $now = $jnow->toSQL();
         $nullDate = $this->_db->getNullDate();
 
         $state = 1;
@@ -166,10 +165,10 @@ class SeminarmanModelBookings extends JModel
     		if ($filter)
     		{
 
-    			$filter = $this->_db->getEscaped(trim(JString::strtolower($filter)));
+    			$filter = $this->_db->escape(trim(JString::strtolower($filter)));
 
     			$where .= ' AND LOWER( i.title ) LIKE ' . $this->_db->Quote('%' . $this->_db->
-    			    getEscaped($filter, true) . '%', false);
+    			    escape($filter, true) . '%', false);
     		}
     	}
 
@@ -225,107 +224,6 @@ class SeminarmanModelBookings extends JModel
 //		}
 //
 		return $this->_category;
-	}
-
-
-	/**
-	 * Returns an array of custom editfields which are created from the back end.
-	 *
-	 * @access	public
-	 * @param	string 	User's id.
-	 * @returns array  An objects of custom fields.
-	 */
-	function getEditableCustomfields($applicationId	= null)
-	{
-		$db   = $this->getDBO();
-		$data = array();
-		$user = JFactory::getUser();
-
-		$data['id']		= $user->id;
-		$data['name']	= $user->name;
-		$data['email']	= $user->email;
-
-		if (!$user->guest)
-		{
-			$q = 'SELECT COUNT(*) FROM `#__seminarman_fields_values`'.
-					' WHERE applicationid='.(int)$applicationId.' AND user_id='.(int)$user->id;
-			$db->setQuery($q);
-			if ($db->loadResult() == 0)
-			{
-				// Es gibt noch keine Anmeldung auf den Kurs. Werte für Felder aus #__seminarman_fields_values_users holen
-				// (kann aber auch leer sein)
-				$q = 'SELECT f.*, v.value FROM `#__seminarman_fields` AS f'.
-						' LEFT JOIN `#__seminarman_fields_values_users` AS v'.
-						' ON f.fieldcode = v.fieldcode AND v.user_id = '.(int)$user->id.
-						' WHERE f.published=1 AND f.visible=1 ORDER BY f.ordering';
-				$db->setQuery($q);
-			}
-			else
-			{
-				$q = 'SELECT f.*, v.value FROM `#__seminarman_fields` AS f'.
-						' LEFT JOIN `#__seminarman_fields_values` AS v'.
-						' ON f.id = v.field_id AND v.applicationid = '.(int)$applicationId.
-						' WHERE f.published=1 AND f.visible=1 ORDER BY f.ordering';
-				$db->setQuery($q);
-			}
-		}
-		else
-		{
-			$q = 'SELECT f.*, v.value FROM `#__seminarman_fields` AS f'.
-					' LEFT JOIN `#__seminarman_fields_values` AS v'.
-					' ON f.id = v.field_id AND v.applicationid = 0'.
-					' WHERE f.published=1 AND f.visible=1 ORDER BY f.ordering';
-			$db->setQuery($q);
-		}
-
-		$result	= $db->loadAssocList();
-
-		if($db->getErrorNum())
-		{
-			JError::raiseError( 500, $db->stderr());
-		}
-
-		$data['fields']	= array();
-		for($i = 0; $i < count($result); $i++)
-		{
-			// We know that the groups will definitely be correct in ordering.
-			if($result[$i]['type'] == 'group' && $result[$i]['purpose'] == 0)
-			{
-				$add = True;
-				$group	= $result[$i]['name'];
-
-				// Group them up
-				if(!isset($data['fields'][$group]))
-				{
-					// Initialize the groups.
-					$data['fields'][$group]	= array();
-				}
-			}
-			if($result[$i]['type'] == 'group' && $result[$i]['purpose'] != 0)
-				$add = False;
-
-			// Re-arrange options to be an array by splitting them into an array
-			if(isset($result[$i]['options']) && $result[$i]['options'] != '')
-			{
-				$options	= $result[$i]['options'];
-				$options	= explode("\n", $options);
-
-				$countOfOptions = count($options);
-				for($x = 0; $x < $countOfOptions; $x++){
-					$options[$x] = trim($options[$x]);
-				}
-
-				$result[$i]['options']	= $options;
-
-			}
-
-
-			if($result[$i]['type'] != 'group' && isset($add)){
-				if($add)
-					$data['fields'][$group][]	= $result[$i];
-			}
-		}
-		return $data;
 	}
 }
 

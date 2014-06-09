@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class SeminarmanViewFavourites extends JView{
+class SeminarmanViewFavourites extends JViewLegacy{
     function display($tpl = null)
     {
         $mainframe = JFactory::getApplication();
@@ -53,7 +53,7 @@ class SeminarmanViewFavourites extends JView{
         $document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #seminarman dd { height: 1%; }</style><![endif]-->');
 
         if (is_object($menu)){
-            $menu_params = new JParameter($menu->params);
+            $menu_params = new JRegistry($menu->params);
 
             if (!$menu_params->get('page_title')){
                 $params->set('page_title', JText::_('COM_SEMINARMAN_MY_FAVOURITES'));
@@ -63,7 +63,7 @@ class SeminarmanViewFavourites extends JView{
         }
 
         $pathway = $mainframe->getPathWay();
-        $pathway->addItem($params->get('page_title'), JRoute::_('index.php?view=favourites' . '&Itemid=' . $Itemid));
+        $pathway->addItem($params->get('page_title'), JRoute::_('index.php?option=com_seminarman&view=favourites' . '&Itemid=' . $Itemid));
 
         $document->setTitle($params->get('page_title'));
         $document->setMetadata('keywords', $params->get('page_title'));
@@ -86,7 +86,7 @@ class SeminarmanViewFavourites extends JView{
     		$item = &$courses[$i];
     		$item->count=$i;
     		$category = $model->getCategory($item->id);
-    		// $link = JRoute::_('index.php?view=courses&cid=' . $category->slug . '&id=' . $item->slug);
+    		// $link = JRoute::_('index.php?option=com_seminarman&view=courses&cid=' . $category->slug . '&id=' . $item->slug);
     		$link = JRoute::_($item->url);
     		
     		$item->currency_price = $params->get('currency');
@@ -100,7 +100,7 @@ class SeminarmanViewFavourites extends JView{
     		$item->price = JText::sprintf('%.2f', round($item->price, 2));
     		setlocale(LC_NUMERIC, $old_locale);
     		
-    		$itemParams = new JParameter($item->attribs);
+    		$itemParams = new JRegistry($item->attribs);
 
     		$menuclass = 'category' . $params->get('pageclass_sfx');
     		if (($item->url) <> 'http://'){
@@ -180,13 +180,13 @@ class SeminarmanViewFavourites extends JView{
 
     			if ($item->currentBookings > 0){
     				// create booking button
-    				$item->book_link = '<div class="button2-left"><div class="blank"><a href="' . JRoute::_('index.php?view=courses&cid=' . $category->slug . '&id=' . $item->slug . '&Itemid=' . $Itemid) . '">' . JText::_('COM_SEMINARMAN_BOOK_NOW') . '</a></div></div>';
+    				$item->book_link = '<div class="button2-left"><div class="blank"><a href="' . JRoute::_('index.php?option=com_seminarman&view=courses&cid=' . $category->slug . '&id=' . $item->slug . '&Itemid=' . $Itemid) . '">' . JText::_('COM_SEMINARMAN_BOOK_NOW') . '</a></div></div>';
     			}else{
     				$item->book_link = '<span class="centered italic">' . JText::_('COM_SEMINARMAN_FULL') . '</span>';
     			}
     		}else{
     			// create booking button
-    			$item->book_link = '<div class="button2-left"><div class="blank"><a href="' . JRoute::_('index.php?view=courses&cid=' . $category->slug . '&id=' . $item->slug . '&Itemid=' . $Itemid) . '">' . JText::_('COM_SEMINARMAN_BOOK_NOW') . '</a></div></div>';
+    			$item->book_link = '<div class="button2-left"><div class="blank"><a href="' . JRoute::_('index.php?option=com_seminarman&view=courses&cid=' . $category->slug . '&id=' . $item->slug . '&Itemid=' . $Itemid) . '">' . JText::_('COM_SEMINARMAN_BOOK_NOW') . '</a></div></div>';
     		}
 
     		// show sessions

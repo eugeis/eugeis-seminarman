@@ -172,6 +172,7 @@ class LiveUpdateFetch extends JObject
 	 */
 	private function getUpdateData($force = false)
 	{
+		
 		$ret = array(
 			'supported'		=> false,
 			'stuck'			=> true,

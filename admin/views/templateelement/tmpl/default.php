@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
-<form action="index.php?option=com_seminarman&amp;view=templateelement&amp;tmpl=component" method="post" name="adminForm">
+<form action="index.php?option=com_seminarman&amp;view=templateelement&amp;tmpl=component" method="post" name="adminForm" id="adminForm">
 
 <table class="adminform">
 	<tr>

@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class seminarmanViewcompany_types extends JView
+class seminarmanViewcompany_types extends JViewLegacy
 {
     function display($tpl = null)
     {

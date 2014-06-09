@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class SeminarmanModelEditfield extends JModel
+class SeminarmanModelEditfield extends JModelLegacy
 {
     var $_tag = null;
 
@@ -199,7 +199,7 @@ class SeminarmanModelEditfield extends JModel
 	/**
 	 * Returns the Fields
 	 *
-	 * @return object	JParameter object
+	 * @return object
 	 **/
 	function &getFields()
 	{
@@ -223,7 +223,7 @@ class SeminarmanModelEditfield extends JModel
 		$limitstart	= ($limit != 0) ? ($limitstart / $limit ) * $limit : 0;
 
 		// Get the total number of records for pagination
-		$query	= 'SELECT COUNT(*) FROM ' . $db->nameQuote( '#__seminarman_fields' );
+		$query	= 'SELECT COUNT(*) FROM ' . $db->quoteName( '#__seminarman_fields' );
 		$db->setQuery( $query );
 		$total	= $db->loadResult();
 
@@ -232,8 +232,8 @@ class SeminarmanModelEditfield extends JModel
 		// Get the pagination object
 		$this->_pagination	= new JPagination( $total , $limitstart , $limit );
 
-		$query	= 'SELECT * FROM ' . $db->nameQuote( '#__seminarman_fields' ) . ' '
-				. 'ORDER BY ' . $db->nameQuote( 'ordering' );
+		$query	= 'SELECT * FROM ' . $db->quoteName( '#__seminarman_fields' ) . ' '
+				. 'ORDER BY ' . $db->quoteName( 'ordering' );
 
 		$db->setQuery( $query , $this->_pagination->limitstart , $this->_pagination->limit );
 
@@ -254,8 +254,8 @@ class SeminarmanModelEditfield extends JModel
 		$db		= JFactory::getDBO();
 
 		$query	= 'SELECT * '
-				. 'FROM ' . $db->nameQuote( '#__seminarman_fields' )
-				. 'WHERE ' . $db->nameQuote( 'type' ) . '=' . $db->Quote( 'group' );
+				. 'FROM ' . $db->quoteName( '#__seminarman_fields' )
+				. 'WHERE ' . $db->quoteName( 'type' ) . '=' . $db->Quote( 'group' );
 
 		$db->setQuery( $query );
 
@@ -275,9 +275,9 @@ class SeminarmanModelEditfield extends JModel
 
 		$db		= JFactory::getDBO();
 
-		$query	= 'SELECT * FROM ' . $db->nameQuote( '#__seminarman_fields' )
-				. 'WHERE ' . $db->nameQuote( 'ordering' ) . '<' . $db->Quote( $fieldId ) . ' '
-				. 'AND ' . $db->nameQuote( 'type' ) . '=' . $db->Quote( 'group' )
+		$query	= 'SELECT * FROM ' . $db->quoteName( '#__seminarman_fields' )
+				. 'WHERE ' . $db->quoteName( 'ordering' ) . '<' . $db->Quote( $fieldId ) . ' '
+				. 'AND ' . $db->quoteName( 'type' ) . '=' . $db->Quote( 'group' )
 				. 'ORDER BY ordering DESC '
 				. 'LIMIT 1';
 
@@ -296,16 +296,22 @@ class SeminarmanModelEditfield extends JModel
 		{
 			$path	= JPATH_ROOT . DS . 'components' . DS . 'com_seminarman' . DS . 'libraries' . DS . 'fields' . DS . 'customfields.xml';
 
-			$parser	= JFactory::getXMLParser( 'Simple' );
-			$parser->loadFile( $path );
-			$fields	= $parser->document->getElementByPath( 'fields' );
+			// $parser	= JFactory::getXMLParser( 'Simple' );
+			// $parser->loadFile( $path );
+			$parser = JFactory::getXML($path);
+			// $fields	= $parser->document->getElementByPath( 'fields' );
+			$fields = $parser->fields;
 			$data	= array();
 
-			foreach( $fields->children() as $field )
+			// foreach( $fields->children() as $field )
+			foreach( $fields->field as $field )
 			{
-				$type	= $field->getElementByPath( 'type' );
-				$name	= $field->getElementByPath( 'name' );
-				$data[ $type->data() ]	= $name->data();
+				// $type	= $field->getElementByPath( 'type' );
+				// $name	= $field->getElementByPath( 'name' );
+				$type	= strval($field->type);
+				$name	= strval($field->name);
+				// $data[ $type->data() ]	= $name->data();
+				$data[$type]	= $name;
 			}
 			$types	= $data;
 		}
@@ -317,8 +323,8 @@ class SeminarmanModelEditfield extends JModel
 		$fieldArray	= array();
 		$db			= JFactory::getDBO();
 
-		$query	= 'SELECT * FROM ' . $db->nameQuote( '#__seminarman_fields' )
-				. ' WHERE ' . $db->nameQuote( 'ordering' ) . '>' . $db->Quote( $groupOrderingId )
+		$query	= 'SELECT * FROM ' . $db->quoteName( '#__seminarman_fields' )
+				. ' WHERE ' . $db->quoteName( 'ordering' ) . '>' . $db->Quote( $groupOrderingId )
 				. ' ORDER BY `ordering` ASC ';
 
 		$db->setQuery( $query );

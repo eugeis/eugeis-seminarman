@@ -42,7 +42,7 @@ $Itemid = JRequest::getInt('Itemid');
 <?php if ($this->params->get('show_location')): ?>
 	<th id="qf_location2" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_LOCATION', 'i.location', $this->lists['filter_order_Dir2'],	$this->lists['filter_order2'], 'il'); ?></th>
 <?php endif; ?>
-	<th id="qf_price2" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_PRICE', 'i.price', $this->lists['filter_order_Dir2'], $this->lists['filter_order2'], 'il'); ?>*</th>
+	<th id="qf_price2" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_PRICE', 'i.price', $this->lists['filter_order_Dir2'], $this->lists['filter_order2'], 'il'); ?><?php echo ($this->params->get('show_gross_price') != 2) ? "*" : ""; ?></th>
 </tr>
 </thead>
 
@@ -52,11 +52,10 @@ $Itemid = JRequest::getInt('Itemid');
 
 $i=0;
 foreach ($this->templates as $template):
-	$itemParams = new JParameter($template->attribs);
 ?>
 <tr class="sectiontableentry" >
 	<td headers="qf_code" nowrap="nowrap"><?php echo $this->escape($template->code); ?></td>
-	<td headers="qf_title"><strong><a href="<?php echo JRoute::_('index.php?view=templates&cid=' . $template->category->slug . '&id=' . $template->slug . '&Itemid=' . $Itemid); ?>"><?php echo $this->escape($template->title); ?></a></strong></td>
+	<td headers="qf_title"><strong><a href="<?php echo JRoute::_('index.php?option=com_seminarman&view=templates&cid=' . $template->category->slug . '&id=' . $template->slug . '&Itemid=' . $Itemid); ?>"><?php echo $this->escape($template->title); ?></a></strong></td>
 <?php if ($this->params->get('show_location')): ?>
 	<td headers="qf_location"><?php echo $template->location; ?></td>
 <?php endif; ?>	
@@ -68,9 +67,11 @@ foreach ($this->templates as $template):
 $i++;
 endforeach;
 ?>
+<?php if ($this->params->get('show_gross_price') != 2): ?>
 <tr class="sectiontableentry" >
 	<td colspan="<?php echo $colspan; ?>" class="right">*<?php echo ($this->params->get('show_gross_price') == 1) ? JText::_('COM_SEMINARMAN_WITH_VAT') : JText::_('COM_SEMINARMAN_WITHOUT_VAT'); ?></td>
 </tr>
+<?php endif; ?>
 </tbody>
 </table>
 

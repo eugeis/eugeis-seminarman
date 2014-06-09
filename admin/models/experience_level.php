@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class seminarmanModelExperience_level extends JModel
+class seminarmanModelExperience_level extends JModelLegacy
 {
     var $_id = null;
 
@@ -156,7 +156,8 @@ class seminarmanModelExperience_level extends JModel
 
             $query_check = 'SELECT id FROM #__seminarman_courses WHERE id_experience_level IN ( ' . $cids . ' )';
             $this->_db->setQuery($query_check);
-            $relatedRecords = $this->_db->loadResultArray();
+            // $relatedRecords = $this->_db->loadResultArray();
+            $relatedRecords = $this->_db->loadColumn();
             if ($relatedRecords > 0)
             {
                 JError::raiseWarning('ERROR_CODE', JText::sprintf('COM_SEMINARMAN_RELATED_N_RECORDS', implode(',', $relatedRecords)));

@@ -68,6 +68,13 @@ class seminarmanControllertutor extends seminarmanController
     	$file    = JRequest::getVar('logofilename', null, 'files', 'array');
     	
     	$link_save   = JRoute::_('index.php?option=com_seminarman&view=tutors', false);
+    	
+    	jimport('joomla.mail.helper');
+    	if ((!empty($post['email'])) && !JMailHelper::isEmailAddress($post['email'])) {
+    		JError::raiseNotice('SOME_ERROR_CODE', JText::_('COM_SEMINARMAN_MAIL_ADDRESS_INVALID'));
+    		// $this->setRedirect(JRoute::_('index.php?option=com_seminarman&controller=tutor&task=edit&cid[]='.$id, false));
+    		// return false;
+    	}
     
     	if (!$row->load($id)) {
     		$this->setMessage(JText::sprintf('JLIB_APPLICATION_ERROR_SAVE_FAILED', $row->getError()), 'error');
@@ -77,6 +84,14 @@ class seminarmanControllertutor extends seminarmanController
     
     	$row->logofilename = $model->UploadImage($file);
     	
+    	if (isset($post['image_remove'])) {
+    		if ($post['image_remove'] == "1") {
+    			if (is_null($row->logofilename)) {
+    				// $post["logofilename"] = "";
+    				$row->logofilename = "";
+    			}
+    		}
+    	}
     	
     	if (!$row->id){
     		$post['ordering'] = $row->getNextOrder();
@@ -84,9 +99,9 @@ class seminarmanControllertutor extends seminarmanController
     	
     	if (($post['juserstate'] == 1) && ($post['user_id'] == 0)) {   		
     		
-            JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users' . DS . 'models' , 'UsersModel');
+            JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users' . DS . 'models' , 'UsersModel');
     	
-            $modeljuser = JModel::getInstance( 'user', 'UsersModel' );
+            $modeljuser = JModelLegacy::getInstance( 'user', 'UsersModel' );
             
             $db = JFactory::getDbo();
             $query = $db->getQuery(true);
@@ -152,6 +167,9 @@ class seminarmanControllertutor extends seminarmanController
             // exit;
 
     	} 
+    	
+    	// allow html tags
+    	$post['description'] = JRequest::getVar('description', '', 'post', 'string', JREQUEST_ALLOWRAW);    	
     	
         if (!$row->save($post)) {
     		$this->setMessage(JText::_('JLIB_APPLICATION_ERROR_SAVE_FAILED', $row->getError()), 'error');

@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class SeminarmanModelCategory extends JModel
+class SeminarmanModelCategory extends JModelLegacy
 {
     var $_id = null;
 
@@ -152,7 +152,8 @@ class SeminarmanModelCategory extends JModel
         $gid = (int)$user->get('aid');
 
         $jnow = JFactory::getDate();
-        $now = $jnow->toMySQL();
+        // $now = $jnow->toMySQL();
+        $now = $jnow->toSQL();
         $nullDate = $this->_db->getNullDate();
 
         $state = 1;
@@ -168,7 +169,7 @@ class SeminarmanModelCategory extends JModel
                 $where .= ' AND i.state = 1' . ' AND ( publish_up = ' . $this->_db->Quote($nullDate) .
                     ' OR publish_up <= ' . $this->_db->Quote($now) . ' )' . ' AND ( publish_down = ' .
                     $this->_db->Quote($nullDate) . ' OR publish_down >= ' . $this->_db->Quote($now) .
-                    ' ) AND i.start_date > (CURDATE() - INTERVAL 60 DAY)';
+                    ' )';
 
                 break;
 
@@ -195,12 +196,11 @@ class SeminarmanModelCategory extends JModel
             $filter_experience_level = JRequest::getString('filter_experience_level', '', 'request');
             $filter_positiontype = JRequest::getString('filter_positiontype', '', 'request');
 
-
             if ($filter)
             {
 
-                $filter = $this->_db->getEscaped(trim(JString::strtolower($filter)));
-                $like = $this->_db->Quote('%'. $this->_db->getEscaped($filter, true) .'%', false);
+                $filter = $this->_db->escape(trim(JString::strtolower($filter)));
+                $like = $this->_db->Quote('%'. $this->_db->escape($filter, true) .'%', false);
 
                 $where .= ' AND ( LOWER( i.title ) LIKE ' . $like .' OR LOWER( i.code ) LIKE '. $like .')';
             }
@@ -222,7 +222,8 @@ class SeminarmanModelCategory extends JModel
         $user = JFactory::getUser();
         $gid = (int)$user->get('aid');
         $jnow = JFactory::getDate();
-        $now = $jnow->toMySQL();
+        // $now = $jnow->toMySQL();
+        $now = $jnow->toSQL();
         $nullDate = $this->_db->getNullDate();
 
         $state = 1;
@@ -377,8 +378,8 @@ class SeminarmanModelCategory extends JModel
    			$filter_experience_level2 = JRequest::getString('filter_experience_level2', '', 'request');
    		
    			if ($filter2) {
-   				$filter2 = $this->_db->getEscaped(trim(JString::strtolower($filter2)));
-   				$like = $this->_db->Quote('%' . $this->_db->getEscaped($filter2, true) . '%', false);
+   				$filter2 = $this->_db->escape(trim(JString::strtolower($filter2)));
+   				$like = $this->_db->Quote('%' . $this->_db->escape($filter2, true) . '%', false);
    				$query .= ' AND ( LOWER( i.title ) LIKE ' . $like .' OR LOWER( i.code ) LIKE '. $like .')';
    					
    			}
@@ -414,16 +415,17 @@ class SeminarmanModelCategory extends JModel
     	return in_array($course_id, $this->_bookings);
     }
     
-    function _loadBookings()
+	function _loadBookings()
 	{
 		$db = JFactory::getDBO();
 		$user = JFactory::getUser();
 		
 		$q = 'SELECT course_id FROM `#__seminarman_application`'.
         	          ' WHERE user_id = '. $user->id. 
-        	          ' AND published = 1';// AND status < 3';
+        	          ' AND published = 1 AND status < 3';
 		$db->setQuery($q);
-		$this->_bookings = $db->loadResultArray();
+		// $this->_bookings = $db->loadResultArray();
+		$this->_bookings = $db->loadColumn();
 	}
 	
 }

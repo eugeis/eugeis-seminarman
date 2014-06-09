@@ -294,12 +294,13 @@ class seminarmanControllersalesprospect extends seminarmanController
 		$msgSubject = $template->subject;
 		$msgBody = $template->body;
 		$msgRecipient = $template->recipient;
+		$msgRecipientBCC = $template->bcc;
 		 
 		$message = JFactory::getMailer();
 		$config = JFactory::getConfig();
 		$params = JComponentHelper::getParams('com_seminarman');
 		
-		$query = 'SELECT sp.*, c.reference_number, c.title AS course, c.code, c.introtext, c.fulltext, c. capacity, c.location, c.url, c.start_date, c.finish_date, c.id AS course_id, sp.price_per_attendee, sp.price_total, sp.price_vat, tut.id AS tutor_id, tut.title AS tutor, tut.salutation AS tutor_salutation, tut.firstname AS tutor_first_name, tut.lastname AS tutor_last_name, tut.other_title AS tutor_other_title, gr.title AS atgroup, gr.description AS atgroup_desc, ex.title AS experience_level, ex.description AS experience_level_desc'.
+		$query = 'SELECT sp.*, c.reference_number, c.title AS course, c.code, c.introtext, c.fulltext, c. capacity, c.location, c.url, c.start_date, c.finish_date, c.start_time, c.finish_time, c.id AS course_id, sp.price_per_attendee, sp.price_total, sp.price_vat, tut.id AS tutor_id, tut.title AS tutor, tut.salutation AS tutor_salutation, tut.firstname AS tutor_first_name, tut.lastname AS tutor_last_name, tut.other_title AS tutor_other_title, gr.title AS atgroup, gr.description AS atgroup_desc, ex.title AS experience_level, ex.description AS experience_level_desc'.
     	            ' FROM #__seminarman_salesprospect AS sp' .
     	            ' LEFT JOIN #__seminarman_courses AS c ON c.id = sp.notified_course' .
     	            ' LEFT JOIN #__seminarman_tutor AS tut ON tut.id = c.tutor_id' .
@@ -317,7 +318,7 @@ class seminarmanControllersalesprospect extends seminarmanController
 		// tutor custom fields
 		$query_tutor_custom = 'SELECT f.fieldcode, ct.value FROM `#__seminarman_fields_values_tutors` AS ct'.
 				' LEFT JOIN `#__seminarman_fields` AS f ON ct.field_id = f.id'.
-				' WHERE ct.tutor_id = '. $queryResult->tutor_id . ' AND f.published = ' . $db->Quote('1') . ' AND f.visible = ' . $db->Quote('1');
+				' WHERE ct.tutor_id = '. $queryResult->tutor_id . ' AND f.published = ' . $db->Quote('1');
 		$db->setQuery($query_tutor_custom);
 		$tutor_customs = $db->loadAssocList();
 		
@@ -421,6 +422,7 @@ class seminarmanControllersalesprospect extends seminarmanController
 		$msgSubject = str_replace('{LASTNAME}', $queryResult->last_name, $msgSubject);
 		$msgSubject = str_replace('{EMAIL}', $queryResult->email, $msgSubject);
 		$msgSubject = str_replace('{ATTENDEES}', $queryResult->attendees, $msgSubject);
+		$msgSubject = str_replace('{COURSE_ID}', $queryResult->course_id, $msgSubject);
 		$msgSubject = str_replace('{COURSE_TITLE}', $queryResult->course, $msgSubject);
 		$msgSubject = str_replace('{COURSE_CODE}', $queryResult->code, $msgSubject);
 		$msgSubject = str_replace('{COURSE_INTROTEXT}', $queryResult->introtext, $msgSubject);
@@ -438,6 +440,8 @@ class seminarmanControllersalesprospect extends seminarmanController
 		$msgSubject = str_replace('{COURSE_START_DATE}', JFactory::getDate($queryResult->start_date)->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1')), $msgSubject);
 		//$msgSubject = str_replace('{COURSE_FINISH_DATE}',  $queryResult->finish_date, $msgSubject);
 		$msgSubject = str_replace('{COURSE_FINISH_DATE}', JFactory::getDate($queryResult->finish_date)->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1')), $msgSubject);
+		$msgSubject = str_replace('{COURSE_START_TIME}', (!empty($queryResult->start_time)) ? date('H:i', strtotime($queryResult->start_time)) : '', $msgSubject);
+		$msgSubject = str_replace('{COURSE_FINISH_TIME}', (!empty($queryResult->finish_time)) ? date('H:i', strtotime($queryResult->finish_time)) : '', $msgSubject);
 		$msgSubject = str_replace('{TUTOR}', $queryResult->tutor, $msgSubject);
 		$msgSubject = str_replace('{TUTOR_FIRSTNAME}', $queryResult->tutor_first_name, $msgSubject);
 		$msgSubject = str_replace('{TUTOR_LASTNAME}', $queryResult->tutor_last_name, $msgSubject);
@@ -461,6 +465,7 @@ class seminarmanControllersalesprospect extends seminarmanController
 		$msgBody = str_replace('{FIRSTNAME}', $queryResult->first_name, $msgBody);
 		$msgBody = str_replace('{LASTNAME}', $queryResult->last_name, $msgBody);
 		$msgBody = str_replace('{EMAIL}', $queryResult->email, $msgBody);
+		$msgBody = str_replace('{COURSE_ID}', $queryResult->course_id, $msgBody);
 		$msgBody = str_replace('{COURSE_TITLE}', $queryResult->course, $msgBody);
 		$msgBody = str_replace('{COURSE_CODE}', $queryResult->code, $msgBody);
 		$msgBody = str_replace('{COURSE_INTROTEXT}', $queryResult->introtext, $msgBody);
@@ -478,6 +483,8 @@ class seminarmanControllersalesprospect extends seminarmanController
 		$msgBody = str_replace('{COURSE_START_DATE}', JFactory::getDate($queryResult->start_date)->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1')), $msgBody);
 		//$msgBody = str_replace('{COURSE_FINISH_DATE}',  $queryResult->finish_date, $msgBody);
 		$msgBody = str_replace('{COURSE_FINISH_DATE}', JFactory::getDate($queryResult->finish_date)->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1')), $msgBody);
+		$msgBody = str_replace('{COURSE_START_TIME}', (!empty($queryResult->start_time)) ? date('H:i', strtotime($queryResult->start_time)) : '', $msgBody);
+		$msgBody = str_replace('{COURSE_FINISH_TIME}', (!empty($queryResult->finish_time)) ? date('H:i', strtotime($queryResult->finish_time)) : '', $msgBody);
 		$msgBody = str_replace('{TUTOR}', $queryResult->tutor, $msgBody);
 		$msgBody = str_replace('{TUTOR_FIRSTNAME}', $queryResult->tutor_first_name, $msgBody);
 		$msgBody = str_replace('{TUTOR_LASTNAME}', $queryResult->tutor_last_name, $msgBody);
@@ -498,9 +505,18 @@ class seminarmanControllersalesprospect extends seminarmanController
 		$msgRecipient = str_replace('{ADMIN_CUSTOM_RECIPIENT}', $params->get('component_email'), $msgRecipient);
 		 
 		$msgRecipients = explode(",", $msgRecipient);
+		
+		if (!empty($msgRecipientBCC))
+		{
+			$msgRecipientBCC = str_replace('{EMAIL}', $queryResult->email, $msgRecipientBCC);
+			$msgRecipientBCC = str_replace('{ADMIN_CUSTOM_RECIPIENT}', $params->get('component_email'), $msgRecipientBCC);
+			$message->addBCC(explode(",", $msgRecipientBCC));
+		}
     	
-		$senderEmail = $config->getValue('mailfrom');
-		$senderName = $config->getValue('fromname');
+		// $senderEmail = $config->getValue('mailfrom');
+		// $senderName = $config->getValue('fromname');
+		$senderEmail = $config->get('mailfrom');
+		$senderName = $config->get('fromname');
 		$message->addRecipient($msgRecipients);
 		$message->setSubject($msgSubject);
 		$message->setBody($msgBody);

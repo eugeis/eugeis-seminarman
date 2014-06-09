@@ -109,14 +109,16 @@ class SeminarmanControllerFilemanager extends SeminarmanController
                     $user = JFactory::getUser();
                     $config = JFactory::getConfig();
 
-                    $tzoffset = $config->getValue('config.offset');
-                    $date = JFactory::getDate('now', -$tzoffset);
+                    // $tzoffset = $config->getValue('config.offset');
+                    $tzoffset = $config->get('offset');
+                    $date = JFactory::getDate('now', $tzoffset);
 
                     $obj = new stdClass();
                     $obj->filename = $filename;
                     $obj->altname = $file['name'];
                     $obj->hits = 0;
-                    $obj->uploaded = $date->toMySQL();
+                    // $obj->uploaded = $date->toMySQL();
+                    $obj->uploaded = $date->toSQL();
                     $obj->uploaded_by = $user->get('id');
 
                     $db->insertObject('#__seminarman_files', $obj);
@@ -129,14 +131,17 @@ class SeminarmanControllerFilemanager extends SeminarmanController
                     $user = JFactory::getUser();
                     $config = JFactory::getConfig();
 
-                    $tzoffset = $config->getValue('config.offset');
-                    $date = JFactory::getDate('now', -$tzoffset);
+                    // $tzoffset = $config->getValue('config.offset');
+                    $tzoffset = $config->get('offset');
+                    
+                    $date = JFactory::getDate('now', $tzoffset);
 
                     $obj = new stdClass();
                     $obj->filename = $filename;
                     $obj->altname = $file['name'];
                     $obj->hits = 0;
-                    $obj->uploaded = $date->toMySQL();
+                    // $obj->uploaded = $date->toMySQL();
+                    $obj->uploaded = $date->toSQL();
                     $obj->uploaded_by = $user->get('id');
 
                     $db->insertObject('#__seminarman_files', $obj);

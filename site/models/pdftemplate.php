@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class seminarmanModelPdftemplate extends JModel
+class seminarmanModelPdftemplate extends JModelLegacy
 {
 	function getTemplate($id = 0)
 	{

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_SEMINARMAN_BOOKINGS" option="COM_SEMINARMAN_BOOKINGS">
+		<message>
+			<![CDATA[COM_SEMINARMAN_BOOKINGS_TIP]]>
+		</message>
+	</layout>
+	<state>
+		<name>COM_SEMINARMAN_BOOKINGS</name>
+		<description>COM_SEMINARMAN_BOOKINGS_TIPP</description>
+		<params>
+		</params>
+	</state>
+	<fields name="params">
+		<fieldset name="basic">
+			<field name="show_gross_price" type="radio" default="0" label="COM_SEMINARMAN_SHOW_GROSS_PRICE" description="COM_SEMINARMAN_SHOW_GROSS_PRICE_DESC">
+				<option value="0">COM_SEMINARMAN_NET</option>
+				<option value="1">COM_SEMINARMAN_GROSS</option>
+				<option value="2">COM_SEMINARMAN_HIDE_TAX</option>
+			</field>
+  		</fieldset>
+	</fields>
+</metadata>

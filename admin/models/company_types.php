@@ -139,7 +139,7 @@ class seminarmanModelcompany_types extends JModel
 
         if ($search)
         {
-            $where[] = ' LOWER(a.title) LIKE ' . $db->Quote('%' . $db->getEscaped($search, true) .
+            $where[] = ' LOWER(a.title) LIKE ' . $db->Quote('%' . $db->escape($search, true) .
                 '%', false);
         }
 

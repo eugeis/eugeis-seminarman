@@ -14,7 +14,7 @@ class LiveUpdateConfig extends LiveUpdateAbstractConfig
 {
 	var $_extensionName			= 'com_seminarman';
 	var $_extensionTitle		= 'OSG Seminar Manager';
-	var $_updateURL				= 'http://smanupdate.osg-gmbh.de/sman.ini';
+	var $_updateURL				= 'http://smanupdate.osg-gmbh.de/sman_j3.ini';
 	var $_requiresAuthorization	= false;
 	var $_versionStrategy		= 'different';
 	

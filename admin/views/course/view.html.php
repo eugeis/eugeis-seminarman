@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class SeminarmanViewCourse extends JView
+class SeminarmanViewCourse extends JViewLegacy
 {
 
     function display($tpl = null)
@@ -36,7 +36,7 @@ class SeminarmanViewCourse extends JView
         $user = JFactory::getUser();
         $db = JFactory::getDBO();
         $lang = JFactory::getLanguage();
-        $pane = JPane::getInstance('sliders');
+        $pane = JPaneOSG::getInstance('sliders');
 
 
         JHTML::_('behavior.tooltip');
@@ -95,32 +95,42 @@ class SeminarmanViewCourse extends JView
                 'multiple="multiple" size="8" style="display: none;"');       	
         }
 
-        $form = new JParameter('', JPATH_COMPONENT . DS . 'models' . DS . 'course.xml');
+        // $form = new JParameter('', JPATH_COMPONENT . DS . 'models' . DS . 'course.xml');
+        $form = new JForm('params');
+        $form->loadFile( JPATH_COMPONENT . DS . 'models' . DS . 'course.xml' );
 
         $active = (intval($row->created_by) ? intval($row->created_by) : $user->get('id'));
-        $form->set('created_by', $active);
-        $form->set('created_by_alias', $row->created_by_alias);
+        $form->setValue('created_by', 'details', $active);
+        $form->setValue('created_by_alias', 'details', $row->created_by_alias);
         
         if ($row->created != "0000-00-00 00:00:00")
-        	$form->set('created', JHTML::_('date', $row->created, JText::_('COM_SEMINARMAN_DATE_FORMAT1')));
+        	$form->setValue('created', NULL, JHTML::_('date', $row->created, JText::_('COM_SEMINARMAN_DATE_FORMAT1')));
         else
-        	$form->set('created', JHTML::_('date', NULL, JText::_('COM_SEMINARMAN_DATE_FORMAT1')));
+        	$form->setValue('created', NULL, JHTML::_('date', NULL, JText::_('COM_SEMINARMAN_DATE_FORMAT1')));
         
         if ($row->publish_up != "0000-00-00 00:00:00")
-        	$form->set('publish_up', JHTML::_('date', $row->publish_up, JText::_('COM_SEMINARMAN_DATE_FORMAT1')));
+        	$form->setValue('publish_up', 'details', JHTML::_('date', $row->publish_up, JText::_('COM_SEMINARMAN_DATE_FORMAT1')));
         else
-        	$form->set('publish_up', JHTML::_('date', NULL, JText::_('COM_SEMINARMAN_DATE_FORMAT1')));
+        	$form->setValue('publish_up', 'details', JHTML::_('date', NULL, JText::_('COM_SEMINARMAN_DATE_FORMAT1')));
         
         if (JHTML::_('date', $row->publish_down, 'Y') <= 1969 || $row->publish_down == $db->getNullDate() || $row->publish_down == '' )
-            $form->set('publish_down', JText::_('COM_SEMINARMAN_NEVER'));
+            $form->setValue('publish_down', 'details', JText::_('COM_SEMINARMAN_NEVER'));
         else
-            $form->set('publish_down', JHTML::_('date', $row->publish_down,  JText::_('COM_SEMINARMAN_DATE_FORMAT1')));
+            $form->setValue('publish_down', 'details', JHTML::_('date', $row->publish_down,  JText::_('COM_SEMINARMAN_DATE_FORMAT1')));
         
-        $form->loadINI($row->attribs);
+        // $form->loadINI($row->attribs);
+        $data_course = array();
+        $data_attribs = new JRegistry();
+        $data_attribs->loadString($row->attribs);
+        $data_course['params'] = $data_attribs->toArray();
 
-        $form->set('description', $row->meta_description);
-        $form->set('keywords', $row->meta_keywords);
-        $form->loadINI($row->metadata);
+        $form->setValue('description', 'meta', $row->meta_description);
+        $form->setValue('keywords', 'meta', $row->meta_keywords);
+        // $form->loadINI($row->metadata);
+        $data_metadata = new JRegistry();
+        $data_metadata->loadString($row->metadata);
+        $data_course['meta'] = $data_metadata->toArray();
+        $form->bind($data_course);
 
         $js = "
         		function qfSelectFile(id, file) {

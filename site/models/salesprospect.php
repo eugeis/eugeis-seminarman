@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class seminarmanModelSalesProspect extends JModel
+class seminarmanModelSalesProspect extends JModelLegacy
 {
 	var $_id = null;
 
@@ -164,6 +164,35 @@ class seminarmanModelSalesProspect extends JModel
 		$message->IsHTML(false);
 		
 		return $message->send();
+	}
+	
+	function sendemail($emaildata) {
+		
+		$config	= JFactory::getConfig();
+		$params = JComponentHelper::getParams('com_seminarman');
+		$msgRecipient = $params->get('component_email');
+		
+		if (empty($msgRecipient))
+			return False;
+		
+		$msgSubject = JText::sprintf('COM_SEMINARMAN_EMAIL_SALESPROSPECT_SUBJECT');
+		$msgBody = JText::sprintf('COM_SEMINARMAN_EMAIL_SALESPROSPECT_BODY',
+				$emaildata['first_name'],
+				$emaildata['last_name'],
+				$emaildata['email'],
+				$emaildata['course_title'],
+				$emaildata['code']
+			);
+		
+		$message = JFactory::getMailer();
+		$message->addRecipient($msgRecipient);
+		$message->setSubject(html_entity_decode($msgSubject, ENT_QUOTES));
+		$message->setBody($msgBody);
+		$message->setSender(array($config->get('mailfrom'), $config->get('fromname')));
+		$message->IsHTML(false);
+		
+		return $message->send();
+		
 	}
 	
 }

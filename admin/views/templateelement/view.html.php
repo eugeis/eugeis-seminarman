@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class SeminarmanViewTemplateelement extends JView
+class SeminarmanViewTemplateelement extends JViewLegacy
 {
 
     function display($tpl = null)
@@ -43,7 +43,7 @@ class SeminarmanViewTemplateelement extends JView
         $filter_order_Dir = $mainframe->getUserStateFromRequest($option .'.templates.filter_order_Dir', 'filter_order_Dir', '', 'word');
         $filter_state = $mainframe->getUserStateFromRequest($option .'.templates.filter_state', 'filter_state', '*', 'word');
         $search = $mainframe->getUserStateFromRequest($option . '.templates.search', 'search', '', 'string');
-        $search = $db->getEscaped(trim(JString::strtolower($search)));
+        $search = $db->escape(trim(JString::strtolower($search)));
 
         $document->setTitle(JText::_('COM_SEMINARMAN_SELECT_TEMPLATE'));
 

@@ -22,10 +22,18 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class seminarmanViewEmailtemplate extends JView
+class seminarmanViewEmailtemplate extends JViewLegacy
 {
 	function display($tpl = null)
 	{
+		$document = JFactory::getDocument();
+		$lang = JFactory::getLanguage();
+		$document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
+		if ($lang->isRTL())
+		{
+			$document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend_rtl.css');
+		}
+		
 		$lists = array();
 		$emailtemplate = $this->get('data');
 		$fields = $this->get('fields');

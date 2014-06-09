@@ -25,7 +25,7 @@ jimport('joomla.application.component.model');
 require_once (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_seminarman' . DS .
 		'helpers' . DS . 'seminarman.php');
 
-class SeminarmanModelSeminarman extends JModel
+class SeminarmanModelSeminarman extends JModelLegacy
 {
     function __construct()
     {

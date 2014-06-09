@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class SeminarmanViewTags extends JView
+class SeminarmanViewTags extends JViewLegacy
 {
 
     function display($tpl = null)
@@ -42,7 +42,7 @@ class SeminarmanViewTags extends JView
         $filter_assigned = $mainframe->getUserStateFromRequest('com_seminarman.tags.filter_assigned', 'filter_assigned', '*', 'word');
         $search = $mainframe->getUserStateFromRequest('com_seminarman.tags.search', 'search',
             '', 'string');
-        $search = $db->getEscaped(trim(JString::strtolower($search)));
+        $search = $db->escape(trim(JString::strtolower($search)));
 
         $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
         if ($lang->isRTL())
@@ -61,6 +61,7 @@ class SeminarmanViewTags extends JView
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'),'index.php?option=com_seminarman&view=courses');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TEMPLATES'),'index.php?option=com_seminarman&view=templates');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_CATEGORIES'),'index.php?option=com_seminarman&view=categories');
+    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TAGS'),'index.php?option=com_seminarman&view=tags', true);
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TUTORS'),'index.php?option=com_seminarman&view=tutors');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_PERIODS'),'index.php?option=com_seminarman&view=periods');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_SETTINGS'),'index.php?option=com_seminarman&view=settings');
@@ -69,9 +70,11 @@ class SeminarmanViewTags extends JView
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'),'index.php?option=com_seminarman&view=applications');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'),'index.php?option=com_seminarman&view=courses');        	
+    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TAGS'),'index.php?option=com_seminarman&view=tags', true);
         }
 
 
+        JToolBarHelper::title(JText::_('COM_SEMINARMAN_TAGS'), 'tags');
         JToolBarHelper::addNew();
         JToolBarHelper::editList();
         JToolBarHelper::divider();

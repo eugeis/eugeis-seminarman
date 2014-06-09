@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class SeminarmanModelTutor extends JModel
+class SeminarmanModelTutor extends JModelLegacy
 {
 	var $_data = null;
 	var $_courses = null;
@@ -30,7 +30,8 @@ class SeminarmanModelTutor extends JModel
 	function __construct()
 	{
 		parent::__construct();		
-		$id = JRequest::getVar('id', 0, 'get', 'int');
+		// $id = JRequest::getVar('id', 0, 'get', 'int');
+		$id = JFactory::getApplication()->input->get('id');
 		$this->setId((int)$id);
 	}
 	
@@ -44,7 +45,6 @@ class SeminarmanModelTutor extends JModel
 	function getTutor()
 	{
  		if ($this->_loadTutor()) {
-
 		    return $this->_data;
  		}
 	}
@@ -63,7 +63,7 @@ class SeminarmanModelTutor extends JModel
 	
 		    $query = 'SELECT CONCAT_WS(" ", t.other_title, t.firstname, t.lastname) as tutor_label,' .
 				' CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\', t.id, t.alias) ELSE t.id END as tutor_slug,' .
-				' t.id AS tutor_id, t.logofilename AS tutor_photo, t.description AS tutor_desc' .
+				' t.id AS tutor_id, t.logofilename AS tutor_photo, t.description AS tutor_desc, t.*' .
 				' FROM #__seminarman_tutor AS t WHERE t.id = ' . $this->_id;
 			$this->_db->setQuery($query);
 			$this->_data = $this->_db->loadObject();
@@ -134,7 +134,8 @@ class SeminarmanModelTutor extends JModel
 		$gid = (int)$user->get('aid');
 		
 		$jnow = JFactory::getDate();
-		$now = $jnow->toMySQL();
+		// $now = $jnow->toMySQL();
+		$now = $jnow->toSQL();
 		$nullDate = $this->_db->getNullDate();
 		
 		$state = 1;
@@ -181,8 +182,8 @@ class SeminarmanModelTutor extends JModel
 			if ($filter)
 			{
 		
-				$filter = $this->_db->getEscaped(trim(JString::strtolower($filter)));
-				$like = $this->_db->Quote('%'. $this->_db->getEscaped($filter, true) .'%', false);
+				$filter = $this->_db->escape(trim(JString::strtolower($filter)));
+				$like = $this->_db->Quote('%'. $this->_db->escape($filter, true) .'%', false);
 		
 				$where .= ' AND ( LOWER( i.title ) LIKE ' . $like .' OR LOWER( i.code ) LIKE '. $like .')';
 			}
@@ -268,6 +269,7 @@ class SeminarmanModelTutor extends JModel
 					$data['fields'][$group][]	= $result[$i];
 				}
 				}
+				
 				return $data;
 		}
 }

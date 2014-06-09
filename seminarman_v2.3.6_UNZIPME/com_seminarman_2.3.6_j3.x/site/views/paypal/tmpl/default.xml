@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="PayPal Layout">
+		<message>
+			<![CDATA[This layout is hidden]]>
+		</message>
+	</layout>
+	<state>
+		<name>PayPal Layout</name>
+		<description>Hidden Layout.</description>
+		<params>
+		</params>
+	</state>
+</metadata>

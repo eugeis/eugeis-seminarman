@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 
 	<table class="adminform">
 		<tr>
@@ -34,11 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 echo JText::_('COM_SEMINARMAN_NUM');
 
 ?></th>
-			<th width="5"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php
-
-echo count($this->rows);
-
-?>);" /></th>
+			<th width="5"><?php echo JHtml::_('grid.checkall'); ?></th>
 			<th class="title"><?php
 
 echo JHTML::_('grid.sort', 'COM_SEMINARMAN_TITLE', 't.name', $this->lists['order_Dir'], $this->
@@ -92,7 +88,7 @@ for ($i = 0, $n = count($this->rows); $i < $n; $i++)
 
     $link = 'index.php?option=com_seminarman&amp;controller=tags&amp;task=edit&amp;cid[]=' .
         $row->id;
-    $published = JHTML::_('grid.published', $row, $i);
+    $published = JHTML::_('jgrid.published', $row->published, $i);
     $checked = JHTML::_('grid.checkedout', $row, $i);
 
 ?>

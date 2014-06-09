@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_SEMINARMAN_TUTORS" option="COM_SEMINARMAN_TUTORS">
+		<message>
+			<![CDATA[COM_SEMINARMAN_TUTORS_TIP]]>
+		</message>
+	</layout>
+	<state>
+		<name>COM_SEMINARMAN_TUTORS</name>
+		<description>COM_SEMINARMAN_TUTORS_TIPP</description>
+		<params>
+		</params>
+	</state>
+</metadata>

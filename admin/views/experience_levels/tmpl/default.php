@@ -24,10 +24,13 @@ jimport('joomla.utilities.date');
 
 
 JToolBarHelper::title(JText::_('COM_SEMINARMAN_EXPERIENCE_LEVELS'), 'generic.png');
-JToolBarHelper::customX('goback', 'back.png', 'back_f2.png', 'COM_SEMINARMAN_GO_BACK', false, true);
+// JToolBarHelper::customX('goback', 'back.png', 'back_f2.png', 'COM_SEMINARMAN_GO_BACK', false, true);
+JToolBarHelper::custom('goback', 'backward-2', 'backward-2', 'COM_SEMINARMAN_GO_BACK', false, true);
 JToolBarHelper::divider();
-JToolBarHelper::addNewX();
-JToolBarHelper::editListX();
+// JToolBarHelper::addNewX();
+JToolBarHelper::addNew();
+// JToolBarHelper::editListX();
+JToolBarHelper::editList();
 JToolBarHelper::divider();
 JToolBarHelper::publishList();
 JToolBarHelper::unpublishList();
@@ -39,7 +42,7 @@ JToolBarHelper::deleteList();
 
 echo $this->requestURL;
 
-?>" method="post" name="adminForm">
+?>" method="post" name="adminForm" id="adminForm">
 <table class="adminform">
 	<tr>
 		<td class="proc100 left">
@@ -65,11 +68,7 @@ echo JText::_('COM_SEMINARMAN_NUM');
 ?>
          </th>
          <th width="20">
-            <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php
-
-echo count($this->courses);
-
-?>);" />
+            <?php echo JHtml::_('grid.checkall'); ?>
          </th>
          <th class="title">
             <?php
@@ -149,7 +148,7 @@ for ($i = 0, $n = count($this->courses); $i < $n; $i++)
         $row->id);
 
     $checked = JHTML::_('grid.checkedout', $row, $i);
-    $published = JHTML::_('grid.published', $row, $i);
+    $published = JHTML::_('jgrid.published', $row->published, $i);
 
     $ordering = ($this->lists['order'] == 'a.ordering');
 

@@ -81,7 +81,8 @@ echo $this->session->getName() . '=' . $this->session->getId();
 
 ?>&amp;<?php
 
-echo JUtility::getToken();
+// echo JUtility::getToken();
+echo JSession::getFormToken();
 
 ?>=1" id="uploadForm" method="post" enctype="multipart/form-data">
                 <fieldset>
@@ -121,7 +122,7 @@ echo base64_encode('index.php?option=com_seminarman&view=filemanager');
 	</tr>
 </table>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 
 	<table class="adminform">
 		<tr>

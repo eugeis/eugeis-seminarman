@@ -8,7 +8,7 @@ function unsetVisibility() {
 }
 </script>
 
-<a onclick="setVisibility();" href="#appform" name="appform"><h2 class="booking componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo JText::_('COM_SEMINARMAN_BOOK_COURSE') . ": " . $this->course->title; ?></h2></a>
+<a onclick="setVisibility();" href="<?php echo JURI::getInstance()->toString(); ?>#appform" id="appform"><h2 class="booking componentheading<?php echo $this->params->get('pageclass_sfx'); ?>"><?php echo JText::_('COM_SEMINARMAN_BOOK_COURSE') . ": " . $this->course->title; ?></h2></a>
 
     <div class="course_applicationform" id="course_appform">
         <?php if ($params->get('enable_loginform') == 1) echo '<h2>' . JText::_('COM_SEMINARMAN_LOGIN_PLEASE') . '</h2>'; ?>

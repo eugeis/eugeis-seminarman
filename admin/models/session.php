@@ -20,7 +20,7 @@ jimport('joomla.application.component.model');
  * @subpackage seminarman
  * @since 1.5.0
  */
-class seminarmanModelsession extends JModel
+class seminarmanModelsession extends JModelLegacy
 {
    /**
     * session id

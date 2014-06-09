@@ -12,7 +12,7 @@ jimport('joomla.utilities.date');
 
 ?>
 
-<form action="<?php echo $this->requestURL; ?>" method="post" name="adminForm">
+<form action="<?php echo $this->requestURL; ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminform">
 		<tr>
 			<td class="proc100 left">
@@ -38,11 +38,7 @@ echo JText::_('COM_SEMINARMAN_NUM');
 ?>
          </th>
          <th width="20">
-            <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php
-
-echo count($this->courses);
-
-?>);" />
+            <?php echo JHtml::_('grid.checkall'); ?>
          </th>
          <th class="title">
             <?php
@@ -125,7 +121,7 @@ for ($i = 0, $n = count($this->courses); $i < $n; $i++)
         $row->id);
 
     $checked = JHTML::_('grid.checkedout', $row, $i);
-    $published = JHTML::_('grid.published', $row, $i);
+    $published = JHTML::_('jgrid.published', $row->published, $i);
 
     $ordering = ($this->lists['order'] == 'a.ordering');
 

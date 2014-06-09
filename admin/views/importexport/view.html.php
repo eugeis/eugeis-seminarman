@@ -23,7 +23,7 @@ jimport('joomla.application.component.view');
 include_once (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_seminarman' . DS .
             'helpers' . DS . 'seminarman.php');
 
-class SeminarmanViewImportexport extends JView
+class SeminarmanViewImportexport extends JViewLegacy
 {
 
 	function display($tpl = null)

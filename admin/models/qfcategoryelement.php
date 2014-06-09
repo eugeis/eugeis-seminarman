@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class SeminarmanModelQfcategoryelement extends JModel
+class SeminarmanModelQfcategoryelement extends JModelLegacy
 {
     var $_data = null;
 
@@ -71,7 +71,7 @@ class SeminarmanModelQfcategoryelement extends JModel
             'filter_state', '', 'word');
         $search = $mainframe->getUserStateFromRequest('com_seminarman.categories.search',
             'search', '', 'string');
-        $search = $this->_db->getEscaped(trim(JString::strtolower($search)));
+        $search = $this->_db->escape(trim(JString::strtolower($search)));
 
         $orderby = ' ORDER BY ' . $filter_order . ' ' . $filter_order_Dir .
             ', c.ordering';
@@ -97,10 +97,11 @@ class SeminarmanModelQfcategoryelement extends JModel
 
 
             $query = 'SELECT c.id' . ' FROM #__seminarman_categories AS c' .
-                ' WHERE LOWER(c.title) LIKE ' . $this->_db->Quote('%' . $this->_db->getEscaped($search, true) .
+                ' WHERE LOWER(c.title) LIKE ' . $this->_db->Quote('%' . $this->_db->escape($search, true) .
                 '%', false) . $where;
             $this->_db->setQuery($query);
-            $search_rows = $this->_db->loadResultArray();
+            // $search_rows = $this->_db->loadResultArray();
+            $search_rows = $this->_db->loadColumn();
         }
 
         $query = 'SELECT c.*, u.name AS editor' .

@@ -109,6 +109,7 @@ class seminarmanControllerSalesProspect extends seminarmanController
     	$post['price_total'] = $post['price_per_attendee'] * $post['attendees'];
     	$post['price_vat'] = $templateRows->vat;
     	$post['code'] = $templateRows->code;
+    	$post['course_title'] = $templateRows->title;
     	
     	$usersConfig = JComponentHelper::getParams('com_users');
     	
@@ -141,7 +142,8 @@ class seminarmanControllerSalesProspect extends seminarmanController
     			$data['email'] = $post['email'];
     			$data['groups'] = array(2); // 2: Registered
     			$data['block'] = $usersConfig->get('useractivation') > 0 ? 1 : 0;
-    			$data['activation'] = JUtility::getHash(JUserHelper::genRandomPassword());
+    			// $data['activation'] = JUtility::getHash(JUserHelper::genRandomPassword());
+    			$data['activation'] = JApplication::getHash(JUserHelper::genRandomPassword());
     			 
     			$password = JUserHelper::genRandomPassword();
     			$salt = JUserHelper::genRandomPassword(32);
@@ -164,6 +166,10 @@ class seminarmanControllerSalesProspect extends seminarmanController
    		
    		// save custom fields
    		$model->saveCustomfields($requestid, $post['user_id'], $values);
+   		
+   		if (!$model->sendemail($post))
+   			return $this->setRedirect(JRoute::_($params->get('application_landingpage')), JText::_('COM_SEMINARMAN_ERROR_SENDING_EMAILS'));
+   		
    		$this->setRedirect(JRoute::_($params->get('application_landingpage')), JText::_('COM_SEMINARMAN_THANK_YOU_FOR_YOUR_INTEREST').'!');
     }
 }

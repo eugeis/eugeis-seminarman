@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class SeminarmanViewBookings extends JView{
+class SeminarmanViewBookings extends JViewLegacy{
     function display($tpl = null)
     {
         if ($this->getLayout() == 'invoicepdf')
@@ -59,7 +59,7 @@ class SeminarmanViewBookings extends JView{
         $document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #seminarman dd { height: 1%; }</style><![endif]-->');
 
         if (is_object($menu)){
-            $menu_params = new JParameter($menu->params);
+            $menu_params = new JRegistry($menu->params);
 
             if (!$menu_params->get('page_title')){
                 $params->set('page_title', JText::_('COM_SEMINARMAN_MY_BOOKINGS'));
@@ -69,7 +69,7 @@ class SeminarmanViewBookings extends JView{
         }
 
         $pathway = $mainframe->getPathWay();
-        $pathway->addItem($params->get('page_title'), JRoute::_('index.php?view=bookings' . '&Itemid=' . $Itemid));
+        $pathway->addItem($params->get('page_title'), JRoute::_('index.php?option=com_seminarman&view=bookings' . '&Itemid=' . $Itemid));
 
         $document->setTitle($params->get('page_title'));
         $document->setMetadata('keywords', $params->get('page_title'));
@@ -91,10 +91,8 @@ class SeminarmanViewBookings extends JView{
         for($i = 0; $i < $count; $i++){
             $item = &$courses[$i];
         	$item->count=$i;
-        	$item->startDateAsDate = $item->start_date;
-        	$item->finishDateAsDate = $item->finish_date;
         	$category = $model->getCategory($item->id);
-            // $link = JRoute::_('index.php?view=courses&cid=' . $category->slug . '&id=' . $item->slug);
+            // $link = JRoute::_('index.php?option=com_seminarman&view=courses&cid=' . $category->slug . '&id=' . $item->slug);
             $link = JRoute::_($item->url);
             $item->currency_price = $params->get('currency');
             
@@ -107,7 +105,7 @@ class SeminarmanViewBookings extends JView{
             $item->price = JText::sprintf('%.2f', round($item->price, 2));
             setlocale(LC_NUMERIC, $old_locale);
             
-        	$itemParams = new JParameter($item->attribs);
+        	$itemParams = new JRegistry($item->attribs);
 
             $menuclass = 'category' . $params->get('pageclass_sfx');
             if (($item->url) <> 'http://'){
@@ -187,7 +185,7 @@ class SeminarmanViewBookings extends JView{
 
                 if ($item->status < 2){
                     // create booking button
-                    $item->book_link = '<div class="button2-left"><div class="blank"><a href="' . JRoute::_('index.php?view=paypal&bookingid=' . $item->applicationid . '&Itemid=' . $Itemid) . '">' . JText::_('COM_SEMINARMAN_PAY_NOW') . '</a></div></div>';
+                    $item->book_link = '<div class="button2-left"><div class="blank"><a href="' . JRoute::_('index.php?option=com_seminarman&view=paypal&bookingid=' . $item->applicationid . '&Itemid=' . $Itemid) . '">' . JText::_('COM_SEMINARMAN_PAY_NOW') . '</a></div></div>';
                 }elseif ($item->status == 3){
                     $item->book_link = '<span class="centered italic">' . JText::_('COM_SEMINARMAN_CANCELLED') . '</span>';
                 }else{
@@ -195,7 +193,7 @@ class SeminarmanViewBookings extends JView{
                 }
             }else{
                 // create booking button
-                $item->book_link = '<div class="button2-left"><div class="blank"><a href="' . JRoute::_('index.php?view=paypal&bookingid=' . $item->applicationid . '&Itemid=' . $Itemid) . '">' . JText::_('COM_SEMINARMAN_PAY_NOW') . '</a></div></div>';
+                $item->book_link = '<div class="button2-left"><div class="blank"><a href="' . JRoute::_('index.php?option=com_seminarman&view=paypal&bookingid=' . $item->applicationid . '&Itemid=' . $Itemid) . '">' . JText::_('COM_SEMINARMAN_PAY_NOW') . '</a></div></div>';
             }
             // show sessions
             $db = JFactory::getDBO();
@@ -286,6 +284,7 @@ class SeminarmanViewBookings extends JView{
 		
 		$filepath = JPATH_ROOT.DS.$params->get('invoice_save_dir').DS.$filename;
 		     
+		jimport('joomla.filesystem.file');
 		if (!$pdf_data = JFile::read($filepath))
 			return JError::raiseError(404, JText::_('FILE NOT FOUND'));
 		

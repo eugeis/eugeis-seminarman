@@ -22,12 +22,19 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class seminarmanViewExperience_level extends JView
+class seminarmanViewExperience_level extends JViewLegacy
 {
     function display($tpl = null)
     {
         $mainframe = JFactory::getApplication();
         $childviewname = 'experience_level';
+        
+        $document = JFactory::getDocument();
+        $lang = JFactory::getLanguage();
+        
+        $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
+        if ($lang->isRTL())
+        	$document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend_rtl.css');
 
         if ($this->getLayout() == 'form')
         {
@@ -80,21 +87,16 @@ class seminarmanViewExperience_level extends JView
         $query = 'SELECT ordering AS value, title AS text' .
             ' FROM #__seminarman_experience_level' . ' ORDER BY ordering';
 
-        $lists['ordering'] = JHTML::_('list.specificordering', $experience_level, $experience_level->
-            id, $query);
+        // $lists['ordering'] = JHTML::_('list.specificordering', $experience_level, $experience_level->id, $query);
+        $lists['ordering'] = JHTML::_('list.ordering', $experience_level->id, $query);
 
         $lists['published'] = JHTML::_('select.booleanlist', 'published',
             'class="inputbox"', $experience_level->published);
 
         JFilterOutput::objectHTMLSafe($group, ENT_QUOTES, 'description');
 
-        $file = JPATH_COMPONENT . DS . 'models' . DS . 'experience_level.xml';
-        $params = new JParameter($experience_level->params, $file);
-
-
         $this->assignRef('lists', $lists);
         $this->assignRef('experience_level', $experience_level);
-        $this->assignRef('params', $params);
 
         parent::display($tpl);
     }

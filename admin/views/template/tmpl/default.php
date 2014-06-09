@@ -450,18 +450,23 @@ function hide_calc(idc) {
 		</li>
 	</ul>
 	</fieldset>
-	
+<fieldset class="adminform">	
 <?php
 
 $title = JText::_('COM_SEMINARMAN_PARAMETERS');
 echo $this->pane->startPane('det-pane');
 echo $this->pane->startPanel($title, 'params');
 echo '<fieldset class="panelform">';
-echo $this->form->render('params', 'basic');
+$fields = $this->form->getFieldset('basic');
+foreach( $fields AS $field ){
+  echo $field->label;
+  echo $field->input;
+}
 echo '</fieldset>';
 echo $this->pane->endPanel();
 echo $this->pane->endPane();
 ?>
+</fieldset>
 </div>
 <div class="width-60 fltlft">
 	

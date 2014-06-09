@@ -99,6 +99,13 @@ class seminarmanControllerApplication extends seminarmanController
 		
 	}
 
+	function cancel() {
+		
+		$view = $this->getView('Courses', 'html');
+		$model = $this->getModel('Courses');
+		$view->setModel($model, true);
+		$view->display();
+	}
 }
 
 ?>

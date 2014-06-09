@@ -61,6 +61,13 @@ function SeminarmanBuildRoute(&$query)
     	{
     		$segments[] = $query['view'];
     	}
+    	
+    	if ($query['view'] == 'courses') {    		
+    	    // if it is from module    		
+            if (!empty($query['mod'])) {
+            	$segments[] = $query['view'];
+            }
+    	}
 
         unset($query['view']);
     }
@@ -78,16 +85,15 @@ function SeminarmanBuildRoute(&$query)
         $segments[] = $query['id'];
         unset($query['id']);
     }
-
     ;
-
+    
     return $segments;
 }
 
 function SeminarmanParseRoute($segments)
 {
     $vars = array();
-
+    
     $count = count($segments);
 
     if ($segments[0] == 'tags')
@@ -145,9 +151,9 @@ function SeminarmanParseRoute($segments)
     {
     	$vars['cid'] = $segments[$count - 2];
     	$vars['view'] = 'templates';
-    	$vars['id'] = $segments[$count - 1];
+    	$vars['id'] = $segments[$count - 1];    	
     }
-
+    
     return $vars;
 }
 

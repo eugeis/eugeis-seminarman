@@ -98,9 +98,9 @@ class SeminarmanControllerEditfields extends JController
 
 			if( $table->type == 'group' )
 			{
-				$query	= 'SELECT * FROM ' . $db->nameQuote( '#__seminarman_fields' ) . ' '
-						. 'WHERE ' . $db->nameQuote( 'ordering' ) . ' > ' . $db->Quote( $table->ordering ) . ' '
-						. 'AND ' . $db->nameQuote( 'type' ) . '=' . $db->Quote( 'group' ) . ' '
+				$query	= 'SELECT * FROM ' . $db->quoteName( '#__seminarman_fields' ) . ' '
+						. 'WHERE ' . $db->quoteName( 'ordering' ) . ' > ' . $db->Quote( $table->ordering ) . ' '
+						. 'AND ' . $db->quoteName( 'type' ) . '=' . $db->Quote( 'group' ) . ' '
 						. 'ORDER BY ordering ASC '
 						. 'LIMIT 1';
 
@@ -112,20 +112,20 @@ class SeminarmanControllerEditfields extends JController
 					if( $direction == -1 )
 					{
 						// Get previous group in list
-						$query	= 'SELECT * FROM ' . $db->nameQuote( '#__seminarman_fields' ) . ' '
-								. 'WHERE ' . $db->nameQuote( 'ordering' ) . ' < ' . $db->Quote( $table->ordering ) . ' '
-								. 'AND ' . $db->nameQuote( 'type' ) . '=' . $db->Quote( 'group' ) . ' '
+						$query	= 'SELECT * FROM ' . $db->quoteName( '#__seminarman_fields' ) . ' '
+								. 'WHERE ' . $db->quoteName( 'ordering' ) . ' < ' . $db->Quote( $table->ordering ) . ' '
+								. 'AND ' . $db->quoteName( 'type' ) . '=' . $db->Quote( 'group' ) . ' '
 								. 'ORDER BY ordering DESC LIMIT 1';
 
 						$db->setQuery( $query );
 						$previousGroup	= $db->loadObject();
 
-						$query	= 'SELECT * FROM ' . $db->nameQuote( '#__seminarman_fields' ) . ' '
-								. 'WHERE ' . $db->nameQuote( 'ordering' ) . ' >= ' . $db->Quote( $table->ordering);
+						$query	= 'SELECT * FROM ' . $db->quoteName( '#__seminarman_fields' ) . ' '
+								. 'WHERE ' . $db->quoteName( 'ordering' ) . ' >= ' . $db->Quote( $table->ordering);
 
 						if( $nextGroup )
 						{
-							$query	.= ' AND ' . $db->nameQuote( 'ordering' ) . ' < ' . $db->Quote( $nextGroup->ordering );
+							$query	.= ' AND ' . $db->quoteName( 'ordering' ) . ' < ' . $db->Quote( $nextGroup->ordering );
 						}
 
 						$query .= 'ORDER BY ordering ASC';
@@ -134,9 +134,9 @@ class SeminarmanControllerEditfields extends JController
 						$currentFields	= $db->loadObjectList();
 
 						// Get previous fields in the group
-						$query		= 'SELECT * FROM ' . $db->nameQuote( '#__seminarman_fields' ) . ' '
-									. 'WHERE ' . $db->nameQuote( 'ordering' ) . ' >= ' . $db->Quote( $previousGroup->ordering ) . ' '
-									. 'AND ' . $db->nameQuote( 'ordering') . ' < ' . $db->Quote( $table->ordering ) . ' '
+						$query		= 'SELECT * FROM ' . $db->quoteName( '#__seminarman_fields' ) . ' '
+									. 'WHERE ' . $db->quoteName( 'ordering' ) . ' >= ' . $db->Quote( $previousGroup->ordering ) . ' '
+									. 'AND ' . $db->quoteName( 'ordering') . ' < ' . $db->Quote( $table->ordering ) . ' '
 									. 'ORDER BY ordering ASC';
 
 						$db->setQuery( $query );
@@ -148,9 +148,9 @@ class SeminarmanControllerEditfields extends JController
 
 							$row->ordering			= $row->ordering + count( $currentFields );
 
-							$query	= 'UPDATE ' . $db->nameQuote( '#__seminarman_fields' ) . ' '
-									. 'SET ' . $db->nameQUote('ordering') . '=' . $db->Quote( $row->ordering ) . ' '
-									. 'WHERE ' . $db->nameQuote( 'id' ) . '=' . $db->Quote( $row->id );
+							$query	= 'UPDATE ' . $db->quoteName( '#__seminarman_fields' ) . ' '
+									. 'SET ' . $db->quoteName('ordering') . '=' . $db->Quote( $row->ordering ) . ' '
+									. 'WHERE ' . $db->quoteName( 'id' ) . '=' . $db->Quote( $row->id );
 							$db->setQuery( $query );
 							$db->query();
 						}
@@ -161,9 +161,9 @@ class SeminarmanControllerEditfields extends JController
 
 							$row->ordering	= $row->ordering - count( $previousFields );
 
-							$query	= 'UPDATE ' . $db->nameQuote( '#__seminarman_fields' ) . ' '
-									. 'SET ' . $db->nameQUote('ordering') . '=' . $db->Quote( $row->ordering ) . ' '
-									. 'WHERE ' . $db->nameQuote( 'id' ) . '=' . $db->Quote( $row->id );
+							$query	= 'UPDATE ' . $db->quoteName( '#__seminarman_fields' ) . ' '
+									. 'SET ' . $db->quoteName('ordering') . '=' . $db->Quote( $row->ordering ) . ' '
+									. 'WHERE ' . $db->quoteName( 'id' ) . '=' . $db->Quote( $row->id );
 							$db->setQuery( $query );
 							$db->query();
 						}
@@ -171,9 +171,9 @@ class SeminarmanControllerEditfields extends JController
 					else
 					{
 						// Get end
-						$query	= 'SELECT ordering FROM ' . $db->nameQuote( '#__seminarman_fields' ) . ' '
-								. 'WHERE ' . $db->nameQuote( 'ordering' ) . ' > ' . $db->Quote( $nextGroup->ordering ) . ' '
-								. 'AND ' . $db->nameQuote( 'type' ) . '=' . $db->Quote( 'group' ) . ' '
+						$query	= 'SELECT ordering FROM ' . $db->quoteName( '#__seminarman_fields' ) . ' '
+								. 'WHERE ' . $db->quoteName( 'ordering' ) . ' > ' . $db->Quote( $nextGroup->ordering ) . ' '
+								. 'AND ' . $db->quoteName( 'type' ) . '=' . $db->Quote( 'group' ) . ' '
 								. 'ORDER BY ordering ASC '
 								. 'LIMIT 1';
 						$db->setQuery( $query );
@@ -182,14 +182,14 @@ class SeminarmanControllerEditfields extends JController
 						// Get the next group childs
 						if( $nextGroupLimit )
 						{
-							$query		= 'SELECT * FROM ' . $db->nameQuote( '#__seminarman_fields' ) . ' '
+							$query		= 'SELECT * FROM ' . $db->quoteName( '#__seminarman_fields' ) . ' '
 										. 'WHERE ordering >=' . $nextGroup->ordering . ' '
 										. 'AND ordering < ' . $nextGroupLimit . ' '
 										. 'ORDER BY ordering ASC';
 						}
 						else
 						{
-							$query		= 'SELECT * FROM ' . $db->nameQuote( '#__seminarman_fields' ) . ' '
+							$query		= 'SELECT * FROM ' . $db->quoteName( '#__seminarman_fields' ) . ' '
 										. 'WHERE ordering >=' . $nextGroup->ordering . ' '
 										. 'ORDER BY ordering ASC';
 						}
@@ -199,7 +199,7 @@ class SeminarmanControllerEditfields extends JController
 						$nextGroupsCount	= count( $nextGroupChilds );
 
 						// Get all childs of the current group field
-						$query		= 'SELECT * FROM ' . $db->nameQuote( '#__seminarman_fields' ) . ' '
+						$query		= 'SELECT * FROM ' . $db->quoteName( '#__seminarman_fields' ) . ' '
 									. 'WHERE ordering >=' . $table->ordering . ' '
 									. 'AND ordering < ' . $nextGroup->ordering . ' '
 									. 'ORDER BY ordering ASC';
@@ -214,9 +214,9 @@ class SeminarmanControllerEditfields extends JController
 
 							//$row->ordering		= $row->ordering - $currentGroupsCount;
 							$row->ordering			= $table->ordering++;
-							$query	= 'UPDATE ' . $db->nameQuote( '#__seminarman_fields' ) . ' '
-									. 'SET ' . $db->nameQUote('ordering') . '=' . $db->Quote( $row->ordering ) . ' '
-									. 'WHERE ' . $db->nameQuote( 'id' ) . '=' . $db->Quote( $row->id );
+							$query	= 'UPDATE ' . $db->quoteName( '#__seminarman_fields' ) . ' '
+									. 'SET ' . $db->quoteName('ordering') . '=' . $db->Quote( $row->ordering ) . ' '
+									. 'WHERE ' . $db->quoteName( 'id' ) . '=' . $db->Quote( $row->id );
 
 							$db->setQuery( $query );
 							$db->query();
@@ -228,9 +228,9 @@ class SeminarmanControllerEditfields extends JController
 
 							$child->ordering	= $nextGroupsCount + $child->ordering;
 
-							$query	= 'UPDATE ' . $db->nameQuote( '#__seminarman_fields' ) . ' '
-									. 'SET ' . $db->nameQUote('ordering') . '=' . $db->Quote( $child->ordering ) . ' '
-									. 'WHERE ' . $db->nameQuote( 'id' ) . '=' . $db->Quote( $child->id );
+							$query	= 'UPDATE ' . $db->quoteName( '#__seminarman_fields' ) . ' '
+									. 'SET ' . $db->quoteName('ordering') . '=' . $db->Quote( $child->ordering ) . ' '
+									. 'WHERE ' . $db->quoteName( 'id' ) . '=' . $db->Quote( $child->id );
 							$db->setQuery( $query );
 							$db->query();
 						}

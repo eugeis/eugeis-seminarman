@@ -27,7 +27,7 @@ jimport( 'joomla.application.component.view' );
 /**
  * Configuration view for Jom Social
  */
-class SeminarmanViewEditfields extends JView
+class SeminarmanViewEditfields extends JViewLegacy
 {
 	/**
 	 * The default method that will display the output of this view which is called by
@@ -45,7 +45,11 @@ class SeminarmanViewEditfields extends JView
 		// Load tooltips
 		JHTML::_('behavior.tooltip', '.hasTip');
 		$document = JFactory::getDocument();
+		$lang = JFactory::getLanguage();
 
+		$document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
+		if ($lang->isRTL())
+			$document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend_rtl.css');		
 
 		JToolBarHelper::title( JText::_('COM_SEMINARMAN_CUSTOM_FIELDS'), 'config' );
 
@@ -60,10 +64,47 @@ class SeminarmanViewEditfields extends JView
 		JToolBarHelper::divider();
 		JToolBarHelper::trash('removefield', JText::_('COM_SEMINARMAN_DELETE'));
 
-
-
 		$this->assignRef( 'fields' 		, $fields );
 		$this->assignRef( 'pagination'	, $pagination );
+		
+		$fields_with_empty_code = $customfields->fields_with_empty_code();
+		if(!empty($fields_with_empty_code)){
+			$app = JFactory::getApplication();
+			foreach($fields_with_empty_code as $f_empty) {
+				$app->enqueueMessage(JText::_('COM_SEMINARMAN_FIELD_NO_CODE') . ': ' . $f_empty["name"], 'error');
+			}
+		}
+		
+		$fields_with_same_code = $customfields->fields_with_same_code();
+		if(!empty($fields_with_same_code)){
+			$app = JFactory::getApplication();
+			$app->enqueueMessage(JText::_('COM_SEMINARMAN_FIELD_CODE_UNIQUE'), 'error');
+			if(isset($fields_with_same_code['booking'])){
+				foreach($fields_with_same_code['booking'] as $key => $value){
+					$app->enqueueMessage(JText::sprintf('COM_SEMINARMAN_FIELD_CODE_REPEATED', $key, JText::_('COM_SEMINARMAN_BOOKINGS'), $value), 'error');
+				}
+			}
+			if(isset($fields_with_same_code['sp'])){
+				foreach($fields_with_same_code['sp'] as $key => $value){
+					$app->enqueueMessage(JText::sprintf('COM_SEMINARMAN_FIELD_CODE_REPEATED', $key, JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), $value), 'error');
+				}
+			}
+			if(isset($fields_with_same_code['tutor'])){
+				foreach($fields_with_same_code['tutor'] as $key => $value){
+					$app->enqueueMessage(JText::sprintf('COM_SEMINARMAN_FIELD_CODE_REPEATED', $key, JText::_('COM_SEMINARMAN_TUTOR_PROFILE'), $value), 'error');
+				}
+			}
+		}
+		
+		$fields_with_diff_type = $customfields->fields_with_diff_type();
+		if(!empty($fields_with_diff_type)){
+			$app = JFactory::getApplication();
+			$app->enqueueMessage(JText::_('COM_SEMINARMAN_FIELD_CODE_REPEAT_ALLOWED'), 'error');
+			foreach($fields_with_diff_type as $f_diff) {
+				$app->enqueueMessage(JText::sprintf('COM_SEMINARMAN_FIELD_CODE_REPEAT_CONFLICT', $f_diff['name1'], $f_diff['name2'], $f_diff['fieldcode']), 'error');
+			}
+		}
+		
 		parent::display( $tpl );
 	}
 

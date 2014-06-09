@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class seminarmanViewsalesprospect extends JView
+class seminarmanViewsalesprospect extends JViewLegacy
 {
     function display($tpl = null)
     {
@@ -96,7 +96,8 @@ require_once( JPATH_ROOT . DS . 'components' . DS . 'com_seminarman' . DS . 'lib
 
         $query = 'SELECT ordering AS value, CONCAT_WS(\' \', first_name, last_name) AS text FROM #__seminarman_salesprospect ORDER BY ordering';
 
-        $lists['ordering'] = JHTML::_('list.specificordering', $application, $application-> id, $query);
+        // $lists['ordering'] = JHTML::_('list.specificordering', $application, $application-> id, $query);
+        $lists['ordering'] = JHTML::_('list.ordering', $application-> id, $query);
         $lists['salutation'] = JHTMLSeminarman::getListFromXML('Salutation', 'salutation', 0, $application->salutation);
         $lists['username'] = JHTMLSeminarman::getSelectUser('user_id', $application->user_id, $disabled);
 

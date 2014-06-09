@@ -20,7 +20,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage	seminarman
  * @since 1.5.0
  */
-class seminarmanViewCategory extends JView
+class seminarmanViewCategory extends JViewLegacy
 {
 	function display($tpl = null)
 	{

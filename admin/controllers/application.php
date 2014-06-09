@@ -86,7 +86,10 @@ class seminarmanControllerapplication extends seminarmanController
             $msg = JText::_('COM_SEMINARMAN_RECORD_SAVED');
         } else
         {
-            $msg = JText::_('ECOM_SEMINARMAN_ERROR_SAVING');
+            $msg = JText::_('COM_SEMINARMAN_ERROR_SAVING');
+            $this->setredirect( 'index.php?option=com_seminarman&controller=application&task=edit&cid[]=' . $post['id'] , $msg , 'error' );
+            
+            return;
         }
 
     	// Process and save custom fields
@@ -495,18 +498,6 @@ class seminarmanControllerapplication extends seminarmanController
 		
 	function notify()
 	{
-
-        // JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users' . DS . 'models' , 'UsersModel');
-    	
-        // $mailmodel = JModel::getInstance( 'mail', 'UsersModel' );		
-
-		// $this->addViewPath( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users' . DS . 'views' );
-		// $mailview = $this->getView('Mail', 'html', 'UsersView'); 
-		// $mailview->addTemplatePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users' . DS . 'views' . DS . 'mail' . DS . 'tmpl');
-        // $mailview->setModel($mailmodel);
-        // $mailview->form = $mailmodel->get('Form');
-		// $mailview->display();
-		// JRequest::setVar('view', 'mail');
         $cid = JRequest::getVar('cid', array(), 'post', 'array');
         JArrayHelper::toInteger($cid);
 
@@ -538,18 +529,6 @@ class seminarmanControllerapplication extends seminarmanController
 	
 	function notify_booking()
 	{
-
-        // JModel::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users' . DS . 'models' , 'UsersModel');
-    	
-        // $mailmodel = JModel::getInstance( 'mail', 'UsersModel' );		
-
-		// $this->addViewPath( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users' . DS . 'views' );
-		// $mailview = $this->getView('Mail', 'html', 'UsersView'); 
-		// $mailview->addTemplatePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_users' . DS . 'views' . DS . 'mail' . DS . 'tmpl');
-        // $mailview->setModel($mailmodel);
-        // $mailview->form = $mailmodel->get('Form');
-		// $mailview->display();
-		// JRequest::setVar('view', 'mail');
         $cid = JRequest::getVar('cid', array(), 'post', 'array');
         $cid = Intval($cid[0]);
         // JArrayHelper::toInteger($cid);
@@ -599,5 +578,10 @@ class seminarmanControllerapplication extends seminarmanController
 		$mailview->setModel($mailmodel, true);
 		$mailview->display();
 		// parent::display();
-	}	
+	}
+
+	function booking_direct()
+	{
+		$this->setRedirect('index.php?option=com_seminarman&view=advapplications');
+	}
 }

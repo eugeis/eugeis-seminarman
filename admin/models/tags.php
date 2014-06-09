@@ -134,7 +134,7 @@ class SeminarmanModelTags extends JModel
             '.tags.filter_state', 'filter_state', '0', 'word');
         $search = $mainframe->getUserStateFromRequest('com_seminarman' . '.tags.search', 'search',
             '', 'string');
-        $search = $this->_db->getEscaped(trim(JString::strtolower($search)));
+        $search = $this->_db->escape(trim(JString::strtolower($search)));
 
         $where = array();
 
@@ -153,7 +153,7 @@ class SeminarmanModelTags extends JModel
         if ($search)
         {
             $where[] = ' LOWER(t.name) LIKE ' . $this->_db->Quote('%' . $this->_db->
-                getEscaped($search, true) . '%', false);
+                escape($search, true) . '%', false);
         }
 
         $where = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');

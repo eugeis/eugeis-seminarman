@@ -40,8 +40,11 @@ class seminarmanControllerPaypal extends seminarmanController{
         // Setup class
         require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'classes' . DS . 'paypal.class.php'); // include the class file
         $p = new paypal_class; // initiate an instance of the class
-        //$p->paypal_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr';   // testing paypal url
-        $p->paypal_url = 'https://www.paypal.com/cgi-bin/webscr'; // paypal url
+        if ($params->get('enable_paypal') == 2) {
+          $p->paypal_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr';   // testing paypal url
+        } else {
+          $p->paypal_url = 'https://www.paypal.com/cgi-bin/webscr'; // paypal url
+        }
 
         // setup a variable for this script (ie: 'http://www.micahcarrick.com/paypal.php')
         $this_script = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
@@ -67,21 +70,26 @@ class seminarmanControllerPaypal extends seminarmanController{
     {
         require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'classes' . DS . 'paypal.class.php'); // include the class file
         $p = new paypal_class; // initiate an instance of the class
-        //$p->paypal_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr'; // testing paypal url
-        $p->paypal_url = 'https://www.paypal.com/cgi-bin/webscr';     // paypal url
+        $mainframe = JFactory::getApplication();
+        $params = $mainframe->getParams();
+        if ($params->get('enable_paypal') == 2) {
+          $p->paypal_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr'; // testing paypal url
+        } else {
+          $p->paypal_url = 'https://www.paypal.com/cgi-bin/webscr';     // paypal url
+        }
         $this_script = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
 
         if ($p->validate_ipn()){
-            $mainframe = JFactory::getApplication();
-            $params = $mainframe->getParams();
             $config = JFactory::getConfig();
 
             $model = $this->getModel('paypal');
             if ($model->updatestatusIPN($p->ipn_data['item_number'], $p->ipn_data['txn_id'])){
                 $mailSender = JFactory::getMailer();
-                $mailSender->addRecipient($config->getValue('mailfrom'));
+                // $mailSender->addRecipient($config->getValue('mailfrom'));
+                $mailSender->addRecipient($config->get('mailfrom'));
                 $mailSender->addBCC($params->get('component_email'));
-                $mailSender->setSender(array($config->getValue('mailfrom') , $config->getValue('mailfrom')));
+                // $mailSender->setSender(array($config->getValue('mailfrom') , $config->getValue('mailfrom')));
+                $mailSender->setSender(array($config->get('mailfrom') , $config->get('mailfrom')));
                 $mailSender->setSubject(JText::_('COM_SEMINARMAN_SEND_MSG_IPN_ADMIN_SUBJECT') . ' - ' . $p->ipn_data['transaction_subject'] . ' - ' . $p->ipn_data['last_name']);
                 $email_body = sprintf (JText::_('COM_SEMINARMAN_SEND_MSG_IPN_ADMIN'));
 

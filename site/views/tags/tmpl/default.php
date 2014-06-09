@@ -46,7 +46,7 @@ function tableOrdering( order, dir, task ) {
 <?php
 jimport('joomla.html.pane');
 
-$tabs = JPane::getInstance('tabs', array('startOffset'=>0));
+$tabs = JPaneOSGF::getInstance('tabs', array('startOffset'=>0));
 echo $tabs->startPane('mytabs');
 echo $tabs->startPanel(JText::_('COM_SEMINARMAN_DATES'), 0);
 echo '<div>' . $this->loadTemplate('courses') . '</div>';
