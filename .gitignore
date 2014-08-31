@@ -19,3 +19,4 @@ Desktop.ini
 .DS_Store
 /.gradle
 /ext_joomla
+/connection.gradle

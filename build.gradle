@@ -1,3 +1,5 @@
+apply from: 'connection.gradle'
+
 import org.apache.tools.ant.taskdefs.condition.Os
 
 group = 'eugeis-seminarman'
@@ -9,6 +11,36 @@ println "Joomla Home: $joomlaHome"
 
 def joomlaExists = { project.file(joomlaHome).exists() }
 
+configurations { ftpAntTask }
+
+dependencies {
+	
+	repositories { mavenCentral() }
+	
+	ftpAntTask("org.apache.ant:ant-commons-net:1.9.3") {
+		module("commons-net:commons-net:1.4.1") { dependencies "oro:oro:2.0.8:jar" }
+	}
+}
+
+task con << {
+	println connection
+}
+task publish << {
+	ant {
+		taskdef(name: 'ftp',
+		classname: 'org.apache.tools.ant.taskdefs.optional.net.FTP',
+		classpath: configurations.ftpAntTask.asPath)
+
+		ftp(server: connection.host, userid: connection.user, password: connection.pwd, remotedir: "$connection.remoteHome/administrator/components/com_seminarman", depends: 'Yes') { 
+			fileset(dir: 'admin') 
+		}
+		
+		ftp(server: connection.host, userid: connection.user, password: connection.pwd, remotedir: "$connection.remoteHome/components/com_seminarman", depends: 'Yes') {
+			fileset(dir: 'site')
+		}
+	}
+}
+
 //admin
 task syncAdminLangDE(type: Copy) {
 	onlyIf joomlaExists
@@ -18,75 +50,69 @@ task syncAdminLangDE(type: Copy) {
 }
 
 task syncAdminLangEN(type: Copy) {
-    onlyIf joomlaExists
-    from 'languages/admin/en-GB.com_seminarman.ini'
-    from 'languages/admin/en-GB.com_seminarman.sys.ini'
-    into "$joomlaHome/administrator/language/en-GB"
+	onlyIf joomlaExists
+	from 'languages/admin/en-GB.com_seminarman.ini'
+	from 'languages/admin/en-GB.com_seminarman.sys.ini'
+	into "$joomlaHome/administrator/language/en-GB"
 }
 
 task syncAdmin(dependsOn: ['syncAdminLangDE', 'syncAdminLangEN'], type: Sync) {
-    onlyIf joomlaExists
-    from 'admin'
-    from 'script.php'
+	onlyIf joomlaExists
+	from 'admin'
+	from 'script.php'
 	from 'seminarman.xml'
-    into "$joomlaHome/administrator/components/com_seminarman"
+	into "$joomlaHome/administrator/components/com_seminarman"
 }
 
 //site
 task syncSiteDE(type: Copy) {
-    onlyIf joomlaExists
-    from 'languages/site/de-DE.com_seminarman.ini'
-    from 'languages/site/de-DE.com_seminarman.sys.ini'
-    into "$joomlaHome/language/de-DE"
+	onlyIf joomlaExists
+	from 'languages/site/de-DE.com_seminarman.ini'
+	from 'languages/site/de-DE.com_seminarman.sys.ini'
+	into "$joomlaHome/language/de-DE"
 }
 
 task syncSiteEN(type: Copy) {
 	onlyIf joomlaExists
 	from 'languages/site/en-GB.com_seminarman.ini'
-    from 'languages/site/en-GB.com_seminarman.sys.ini'
-    into "$joomlaHome/language/en-GB"
+	from 'languages/site/en-GB.com_seminarman.sys.ini'
+	into "$joomlaHome/language/en-GB"
 }
 
 task syncSite(dependsOn: ['syncSiteDE', 'syncSiteEN'], type: Sync) {
 	onlyIf joomlaExists
-    from 'site'
+	from 'site'
 	into "$joomlaHome/components/com_seminarman"
 }
 
-task syncLanguage(dependsOn: ['syncSiteEN', 'syncSiteDE', 'syncAdminLangEN', 'syncAdminLangDE']) {
-	onlyIf joomlaExists
-}
+task syncLanguage(dependsOn: ['syncSiteEN', 'syncSiteDE', 'syncAdminLangEN', 'syncAdminLangDE']) { onlyIf joomlaExists }
 
-task syncAll(dependsOn: ['syncAdmin', 'syncSite']) {
-	onlyIf joomlaExists
-}
+task syncAll(dependsOn: ['syncAdmin', 'syncSite']) { onlyIf joomlaExists }
 
 task linkAdmin(type:Exec) {
 	onlyIf joomlaExists
-  	def srcPath = file("$joomlaHome/administrator/components/com_seminarman").absolutePath
-  	def targetPath = file('./admin').absolutePath
+	def srcPath = file("$joomlaHome/administrator/components/com_seminarman").absolutePath
+	def targetPath = file('./admin').absolutePath
 	if (Os.isFamily(Os.FAMILY_WINDOWS)) {
 		commandLine 'cmd', '/c', 'mklink', '/D', srcPath, targetPath
-	}else {
-		commandLine 'bash -c', "ln -s $targetPath $srcPath"
+	} else {
+		commandLine '/bin/sh', '-c', "ln -s $targetPath $srcPath"
 	}
 
 }
 
 task linkSite(type: Exec) {
 	onlyIf joomlaExists
-  	def srcPath = file("$joomlaHome/components/com_seminarman").absolutePath
-  	def targetPath = file('./site').absolutePath
-  	if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+	def srcPath = file("$joomlaHome/components/com_seminarman").absolutePath
+	def targetPath = file('./site').absolutePath
+	if (Os.isFamily(Os.FAMILY_WINDOWS)) {
 		commandLine 'cmd', '/c', 'mklink', '/D', srcPath, targetPath
-	}else {
-		commandLine 'bash -c', "ln -s $targetPath $srcPath"
+	} else {
+		commandLine '/bin/sh', '-c', "ln -s $targetPath $srcPath"
 	}
 }
 
-task symlinks(dependsOn: ['linkSite', 'linkAdmin']) {
-	onlyIf joomlaExists
-}
+task symlinks(dependsOn: ['linkSite', 'linkAdmin']) { onlyIf joomlaExists }
 
 
 task joomlaOld {
@@ -95,49 +121,49 @@ task joomlaOld {
 	doLast {
 		//copy admin
 		copy {
-		    from 'admin'
-		    into "$joomlaHome/administrator/components/com_seminarman"
+			from 'admin'
+			into "$joomlaHome/administrator/components/com_seminarman"
 		}
 		copy {
-		    from 'script.php'
-		    //from 'seminarman.xml'
-		    into "$joomlaHome/administrator/components/com_seminarman"
+			from 'script.php'
+			//from 'seminarman.xml'
+			into "$joomlaHome/administrator/components/com_seminarman"
 		}
 		copy {
-		    from 'languages/admin/de-DE.com_seminarman.ini'
-		    from 'languages/admin/de-DE.com_seminarman.sys.ini'
-		    into "$joomlaHome/administrator/language/de-DE"
+			from 'languages/admin/de-DE.com_seminarman.ini'
+			from 'languages/admin/de-DE.com_seminarman.sys.ini'
+			into "$joomlaHome/administrator/language/de-DE"
 		}
 		copy {
-		    from 'languages/admin/en-GB.com_seminarman.ini'
-		    from 'languages/admin/en-GB.com_seminarman.sys.ini'
-		    into "$joomlaHome/administrator/language/en-GB"
+			from 'languages/admin/en-GB.com_seminarman.ini'
+			from 'languages/admin/en-GB.com_seminarman.sys.ini'
+			into "$joomlaHome/administrator/language/en-GB"
 		}
 
 		//copy site
 		copy {
-		    from 'site'
-		    into "$joomlaHome/components/com_seminarman"
+			from 'site'
+			into "$joomlaHome/components/com_seminarman"
 		}
 		copy {
-		    from 'languages/site/de-DE.com_seminarman.ini'
-		    from 'languages/site/de-DE.com_seminarman.sys.ini'
-		    into "$joomlaHome/language/de-DE"
+			from 'languages/site/de-DE.com_seminarman.ini'
+			from 'languages/site/de-DE.com_seminarman.sys.ini'
+			into "$joomlaHome/language/de-DE"
 		}
 		copy {
-		    from 'languages/site/en-GB.com_seminarman.ini'
-		    from 'languages/site/en-GB.com_seminarman.sys.ini'
-		    into "$joomlaHome/language/en-GB"
+			from 'languages/site/en-GB.com_seminarman.ini'
+			from 'languages/site/en-GB.com_seminarman.sys.ini'
+			into "$joomlaHome/language/en-GB"
 		}
 	}
 
 	task dist(type: Zip) {
 		baseName = "$project.name-$project.version"
-    	from '.'
-    	exclude '*.zip'
-    	exclude '**/*.bak'
-    	exclude '.gradle'
-    	exclude '.settings'
+		from '.'
+		exclude '*.zip'
+		exclude '**/*.bak'
+		exclude '.gradle'
+		exclude '.settings'
 
 	}
 }
