@@ -53,7 +53,7 @@ echo JText::_('COM_SEMINARMAN_CATEGORY') . ':';
 							</label>
 						</td>
 						<td>
-							<input name="title" value="<?php
+							<input name="title" class="inputbox" type="text" value="<?php
 
 echo $this->row->title;
 
@@ -137,6 +137,8 @@ echo $this->editor->display('text', $this->row->text, '100%;', '350', '75', '20'
 
 //$title = JText::_('ACCESS');
 echo $this->pane->startPane('det-pane');
+// $options = NULL;
+// echo JHtml::_('sliders.start', 'det-pane', $options);
 
 
 ?>
@@ -156,8 +158,9 @@ echo $this->pane->startPane('det-pane');
 				<?php
 
 $title = JText::_('COM_SEMINARMAN_IMAGE');
-//echo $this->pane->endPanel();
+echo $this->pane->endPanel();
 echo $this->pane->startPanel($title, 'IMAGE');
+// echo JHtml::_('sliders.panel', JText::_('COM_SEMINARMAN_IMAGE'), 'IMAGE');
 
 ?>
 				<table>
@@ -231,7 +234,7 @@ echo $this->Lists['imagelist'];
 $title = JText::_('COM_SEMINARMAN_METADATA_INFORMATION');
 echo $this->pane->endPanel();
 echo $this->pane->startPanel($title, 'COM_SEMINARMAN_METADATA_INFORMATION');
-
+// echo JHtml::_('sliders.panel', JText::_('COM_SEMINARMAN_METADATA_INFORMATION'), 'COM_SEMINARMAN_METADATA_INFORMATION');
 ?>
 				<table>
 					<tr>
@@ -276,7 +279,7 @@ echo str_replace('&', '&amp;', $this->row->meta_keywords);
 
 echo $this->pane->endPanel();
 echo $this->pane->endPane();
-
+// echo JHtml::_('sliders.end');
 ?>
 			</td>
 		</tr>

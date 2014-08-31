@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class SeminarmanModelSettings extends JModel
+class SeminarmanModelSettings extends JModelLegacy
 {
     var $_pagination = null;
 

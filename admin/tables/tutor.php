@@ -79,7 +79,8 @@ class Tabletutor extends JTable
 		$this->alias = JFilterOutput::stringURLSafe($this->alias);
 		if(trim(str_replace('-','',$this->alias)) == '') {
 			$datenow = JFactory::getDate();
-			$this->alias = $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
+			// $this->alias = $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
+			$this->alias = $datenow->Format("%Y-%m-%d-%H-%M-%S");
 		}
 
 		return true;

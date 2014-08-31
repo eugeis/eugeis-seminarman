@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class seminarmanModelcompany_type extends JModel
+class seminarmanModelcompany_type extends JModelLegacy
 {
     var $_id = null;
 

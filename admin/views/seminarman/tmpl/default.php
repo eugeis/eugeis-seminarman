@@ -24,8 +24,8 @@ if(JHTMLSeminarman::UserIsCourseManager()){
 $link = 'index.php?option=com_seminarman&amp;view=applications';
 SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-applications.png', JText::_('COM_SEMINARMAN_APPLICATION'));
 
-$link = 'index.php?option=com_seminarman&amp;view=users';
-SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-users.png', JText::_('COM_SEMINARMAN_USERS'));
+$link = 'index.php?option=com_seminarman&amp;view=salesprospects';
+SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-inter.png', JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'));
 
 $link = 'index.php?option=com_seminarman&amp;view=courses';
 SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-courses.png', JText::_('COM_SEMINARMAN_COURSES'));
@@ -38,6 +38,9 @@ SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-templates.png', JText:
 
 $link = 'index.php?option=com_seminarman&amp;view=templates';
 SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-templateedit.png', JText::_('COM_SEMINARMAN_NEW_TEMPLATE'));
+
+$link = 'index.php?option=com_seminarman&amp;view=tags';
+SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-tags.png', JText::_('COM_SEMINARMAN_TAGS'));
 
 $link = 'index.php?option=com_seminarman&amp;view=periods';
 SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-tags.png', JText::_('COM_SEMINARMAN_PERIODS'));
@@ -57,6 +60,9 @@ echo LiveUpdate::getIcon();
 	
 $link = 'index.php?option=com_seminarman&amp;view=applications';
 SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-applications.png', JText::_('COM_SEMINARMAN_APPLICATION'));
+
+$link = 'index.php?option=com_seminarman&amp;view=salesprospects';
+SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-inter.png', JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'));
 
 $link = 'index.php?option=com_seminarman&amp;view=courses';
 SeminarmanViewSeminarman::quickiconButton($link, 'icon-48-courses.png', JText::_('COM_SEMINARMAN_COURSES'));

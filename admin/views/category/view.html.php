@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class SeminarmanViewCategory extends JView
+class SeminarmanViewCategory extends JViewLegacy
 {
 
     function display($tpl = null)
@@ -36,7 +36,7 @@ class SeminarmanViewCategory extends JView
         $document = JFactory::getDocument();
         $user = JFactory::getUser();
         $lang = JFactory::getLanguage();
-        $pane = JPane::getInstance('sliders');
+        $pane = JPaneOSG::getInstance('sliders');
 
         $cid = JRequest::getVar('cid');
 
@@ -56,9 +56,9 @@ class SeminarmanViewCategory extends JView
 
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'),'index.php?option=com_seminarman&view=applications');
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_USERS'), 'index.php?option=com_seminarman&view=users');
-		JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'),'index.php?option=com_seminarman&view=courses');
+    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'),'index.php?option=com_seminarman&view=courses');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_CATEGORIES'),'index.php?option=com_seminarman&view=categories', true);
+    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TAGS'),'index.php?option=com_seminarman&view=tags');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TUTORS'),'index.php?option=com_seminarman&view=tutors');
         }
         JToolBarHelper::media_manager();
@@ -96,7 +96,7 @@ class SeminarmanViewCategory extends JView
         $Lists['imagelist'] = JHTML::_('list.images', 'image', $row->image, $javascript, '/images/');
     	$javascript2 = "onchange=\"javascript:if (document.forms[0].icon.options[selectedIndex].value!='') {document.iconlib.src='../images/' + document.forms[0].icon.options[selectedIndex].value} else {document.iconlib.src='../images/blank.png'}\"";
     	$Lists['iconlist'] = JHTML::_('list.images', 'icon', $row->icon, $javascript2, '/images/');
-        $Lists['access'] = JHTML::_('list.accesslevel', $row);
+        // $Lists['access'] = JHTML::_('list.accesslevel', $row);
         $Lists['parent_id'] = seminarman_cats::buildcatselect($categories, 'parent_id', $row->parent_id, true);
 
         $params = JComponentHelper::getParams('com_seminarman');

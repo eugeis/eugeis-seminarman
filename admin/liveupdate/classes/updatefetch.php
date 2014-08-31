@@ -267,7 +267,7 @@ class LiveUpdateFetch extends JObject
 	 * @return array The parsed data
 	 */
 	private function parseINI($rawData)
-	{
+	{		
 		$ret = array(
 			'version'		=> '',
 			'date'			=> '',
@@ -351,7 +351,7 @@ class LiveUpdateFetch extends JObject
 		if(array_key_exists('infourl', $iniData)) {
 			$ret['infoURL'] = $iniData['infourl'];
 		}
-
+		
 		return $ret;
 	}
 }

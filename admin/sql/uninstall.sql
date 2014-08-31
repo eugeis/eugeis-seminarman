@@ -23,6 +23,7 @@ DROP TABLE IF EXISTS
 `#__seminarman_invoice_number`,
 `#__seminarman_job_exp`,
 `#__seminarman_pdftemplate`,
+`#__seminarman_period`,
 `#__seminarman_pricegroups`,
 `#__seminarman_salesprospect`,
 `#__seminarman_sessions`,

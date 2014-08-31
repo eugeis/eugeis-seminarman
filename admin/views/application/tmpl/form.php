@@ -11,7 +11,7 @@ JHTML::_('behavior.tooltip');
 
 jimport('joomla.html.pane');
 $params = JComponentHelper::getParams('com_seminarman');
-$pane	= JPane::getInstance('Tabs');
+$pane	= JPaneOSG::getInstance('Tabs');
 ?>
 
 
@@ -45,7 +45,7 @@ select {
 </style>
 
 <script type="text/javascript">
-	function submitbutton(pressbutton) {
+	Joomla.submitbutton = function(pressbutton) {
 		var form = document.adminForm;
 		if (pressbutton == 'cancel') {
 			submitform( pressbutton );

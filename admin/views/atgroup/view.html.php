@@ -22,12 +22,19 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class seminarmanViewatgroup extends JView
+class seminarmanViewatgroup extends JViewLegacy
 {
     function display($tpl = null)
     {
         $mainframe = JFactory::getApplication();
         $childviewname = 'atgroup';
+        
+        $document = JFactory::getDocument();
+        $lang = JFactory::getLanguage();
+        
+        $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
+        if ($lang->isRTL())
+        	$document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend_rtl.css');
 
         if ($this->getLayout() == 'form')
         {
@@ -81,8 +88,8 @@ class seminarmanViewatgroup extends JView
         $query = 'SELECT ordering AS value, title AS text' .
             ' FROM #__seminarman_atgroup' . ' ORDER BY ordering';
 
-        $lists['ordering'] = JHTML::_('list.specificordering', $atgroup, $atgroup->
-            id, $query);
+        // $lists['ordering'] = JHTML::_('list.specificordering', $atgroup, $atgroup->id, $query);
+        $lists['ordering'] = JHTML::_('list.ordering', $atgroup->id, $query);
 
         $lists['published'] = JHTML::_('select.booleanlist', 'published',
             'class="inputbox"', $atgroup->published);

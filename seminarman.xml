@@ -2,13 +2,13 @@
 <!DOCTYPE install PUBLIC "-//Joomla! 1.5//DTD component 1.0//EN" "http://www.joomla.org/xml/dtd/1.5/component-install.dtd">
 <extension type="component" version="1.6.0" method="upgrade">
 	<name>com_seminarman</name>
-	<creationDate>March 2014</creationDate>
+	<creationDate>May 2014</creationDate>
 	<author>Open Source Group GmbH</author>
 	<copyright>(C) 2011 Profinvent,(C) 2012-14 Open Source Group GmbH</copyright>
 	<license>GNU/GPL http://www.gnu.org/copyleft/gpl.html</license>
 	<authorEmail>info@osg-gmbh.de</authorEmail>
 	<authorUrl>http://www.osg-gmbh.de</authorUrl>
-	<version>2.3.6</version>
+	<version>2.3.9</version>
 	<description>OSG Seminar Manager is a fork of Course Manager 1.7 with additional features and bugfixes</description>
 	<scriptfile>script.php</scriptfile>
 	<install>
@@ -50,7 +50,6 @@
 			img="../administrator/components/com_seminarman/assets/images/seminarman.png">COM_SEMINARMAN_MENU</menu>
 		<submenu>
 			<menu view="applications" img="components/com_seminarman/assets/images/icon-16-applications.png">COM_SEMINARMAN_MENU_APPLICATIONS</menu>
-			<menu view="users" img="components/com_seminarman/assets/images/icon-16-users.png">COM_SEMINARMAN_MENU_USERS</menu>
 			<menu view="salesprospects" img="components/com_seminarman/assets/images/icon-16-inter.png">COM_SEMINARMAN_MENU_SALES_PROSPECTS</menu>
 			<menu view="courses" img="components/com_seminarman/assets/images/icon-16-courses.png">COM_SEMINARMAN_MENU_COURSES</menu>
 			<menu view="templates" img="components/com_seminarman/assets/images/icon-16-templates.png">COM_SEMINARMAN_MENU_TEMPLATES</menu>

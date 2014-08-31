@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class seminarmanViewPeriod extends JView
+class seminarmanViewPeriod extends JViewLegacy
 {
     function display($tpl = null)
     {
@@ -80,17 +80,13 @@ class seminarmanViewPeriod extends JView
         $query = 'SELECT ordering AS value, title AS text' .
             ' FROM #__seminarman_period' . ' ORDER BY ordering';
 
-        $lists['ordering'] = JHTML::_('list.specificordering', $period, $period->
+        $lists['ordering'] = JHTML::_('list.ordering', $period->
             id, $query);
 
         $lists['published'] = JHTML::_('select.booleanlist', 'published',
             'class="inputbox"', $period->published);
 
         JFilterOutput::objectHTMLSafe($group, ENT_QUOTES, 'description');
-
-        $file = JPATH_COMPONENT . DS . 'models' . DS . 'period.xml';
-        $params = new JParameter($period->params, $file);
-
 
         $this->assignRef('lists', $lists);
         $this->assignRef('period', $period);

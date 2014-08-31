@@ -46,7 +46,7 @@ class TableEditfield extends JTable
         return true;
     }
 
-	function load( $id , $isGroup = false )
+	function load( $id = null , $isGroup = false )
 	{
 		if( $id == 0 )
 		{

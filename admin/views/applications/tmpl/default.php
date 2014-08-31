@@ -14,7 +14,7 @@ $params = JComponentHelper::getParams('com_seminarman');
 ?>
 
 
-<form action="<?php echo $this->requestURL; ?>" method="post" name="adminForm">
+<form action="<?php echo $this->requestURL; ?>" method="post" name="adminForm" id="adminForm">
 <?php
 	// Create the copy/move options.
 	$options = array(
@@ -32,35 +32,35 @@ $params = JComponentHelper::getParams('com_seminarman');
 				<table style="margin-right:10px"><tr>
 					<td><input type="checkbox" name="changeNoteReading" title="Die Note für Lesen der Lektüre setzen"></td>
 					<td><?php echo JText::_( 'COM_SEMINARMAN_COURSE_NOTE_READING' );?></td>
-					<td><input class="text_area" type="text" name="noteReading" id="noteReading" size="3" maxlength="3" value=""/></td>
+					<td><input style="width: 30px;" type="text" name="noteReading" id="noteReading" size="3" maxlength="3" value=""/></td>
 				</tr></table>
 			</td>
 			<td>
 				<table style="margin-right:10px"><tr>
 					<td><input type="checkbox" name="changeNoteTest" title="Die Note für Test setzen"></td>
 					<td><?php echo JText::_( 'COM_SEMINARMAN_COURSE_NOTE_TEST' );?></td>
-					<td><input class="text_area" type="text" name="noteTest" id="noteTest" size="3" maxlength="3" value=""/></td>
+					<td><input style="width: 30px;" type="text" name="noteTest" id="noteTest" size="3" maxlength="3" value=""/></td>
 				</tr></table>
 			</td>
 			<td>
 				<table style="margin-right:10px"><tr>
 					<td><input type="checkbox" name="changeNoteWork" title="Die Note für Facharbeit setzen"></td>
 					<td><?php echo JText::_( 'COM_SEMINARMAN_COURSE_NOTE_WORK' );?></td>
-					<td><input class="text_area" type="text" name="noteWork" id="noteWork" size="3" maxlength="3" value=""/></td>
+					<td><input style="width: 30px;" type="text" name="noteWork" id="noteWork" size="3" maxlength="3" value=""/></td>
 				</tr></table>
 			</td>
 			<td>
 				<table style="margin-right:10px"><tr>
 					<td><input type="checkbox" name="changeNote" title="Die Note setzen"></td>
 					<td><?php echo JText::_( 'COM_SEMINARMAN_COURSE_NOTE' );?></td>
-					<td><input class="text_area" type="text" name="note" id="note" size="3" maxlength="3" value=""/></td>
+					<td><input style="width: 30px;" type="text" name="note" id="note" size="3" maxlength="3" value=""/></td>
 				</tr></table>
 			</td>
 			<td>
 				<table style="margin-right:10px"><tr>
 					<td><input type="checkbox" name="changeAttendance" title="Die Anwesenheit setzen"></td>
 					<td><?php echo JText::_( 'COM_SEMINARMAN_COURSE_ATTENDANCE' );?></td>
-					<td><input class="text_area" type="text" name="attendance" id="attendance" size="2" maxlength="2" value=""/></td>
+					<td><input style="width: 30px;" type="text" name="attendance" id="attendance" size="2" maxlength="2" value=""/></td>
 				</tr></table>
 			</td>
 			<td>
@@ -68,7 +68,7 @@ $params = JComponentHelper::getParams('com_seminarman');
 					<td><input type="checkbox" name="changeStatus" title="Den Status setzen"></td>
 					<td><?php echo $this->lists['status']; ?></td>
 				</tr></table>
-			</td>			
+			</td>
 			<td class="right">
 				<input type="button" onclick="javascript:if (document.adminForm.boxchecked.value==0){alert('Bitte zuerst eine Auswahl in der Liste vornehmen!');}else{ Joomla.submitbutton('changeMultiAttributtes')};"
 					value="<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>" />
@@ -118,7 +118,7 @@ $params = JComponentHelper::getParams('com_seminarman');
    <thead>
       <tr>
          <th width="5"><?php echo JText::_('COM_SEMINARMAN_NUM'); ?></th>
-         <th width="20"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->applications); ?>);" /></th>
+         <th width="20"><?php echo JHtml::_('grid.checkall'); ?></th>
          <th width="15%" class="title"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_LAST_NAME', 'a.last_name', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="10%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_FIRST_NAME', 'a.first_name', $this->lists['order_Dir'], $this->lists['order']); ?></th>
          <th width="10%"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_EMAIL', 'a.email', $this->lists['order_Dir'], $this->lists['order']); ?></th>
@@ -167,7 +167,7 @@ for ($i = 0, $n = count($this->applications); $i < $n; $i++)
     		$status_text = JText::_( 'COM_SEMINARMAN_CANCELED' );
     		break;
     }
-    
+
     if ((!empty($row->invoice_filename_prefix)) && ($row->price_per_attendee > 0))
     {
     	$invoiceLink = '<a href="'. JRoute::_('index.php?option=com_seminarman&view=application&layout=invoicepdf&cid[]='. $row->id ) .'">'.
@@ -176,7 +176,7 @@ for ($i = 0, $n = count($this->applications); $i < $n; $i++)
     }
     else
     	$invoiceLink = '-';
-    
+
 ?>
       <tr class="<?php echo "row$k"; ?>">
          <td><?php echo $this->pagination->getRowOffset($i); ?></td>
@@ -188,7 +188,7 @@ for ($i = 0, $n = count($this->applications); $i < $n; $i++)
 	{
 		$result = $row->isCheckedOut( $this->user->get( 'id' ) );
 	}
-	
+
 	if ( $result )
 		echo $this->escape($row->title);
 	else {
@@ -219,7 +219,7 @@ for ($i = 0, $n = count($this->applications); $i < $n; $i++)
          <td class="centered"><?php echo $row->note; ?></td>
          <td class="centered">
          <span class="editlinktip hasTip" title="<?php echo JText::_( 'COM_SEMINARMAN_CHANGE_STATUS' );?>::<?php echo JText::_( 'COM_SEMINARMAN_CHANGE_STATUS_DESC' ) ?>">
-            <a href="<?php echo JRoute::_( 'index.php?option=com_seminarman&controller=application&task=changestatus&status='. $row->status .'&cid='. $row->id .'&'.JUtility::getToken() .'=1' ); ?>"><?php echo $status_text; ?></a>
+            <a href="<?php echo JRoute::_( 'index.php?option=com_seminarman&controller=application&task=changestatus&status='. $row->status .'&cid='. $row->id .'&'.JSession::getFormToken() .'=1' ); ?>"><?php echo $status_text; ?></a>
          </span>
          </td>
 <?php if ($params->get('invoice_generate') == 1): ?>

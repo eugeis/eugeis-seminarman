@@ -46,6 +46,11 @@ class SeminarmanViewCourses extends JViewLegacy
     	$search = $mainframe->getUserStateFromRequest('com_seminarman.courses.search', 'search', '', 'string');
         $search = $db->escape(trim(JString::strtolower($search)));
 
+        // build list of periods
+        $filter_periodid = $mainframe->getUserStateFromRequest('com_seminarman' . 'periods.filter_periodid', 'filter_periodid', 1, 'int' );
+        $lists['periodid'] = JHTMLSeminarman::getPeriodsList($filter_periodid);
+        
+        
         $document->addStyleSheet('components/com_seminarman/assets/css/seminarmanbackend.css');
         if ($lang->isRTL())
         {
@@ -58,7 +63,7 @@ class SeminarmanViewCourses extends JViewLegacy
         if(JHTMLSeminarman::UserIsCourseManager()){
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'),'index.php?option=com_seminarman&view=applications');
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_USERS'), 'index.php?option=com_seminarman&view=users');
+    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 'index.php?option=com_seminarman&view=salesprospects');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'),'index.php?option=com_seminarman&view=courses', true);
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TEMPLATES'),'index.php?option=com_seminarman&view=templates');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_PERIODS'),'index.php?option=com_seminarman&view=periods');
@@ -69,9 +74,10 @@ class SeminarmanViewCourses extends JViewLegacy
         } else {
   	    JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'),'index.php?option=com_seminarman&view=applications');
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'),'index.php?option=com_seminarman&view=courses', true);
-        JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TAGS'),'index.php?option=com_seminarman&view=tags');
-	}
+    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 'index.php?option=com_seminarman&view=salesprospects');
+    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'),'index.php?option=com_seminarman&view=courses', true);        	
+    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TAGS'),'index.php?option=com_seminarman&view=tags');
+        }
 
         JToolBarHelper::title(JText::_('COM_SEMINARMAN_COURSES'), 'courses');
         JToolBarHelper::addNew();
@@ -82,7 +88,7 @@ class SeminarmanViewCourses extends JViewLegacy
         JToolBarHelper::divider();
         JToolBarHelper::deleteList();
         JToolBarHelper::divider();
-JToolBarHelper::custom('attendancelist','file-2','file-2', JText::_('COM_SEMINARMAN_ATTENDANCE_LIST').' (PDF)');
+        JToolBarHelper::custom('attendancelist','file-2','file-2', JText::_('COM_SEMINARMAN_ATTENDANCE_LIST').' (PDF)');
         
         if (SeminarmanFunctions::isSmanpdflistPlgEnabled() && $params->get('alt_pdflist')) {
         	$plugin_pdflist = JPluginHelper::getPlugin('seminarman', 'smanpdflist');
@@ -106,7 +112,7 @@ JToolBarHelper::custom('bookcategorytousergroup','apply','apply', JText::_('COM_
         JToolBarHelper::custom('cancelcategorytousergroup','cancel','cancel', JText::_('COM_SEMINARMAN_CANCEL_CATEGORY_TO_USERGROUP'));
         JToolBarHelper::custom('sendattendancelist','send','send', JText::_('COM_SEMINARMAN_SEND_ATTENDANCE_LIST'));
 		// build list of periods
-        $filter_periodid = $mainframe->getUserStateFromRequest('com_seminarman' . 'periods.filter_periodid', 'filter_periodid', 0, 'int' );
+        $filter_periodid = $mainframe->getUserStateFromRequest('com_seminarman' . 'periods.filter_periodid', 'filter_periodid', 1, 'int' );
 		$lists['periodid'] = JHTMLSeminarman::getPeriodsList($filter_periodid);
        	
 		$rows = $this->get('Data');

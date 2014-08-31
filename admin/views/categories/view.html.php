@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class SeminarmanViewCategories extends JView
+class SeminarmanViewCategories extends JViewLegacy
 {
 
     function display($tpl = null)
@@ -52,19 +52,21 @@ class SeminarmanViewCategories extends JView
         require_once (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_seminarman' . DS .
             'helpers' . DS . 'seminarman.php');
         
-        if(JHTMLSeminarman::UserIsCourseManager()){        
+        if(JHTMLSeminarman::UserIsCourseManager()){  
         
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'),'index.php?option=com_seminarman&view=applications');
-    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_USERS'), 'index.php?option=com_seminarman&view=users');
+    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 'index.php?option=com_seminarman&view=salesprospects');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'),'index.php?option=com_seminarman&view=courses');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TEMPLATES'),'index.php?option=com_seminarman&view=templates');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_CATEGORIES'),'index.php?option=com_seminarman&view=categories', true);
+    	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TAGS'),'index.php?option=com_seminarman&view=tags');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TUTORS'),'index.php?option=com_seminarman&view=tutors');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_PERIODS'),'index.php?option=com_seminarman&view=periods');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_SETTINGS'),'index.php?option=com_seminarman&view=settings');
 
         JToolBarHelper::title(JText::_('COM_SEMINARMAN_CATEGORIES'), 'qfcategories');
+        
         JToolBarHelper::addNew();
         JToolBarHelper::editList();
         JToolBarHelper::divider();
@@ -72,7 +74,7 @@ class SeminarmanViewCategories extends JView
         JToolBarHelper::unpublishList();
         JToolBarHelper::divider();
         JToolBarHelper::deleteList();
-
+        
         $rows = $this->get('Data');
         $pageNav = $this->get('Pagination');
 

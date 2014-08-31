@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class seminarmanViewapplications extends JView
+class seminarmanViewapplications extends JViewLegacy
 {
     function display($tpl = null)
     {
@@ -47,27 +47,35 @@ class seminarmanViewapplications extends JView
         if(JHTMLSeminarman::UserIsCourseManager()){        
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman');
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'), 'index.php?option=com_seminarman&view=applications', true);
-        JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_USERS'), 'index.php?option=com_seminarman&view=users');
+        JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 'index.php?option=com_seminarman&view=salesprospects');
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'), 'index.php?option=com_seminarman&view=courses');
        	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TEMPLATES'),'index.php?option=com_seminarman&view=templates');
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_CATEGORIES'), 'index.php?option=com_seminarman&view=categories');
+        JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TAGS'), 'index.php?option=com_seminarman&view=tags');
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TUTORS'), 'index.php?option=com_seminarman&view=tutors');
     	JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_PERIODS'),'index.php?option=com_seminarman&view=periods');
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_SETTINGS'),'index.php?option=com_seminarman&view=settings');
         }else{
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_HOME'), 'index.php?option=com_seminarman');
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_APPLICATIONS'), 'index.php?option=com_seminarman&view=applications', true);
+        JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 'index.php?option=com_seminarman&view=salesprospects');
         JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_COURSES'), 'index.php?option=com_seminarman&view=courses'); 
+        JSubMenuHelper::addEntry(JText::_('COM_SEMINARMAN_TAGS'), 'index.php?option=com_seminarman&view=tags');       	
         }
 
         JToolBarHelper::title(JText::_('COM_SEMINARMAN_APPLICATIONS'), 'applications');
+        
+        if (SeminarmanFunctions::isSmanbookingPlgEnabled() && $params->get('advanced_booking')) {
+        	JToolBarHelper::custom('booking_direct', 'applications-direct', 'applications-direct', JText::_('COM_SEMINARMAN_MAN_BOOKING'), false);
+        	JToolBarHelper::divider();
+        }
 
         $alt = JText::_('COM_SEMINARMAN_SEND_EMAIL');
         $bar = JToolBar::getInstance( 'toolbar' );
-        $bar->appendButton( 'Standard', 'send', $alt, 'notify', true );        
+        $bar->appendButton( 'Standard', 'envelope', $alt, 'notify', true );        
         // JToolBarHelper::custom('Popup', 'send', 'send', $alt, true);
         JToolBarHelper::divider();
-        JToolBarHelper::editListX();
+        JToolBarHelper::editList();
         JToolBarHelper::divider();
         JToolBarHelper::publishList();
         JToolBarHelper::unpublishList();
@@ -87,7 +95,7 @@ class seminarmanViewapplications extends JView
         $search = JString::strtolower($search);
 
         // build list of periods
-        $filter_periodid = $mainframe->getUserStateFromRequest('com_seminarman' . 'periods.filter_periodid', 'filter_periodid', 0, 'int' );
+        $filter_periodid = $mainframe->getUserStateFromRequest('com_seminarman' . 'periods.filter_periodid', 'filter_periodid', 1, 'int' );
 		$lists['periodid'] = JHTMLSeminarman::getPeriodsList($filter_periodid);
 
 		$applications = $this->get('Data');

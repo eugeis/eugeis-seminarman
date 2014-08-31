@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class seminarmanModeltutor extends JModel{
+class seminarmanModeltutor extends JModelLegacy{
     var $_id = null;
 
     var $_data = null;
@@ -291,6 +291,7 @@ class seminarmanModeltutor extends JModel{
             $tutor->comp_name = null;
             $tutor->primary_phone = null;
             $tutor->fax_number = null;
+            $tutor->email = null;
             $tutor->url = null;
             $tutor->street = null;
             $tutor->id_country = null;
@@ -372,7 +373,7 @@ class seminarmanModeltutor extends JModel{
     		$q = 'SELECT f.*, v.value FROM `#__seminarman_fields` AS f'.
     				' LEFT JOIN `#__seminarman_fields_values_tutors` AS v'.
     				' ON f.id = v.field_id AND v.tutor_id = '.(int)$tutorId.
-    				' WHERE f.visible=1 ORDER BY f.ordering';
+    				' WHERE f.published=1 ORDER BY f.ordering';
     		$db->setQuery($q);
     	}
     	else
@@ -380,7 +381,7 @@ class seminarmanModeltutor extends JModel{
     		$q = 'SELECT f.*, v.value FROM `#__seminarman_fields` AS f'.
     				' LEFT JOIN `#__seminarman_fields_values_tutors` AS v'.
     				' ON f.id = v.field_id AND v.tutor_id = 0'.
-    				' WHERE f.visible=1 ORDER BY f.ordering';
+    				' WHERE f.published=1 ORDER BY f.ordering';
     		$db->setQuery($q);
     	}
     

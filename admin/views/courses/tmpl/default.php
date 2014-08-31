@@ -32,7 +32,7 @@ $user = JFactory::getUser();
       <input type="button" onclick="document.getElementById('search').value='';this.form.getElementById('filter_state').value='';this.form.getElementById('filter_category').value='0';this.form.submit();" value="<?php echo JText::_('COM_SEMINARMAN_RESET'); ?>" />
    </td>
    <td nowrap="nowrap">
-      <?php echo $this->lists['category']; echo $this->lists['state']; ?>
+      <?php echo $this->lists['category']; echo $this->lists['state']; echo $this->lists['periodid']; ?>
    </td>
 </tr>
 </table>

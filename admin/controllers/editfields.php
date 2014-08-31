@@ -27,7 +27,7 @@ jimport( 'joomla.application.component.controller' );
 /**
  * Jom Social Customfields Controller
  */
-class SeminarmanControllerEditfields extends JController
+class SeminarmanControllerEditfields extends SeminarmanController
 {
 	function __construct()
 	{

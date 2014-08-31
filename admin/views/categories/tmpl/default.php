@@ -10,9 +10,9 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 
-	<table class="adminform">
+	<table class="adminform table">
 		<tr>
 			<td class="proc100 left">
 			  	<?php echo JText::_('Filter'); ?>:
@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 	</table>
 
-	<table class="adminlist" cellspacing="1">
+	<table class="adminlist table table-striped" cellspacing="1">
 	<thead>
 		<tr>
 			<th width="5"><?php
@@ -34,11 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 echo JText::_('COM_SEMINARMAN_NUM');
 
 ?></th>
-			<th width="5"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php
-
-echo count($this->rows);
-
-?>);" /></th>
+			<th width="5"><?php echo JHtml::_('grid.checkall'); ?></th>
 			<th class="title"><?php
 
 echo JHTML::_('grid.sort', 'COM_SEMINARMAN_CATEGORY', 'c.title', $this->lists['order_Dir'], $this->
@@ -105,7 +101,7 @@ foreach ($this->rows as $row)
 
     $link = 'index.php?option=com_seminarman&amp;controller=categories&amp;task=edit&amp;cid[]=' .
         $row->id;
-    $published = JHTML::_('grid.published', $row, $i);
+    $published = JHTML::_('jgrid.published', $row->published, $i);
     $checked = JHTML::_('grid.checkedout', $row, $i);
 
 ?>

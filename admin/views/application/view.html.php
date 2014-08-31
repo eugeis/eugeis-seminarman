@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class seminarmanViewapplication extends JView
+class seminarmanViewapplication extends JViewLegacy
 {
     function display($tpl = null)
     {
@@ -60,6 +60,7 @@ class seminarmanViewapplication extends JView
     	$filename = $application->invoice_filename_prefix.$application->invoice_number.'.pdf';
     	$filepath = JPATH_ROOT.DS.$params->get('invoice_save_dir').DS.$filename;
     	
+    	jimport('joomla.filesystem.file');
     	if (!$pdf_data = JFile::read($filepath))
     		$mainframe->redirect('index.php?option=com_seminarman&view=applications');
     	
@@ -122,7 +123,8 @@ class seminarmanViewapplication extends JView
         $query = 'SELECT ordering AS value, CONCAT_WS(\' \', first_name, last_name) AS text' .
             ' FROM #__seminarman_application' . ' ORDER BY ordering';
 
-        $lists['ordering'] = JHTML::_('list.specificordering', $application, $application->id, $query);
+        // $lists['ordering'] = JHTML::_('list.specificordering', $application, $application->id, $query);
+        $lists['ordering'] = JHTML::_('list.ordering', $application->id, $query);
         $lists['published'] = JHTML::_('select.booleanlist', 'published', 'class="inputbox"', $application->published);
         $lists['salutation'] = JHTMLSeminarman::getListFromXML('Salutation', 'salutation', 0, $application->salutation);
         $lists['username'] = JHTMLSeminarman::getSelectUser('user_id', $application->user_id, $disabled);
@@ -130,21 +132,17 @@ class seminarmanViewapplication extends JView
     	// build status list
     	$statuslist[] = JHTML::_('select.option',  '0', JText::_( 'COM_SEMINARMAN_SUBMITTED' ), 'value', 'text' );
     	$statuslist[] = JHTML::_('select.option',  '1', JText::_( 'COM_SEMINARMAN_PENDING' ), 'value', 'text' );
-    	//$statuslist[] = JHTML::_('select.option',  '2', JText::_( 'COM_SEMINARMAN_PAID' ), 'value', 'text' );
+    	$statuslist[] = JHTML::_('select.option',  '2', JText::_( 'COM_SEMINARMAN_PAID' ), 'value', 'text' );
     	$statuslist[] = JHTML::_('select.option',  '3', JText::_( 'COM_SEMINARMAN_CANCELED' ), 'value', 'text' );
     	$lists['status'] = JHTML::_('select.genericlist', $statuslist, 'status', 'class="inputbox" size="1"','value', 'text', $application->status );
 
     	JFilterOutput::objectHTMLSafe($group, ENT_QUOTES, 'description');
-
-        $file = JPATH_COMPONENT . DS . 'models' . DS . 'application.xml';
-        $params = new JParameter($application->params, $file);
 
     	$customfields	= $model->getEditableCustomfields( $application->id );
     	$user->customfields	=& $customfields;
     	$this->assignRef('user' , $user);
         $this->assignRef('lists', $lists);
         $this->assignRef('application', $application);
-        $this->assignRef('params', $params);
 
         parent::display($tpl);
     }

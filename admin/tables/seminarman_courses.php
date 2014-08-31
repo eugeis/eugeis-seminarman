@@ -43,7 +43,8 @@ class seminarman_courses extends JTable{
     	$this->alias = JFilterOutput::stringURLSafe($this->alias);
     	if(trim(str_replace('-','',$this->alias)) == '') {
     		$datenow = JFactory::getDate();
-    		$this->alias = $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
+    		// $this->alias = $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
+    		$this->alias = $datenow->Format("%Y-%m-%d-%H-%M-%S");
     	}
 
     	/** check for existing alias */
@@ -54,8 +55,8 @@ class seminarman_courses extends JTable{
     	if ($xid && $xid != intval($this->id)) {
     		$this->setError(JText::sprintf('WARNNAMETRYAGAIN', JText::_('Alias already exists')));
     		$datenow = JFactory::getDate();
-    		$this->alias = $this->alias . $datenow->toFormat("%y%m%d%H%M%S");
-
+    		// $this->alias = $this->alias . $datenow->toFormat("%y%m%d%H%M%S");
+    		$this->alias = $this->alias . $datenow->Format("%y%m%d%H%M%S");
 
     	}
 

@@ -1,13 +1,9 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
 group = 'eugeis-seminarman'
-version = '2.2.1.1-SNAPSHOT'
+version = '2.3.9.2-SNAPSHOT'
 
-if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-	ext.joomlaHome = 'D:/OpenServer/domains/localhost/j25de'
-}else {
-	ext.joomlaHome = '/var/www/dev/bs'
-}
+ext.joomlaHome = '/Applications/mampstack-5.3.29-0/apps/bs/htdocs'
 
 println "Joomla Home: $joomlaHome"
 
@@ -70,22 +66,22 @@ task linkAdmin(type:Exec) {
   	def srcPath = file("$joomlaHome/administrator/components/com_seminarman").absolutePath
   	def targetPath = file('./admin').absolutePath
 	if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-		commandLine 'cmd', '/c', 'mklink', '/D', srcPath, targetPath	
+		commandLine 'cmd', '/c', 'mklink', '/D', srcPath, targetPath
 	}else {
-		commandLine 'bash -c', "ln -s $srcPath $targetPath"
+		commandLine 'bash -c', "ln -s $targetPath $srcPath"
 	}
-	
+
 }
 
-task linkSite(type:Exec) {
+task linkSite(type: Exec) {
 	onlyIf joomlaExists
   	def srcPath = file("$joomlaHome/components/com_seminarman").absolutePath
   	def targetPath = file('./site').absolutePath
   	if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-		commandLine 'cmd', '/c', 'mklink', '/D', srcPath, targetPath	
+		commandLine 'cmd', '/c', 'mklink', '/D', srcPath, targetPath
 	}else {
-		commandLine 'bash -c', "ln -s $srcPath $targetPath"
-	}	
+		commandLine 'bash -c', "ln -s $targetPath $srcPath"
+	}
 }
 
 task symlinks(dependsOn: ['linkSite', 'linkAdmin']) {
@@ -95,7 +91,7 @@ task symlinks(dependsOn: ['linkSite', 'linkAdmin']) {
 
 task joomlaOld {
 	onlyIf joomlaExists
-	
+
 	doLast {
 		//copy admin
 		copy {
@@ -117,7 +113,7 @@ task joomlaOld {
 		    from 'languages/admin/en-GB.com_seminarman.sys.ini'
 		    into "$joomlaHome/administrator/language/en-GB"
 		}
-		
+
 		//copy site
 		copy {
 		    from 'site'
@@ -134,7 +130,7 @@ task joomlaOld {
 		    into "$joomlaHome/language/en-GB"
 		}
 	}
-	
+
 	task dist(type: Zip) {
 		baseName = "$project.name-$project.version"
     	from '.'
@@ -142,9 +138,6 @@ task joomlaOld {
     	exclude '**/*.bak'
     	exclude '.gradle'
     	exclude '.settings'
-    	
+
 	}
 }
-
-
-

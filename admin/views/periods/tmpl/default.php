@@ -20,19 +20,6 @@ jimport('joomla.utilities.date');
 
 ?>
 
-<?php
-
-
-JToolBarHelper::title(JText::_('COM_SEMINARMAN_PERIODS'), 'generic.png');
-JToolBarHelper::addNewX();
-JToolBarHelper::editListX();
-JToolBarHelper::divider();
-JToolBarHelper::publishList();
-JToolBarHelper::unpublishList();
-JToolBarHelper::divider();
-JToolBarHelper::deleteList();
-
-?>
 <script type="text/javascript">
 
 function setDefault(id)

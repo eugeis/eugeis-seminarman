@@ -29,7 +29,7 @@
 	<variableList>
 		<variable>
 			<name>JOOMLA</name>
-			<value>file:/D:/OpenServer/domains/localhost/j25de</value>
+			<value>file:/Applications/mampstack-5.3.29-0/apps/bs/htdocs</value>
 		</variable>
 	</variableList>
 </projectDescription>

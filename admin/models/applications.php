@@ -39,7 +39,7 @@ class seminarmanModelapplications extends JModelLegacy
         $mainframe = JFactory::getApplication();
         $this->childviewname = 'application';
 		
-        $this->currentPeriodId = $mainframe->getUserStateFromRequest('com_seminarman' . 'periods.filter_periodid', 'filter_periodid', 0, 'int' );
+        $this->currentPeriodId = $mainframe->getUserStateFromRequest('com_seminarman' . 'periods.filter_periodid', 'filter_periodid', 1, 'int' );
 		
         $limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->
             getCfg('list_limit'), 'int');

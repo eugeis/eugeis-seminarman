@@ -350,6 +350,7 @@ class SeminarmanModelCourse extends JModelLegacy
         {
             $course->modified = gmdate('Y-m-d H:i:s');
             $course->modified_by = $user->get('id');
+            if (!$course->code) { $course->code = $course->id; }
         } else
         {
             $course->modified = $nullDate;
@@ -357,6 +358,7 @@ class SeminarmanModelCourse extends JModelLegacy
 
             $course->created = gmdate('Y-m-d H:i:s');
             $course->created_by = $user->get('id');
+            $course->new = 0;
         }
         
         $course->start_date = JHTMLSeminarman::localDate2DbDate($course->start_date);
@@ -411,13 +413,22 @@ class SeminarmanModelCourse extends JModelLegacy
             $this->setError($course->getError());
             return false;
         }
-
+        
         $course->version++;
 
         if (!$course->store())
         {
             $this->setError($this->_db->getErrorMsg());
             return false;
+        } 
+        else if (!$course->code) 
+        {
+        	$course->code = $course->id;
+        	if (!$course->store())
+        	{
+        		$this->setError($this->_db->getErrorMsg());
+        		return false;
+        	}
         }
 
         $this->_course = &$course;
