@@ -89,7 +89,7 @@ echo $editor->display('body', $this->emailtemplate->body, '100%', '500', '60', '
 		<legend><?php echo JText::_('COM_SEMINARMAN_PARAMETERS'); ?></legend>
 		<ul>
 			<li>{ADMIN_CUSTOM_RECIPIENT}: <? echo JText::_('COM_SEMINARMAN_RECIPIENT_FROM_CONFIGURATION'); ?></li>
-			<li>{ATTENDEES}: <? echo JText::_('COM_SEMINARMAN_NUMBER_OF_ATTENDEES'); ?></li>
+			<li>{ATTENDEES_TOTAL}: <? echo JText::_('COM_SEMINARMAN_NUMBER_OF_ATTENDEES'); ?></li>
 			<li>{SALUTATION}: <? echo JText::_('COM_SEMINARMAN_SALUTATION'); ?></li>
 			<li>{TITLE}: <? echo JText::_('COM_SEMINARMAN_TITLE'); ?> (<?php echo JText::_('COM_SEMINARMAN_AUTO_SPACE'); ?>)</li>
 			<li>{FIRSTNAME}: <? echo JText::_('COM_SEMINARMAN_FIRST_NAME'); ?></li>

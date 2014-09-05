@@ -415,13 +415,13 @@ class seminarmanControllersalesprospect extends seminarmanController
 		if (!empty( $queryResult->title )) $queryResult->title .= ' ';
 
 		$msgSubject = str_replace('{ADMIN_CUSTOM_RECIPIENT}', $params->get('component_email'), $msgSubject);
-		$msgSubject = str_replace('{ATTENDEES}', $queryResult->attendees, $msgSubject);
+		$msgSubject = str_replace('{ATTENDEES_TOTAL}', $queryResult->attendees, $msgSubject);
 		$msgSubject = str_replace('{SALUTATION}', $queryResult->salutation, $msgSubject);
 		$msgSubject = str_replace('{TITLE}', $queryResult->title, $msgSubject);
 		$msgSubject = str_replace('{FIRSTNAME}', $queryResult->first_name, $msgSubject);
 		$msgSubject = str_replace('{LASTNAME}', $queryResult->last_name, $msgSubject);
 		$msgSubject = str_replace('{EMAIL}', $queryResult->email, $msgSubject);
-		$msgSubject = str_replace('{ATTENDEES}', $queryResult->attendees, $msgSubject);
+		$msgSubject = str_replace('{ATTENDEES_TOTAL}', $queryResult->attendees, $msgSubject);
 		$msgSubject = str_replace('{COURSE_ID}', $queryResult->course_id, $msgSubject);
 		$msgSubject = str_replace('{COURSE_TITLE}', $queryResult->course, $msgSubject);
 		$msgSubject = str_replace('{COURSE_CODE}', $queryResult->code, $msgSubject);
@@ -459,7 +459,7 @@ class seminarmanControllersalesprospect extends seminarmanController
 		$msgSubject = str_replace('{COURSE_FIRST_SESSION_COMMENT}', $COURSE_FIRST_SESSION_COMMENT, $msgSubject);
 
 		$msgBody = str_replace('{ADMIN_CUSTOM_RECIPIENT}', $params->get('component_email'), $msgBody);
-		$msgBody = str_replace('{ATTENDEES}', $queryResult->attendees, $msgBody);
+		$msgBody = str_replace('{ATTENDEES_TOTAL}', $queryResult->attendees, $msgBody);
 		$msgBody = str_replace('{SALUTATION}', $queryResult->salutation, $msgBody);
 		$msgBody = str_replace('{TITLE}', $queryResult->title, $msgBody);
 		$msgBody = str_replace('{FIRSTNAME}', $queryResult->first_name, $msgBody);
@@ -513,8 +513,8 @@ class seminarmanControllersalesprospect extends seminarmanController
 			$message->addBCC(explode(",", $msgRecipientBCC));
 		}
     	
-		// $senderEmail = $config->getValue('mailfrom');
-		// $senderName = $config->getValue('fromname');
+		// $senderEmail = $config->get('mailfrom');
+		// $senderName = $config->get('fromname');
 		$senderEmail = $config->get('mailfrom');
 		$senderName = $config->get('fromname');
 		$message->addRecipient($msgRecipients);

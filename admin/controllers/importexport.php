@@ -144,7 +144,7 @@ class SeminarmanControllerImportexport extends SeminarmanController
 			}
 		}
 		
-		// $tmpFileName = $config->getValue('tmp_path').DS.$type.'.csv';
+		// $tmpFileName = $config->get('tmp_path').DS.$type.'.csv';
 		$tmpFileName = $config->get('tmp_path').DS.$type.'.csv';
 		$this->_createTempFile($tmpFileName, $data);
 	

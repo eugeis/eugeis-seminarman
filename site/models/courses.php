@@ -316,7 +316,7 @@ class SeminarmanModelCourses extends JModelLegacy
         $query = 'SELECT tid FROM #__seminarman_tags_course_relations WHERE courseid = ' . (int)
             $this->_id;
         $this->_db->setQuery($query);
-        // $used = $this->_db->loadResultArray();
+        // $used = $this->_db->loadColumn();
         $used = $this->_db->loadColumn();
         return $used;
     }
@@ -515,7 +515,7 @@ class SeminarmanModelCourses extends JModelLegacy
         $query = 'SELECT DISTINCT catid FROM #__seminarman_cats_course_relations WHERE courseid = ' . (int)
             $this->_id;
         $this->_db->setQuery($query);
-        // $used = $this->_db->loadResultArray();
+        // $used = $this->_db->loadColumn();
         $used = $this->_db->loadColumn();
         return $used;
     }

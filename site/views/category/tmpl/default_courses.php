@@ -43,7 +43,6 @@ $display_free_charge = $this->params->get('display_free_charge');
 <table class="seminarmancoursetable" summary="seminarman">
 <thead>
 <tr>
-	<th id="qf_code" class="sectiontableheader" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_CODE', 'i.code', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
 	<th id="qf_title" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_TITLE', 'i.title', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
 <?php if ($this->params->get('show_begin_date_in_table')): ?>
 	<th id="qf_start_date" class="sectiontableheader" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_START_DATE', 'i.start_date', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
@@ -85,7 +84,6 @@ foreach ($this->courses as $course):
     $show_course_booking = $course_attribs->get('show_booking_form');
 ?>
 <tr class="sectiontableentry" >
-	<td headers="qf_code" nowrap="nowrap"><?php echo $this->escape($course->code); ?></td>
 	<td headers="qf_title"><strong><a href="<?php echo JRoute::_('index.php?option=com_seminarman&view=courses&cid=' . $this->category->slug . '&id=' . $course->slug . '&Itemid=' . $Itemid); ?>"><?php echo $this->escape($course->title); ?></a></strong><?php echo $course->show_new_icon; echo $course->show_sale_icon; ?></td>
 <?php if ($this->params->get('show_begin_date_in_table')): ?>
 	<td headers="qf_start_date" nowrap="nowrap">

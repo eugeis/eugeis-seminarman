@@ -424,7 +424,7 @@ class SeminarmanModelCategory extends JModelLegacy
         	          ' WHERE user_id = '. $user->id. 
         	          ' AND published = 1 AND status < 3';
 		$db->setQuery($q);
-		// $this->_bookings = $db->loadResultArray();
+		// $this->_bookings = $db->loadColumn();
 		$this->_bookings = $db->loadColumn();
 	}
 	

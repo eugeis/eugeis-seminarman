@@ -616,7 +616,7 @@ function save()
             $model = JModelLegacy::getInstance( 'category', 'VirtueMartModel' );
             
 		    $params = JComponentHelper::getParams('com_languages');
-		    //$config = JFactory::getConfig();$config->getValue('language');
+		    //$config = JFactory::getConfig();$config->get('language');
 		    $selectedLangue = $params->get('site', 'en-GB'); 
 		
 		    // $token = JUtility::getToken();

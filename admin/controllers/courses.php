@@ -667,9 +667,9 @@ JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com
 				$groupIds = $this->getGroupIdsMappedByCategories($catTitles);
 				if($groupIds){
 					$userIds = $this->getUserIdsByGroups($groupIds);
-					$users = $this->getUsersByIds($userIds);
-					$course = ApplicationHelper::loadCourse($courseId);
 					if($userIds){
+						$users = $this->getUsersByIds($userIds);
+						$course = ApplicationHelper::loadCourse($courseId);
 						if($cancel){
 							$this->cancelCourseForUsers($course, $catTitles, $users, $fillErrors);							
 							$msg = JText::_( 'COM_SEMINARMAN_CANCELED_CATEGORY_TO_USERGROUP' );
@@ -706,7 +706,7 @@ JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com
 	
 		$db->setQuery($query);
 	
-		$userIds = $db->loadResultArray();
+		$userIds = $db->loadColumn();
 	
 		return $userIds;
 	}
@@ -730,7 +730,7 @@ JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com
 	
 		$db->setQuery('SELECT a.id FROM #__seminarman_application AS a WHERE a.course_id=' . $courseId . ' AND a.user_id IN ('.join(",",$userIds).')');
 		
-		$appIds = $db->loadResultArray();
+		$appIds = $db->loadColumn();
 	
 		return $appIds;
 	}
@@ -740,7 +740,7 @@ JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com
 		$year = (int)date("Y");
 		$mon = (int)date("n");
 
-		if($mon<9){
+		if($mon < 9){
 			$prefix = $year-1;
 		}else{
 			$prefix = $year;
@@ -768,7 +768,7 @@ JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com
 		$db->setQuery(
 				'SELECT g.id FROM #__usergroups AS g WHERE g.title IN ('.$in.')'
 		);
-		$groupIds = $db->loadResultArray();
+		$groupIds = $db->loadColumn();
 
 		// Check for a database error.
 		if ($db->getErrorNum()) {

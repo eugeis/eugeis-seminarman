@@ -195,7 +195,7 @@ class SeminarmanModelFilemanager extends JModelLegacy
                 $cids . ')';
 
             $this->_db->setQuery($query);
-            // $filenames = $this->_db->loadResultArray();
+            // $filenames = $this->_db->loadColumn();
             $filenames = $this->_db->loadColumn();
 
             foreach ($filenames as $name)

@@ -393,7 +393,7 @@ class SeminarmanModelTemplate extends JModelLegacy
         $query = 'SELECT DISTINCT tid FROM #__seminarman_tags_template_relations WHERE templateid = ' . (int)
             $id;
         $this->_db->setQuery($query);
-        // $used = $this->_db->loadResultArray();
+        // $used = $this->_db->loadColumn();
         $used = $this->_db->loadColumn();
         return $used;
     }
@@ -404,7 +404,7 @@ class SeminarmanModelTemplate extends JModelLegacy
         $query = 'SELECT DISTINCT catid FROM #__seminarman_cats_template_relations WHERE templateid = ' . (int)
             $this->_id;
         $this->_db->setQuery($query);
-        // $used = $this->_db->loadResultArray();
+        // $used = $this->_db->loadColumn();
         $used = $this->_db->loadColumn();
         return $used;
     }

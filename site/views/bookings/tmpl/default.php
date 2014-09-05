@@ -169,12 +169,12 @@ echo JHTML::_('grid.sort', 'COM_SEMINARMAN_FINISH_DATE', 'i.finish_date', $this-
 	$this->lists['filter_order']);
 
 				?></th>
-				<th id="qf_price" class="sectiontableheader"><?php
+				<th id="qf_status" class="sectiontableheader"><?php
 
-echo JHTML::_('grid.sort', 'COM_SEMINARMAN_PRICE', 'i.price', $this->lists['filter_order_Dir'],
+echo JHTML::_('grid.sort', 'COM_SEMINARMAN_STATUS', 'i.status', $this->lists['filter_order_Dir'],
 	$this->lists['filter_order']);
 
-				?><?php echo ($this->params->get('show_gross_price') != 2) ? "*" : ""; ?></th>
+				?></th>
 				
 <?php if ($params->get('invoice_generate') == 1): ?>
 <th id="qf_invoice" class="sectiontableheader"><?php echo JText::_('COM_SEMINARMAN_INVOICE'); ?></th>
@@ -248,12 +248,12 @@ echo JHTML::_('grid.sort', 'COM_SEMINARMAN_PRICE', 'i.price', $this->lists['filt
 
     				?>
 				</td>
-    			<td headers="qf_price">
+    			<td headers="qf_status">
     				<?php
     				$status_text = ApplicationHelper::getStatusText($course->status);
     				if(!ApplicationHelper::isCourseOldByFinishDate($course->finishDateAsDate)){
     					$back = substr(JURI::current(), strlen(JURI::base()));
-    					$url = substr_replace(JURI::root(), '', -1, 1).'/index.php?option=com_seminarman&controller=application&task=changestatus&status='. $course->status .'&cid='. $course->applicationid .'&'.JUtility::getToken().'=1&back='.$back;
+    					$url = substr_replace(JURI::root(), '', -1, 1).'/index.php?option=com_seminarman&controller=application&task=changestatus&status='. $course->status .'&cid='. $course->applicationid .'&'.JSession::getFormToken().'=1&back='.$back;
   					?>
     					<a href="<?php echo $url ?>"><?php echo $status_text; ?></a>
     				<?php 

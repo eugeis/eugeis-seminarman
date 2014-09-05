@@ -109,7 +109,7 @@ class SeminarmanControllerFilemanager extends SeminarmanController
                     $user = JFactory::getUser();
                     $config = JFactory::getConfig();
 
-                    // $tzoffset = $config->getValue('config.offset');
+                    // $tzoffset = $config->get('config.offset');
                     $tzoffset = $config->get('offset');
                     $date = JFactory::getDate('now', $tzoffset);
 
@@ -131,7 +131,7 @@ class SeminarmanControllerFilemanager extends SeminarmanController
                     $user = JFactory::getUser();
                     $config = JFactory::getConfig();
 
-                    // $tzoffset = $config->getValue('config.offset');
+                    // $tzoffset = $config->get('config.offset');
                     $tzoffset = $config->get('offset');
                     
                     $date = JFactory::getDate('now', $tzoffset);

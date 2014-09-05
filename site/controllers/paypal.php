@@ -85,10 +85,10 @@ class seminarmanControllerPaypal extends seminarmanController{
             $model = $this->getModel('paypal');
             if ($model->updatestatusIPN($p->ipn_data['item_number'], $p->ipn_data['txn_id'])){
                 $mailSender = JFactory::getMailer();
-                // $mailSender->addRecipient($config->getValue('mailfrom'));
+                // $mailSender->addRecipient($config->get('mailfrom'));
                 $mailSender->addRecipient($config->get('mailfrom'));
                 $mailSender->addBCC($params->get('component_email'));
-                // $mailSender->setSender(array($config->getValue('mailfrom') , $config->getValue('mailfrom')));
+                // $mailSender->setSender(array($config->get('mailfrom') , $config->get('mailfrom')));
                 $mailSender->setSender(array($config->get('mailfrom') , $config->get('mailfrom')));
                 $mailSender->setSubject(JText::_('COM_SEMINARMAN_SEND_MSG_IPN_ADMIN_SUBJECT') . ' - ' . $p->ipn_data['transaction_subject'] . ' - ' . $p->ipn_data['last_name']);
                 $email_body = sprintf (JText::_('COM_SEMINARMAN_SEND_MSG_IPN_ADMIN'));

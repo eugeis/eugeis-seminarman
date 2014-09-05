@@ -354,7 +354,7 @@ class SeminarmanModelTags extends JModelLegacy
 	        	          ' WHERE user_id = '. $user->id. 
 	        	          ' AND published = 1';
 		$db->setQuery($q);
-		// $this->_bookings = $db->loadResultArray();
+		// $this->_bookings = $db->loadColumn();
 		$this->_bookings = $db->loadColumn();
 	}
 }

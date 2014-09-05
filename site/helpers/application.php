@@ -105,8 +105,8 @@ class ApplicationHelper
 	
 		$msgRecipients = explode(",", $msgRecipient);
 	
-		$senderEmail = $config->getValue('mailfrom');
-		$senderName = $config->getValue('fromname');
+		$senderEmail = $config->get('mailfrom');
+		$senderName = $config->get('fromname');
 		$message->addRecipient($msgRecipients);
 		if (!empty($msgRecipientBCC))
 		{
@@ -203,8 +203,8 @@ class ApplicationHelper
 
 		$msgRecipients = explode(",", $msgRecipient);
 
-		$senderEmail = $config->getValue('mailfrom');
-		$senderName = $config->getValue('fromname');
+		$senderEmail = $config->get('mailfrom');
+		$senderName = $config->get('fromname');
 		$message->addRecipient($msgRecipients);
 		if (!empty($msgRecipientBCC))
 		{
@@ -229,8 +229,8 @@ class ApplicationHelper
 
 	private static function fillSubject(&$msgSubject, &$user, &$course, &$catTitles, &$params) {
 		$msgSubject = str_replace('{ADMIN_CUSTOM_RECIPIENT}', $params->get('component_email'), $msgSubject);
-		$msgSubject = str_replace('{TITLE}', $user->title, $msgSubject);
-		$msgSubject = str_replace('{SALUTATION}', $user->salutation, $msgSubject);
+// 		$msgSubject = str_replace('{TITLE}', $user->title, $msgSubject);
+// 		$msgSubject = str_replace('{SALUTATION}', $user->salutation, $msgSubject);
 		$msgSubject = str_replace('{NAME}', $user->name, $msgSubject);
 		$msgSubject = str_replace('{EMAIL}', $user->email, $msgSubject);
 		$msgSubject = str_replace('{COURSE_TITLE}', $course->title, $msgSubject);
@@ -250,8 +250,8 @@ class ApplicationHelper
 	
 	private static function fillBody(&$msgBody, &$user, &$course, &$catTitles, &$params) {
 		$msgBody = str_replace('{ADMIN_CUSTOM_RECIPIENT}', $params->get('component_email'), $msgBody);
-		$msgBody = str_replace('{TITLE}', $user->title, $msgBody);
-		$msgBody = str_replace('{SALUTATION}', $user->salutation, $msgBody);
+// 		$msgBody = str_replace('{TITLE}', $user->title, $msgBody);
+// 		$msgBody = str_replace('{SALUTATION}', $user->salutation, $msgBody);
 		$msgBody = str_replace('{NAME}', $user->name, $msgBody);
 		$msgBody = str_replace('{EMAIL}', $user->email, $msgBody);
 		$msgBody = str_replace('{COURSE_TITLE}', $course->title, $msgBody);
@@ -301,7 +301,7 @@ class ApplicationHelper
 		quoteName('gid') . '=' . $db->Quote(25);
 
 		$db->setQuery($query);
-		$emails = $db->loadResultArray();
+		$emails = $db->loadColumn();
 
 		return $emails;
 	}
@@ -390,7 +390,7 @@ class ApplicationHelper
 		$db->setQuery('SELECT'.
 				' a.invoice_number AS `INVOICE_NUMBER`,'.
 				' a.date AS `INVOICE_DATE`,'.
-				' a.attendees AS `ATTENDEES`,'.
+				' a.attendees AS `ATTENDEES_TOTAL`,'.
 				' a.salutation AS `SALUTATION`,'.
 				' a.title AS `TITLE`,'.
 				' a.first_name AS `FIRSTNAME`,'.
@@ -488,7 +488,7 @@ class ApplicationHelper
 
 
 		$data['user_id'] = $user->id;
-		$data['salutation'] = $user->salution;
+		//$data['salutation'] = $user->salution;
 		$name = explode(' ',$user->name,2);
 		$data['first_name'] = $name[0];
 		$data['last_name'] = $name[1];
@@ -525,10 +525,10 @@ class ApplicationHelper
 			return null;
 		}
 			
-		$title = $db->quote($data['title']);
-		$salutation = $db->quote($data['salutation']);
-		$db->setQuery('REPLACE INTO `#__seminarman_fields_values_users_static` (user_id, salutation, title) VALUES ('.$uid.','.$salutation.','.$title.')');
-		$db->query();
+// 		$title = $db->quote($data['title']);
+// 		$salutation = $db->quote($data['salutation']);
+// 		$db->setQuery('REPLACE INTO `#__seminarman_fields_values_users_static` (user_id, salutation, title) VALUES ('.$uid.','.$salutation.','.$title.')');
+// 		$db->query();
 		return $row->id;
 	}
 
@@ -574,9 +574,9 @@ class ApplicationHelper
 		$db->setQuery(
 				'SELECT c.title FROM #__seminarman_categories AS c ' .
 				'INNER JOIN #__seminarman_cats_course_relations as cc ON cc.catid = c.id ' .
-				'WHERE courseid = ' . $course_id
+				'WHERE cc.courseid = ' . $course_id
 		);
-		$cats = $db->loadResultArray();
+		$cats = $db->loadColumn();
 		return $cats;
 	}
 	

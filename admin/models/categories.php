@@ -96,7 +96,7 @@ class SeminarmanModelCategories extends JModelLegacy
                 ' WHERE LOWER(c.title) LIKE ' . $this->_db->Quote('%' . $this->_db->escape($search, true) .
                 '%', false) . $where;
             $this->_db->setQuery($query);
-            $search_rows = $this->_db->loadResultArray();
+            $search_rows = $this->_db->loadColumn();
         }
 
         $query = 'SELECT c.*, u.name AS editor, COUNT(rel.catid) AS nrassigned' .

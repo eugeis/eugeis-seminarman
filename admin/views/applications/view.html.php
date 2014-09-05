@@ -91,7 +91,8 @@ class seminarmanViewapplications extends JViewLegacy
     	$filter_statusid = $mainframe->getUserStateFromRequest('com_seminarman'.'.applications.filter_statusid', 'filter_statusid', 0, 'int' );
     	$filter_search = $mainframe->getUserStateFromRequest('com_seminarman'.'.applications.filter_search', 'filter_search', '', 'int' );
 
-        $search = $mainframe->getUserStateFromRequest('com_seminarman' . $childviewname . '.search', 'search', '', 'string');
+    	$status = $mainframe->getUserStateFromRequest('com_seminarman' . $childviewname . '.status', 'status', '', 'word');
+    	$search = $mainframe->getUserStateFromRequest('com_seminarman' . $childviewname . '.search', 'search', '', 'string');
         $search = JString::strtolower($search);
 
         // build list of periods
@@ -129,7 +130,7 @@ class seminarmanViewapplications extends JViewLegacy
     	$statuslist[] = JHTML::_('select.option',  '1', JText::_( 'COM_SEMINARMAN_PENDING' ), 'value', 'text' );
     	//$statuslist[] = JHTML::_('select.option',  '2', JText::_( 'COM_SEMINARMAN_PAID' ), 'value', 'text' );
     	$statuslist[] = JHTML::_('select.option',  '3', JText::_( 'COM_SEMINARMAN_CANCELED' ), 'value', 'text' );
-    	$lists['status'] = JHTML::_('select.genericlist', $statuslist, 'status', 'class="inputbox" size="1"','value', 'text', $application->status );
+    	$lists['status'] = JHTML::_('select.genericlist', $statuslist, 'status', 'class="inputbox" size="1"','value', 'text', $status );
 
     	// build list of states
     	$javascript = 'onchange="document.adminForm.submit();"';

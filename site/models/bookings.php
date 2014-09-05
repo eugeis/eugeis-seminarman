@@ -170,11 +170,11 @@ class SeminarmanModelBookings extends JModelLegacy
     			$where .= ' AND LOWER( i.title ) LIKE ' . $this->_db->Quote('%' . $this->_db->
     			    escape($filter, true) . '%', false);
     		}
-    	}
-
-    	if ($filter_experience_level)
-    	{
-    		$where .= ' AND LOWER( i.id_experience_level ) = ' . $filter_experience_level;
+    		
+    		if ($filter_experience_level)
+    		{
+    			$where .= ' AND LOWER( i.id_experience_level ) = ' . $filter_experience_level;
+    		}
     	}
         return $where;
     }

@@ -34,7 +34,7 @@ class seminarmanControllerApplication extends seminarmanController
 		JRequest::checkToken('get') or jexit('Invalid Token');
 		$course_id = JRequest::getVar( 'course_id' );
 		$msg = JText::_( 'COM_SEMINARMAN_THANK_YOU_FOR_YOUR_APPLICATION' );
-		if(course_id){
+		if($course_id){
 			$user = JFactory::getUser();
 			$course = ApplicationHelper::loadCourse($course_id);
 			$fillErrors = array();
@@ -55,7 +55,7 @@ class seminarmanControllerApplication extends seminarmanController
 	function changestatus()   {
 		global $ueConfig;
 		$cid  = JRequest::getVar( 'cid' );
-		if( JRequest::getVar( JUtility::getToken() ) == '1' ){
+		if( JRequest::getVar( JSession::getFormToken() ) == '1' ){
 			$back = JRequest::getVar( 'back' );
 			if(!ApplicationHelper::isCourseOldByApplicationId($cid)){
 				$this->_changestatus($cid);

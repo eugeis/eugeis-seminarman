@@ -156,7 +156,7 @@ class seminarmanModelExperience_level extends JModelLegacy
 
             $query_check = 'SELECT id FROM #__seminarman_courses WHERE id_experience_level IN ( ' . $cids . ' )';
             $this->_db->setQuery($query_check);
-            // $relatedRecords = $this->_db->loadResultArray();
+            // $relatedRecords = $this->_db->loadColumn();
             $relatedRecords = $this->_db->loadColumn();
             if ($relatedRecords > 0)
             {

@@ -91,6 +91,7 @@ class SeminarmanViewBookings extends JViewLegacy{
         for($i = 0; $i < $count; $i++){
             $item = &$courses[$i];
         	$item->count=$i;
+        	$item->finishDateAsDate = $item->finish_date;
         	$category = $model->getCategory($item->id);
             // $link = JRoute::_('index.php?option=com_seminarman&view=courses&cid=' . $category->slug . '&id=' . $item->slug);
             $link = JRoute::_($item->url);

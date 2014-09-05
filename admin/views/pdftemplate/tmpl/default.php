@@ -139,7 +139,7 @@ echo $editor->display('html', $this->template->html, '100%', '500', '60', '20', 
 			<li class="li_invoice"><a href="#" onclick="window.parent.jInsertEditorText('{INVOICE_DATE}', 'html'); return false;">{INVOICE_DATE}</a>: <? echo JText::_('COM_SEMINARMAN_INVOICE_DATE'); ?></li>
 			<li class="li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{CURRENT_DATE}', 'html'); return false;">{CURRENT_DATE}</a>: <? echo JText::_('COM_SEMINARMAN_DATE'); ?></li>
 			<li class="li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{ATTENDEES_TOTAL}', 'html'); return false;">{ATTENDEES_TOTAL}</a>: <? echo JText::_('COM_SEMINARMAN_NUMBER_OF_ATTENDEES_TOTAL'); ?></li>
-			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{ATTENDEES}', 'html'); return false;">{ATTENDEES}</a>: <? echo JText::_('COM_SEMINARMAN_NUMBER_OF_ATTENDEES'); ?></li>
+			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{ATTENDEES_TOTAL}', 'html'); return false;">{ATTENDEES_TOTAL}</a>: <? echo JText::_('COM_SEMINARMAN_NUMBER_OF_ATTENDEES'); ?></li>
 			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{SALUTATION}', 'html'); return false;">{SALUTATION}</a>: <? echo JText::_('COM_SEMINARMAN_SALUTATION'); ?></li>
 			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{TITLE}', 'html'); return false;">{TITLE}</a>: <? echo JText::_('COM_SEMINARMAN_TITLE'); ?>  (<?php echo JText::_('COM_SEMINARMAN_AUTO_SPACE'); ?>)</li>
 			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{FIRSTNAME}', 'html'); return false;">{FIRSTNAME}</a>: <? echo JText::_('COM_SEMINARMAN_FIRST_NAME'); ?></li>

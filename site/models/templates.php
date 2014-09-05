@@ -228,7 +228,7 @@ class SeminarmanModelTemplates extends JModelLegacy
     {
         $query = 'SELECT tid FROM #__seminarman_tags_template_relations WHERE templateid = ' . (int)$this->_id;
         $this->_db->setQuery($query);
-        // return $this->_db->loadResultArray();
+        // return $this->_db->loadColumn();
         return $this->_db->loadColumn();
     }
 

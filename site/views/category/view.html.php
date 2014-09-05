@@ -181,7 +181,7 @@ class SeminarmanViewCategory extends JViewLegacy{
 					$item->book_link = '';
 				}else {
 					$back = substr(JURI::current(), strlen(JURI::base()));
-					$item->book_link = '<a href="' . JRoute::_('index.php?option=com_seminarman&controller=application&task=save&course_id='. $item->id.'&'.JUtility::getToken() .'=1&back='.$back) . '">' . JText::_('COM_SEMINARMAN_BOOK_NOW') . '</a>';
+					$item->book_link = '<a href="' . JRoute::_('index.php?option=com_seminarman&controller=application&task=save&course_id='. $item->id.'&'.JSession::getFormToken() .'=1&back='.$back) . '">' . JText::_('COM_SEMINARMAN_BOOK_NOW') . '</a>';
 				}
 			}else{
 				$item->book_link = '<span class="centered italic">' . JText::_('COM_SEMINARMAN_FULL') . '</span>';

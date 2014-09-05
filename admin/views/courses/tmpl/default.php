@@ -121,8 +121,8 @@ for ($i = 0, $n = count($this->rows); $i < $n; $i++)
 
     $publish_up = JFactory::getDate($row->publish_up);
     $publish_down = JFactory::getDate($row->publish_down);
-    // $publish_up->setOffset($config->getValue('config.offset'));
-    // $publish_down->setOffset($config->getValue('config.offset'));
+    // $publish_up->setOffset($config->get('config.offset'));
+    // $publish_down->setOffset($config->get('config.offset'));
 
     $publish_up->setTimezone(new DateTimeZone($config->get('offset')));
     $publish_down->setTimezone(new DateTimeZone($config->get('offset')));

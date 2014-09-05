@@ -467,13 +467,13 @@ class seminarmanModelapplication extends JModelLegacy
             if (!empty( $queryResult->title )) $queryResult->title .= ' ';
 
             $msgSubject = str_replace('{ADMIN_CUSTOM_RECIPIENT}', $params->get('component_email'), $msgSubject);
-            $msgSubject = str_replace('{ATTENDEES}', $queryResult->attendees, $msgSubject);
+            $msgSubject = str_replace('{ATTENDEES_TOTAL}', $queryResult->attendees, $msgSubject);
             $msgSubject = str_replace('{TITLE}', $queryResult->title, $msgSubject);
             $msgSubject = str_replace('{SALUTATION}', $queryResult->salutation, $msgSubject);
             $msgSubject = str_replace('{FIRSTNAME}', $queryResult->first_name, $msgSubject);
             $msgSubject = str_replace('{LASTNAME}', $queryResult->last_name, $msgSubject);
             $msgSubject = str_replace('{EMAIL}', $queryResult->email, $msgSubject);
-            // $msgSubject = str_replace('{ATTENDEES}', $queryResult->attendees, $msgSubject);
+            // $msgSubject = str_replace('{ATTENDEES_TOTAL}', $queryResult->attendees, $msgSubject);
             $msgSubject = str_replace('{COURSE_ID}', $queryResult->course_id, $msgSubject);
             $msgSubject = str_replace('{COURSE_TITLE}', $queryResult->course, $msgSubject);
             $msgSubject = str_replace('{COURSE_CODE}', $queryResult->code, $msgSubject);
@@ -514,7 +514,7 @@ class seminarmanModelapplication extends JModelLegacy
             $msgSubject = str_replace('{COURSE_FIRST_SESSION_COMMENT}', $COURSE_FIRST_SESSION_COMMENT, $msgSubject);
 
             $msgBody = str_replace('{ADMIN_CUSTOM_RECIPIENT}', $params->get('component_email'), $msgBody);
-            $msgBody = str_replace('{ATTENDEES}', $queryResult->attendees, $msgBody);
+            $msgBody = str_replace('{ATTENDEES_TOTAL}', $queryResult->attendees, $msgBody);
             $msgBody = str_replace('{SALUTATION}', $queryResult->salutation, $msgBody);
             $msgBody = str_replace('{TITLE}', $queryResult->title, $msgBody);
             $msgBody = str_replace('{FIRSTNAME}', $queryResult->first_name, $msgBody);
@@ -566,8 +566,8 @@ class seminarmanModelapplication extends JModelLegacy
             
             $msgRecipients = explode(",", $msgRecipient);
             
-            // $senderEmail = $config->getValue('mailfrom');
-            // $senderName = $config->getValue('fromname');
+            // $senderEmail = $config->get('mailfrom');
+            // $senderName = $config->get('fromname');
             $senderEmail = $config->get('mailfrom');
             $senderName = $config->get('fromname');
             $message->addRecipient($msgRecipients);
@@ -625,7 +625,7 @@ class seminarmanModelapplication extends JModelLegacy
             quoteName('gid') . '=' . $db->Quote(25);
 
         $db->setQuery($query);
-        // $emails = $db->loadResultArray(); 
+        // $emails = $db->loadColumn(); 
         $emails = $db->loadColumn();
 
         return $emails;
@@ -729,7 +729,7 @@ class seminarmanModelapplication extends JModelLegacy
     	$db->setQuery('SELECT'.
                           ' a.invoice_number AS `INVOICE_NUMBER`,'.
                           ' a.date AS `INVOICE_DATE`,'.
-                          ' a.attendees AS `ATTENDEES`,'.
+                          ' a.attendees AS `ATTENDEES_TOTAL`,'.
                           ' a.salutation AS `SALUTATION`,'.
                           ' a.title AS `TITLE`,'.
                           ' a.first_name AS `FIRSTNAME`,'.
@@ -796,7 +796,7 @@ class seminarmanModelapplication extends JModelLegacy
 		
 		$price_orig = $data['COURSE_PRICE_ORIG'];
 		$price_booking = $data['PRICE_PER_ATTENDEE'];
-		$quantity = $data['ATTENDEES'];
+		$quantity = $data['ATTENDEES_TOTAL'];
 		$tax_rate = $data['PRICE_VAT_PERCENT'] / 100.0;
 		$price_total_orig = $price_orig * $quantity;
 		$price_total_booking = $data['PRICE_TOTAL'];

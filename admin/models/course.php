@@ -578,7 +578,7 @@ class SeminarmanModelCourse extends JModelLegacy
     	else
     		$query = 'SELECT DISTINCT tid FROM #__seminarman_tags_course_relations WHERE courseid = ' . (int)$id;
         $this->_db->setQuery($query);
-        // $used = $this->_db->loadResultArray();
+        // $used = $this->_db->loadColumn();
         $used = $this->_db->loadColumn();
         return $used;
     }
@@ -601,7 +601,7 @@ class SeminarmanModelCourse extends JModelLegacy
     		$query = 'SELECT DISTINCT catid FROM #__seminarman_cats_course_relations WHERE courseid = '.(int)$this->_id;
     	 
         $this->_db->setQuery($query);
-        // $used = $this->_db->loadResultArray();
+        // $used = $this->_db->loadColumn();
         $used = $this->_db->loadColumn();
         return $used;
     }
@@ -858,7 +858,7 @@ class SeminarmanModelCourse extends JModelLegacy
 		$db->setQuery('SELECT fieldcode'.
 				' FROM `#__seminarman_fields` AS f'.
 				' WHERE f.purpose = 0');
-		$result = $db->loadResultArray();
+		$result = $db->loadColumn();
 		if(isset($result)){
 			foreach ($result as $fieldcode) {
 				$field = strtoupper($fieldcode);
