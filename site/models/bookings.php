@@ -82,7 +82,7 @@ class SeminarmanModelBookings extends JModelLegacy
         $orderby = $this->_buildCourseOrderBy();
 
 
-    	$query = 'SELECT DISTINCT i.*, (i.plus / (i.plus + i.minus) ) * 100 AS votes, emp.comp_name AS tutor,' .
+    	$query = 'SELECT DISTINCT i.*, (i.plus / (i.plus + i.minus) ) * 100 AS votes, emp.title AS tutor,' .
     	    ' CASE WHEN CHAR_LENGTH(i.alias) THEN CONCAT_WS(\':\', i.id, i.alias) ELSE i.id END as slug,' .
     	    ' gr.title AS cgroup, lev.title AS level, app.id AS applicationid, app.status, app.invoice_filename_prefix AS invoice_filename_prefix, app.invoice_number AS invoice_number' .
     	    ' FROM #__seminarman_courses AS i' .

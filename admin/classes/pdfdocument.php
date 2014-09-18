@@ -101,6 +101,8 @@ class PdfInvoice extends PdfDocument
 
 class PdfAttList extends PdfDocument
 {
+	private $_file = '';
+	
 	public function __construct($template, $data, $attendees)
 	{
 		parent::__construct($template);
@@ -127,5 +129,17 @@ class PdfAttList extends PdfDocument
 		$html = $this->replace($html, $data);	
 		
 		$this->addHTMLBox($html);
+	}
+	
+	public function store($name)
+	{
+		if (!empty($this->_file)) return;
+		$this->_file = $name;
+		$this->Output($name, 'F');
+	}
+	
+	public function getFile()
+	{
+		return $this->_file;
 	}
 }

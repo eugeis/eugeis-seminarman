@@ -94,9 +94,9 @@ class JHTMLSeminarman
         $types[] = JHtml::_('select.option', '0', '- '. JText::_('COM_SEMINARMAN_CHOOSE_PLEASE') .' -');
         foreach ($items as $item) {
         	// only if user is neither admin nor course manager nor tutor
-        	if (!(JHTMLSeminarman::user_is_admin($item->value)||JHTMLSeminarman::UserIsCourseManager($item->value)||JHTMLSeminarman::getUserTutorID($item->value)>0)){
+        	//if (!(JHTMLSeminarman::user_is_admin($item->value)||JHTMLSeminarman::UserIsCourseManager($item->value)||JHTMLSeminarman::getUserTutorID($item->value)>0)){
                 $types[] = JHtml::_('select.option', $item->value, JText::_($item->text));
-        	}
+        	//}
         }
 
         if ($disabled == 1) {

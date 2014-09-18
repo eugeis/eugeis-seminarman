@@ -421,7 +421,6 @@ class seminarmanControllersalesprospect extends seminarmanController
 		$msgSubject = str_replace('{FIRSTNAME}', $queryResult->first_name, $msgSubject);
 		$msgSubject = str_replace('{LASTNAME}', $queryResult->last_name, $msgSubject);
 		$msgSubject = str_replace('{EMAIL}', $queryResult->email, $msgSubject);
-		$msgSubject = str_replace('{ATTENDEES_TOTAL}', $queryResult->attendees, $msgSubject);
 		$msgSubject = str_replace('{COURSE_ID}', $queryResult->course_id, $msgSubject);
 		$msgSubject = str_replace('{COURSE_TITLE}', $queryResult->course, $msgSubject);
 		$msgSubject = str_replace('{COURSE_CODE}', $queryResult->code, $msgSubject);

@@ -739,7 +739,7 @@ class seminarmanModelapplication extends JModelLegacy
   	                      ' a.price_total AS `PRICE_TOTAL`,'.
    	                      ' a.price_vat AS `PRICE_VAT_PERCENT`,'.
     			          ' a.pricegroup AS `PRICE_GROUP_ORDERED`,'.
-    			          ' a.status AS `PAYMENT_STATUS`,'.
+    			          ' a.status AS `STATUS_ID`,'.
    	                      ' c.code AS `COURSE_CODE`,'.
    	                      ' c.title AS `COURSE_TITLE`,'.
    	                      ' c.capacity AS `COURSE_CAPACITY`,'.
@@ -767,14 +767,14 @@ class seminarmanModelapplication extends JModelLegacy
   	                    ' WHERE a.id = '. (int) $applicationid );
     	$data = $db->loadAssoc();
     	
-    	if ($data['PAYMENT_STATUS'] == 0) {
-    		$data['PAYMENT_STATUS'] = JText::_( 'COM_SEMINARMAN_SUBMITTED' );
-    	} elseif ($data['PAYMENT_STATUS'] == 1) {
-    		$data['PAYMENT_STATUS'] = JText::_( 'COM_SEMINARMAN_PENDING' );
-    	} elseif ($data['PAYMENT_STATUS'] == 2) {
-    		$data['PAYMENT_STATUS'] = JText::_( 'COM_SEMINARMAN_PAID' );
-    	} elseif ($data['PAYMENT_STATUS'] == 3) {
-    		$data['PAYMENT_STATUS'] = JText::_( 'COM_SEMINARMAN_CANCELED' );
+    	if ($data['STATUS_ID'] == 0) {
+    		$data['STATUS_ID'] = JText::_( 'COM_SEMINARMAN_SUBMITTED' );
+    	} elseif ($data['STATUS_ID'] == 1) {
+    		$data['STATUS_ID'] = JText::_( 'COM_SEMINARMAN_PENDING' );
+    	} elseif ($data['STATUS_ID'] == 2) {
+    		$data['STATUS_ID'] = JText::_( 'COM_SEMINARMAN_PAID' );
+    	} elseif ($data['STATUS_ID'] == 3) {
+    		$data['STATUS_ID'] = JText::_( 'COM_SEMINARMAN_CANCELED' );
     	}
     	
     	// custom fields

@@ -704,7 +704,7 @@ class SeminarmanModelCourse extends JModelLegacy
     	 
     	$db->setQuery('SELECT'.
     	                      ' NOW() AS `CURRENT_DATE`,'.
-    	                      ' SUM(a.attendees) AS `ATTENDEES_TOTAL`,'.
+    	                      ' COUNT(a.attendees) AS `ATTENDEES_TOTAL`,'.
     			              ' c.id AS `COURSE_ID`,'.
     	                      ' c.title AS `COURSE_TITLE`,'.
        	                      ' c.code AS `COURSE_CODE`,'.
@@ -713,7 +713,7 @@ class SeminarmanModelCourse extends JModelLegacy
        	                      ' c.url AS `COURSE_URL`,'.
        	                      ' c.start_date AS `COURSE_START_DATE`,'.
        	                      ' c.finish_date AS `COURSE_FINISH_DATE`,'.
-    			' c.start_time AS `COURSE_START_TIME`,'.
+    							' c.start_time AS `COURSE_START_TIME`,'.
     			' c.finish_time AS `COURSE_FINISH_TIME`,'.
     			              ' t.id AS `TUTOR_ID`,'.
        	                      ' t.title AS `TUTOR`,'.
@@ -723,8 +723,8 @@ class SeminarmanModelCourse extends JModelLegacy
     			              ' t.other_title AS `TUTOR_OTHER_TITLE`'.
      	                    ' FROM `#__seminarman_courses` AS c'.
       	                    ' LEFT JOIN `#__seminarman_tutor` AS t ON c.tutor_id = t.id'.
-      	                    ' LEFT JOIN `#__seminarman_application` AS a ON a.course_id = c.id AND a.status IN (1,2)'.
-      	                    ' WHERE c.id = '. (int) $this->_id);
+      	                    ' LEFT JOIN `#__seminarman_application` AS a ON a.course_id = c.id'.
+      	                    ' WHERE c.id = '. (int) $this->_id .' AND a.published = 1');
     	$data = $db->loadAssoc();
     	
     	// format date
@@ -830,27 +830,33 @@ class SeminarmanModelCourse extends JModelLegacy
        	                      ' a.first_name AS `FIRSTNAME`,'.
        	                      ' a.last_name AS `LASTNAME`,'.
     			              ' a.pricegroup AS `PRICE_GROUP_ORDERED`,'.
-    			              ' a.status AS `PAYMENT_STATUS`,'.
+    			              ' a.status AS `STATUS_ID`,'.
        	                      ' a.email AS `EMAIL`,'.
     						  ' a.note_reading AS `NOTE_READING`,'.
 						      ' a.note_test AS `NOTE_TEST`,'.
 						      ' a.note_work AS `NOTE_WORK`,'.
 						      ' a.note AS `NOTE`,'.
 						      ' a.attendance AS `ATTENDANCE`,'.
-    						  ' a.status AS `STATUS_ID`'.
+    						  ' ua.body AS `GEMEINDE`'.
      	                    ' FROM `#__seminarman_application` AS a'.
-      	                    ' LEFT JOIN `#__seminarman_courses` AS c ON a.course_id = c.id AND a.status IN (1,2)'.
-      	                    ' WHERE c.id = '. (int) $this->_id . ' AND a.published = 1' .
+      	                    ' LEFT JOIN `#__seminarman_courses` AS c ON a.course_id = c.id'.
+    						' LEFT JOIN `#__user_notes` AS ua ON a.user_id = ua.user_id'.
+      	                    ' WHERE c.id = '. (int) $this->_id . ' AND a.published = 1'.
+    						' AND (ua.user_id is NULL || ua.subject = "Gemeinde")'.
       	                    ' ORDER BY ' . $order_type_string);
-    	$data = $db->loadAssocList('id');  	
+    	$data = $db->loadAssocList('id');
     	
     	foreach ($data as $k => $v) {
     		unset($data[$k]['id']);
 		
-		if ($data[$k]['PAYMENT_STATUS'] == 1) {
-    			$data[$k]['PAYMENT_STATUS'] = JText::_( 'COM_SEMINARMAN_PENDING' );
-    		} elseif ($data[$k]['PAYMENT_STATUS'] == 2) {
-    			$data[$k]['PAYMENT_STATUS'] = JText::_( 'COM_SEMINARMAN_PAID' );
+    		if ($data[$k]['STATUS_ID'] == 0) {
+    			$data[$k]['STATUS'] = JText::_( 'COM_SEMINARMAN_SUBMITTED' );
+    		} elseif ($data[$k]['STATUS_ID'] == 1) {
+    			$data[$k]['STATUS'] = JText::_( 'COM_SEMINARMAN_PENDING' );
+    		} elseif ($data[$k]['STATUS_ID'] == 2) {
+    			$data[$k]['STATUS'] = JText::_( 'COM_SEMINARMAN_PAID' );
+    		} elseif ($data[$k]['STATUS_ID'] == 3) {
+    			$data[$k]['STATUS'] = JText::_( 'COM_SEMINARMAN_CANCELED' );
     		}
     	}
     	
@@ -872,7 +878,7 @@ class SeminarmanModelCourse extends JModelLegacy
     	                   ' FROM `#__seminarman_fields_values` AS v'.
     	                   ' LEFT JOIN `#__seminarman_fields` AS f ON v.field_id = f.id'.
     	                   ' LEFT JOIN `#__seminarman_application` AS a ON a.id = v.applicationid'.
-    	                   ' WHERE a.status IN (1,2) AND a.course_id = '. (int) $this->_id . ' AND a.published = 1' .
+    	                   ' WHERE a.course_id = '. (int) $this->_id . ' AND a.published = 1' .
     	                   ' ORDER BY v.applicationid');
     	foreach ($db->loadRowList() as $record) {
     		$data[$record[0]][$record[1]] = $record[2];

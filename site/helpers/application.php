@@ -489,9 +489,9 @@ class ApplicationHelper
 
 		$data['user_id'] = $user->id;
 		//$data['salutation'] = $user->salution;
-		$name = explode(' ',$user->name,2);
-		$data['first_name'] = $name[0];
-		$data['last_name'] = $name[1];
+		$name = explode(' ',$user->name, 2);
+		$data['first_name'] = trim($name[0]);
+		$data['last_name'] = trim($name[1]);
 		$data['email'] = $user->email;
 		$data['title'] = $course->title;
 		$data['course_id'] = $course->id;

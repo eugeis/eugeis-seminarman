@@ -177,7 +177,7 @@ foreach ($this->fields as $field)
 			<li class="li_invoice"><a href="#" onclick="window.parent.jInsertEditorText('{PRICE_REAL_BOOKING_SINGLE}', 'html'); return false;">{PRICE_REAL_BOOKING_SINGLE}</a>: <? echo JText::_('COM_SEMINARMAN_REAL_BOOKING_SINGLE'); ?></li>
 			<li class="li_invoice"><a href="#" onclick="window.parent.jInsertEditorText('{PRICE_REAL_BOOKING_TOTAL}', 'html'); return false;">{PRICE_REAL_BOOKING_TOTAL}</a>: <? echo JText::_('COM_SEMINARMAN_REAL_BOOKING_TOTAL'); ?></li>
 			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{PRICE_GROUP_ORDERED}', 'html'); return false;">{PRICE_GROUP_ORDERED}</a>: <? echo JText::_('COM_SEMINARMAN_PRICE_GROUP_ORDERED'); ?></li>
-			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{PAYMENT_STATUS}', 'html'); return false;">{PAYMENT_STATUS}</a>: <? echo JText::_('COM_SEMINARMAN_PAYMENT_STATUS'); ?></li>
+			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{STATUS_ID}', 'html'); return false;">{STATUS_ID}</a>: <? echo JText::_('COM_SEMINARMAN_STATUS_ID'); ?></li>
 			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{TUTOR}', 'html'); return false;">{TUTOR}</a>: <? echo JText::_('COM_SEMINARMAN_DISPLAY_NAME'); ?></li>
 			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{TUTOR_FIRSTNAME}', 'html'); return false;">{TUTOR_FIRSTNAME}</a>: <? echo JText::_('COM_SEMINARMAN_FIRST_NAME'); ?></li>
 			<li class="li_invoice li_attlst"><a href="#" onclick="window.parent.jInsertEditorText('{TUTOR_LASTNAME}', 'html'); return false;">{TUTOR_LASTNAME}</a>: <? echo JText::_('COM_SEMINARMAN_LAST_NAME'); ?></li>

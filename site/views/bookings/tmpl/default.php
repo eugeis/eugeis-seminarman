@@ -142,15 +142,6 @@ endif;
 <table class="seminarmancoursetable" summary="seminarman">
 	<thead>
 			<tr>
-<?php if ( $this->params->get( 'show_icons' ) ) : ?>
-   <td class="proc2 centered sectiontableheader<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
-      <?php echo JText::_('#'); ?>
-   </td>
-   <?php else: ?>
-  <td class="pix3 centered">
-  </td>
-   <?php endif; ?>
-
 				<th id="qf_title" class="sectiontableheader"><?php
 
 echo JHTML::_('grid.sort', 'COM_SEMINARMAN_COURSE_TITLE', 'i.title', $this->lists['filter_order_Dir'],
@@ -169,6 +160,18 @@ echo JHTML::_('grid.sort', 'COM_SEMINARMAN_FINISH_DATE', 'i.finish_date', $this-
 	$this->lists['filter_order']);
 
 				?></th>
+				<th id="qf_location" class="sectiontableheader"><?php
+
+echo JHTML::_('grid.sort', 'COM_SEMINARMAN_LOCATION', 'i.location', $this->lists['filter_order_Dir'],
+	$this->lists['filter_order']);
+
+				?>
+				<th id="qf_tutor" class="sectiontableheader"><?php
+
+echo JHTML::_('grid.sort', 'COM_SEMINARMAN_TUTOR', 'i.tutor', $this->lists['filter_order_Dir'],
+	$this->lists['filter_order']);
+
+				?>
 				<th id="qf_status" class="sectiontableheader"><?php
 
 echo JHTML::_('grid.sort', 'COM_SEMINARMAN_STATUS', 'i.status', $this->lists['filter_order_Dir'],
@@ -209,13 +212,6 @@ echo JHTML::_('grid.sort', 'COM_SEMINARMAN_STATUS', 'i.status', $this->lists['fi
 	
 	?>
   			<tr class="sectiontableentry" >
-    			 <?php if ( $itemParams->get('show_icons', $this->params->get( 'show_icons' ))) : ?>
-   <td headers="qf_publish_up">
-         <?php
-         echo $this->pageNav->getRowOffset( $course->count ); ?>
-   </td>
- <?php else: ?> <td headers="qf_publish_up"></td>
- <?php endif; ?>
 				<td headers="qf_title">
     				<strong><a href="<?php
 
@@ -245,6 +241,20 @@ echo JHTML::_('grid.sort', 'COM_SEMINARMAN_STATUS', 'i.status', $this->lists['fi
 
     				//echo date('d-M-y', strtotime($course->finish_date));
     				echo $course->finish_date;
+
+    				?>
+				</td>
+				<td headers="qf_location">
+    				<?php
+
+    				echo $course->location;
+
+    				?>
+				</td>
+				<td headers="qf_tutor">
+    				<?php
+
+    				echo $course->tutor;
 
     				?>
 				</td>
@@ -289,25 +299,11 @@ if ($params->get('invoice_generate') == 1)
 				?>
 
 			</tr>
-<?php if ($course->introtext):?>
-			<tr><td colspan="7"><?php echo ($course->introtext); ?></td></tr>
-<?php endif; ?>
-			<tr><td colspan="7">
 			<div class="tabulka">
 <div class="radek">
 <?php if ($itemParams->get('show_hits', $this->params->get('show_hits'))): ?>
   	<div class="bunka hlavicka"><div class="matrjoska">
 <?php echo JText::_('COM_SEMINARMAN_HITS').': '.$course->hits; ?>
-  	</div></div>
-<?php endif; ?>
-<?php if ($itemParams->get('show_tutor', $this->params->get('show_tutor'))):?>
-  	<div class="bunka hlavicka"><div class="matrjoska">
-<?php echo JText::_('COM_SEMINARMAN_TUTOR').': '.$course->tutor;?>
-  	</div></div>
-<?php endif; ?>
-<?php if ($itemParams->get('show_location', $this->params->get('show_location'))):?>
-<div class="bunka hlavicka"><div class="matrjoska">
-<?php echo JText::_('COM_SEMINARMAN_LOCATION').': '.$course->location;?>
   	</div></div>
 <?php endif; ?>
 <?php if ($itemParams->get('show_group', $this->params->get('show_group'))):?>

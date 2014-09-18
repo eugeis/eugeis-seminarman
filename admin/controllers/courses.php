@@ -594,6 +594,13 @@ JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com
 			$templateData[$key] = $templateData[$key] + 1;
 		}
 		
+// 		//remove all with status not 1
+// 		foreach ($attendees as $k => $v) {
+// 			if($v['STATUS_ID'] != 1) {
+// 				unset($attendees[$k]);
+// 			}
+// 		}
+		
 		$pdf = new PdfAttList($template, $templateData, $attendees);
 		$pdf->Output('attendees_'. $course->id .'.pdf', 'I');
 		exit;
@@ -624,12 +631,12 @@ JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com
 				$templateData[$key] = $templateData[$key] + 1;
 			}
 			
-			//remove all with status not 1
-			foreach ($attendees as $k => $v) {
-				if($v['STATUS_ID'] != 1) {
-					unset($attendees[$k]);
-				}
-			}
+// 			//remove all with status not 1
+// 			foreach ($attendees as $k => $v) {
+// 				if($v['STATUS_ID'] != 1) {
+// 					unset($attendees[$k]);
+// 				}
+// 			}
 			
 			$pdf = new PdfAttList($template, $templateData, $attendees);
 			$pdf->store(JPATH_ROOT.DS.'invoices'.DS.$course->title.'-'.JFactory::getDate($course->start_date)->format(JText::_('COM_SEMINARMAN_DATE_FORMAT1')).'.pdf');
