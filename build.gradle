@@ -38,6 +38,46 @@ task publish << {
 		ftp(server: connection.host, userid: connection.user, password: connection.pwd, remotedir: "$connection.remoteHome/components/com_seminarman", depends: 'Yes') {
 			fileset(dir: 'site')
 		}
+		
+		//languages
+		ftp(server: connection.host, userid: connection.user, password: connection.pwd, remotedir: "$connection.remoteHome/administrator/language/de-DE", depends: 'Yes') {
+			fileset(dir: 'languages/admin') {
+				include(name:"de-DE*")
+			}
+		}
+	}
+}
+
+task publishLang << {
+	ant {
+		taskdef(name: 'ftp',
+		classname: 'org.apache.tools.ant.taskdefs.optional.net.FTP',
+		classpath: configurations.ftpAntTask.asPath)
+
+		//languages
+		ftp(server: connection.host, userid: connection.user, password: connection.pwd, remotedir: "$connection.remoteHome/administrator/language/de-DE", depends: 'Yes') {
+			fileset(dir: 'languages/admin') {
+				include(name:"de-DE*")
+			}
+		}
+		
+		ftp(server: connection.host, userid: connection.user, password: connection.pwd, remotedir: "$connection.remoteHome/administrator/language/en-GB", depends: 'Yes') {
+			fileset(dir: 'languages/admin') {
+				include(name:"en-GB*")
+			}
+		}
+		
+		ftp(server: connection.host, userid: connection.user, password: connection.pwd, remotedir: "$connection.remoteHome/language/de-DE", depends: 'Yes') {
+			fileset(dir: 'languages/site') {
+				include(name:"de-DE*")
+			}
+		}
+		
+		ftp(server: connection.host, userid: connection.user, password: connection.pwd, remotedir: "$connection.remoteHome/language/en-GB", depends: 'Yes') {
+			fileset(dir: 'languages/site') {
+				include(name:"en-GB*")
+			}
+		}
 	}
 }
 

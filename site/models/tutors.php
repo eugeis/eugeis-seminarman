@@ -63,7 +63,8 @@ class SeminarmanModelTutors extends JModelLegacy
 	//	$filter_order_dir = $this->getState('filter_order_dir');
 	
 	//	return ' ORDER BY '. $filter_order .' '. $filter_order_dir .', i.title';
-		return ' ORDER BY t.lastname';
+// 		return ' ORDER BY t.lastname';
+		return ' ORDER BY t.ordering';
 	}
 	
 	function _buildTutorWhere()

@@ -136,7 +136,6 @@ jimport('joomla.mail.helper');
 <table class="seminarmancoursetable" summary="seminarman">
 <thead>
 <tr>
-	<th id="qf_code" class="sectiontableheader" nowrap="nowrap"><?php echo JText::_( 'COM_SEMINARMAN_COURSE_CODE' ); ?></th>
 	<th id="qf_title" class="sectiontableheader"><?php echo JText::_( 'COM_SEMINARMAN_COURSE_TITLE' ); ?></th>
 	<th id="qf_start_date" class="sectiontableheader" nowrap="nowrap"><?php echo JText::_( 'COM_SEMINARMAN_START_DATE' ); ?></th>
 	<th id="qf_finish_date" class="sectiontableheader" nowrap="nowrap"><?php echo JText::_( 'COM_SEMINARMAN_FINISH_DATE' ); ?></th>
@@ -154,7 +153,6 @@ if(!empty($this->courses)){
 foreach ($this->courses as $course):
 ?>
 <tr class="sectiontableentry" >
-	<td headers="qf_code" nowrap="nowrap"><?php echo $this->escape($course->code); ?></td>
 	<td headers="qf_title"><strong><a href="<?php echo JRoute::_('index.php?option=com_seminarman&view=courses&cid=' . $course->cat . '&id=' . $course->slug . '&Itemid=' . $Itemid); ?>"><?php echo $this->escape($course->title); ?></a></strong></td>
 	<td headers="qf_start_date" nowrap="nowrap">
 	<?php 

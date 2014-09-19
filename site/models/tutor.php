@@ -197,7 +197,19 @@ class SeminarmanModelTutor extends JModelLegacy
 			$where .= ' AND LOWER( i.id_experience_level ) = ' . $filter_experience_level;
 		}
 		
+		$currentPeriod = $this->getCurrentPeriod();
+		$where .= 'AND (i.finish_date >= "' . $currentPeriod->start_date . '" AND ' . 'i.start_date <= "' . $currentPeriod->finish_date . '")';
+		
 		return $where . ' GROUP BY i.id';
+	}
+	
+	function getCurrentPeriod()
+	{
+		$db = JFactory::getDBO();
+		$sql = 'SELECT * FROM #__seminarman_period WHERE id = 1';
+		$db->setQuery($sql);
+		$ret = $db->loadObject();
+		return $ret;
 	}
 	
 	function getEditableCustomfields($tutorId = null)
