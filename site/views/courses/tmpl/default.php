@@ -57,12 +57,6 @@ function submitbuttonSeminarman(task)
             <dd class="start_date"><?php echo (!empty($this->course->start_time)) ? $this->course->start_date . ', ' . $this->course->start_time : $this->course->start_date; ?></dd>
             <dt class="finish_date"><?php echo JText::_('COM_SEMINARMAN_FINISH_DATE') . ':'; ?></dt>
             <dd class="finish_date"><?php echo (!empty($this->course->finish_time)) ? $this->course->finish_date . ', ' . $this->course->finish_time : $this->course->finish_date; ?></dd>
-<?php if ($this->params->get('show_modify_date')): ?>
-            <dt class="modified"><?php echo JText::_('COM_SEMINARMAN_LAST_REVISED') . ':'; ?></dt>
-            <dd class="modified"><?php echo $this->course->modified ? JFactory::getDate($this->course->modified)->format("j. F Y") : JText::_('COM_SEMINARMAN_NEVER'); ?></dd>
-<?php endif; ?>
-            <dt class="reference"><?php echo JText::_('COM_SEMINARMAN_COURSE_CODE') . ':'; ?></dt>
-            <dd class="reference"><?php if ($this->course->code<>"") echo $this->course->code; ?></dd>
 <?php if ($this->params->get('show_hits')):?>
             <dt class="hits"><?php echo JText::_('COM_SEMINARMAN_HITS') . ':'; ?></dt>
             <dd class="hits"><?php echo $this->course->hits; ?></dd>
@@ -103,31 +97,7 @@ if (($this->params->get('second_currency') != 'NONE') && ($this->params->get('se
 <?php 
     $course_attribs = new JRegistry();
     $course_attribs->loadString($this->course->attribs);
-    $show_course_price = $course_attribs->get('show_price');
-    if ($show_course_price !== 0):
 ?>
-            <dt class="price"><?php echo JText::_('COM_SEMINARMAN_PRICE') . ':'; ?></dt>
-            <dd class="price">
-<?php
-    $display_free_charge = $this->params->get('display_free_charge');
-    if (!empty($display_free_charge) && ($this->course->price == 0)) {
-    	echo JText::_($display_free_charge);
-    } else {
-        if ($show_2_price) {
-	        echo $this->escape($this->course->price) . ' ' . $this->escape($this->course->currency_price) . ' | ' . JText::sprintf('%.2f', round(doubleval($factor*(doubleval(str_replace(",", ".", $this->escape($this->course->price))))), 2)) . ' ' . $sec_currency . ' ' . $this->escape($this->course->price_type); 
-	        if($this->course->vat <> 0) {
-	            echo ($this->params->get('show_gross_price') == 1) ? ' ('.JText::_('COM_SEMINARMAN_WITH_VAT').')' : ' ('.JText::_('COM_SEMINARMAN_WITHOUT_VAT').')'; 
-	        }
-        } else {
-            echo $this->escape($this->course->price) . ' ' . $this->escape($this->course->currency_price) . ' ' . $this->escape($this->course->price_type); 
-            if($this->course->vat <> 0) {
-                echo ($this->params->get('show_gross_price') == 1) ? ' ('.JText::_('COM_SEMINARMAN_WITH_VAT').')' : ' ('.JText::_('COM_SEMINARMAN_WITHOUT_VAT').')'; 
-            }
-        }
-    }
-?>
-            </dd>
-<?php endif; ?>
 <?php if ($this->params->get('show_location')): ?>
             <dt class="location"><?php echo JText::_('COM_SEMINARMAN_LOCATION') . ':'; ?></dt>
             <dd class="location">

@@ -122,7 +122,7 @@ class SeminarmanModelCategory extends JModelLegacy
         $orderby = $this->_buildCourseOrderBy();
 
         $query = 'SELECT DISTINCT i.*, (i.plus / (i.plus + i.minus) ) * 100 AS votes,' .
-            ' CONCAT_WS(" ", emp.firstname, emp.lastname) as tutor,' .        
+            ' emp.title as tutor,' .        
             ' CASE WHEN CHAR_LENGTH(i.alias) THEN CONCAT_WS(\':\', i.id, i.alias) ELSE i.id END as slug,' .
             ' gr.title AS cgroup, lev.title AS level' .
             ' FROM #__seminarman_courses AS i' .

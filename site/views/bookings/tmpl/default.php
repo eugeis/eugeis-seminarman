@@ -252,11 +252,7 @@ echo JHTML::_('grid.sort', 'COM_SEMINARMAN_STATUS', 'i.status', $this->lists['fi
     				?>
 				</td>
 				<td headers="qf_tutor">
-    				<?php
-
-    				echo $course->tutor;
-
-    				?>
+    				<a href="<?php echo JRoute::_('index.php?option=com_seminarman&view=tutor&id=' . $course->tutor_id); ?>"><?php echo $course->tutor; ?></a>
 				</td>
     			<td headers="qf_status">
     				<?php

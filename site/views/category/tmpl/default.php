@@ -53,17 +53,18 @@ function tableOrdering( order, dir, task ) {
 <?php
 jimport('joomla.html.pane');
 
-$tabs = JPaneOSGF::getInstance('tabs', array('startOffset'=>0));
-echo $tabs->startPane('mytabs');
-echo $tabs->startPanel(JText::_('COM_SEMINARMAN_DATES'), 0);
-echo '<div>' . $this->loadTemplate('courses') . '</div>';
-echo $tabs->endPanel();
-if ($this->params->get('enable_salesprospects', 0) == 1)
-{
-	echo $tabs->startPanel(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 0);
-	echo '<div>' . $this->loadTemplate('templates') . '</div>';
-	echo $tabs->endPanel();
-}
-echo $tabs->endPane();
+//$tabs = JPaneOSGF::getInstance('tabs', array('startOffset'=>0));
+//echo $tabs->startPane('mytabs');
+//echo $tabs->startPanel(JText::_('COM_SEMINARMAN_DATES'), 0);
+echo $this->loadTemplate('courses');
+//echo '<div>' . $this->loadTemplate('courses') . '</div>';
+//echo $tabs->endPanel();
+// if ($this->params->get('enable_salesprospects', 0) == 1)
+// {
+// 	echo $tabs->startPanel(JText::_('COM_SEMINARMAN_LST_OF_SALES_PROSPECTS'), 0);
+// 	echo '<div>' . $this->loadTemplate('templates') . '</div>';
+// 	echo $tabs->endPanel();
+// }
+// echo $tabs->endPane();
 ?>
 </div>

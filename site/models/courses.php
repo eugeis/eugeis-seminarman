@@ -166,7 +166,7 @@ class SeminarmanModelCourses extends JModelLegacy
             $query = 'SELECT i.*, (i.plus / (i.plus + i.minus) ) * 100 AS votes, c.access AS cataccess, c.id AS catid, c.published AS catpublished, c.title AS categorytitle,' .
                 // ' u.name AS author, u.usertype,' .
                 ' u.name AS author,' .
-                ' CONCAT_WS(\' \', emp.salutation, emp.other_title, emp.firstname, emp.lastname) AS tutor,' .
+                ' emp.title AS tutor,' .
                 ' emp.published AS tutor_published,' .
                 ' gr.title AS cgroup,' .
                 ' lev.title AS level,' .

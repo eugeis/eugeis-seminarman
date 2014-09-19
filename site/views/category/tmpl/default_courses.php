@@ -53,6 +53,7 @@ $display_free_charge = $this->params->get('display_free_charge');
 <?php if ($this->params->get('show_location')): ?>
 	<th id="qf_location" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_LOCATION', 'i.location', $this->lists['filter_order_Dir'],	$this->lists['filter_order']); ?></th>
 <?php endif; ?>
+	<th id="qf_tutor" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_TUTOR', 'i.tutor', $this->lists['filter_order_Dir'], $this->lists['filter_order']);?>
 <?php if ($this->params->get('show_price_in_table')): ?>
 	<th id="qf_price" class="sectiontableheader"><?php echo JHTML::_('grid.sort', 'COM_SEMINARMAN_PRICE', 'i.price', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?><?php echo ($this->params->get('show_gross_price') != 2) ? "*" : ""; ?></th>
 <?php endif; ?>
@@ -143,6 +144,7 @@ foreach ($this->courses as $course):
     ?>	
 	</td>
 <?php endif; ?>
+	<td headers="qf_tutor"><?php echo $course->tutor; ?></td>
 <?php if ($this->params->get('show_price_in_table')): ?>
 	<td headers="qf_price">
 <?php 
